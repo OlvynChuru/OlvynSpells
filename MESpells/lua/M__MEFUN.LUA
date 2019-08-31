@@ -421,7 +421,11 @@ function MEGHOWLK(effectData, creatureData)
 			end
 		end
 	end
-	if speed > 0 then
+	local theareatype = 0
+	if EEex_ReadDword(EEex_GetActorShare(sourceID) + 0x14) > 0 then
+		theareatype = EEex_ReadWord(EEex_ReadDword(EEex_GetActorShare(sourceID) + 0x14) + 0x40, 0x0)
+	end
+	if bit32.band(theareatype, 0x800) == 0 and speed > 0 then
 		if isEthereal == 1 then
 			EEex_ApplyEffectToActor(sourceID, {
 ["opcode"] = 235,
@@ -836,7 +840,11 @@ function MECORMOV(effectData, creatureData)
 	local desty2 = EEex_ReadDword(creatureData + 0x3408)
 --	local destx3 = EEex_ReadDword(creatureData + 0x3568)
 --	local desty3 = EEex_ReadDword(creatureData + 0x356C)
-	if destx2 > 0 then
+	local theareatype = 0
+	if EEex_ReadDword(EEex_GetActorShare(targetID) + 0x14) > 0 then
+		theareatype = EEex_ReadWord(EEex_ReadDword(EEex_GetActorShare(targetID) + 0x14) + 0x40, 0x0)
+	end
+	if bit32.band(theareatype, 0x800) == 0 and destx2 > 0 then
 --		Infinity_DisplayString("Going to: [" .. destx .. "." .. desty .. "]")
 --		Infinity_DisplayString("Maybe going to: [" .. destx2 .. "." .. desty2 .. "]")
 --		Infinity_DisplayString("Perhaps going to: [" .. destx3 .. "." .. desty3 .. "]")
@@ -866,7 +874,11 @@ function MEPSPMOV(effectData, creatureData)
 	local y = EEex_ReadDword(creatureData + 0xC)
 	local destx = EEex_ReadDword(creatureData + 0x3404)
 	local desty = EEex_ReadDword(creatureData + 0x3408)
-	if destx > 0 and EEex_GetDistance(x, y, destx, desty) > 100 then
+	local theareatype = 0
+	if EEex_ReadDword(EEex_GetActorShare(targetID) + 0x14) > 0 then
+		theareatype = EEex_ReadWord(EEex_ReadDword(EEex_GetActorShare(targetID) + 0x14) + 0x40, 0x0)
+	end
+	if bit32.band(theareatype, 0x800) == 0 and destx > 0 and EEex_GetDistance(x, y, destx, desty) > 100 then
     	EEex_ApplyEffectToActor(targetID, {
 ["opcode"] = 215,
 ["target"] = 1,
@@ -3233,7 +3245,7 @@ function MEHGTMOD(effectData, creatureData)
 			speed = 0
 		end
 	end
-	if ((minHeight > 0 and bit32.band(special, 0x1) == 0x0) or (height > minHeight) or (height < maxHeight - 1)) and not (EEex_IsFlying(targetID)) then
+	if ((minHeight > 0 and bit32.band(special, 0x1) == 0x0) or ((height > minHeight) and (height < maxHeight - 1))) and not (EEex_IsFlying(targetID)) then
 		EEex_ApplyEffectToActor(targetID, {
 ["opcode"] = 176,
 ["target"] = 2,

@@ -353,6 +353,7 @@ The creature jumps to the target point, which must be within range.~
 @30027=~Ah, a ripe one. Ya've done well there, haven't ya? Here's 250 gold pieces and a scroll to relieve the stink of it all. Ah, Nemphre, I'll have that ring yet!~
 @30028=~Skeleton~
 @30029=~Kobold Commando~
+@30030=~You cannot cast this spell in this area.~
 
 
 @31151=~Snake's Swiftness~

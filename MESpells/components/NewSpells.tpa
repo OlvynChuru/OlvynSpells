@@ -1,0 +1,2993 @@
+
+COPY ~MESpells/New_Spells~ ~override~
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND !(FILE_EXISTS_IN_GAME ~M_MECEIL.lua~) BEGIN
+	ACTION_IF GAME_IS ~bgee~ BEGIN
+		COPY ~MESpells/lua/M_MECBG1.lua~ ~override/M_MECEIL.lua~
+	END ELSE ACTION_IF GAME_IS ~bg2ee~ BEGIN
+		COPY ~MESpells/lua/M_MECBG2.lua~ ~override/M_MECEIL.lua~
+	END ELSE ACTION_IF GAME_IS ~iwdee~ BEGIN
+		COPY ~MESpells/lua/M_MECIWD.lua~ ~override/M_MECEIL.lua~
+	END ELSE ACTION_IF GAME_IS ~eet~ BEGIN
+		COPY ~MESpells/lua/M_MECEET.lua~ ~override/M_MECEIL.lua~
+	END
+END
+
+COPY_EXISTING ~ui.menu~ ~override~
+	REPLACE_TEXTUALLY CASE_SENSITIVE EXACT_MATCH ~contingencyDescription = mageBookStrings[contingencyResRef].tip~ ~~~~~ -- Fixing contingency crash
+if mageBookStrings[contingencyResRef] == nil then
+	contingencyDescription = 0
+else
+	contingencyDescription = mageBookStrings[contingencyResRef].tip
+end~~~~~
+	REPLACE_TEXTUALLY CASE_SENSITIVE EXACT_MATCH ~return Infinity_FetchString(bookSpells[currentBookSpell].description)~ ~~~~~if bookSpells[currentBookSpell] ~= nil then
+					return Infinity_FetchString(bookSpells[currentBookSpell].description)
+				else
+					return ''
+				end~~~~~
+	REPLACE_TEXTUALLY CASE_SENSITIVE EXACT_MATCH ~if characters[id].mageSpells[currentSpellLevel][currentBookSpell]~ ~if characters[id].mageSpells[currentSpellLevel]~
+	REPLACE_TEXTUALLY CASE_SENSITIVE EXACT_MATCH ~return Infinity_FetchString(characters[id].mageSpells[currentSpellLevel][currentBookSpell].description)~ ~~~~~if characters[id].mageSpells[currentSpellLevel][currentBookSpell] ~= nil then
+					return Infinity_FetchString(characters[id].mageSpells[currentSpellLevel][currentBookSpell].description)
+				else
+					return t('SPELL_MEMORIZATION_HELP')
+				end~~~~~
+	UNLESS ~Fixing contingency crash~
+
+COPY_EXISTING ~enginest.2da~ ~override~
+	REPLACE_TEXTUALLY ~STRREF_ERROR_CAN_NOT_CAST_TWO_CONT.*[0-9]*~ ~STRREF_ERROR_CAN_NOT_CAST_TWO_CONT                       0~
+
+ADD_PROJECTILE ~override/mewofire.pro~ //Wall of Fire
+ADD_PROJECTILE ~override/memissto.pro~ //Missile Storm random creature select
+ADD_PROJECTILE ~override/meranmis.pro~ //Magic Missile random path
+ADD_PROJECTILE ~override/meinvglb.pro~ //Sphere of Invisibility
+ADD_PROJECTILE ~override/mepatien.pro~ //Missile of Patience very slow projectile
+ADD_PROJECTILE ~override/meportl.pro~ //Linked portal
+ADD_PROJECTILE ~override/meintrv3.pro~ //Invisible traveling 3
+ADD_PROJECTILE ~override/megrvglb.pro~ //Reversed Gravity Sphere
+
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~0x106~ splprot_value=~1~ splprot_relation=~9~ RET splprot_areaisnotoutdoor=splprot_slot END
+
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~18~ splprot_value=~-1~ splprot_relation=~4~ RET splprot_magicresistancegreaterthanorequalto=splprot_slot END
+
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~0x106~ splprot_value=~16~ splprot_relation=~9~ RET splprot_areaisnotforest=splprot_slot END
+
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~0x111~ splprot_value=~0x00000001~ splprot_relation=~9~ RET splprot_isnotsleeping=splprot_slot END
+
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~640~ splprot_value=~-1~ splprot_relation=~1~ RET splprot_meflyingspeedequalto=splprot_slot END
+
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~640~ splprot_value=~-1~ splprot_relation=~5~ RET splprot_meflyingspeednotequalto=splprot_slot END
+
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~56~ splprot_value=~-1~ splprot_relation=~2~ RET splprot_backstabmultiplierlessthan=splprot_slot END
+
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~56~ splprot_value=~-1~ splprot_relation=~4~ RET splprot_backstabmultipliergreaterthanorequalto=splprot_slot END
+
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~0x10b~ splprot_value=~5~ splprot_relation=~1~ RET splprot_gianthumanoid=splprot_slot END
+
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~0x104~ splprot_value=~5~ splprot_relation= EVAL ~%splprot_gianthumanoid%~ RET splprot_nothumanoidorgianthumanoid=splprot_slot END
+
+LAF ADD_ANIMATION INT_VAR minSlot=0xD000 STR_VAR directory=~MESpells/animations~ ini=~meanibnu~ RET slotbirdnullcreaturedecimal=slotDecimal END
+
+COPY_EXISTING_REGEXP ~mefixwbu.cre~ ~override~ ~meportst.cre~ ~override~ ~meportl[0-9].cre~ ~override~
+	WRITE_SHORT animation slotbirdnullcreaturedecimal
+
+COPY_EXISTING ~menofly.eff~ ~override~
+	WRITE_LONG effparameter2 splprot_areaisnotoutdoor
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR1~ RET mepr151=filename END
+COPY_EXISTING ~mepr151.spl~ ~override/%mepr151%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mepr151~ resource= EVAL ~%mepr151%~ END
+	SAY NAME1 @31151
+	SAY UNIDENTIFIED_DESC @32151
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR2~ RET mepr251=filename END
+COPY_EXISTING ~mepr251.spl~ ~override/%mepr251%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mepr251~ resource= EVAL ~%mepr251%~ END
+	SAY NAME1 @31251
+	SAY UNIDENTIFIED_DESC @32251
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR2~ RET mepr252=filename END
+COPY_EXISTING ~mepr252.spl~ ~override/%mepr252%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mepr252~ resource= EVAL ~%mepr252%~ END
+	SAY NAME1 @31252
+	SAY UNIDENTIFIED_DESC @32252
+
+ACTION_IF !(GAME_IS ~iwdee~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR3~ RET mepr351=filename END
+COPY_EXISTING ~mepr351.spl~ ~override/%mepr351%.spl~
+	SAY NAME1 @31351
+	SAY UNIDENTIFIED_DESC @32351
+
+COPY_EXISTING ~mewaterw.cre~ ~override~
+	SAY NAME1 @30003
+	SAY NAME2 @30003
+
+ACTION_IF GAME_IS ~bgee~ BEGIN
+	LAF ADD_AREA_ACTORS_2DA STR_VAR variablename=~ME_Add_Water_Weirds~ the2da=~mewatbg1~ END
+END ELSE ACTION_IF GAME_IS ~bg2ee~ BEGIN
+	LAF ADD_AREA_ACTORS_2DA STR_VAR variablename=~ME_Add_Water_Weirds~ the2da=~mewatbg2~ END
+END ELSE ACTION_IF GAME_IS ~iwdee~ BEGIN
+//	LAF ADD_AREA_ACTORS_2DA STR_VAR variablename=~ME_Add_Water_Weirds~ the2da=~mewatiwd~ END
+END ELSE ACTION_IF GAME_IS ~eet~ BEGIN
+	LAF ADD_AREA_ACTORS_2DA STR_VAR variablename=~ME_Add_Water_Weirds~ the2da=~mewateet~ END
+END
+
+ACTION_IF GAME_IS ~bgee eet~ BEGIN
+	COPY_EXISTING_REGEXP ~%arbg%0123.are~ ~override~ ~%arbg%022[456].are~ ~override~ ~%arbg%0505.are~ ~override~ ~%arbg%0609.are~ ~override~ ~%arbg%1010.are~ ~override~ ~%arbg%2626.are~ ~override~ ~%arbg%3601.are~ ~override~ ~%arbg%5506.are~ ~override~ ~%arbg%5801.are~ ~override~ ~%arbg%5810.are~ ~override~ ~%arbg%0[459]00.are~ ~override~ ~%arbg%1[02456789]00.are~ ~override~ ~%arbg%2[012467]00.are~ ~override~ ~%arbg%3[12678]00.are~ ~override~ ~%arbg%4[012346789]00.are~ ~override~ ~%arbg%5[123458]00.are~ ~override~ ~%arbg%540[2345].are~ ~override~
+		LPF fj_are_structure STR_VAR fj_structure_type=~region~ fj_name=~ME_Water_Weird_Spawn~ fj_reg_script=~MEWATWSP~ END
+
+	COPY_EXISTING ~oh2000.are~ ~override~ ~oh2010.are~ ~override~
+		LPF fj_are_structure STR_VAR fj_structure_type=~region~ fj_name=~ME_Water_Weird_Spawn~ fj_reg_script=~MEWATWSP~ END
+		IF_EXISTS
+
+	ACTION_IF GAME_INCLUDES ~sod~ BEGIN
+		LAF ADD_AREA_ACTORS_2DA STR_VAR variablename=~ME_Add_Water_Weirds~ the2da=~mewatsod~ END
+		COPY_EXISTING_REGEXP ~bd[1267]000.are~ ~override~ ~bd5100.are~ ~override~ ~bd7220.are~ ~override~
+			LPF fj_are_structure STR_VAR fj_structure_type=~region~ fj_name=~ME_Water_Weird_Spawn~ fj_reg_script=~MEWATWSP~ END
+	END
+END
+ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
+
+	COPY_EXISTING_REGEXP ~ar00[48]6.are~ ~override~ ~ar03[01]0.are~ ~override~ ~ar0315.are~ ~override~ ~ar0404.are~ ~override~ ~ar0413.are~ ~override~ ~ar0[56]0[03].are~ ~override~ ~ar0527.are~ ~override~ ~ar0604.are~ ~override~ ~ar0710.are~ ~override~ ~ar090[05].are~ ~override~ ~ar100[01679].are~ ~override~ ~ar110[06].are~ ~override~ ~ar120[013].are~ ~override~ ~ar1403.are~ ~override~ ~ar1500.are~ ~override~ ~ar1514.are~ ~override~ ~ar160[0147].are~ ~override~ ~ar1700.are~ ~override~ ~ar1800.are~ ~override~ ~ar190[01].are~ ~override~ ~ar201[12].are~ ~override~ ~ar210[02].are~ ~override~ ~ar2210.are~ ~override~ ~ar2300.are~ ~override~ ~ar2400.are~ ~override~ ~ar2500.are~ ~override~ ~ar260[02].are~ ~override~ ~ar2700.are~ ~override~ ~ar280[1289].are~ ~override~ ~ar281[01].are~ ~override~ ~ar3000.are~ ~override~ ~ar3015.are~ ~override~ ~ar302[456].are~ ~override~ ~ar4000.are~ ~override~ ~ar5000.are~ ~override~ ~ar520[23].are~ ~override~ ~ar5504.are~ ~override~ ~ar600[128].are~ ~override~ ~ar6012.are~ ~override~ ~ar6100.are~ ~override~ ~ar6300.are~ ~override~ ~ar6400.are~ ~override~
+		LPF fj_are_structure STR_VAR fj_structure_type=~region~ fj_name=~ME_Water_Weird_Spawn~ fj_reg_script=~MEWATWSP~ END
+		IF_EXISTS
+
+END
+ACTION_IF GAME_IS ~iwdee~ BEGIN
+
+END
+
+END
+
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR3~ RET mepr352=filename END
+COPY_EXISTING ~mepr352.spl~ ~override/%mepr352%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=displaystring match_parameter1=30021 parameter1=RESOLVE_STR_REF(@30021) END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mepr352~ resource= EVAL ~%mepr352%~ END
+	SAY NAME1 @31352
+	SAY UNIDENTIFIED_DESC @32352
+
+COPY_EXISTING ~mepr352d.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=displaystring match_parameter1=30022 parameter1=RESOLVE_STR_REF(@30022) END
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR4~ RET mepr451=filename END
+COPY_EXISTING ~mepr451.spl~ ~override/%mepr451%.spl~
+	SAY NAME1 @31451
+	SAY UNIDENTIFIED_DESC @32451
+
+COPY_EXISTING ~mepr451d.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=displaystring match_parameter1=30000 parameter1=RESOLVE_STR_REF(@30000) END
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=protectionfromstring match_parameter1=30001 parameter1=RESOLVE_STR_REF(@30001) END
+
+COPY_EXISTING ~mepr451s.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=displaystring match_parameter1=30001 parameter1=RESOLVE_STR_REF(@30001) END
+
+ACTION_IF !(GAME_IS ~iwdee~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR4~ RET mepr452=filename END
+COPY_EXISTING ~mepr452.spl~ ~override/%mepr452%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=immunitytospellandmessage match_parameter2=1250 parameter2=splprot_areaisnotforest special=RESOLVE_STR_REF(@30002) END
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mepr452~ resource= EVAL ~%mepr452%~ END
+	SAY NAME1 @31452
+	SAY UNIDENTIFIED_DESC @32452
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR5~ RET mepr551=filename END
+COPY_EXISTING ~mepr551.spl~ ~override/%mepr551%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=displaystring match_parameter1=30020 parameter1=RESOLVE_STR_REF(@30020) END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mepr551~ resource= EVAL ~%mepr551%~ END
+	SAY NAME1 @31551
+	SAY UNIDENTIFIED_DESC @32551
+
+COPY_EXISTING ~mepr551d.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=displaystring match_parameter1=30019 parameter1=RESOLVE_STR_REF(@30019) END
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR6~ RET mepr652=filename END
+COPY_EXISTING ~mepr652.spl~ ~override/%mepr652%.spl~
+	SAY NAME1 @31652
+	SAY UNIDENTIFIED_DESC @32652
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR7~ RET mepr751=filename END
+COPY_EXISTING ~mepr751.spl~ ~override/%mepr751%.spl~
+	SAY NAME1 @31751
+	SAY UNIDENTIFIED_DESC @32751
+
+ACTION_IF (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR7~ RET mepr753=filename END
+COPY_EXISTING ~mepr753.spl~ ~override/%mepr753%.spl~
+	SAY NAME1 @31753
+	SAY UNIDENTIFIED_DESC @32753
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI1~ RET mewi151=filename END
+COPY_EXISTING ~mewi151.spl~ ~override/%mewi151%.spl~
+	SAY NAME1 @33151
+	SAY UNIDENTIFIED_DESC @34151
+
+COPY_EXISTING ~mewi151x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi151~ resource= EVAL ~%mewi151%~ END
+	SAY NAME2 @33151
+	SAY IDENTIFIED_DESC @34151
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~neadoy.dlg~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY ~GiveItem(\"NEBELT01\",Player1)~ ~GiveItem("NEBELT01",Player1)
+GiveItemCreate("MEWI151X",Player1,1,0,0)~
+	END
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~oh6100.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi151x~ END
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi151x~ BEFORE ~scrl71~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kuork0.sto~ ~override~
+	ADD_STORE_ITEM ~mewi151x~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI1~ RET mewi152=filename END
+COPY_EXISTING ~mewi152.spl~ ~override/%mewi152%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi152~ resource= EVAL ~%mewi152%~ END
+	SAY NAME1 @33152
+	SAY UNIDENTIFIED_DESC @34152
+
+COPY_EXISTING ~mewi152x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi152~ resource= EVAL ~%mewi152%~ END
+	SAY NAME2 @33152
+	SAY IDENTIFIED_DESC @34152
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%5405.are~ ~override~
+	LPF REPLACE_AREA_ITEM INT_VAR STR_VAR old_item=~scrl81~ new_item=~mewi152x~ END
+	
+COPY_EXISTING ~sto0703.sto~ ~override~ //Sorcerous Sundries
+	ADD_STORE_ITEM ~mewi152x~ AFTER ~scrl76~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS	
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0603.are~ ~override~ //Chateau Irenicus, second floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=17 STR_VAR item_to_add=~mewi152x~ END
+
+COPY_EXISTING ~shop08.sto~ ~override~ //Galoomp the Bookkeeper
+	ADD_STORE_ITEM ~mewi152x~ AFTER ~scrl76~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi152x~ AFTER ~scrl76~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kuork0.sto~ ~override~
+	ADD_STORE_ITEM ~mewi152x~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+/*
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI1~ RET mewi153=filename END
+COPY_EXISTING ~mewi153.spl~ ~override/%mewi153%.spl~
+	SAY NAME1 @33153
+	SAY UNIDENTIFIED_DESC @34153
+
+COPY_EXISTING ~mewi153x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi153~ resource= EVAL ~%mewi153%~ END
+	SAY NAME2 @33153
+	SAY IDENTIFIED_DESC @34153
+
+COPY_EXISTING ~friend.sto~ ~override~ //Friendly Arm Inn
+	ADD_STORE_ITEM ~mewi153x~ BEFORE ~book40~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~sto0703.sto~ ~override~ //Sorcerous Sundries
+	ADD_STORE_ITEM ~mewi153x~ AFTER ~scrl70~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+*/
+ACTION_IF !(MOD_IS_INSTALLED ~setup-spell_rev.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI1~ RET mewi154=filename END
+COPY_EXISTING ~mewi154.spl~ ~override/%mewi154%.spl~
+	SAY NAME1 @33154
+	SAY UNIDENTIFIED_DESC @34154
+
+COPY_EXISTING ~mewi154x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi154~ resource= EVAL ~%mewi154%~ END
+	SAY NAME2 @33154
+	SAY IDENTIFIED_DESC @34154
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~tarnes.cre~ ~override~
+	ADD_CRE_ITEM ~mewi154x~ #0 #0 #0 ~NONE~ ~INV5~
+
+COPY_EXISTING ~highhedg.sto~ ~override~ //High Hedge
+	ADD_STORE_ITEM ~mewi154x~ AFTER ~scrl81~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~sto0703.sto~ ~override~ //Sorcerous Sundries
+	ADD_STORE_ITEM ~mewi154x~ AFTER ~scrl81~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0602.are~ ~override~ //Chateau Irenicus, first floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=22 STR_VAR item_to_add=~mewi154x~ END
+
+COPY_EXISTING ~shop08.sto~ ~override~ //Galoomp the Bookkeeper
+	ADD_STORE_ITEM ~mewi154x~ AFTER ~scrl70~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi154x~ AFTER ~scrl70~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar1201.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi154x~ END
+
+COPY_EXISTING ~kuork0.sto~ ~override~
+	ADD_STORE_ITEM ~mewi154x~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+END
+
+ACTION_IF !(MOD_IS_INSTALLED ~setup-spell_rev.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI1~ RET mewi155=filename END
+COPY_EXISTING ~spwi402.spl~ ~override/%mewi155%.spl~
+	WRITE_LONG spelllevel 1
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 match_power=4 power=1 END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 match_timing=4 timing=1 END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~spwi402~ resource= EVAL ~%mewi155%~ END
+	SAY NAME1 @33155
+	SAY UNIDENTIFIED_DESC @34155
+
+ACTION_IF !(GAME_IS ~iwdee~) BEGIN
+COPY_EXISTING ~mewi155x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~spwi402~ resource= EVAL ~%mewi155%~ END
+	SAY NAME2 @33155
+	SAY IDENTIFIED_DESC @34155
+END ELSE BEGIN
+COPY_EXISTING ~mewi155x.itm~ ~override/scrl1v.itm~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~spwi402~ resource= EVAL ~%mewi155%~ END
+	SAY NAME2 @33155
+	SAY IDENTIFIED_DESC @34155
+
+APPEND ~HIDESPL.2da~
+~
+SPWI402	1			0
+~
+UNLESS ~SPWI402~
+END
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~highhedg.sto~ ~override~ //High Hedge
+	ADD_STORE_ITEM ~mewi155x~ AFTER ~scrl83~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~friend.sto~ ~override~ //Friendly Arm Inn
+	ADD_STORE_ITEM ~mewi155x~ BEFORE ~book40~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~kirian.cre~ ~override~
+	REPLACE_CRE_ITEM ~mewi155x~ #0 #0 #0 ~NONE~ ~INV1~
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar1302.are~ ~override~ //D'Arnise keep, first floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi155x~ END
+
+COPY_EXISTING ~ar1512.are~ ~override~ //Spellhold dungeon, first floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=18 STR_VAR item_to_add=~mewi155x~ END
+
+COPY_EXISTING ~shop08.sto~ ~override~ //Galoomp the Bookkeeper
+	ADD_STORE_ITEM ~mewi155x~ AFTER ~scrl76~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi155x~ AFTER ~scrl76~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kuork0.sto~ ~override~
+	ADD_STORE_ITEM ~mewi155x~ AFTER ~scrl70~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI1~ RET mewi156=filename END
+COPY_EXISTING ~mewi156.spl~ ~override/%mewi156%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi156~ resource= EVAL ~%mewi156%~ END
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@30024) END
+	SAY NAME1 @33156
+	SAY UNIDENTIFIED_DESC @34156
+
+COPY_EXISTING ~mejmps01.spl~ ~override~ ~mejmps05.spl~ ~override~ ~mejmps10.spl~ ~override~ ~mejmps15.spl~ ~override~ ~mejmps20.spl~ ~override~ ~mejmps25.spl~ ~override~ ~mejmps30.spl~ ~override~
+	SAY NAME1 @30025
+	SAY UNIDENTIFIED_DESC @30026
+
+COPY_EXISTING ~mewi156x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi156~ resource= EVAL ~%mewi156%~ END
+	SAY NAME2 @33156
+	SAY IDENTIFIED_DESC @34156
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~inn3351.sto~ ~override~ //Feldepost's Inn
+	ADD_STORE_ITEM ~mewi156x~ AFTER ~scrl5u~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~sto4906.sto~ ~override~ //Carnival Magic Trinkets Shop
+	ADD_STORE_ITEM ~mewi156x~ BEFORE ~amul01~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ppmag01.cre~ ~override~
+	REPLACE_CRE_ITEM ~mewi156x~ #0 #0 #0 ~NONE~ ~INV3~
+
+COPY_EXISTING ~ribald.sto~ ~override~ //Adventurer Mart
+	ADD_STORE_ITEM ~mewi156x~ BEFORE ~scrla5~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi156x~ AFTER ~scrl67~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar5004.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi156x~ END
+
+COPY_EXISTING ~kieran2.sto~ ~override~
+	ADD_STORE_ITEM ~mewi156x~ BEFORE ~scrl5u~ #1 #0 #0 ~IDENTIFIED~ #2
+
+END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI2~ RET mewi251=filename END
+COPY_EXISTING ~mewi251.spl~ ~override/%mewi251%.spl~
+	SAY NAME1 @33251
+	SAY UNIDENTIFIED_DESC @34251
+
+COPY_EXISTING ~mewi251x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi251~ resource= EVAL ~%mewi251%~ END
+	SAY NAME2 @33251
+	SAY IDENTIFIED_DESC @34251
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%0512.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=25 STR_VAR item_to_add=~mewi251x~ END
+
+COPY_EXISTING ~%arbg%1401.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi251x~ END
+
+COPY_EXISTING ~highhedg.sto~ ~override~ //High Hedge
+	ADD_STORE_ITEM ~mewi251x~ AFTER ~scrl6e~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~slmage1.cre~ ~override~
+	REPLACE_CRE_ITEM ~mewi251x~ #0 #0 #0 ~NONE~ ~INV3~
+
+COPY_EXISTING ~ar2209.are~ ~override~ //Ust Natha, House Jae'llat
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=4 STR_VAR item_to_add=~mewi251x~ END
+
+COPY_EXISTING ~scrolls.sto~ ~override~ //Scroll store in Adventurer Mart
+	ADD_STORE_ITEM ~mewi251x~ AFTER ~scrl95~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi251x~ AFTER ~scrl6e~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kuork0.sto~ ~override~
+	ADD_STORE_ITEM ~mewi251x~ #1 #0 #0 ~IDENTIFIED~ #1
+
+COPY_EXISTING ~kieran2.sto~ ~override~
+	ADD_STORE_ITEM ~mewi251x~ AFTER ~scrl95~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI2~ RET mewi252=filename END
+COPY_EXISTING ~mewi252.spl~ ~override/%mewi252%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi252~ resource= EVAL ~%mewi252%~ END
+	SAY NAME1 @33252
+	SAY UNIDENTIFIED_DESC @34252
+/*
+COPY_EXISTING ~ar0900.are~ ~override~ ~ar2600.are~ ~override~ ~ar2626.are~ ~override~
+	LPF fj_are_structure STR_VAR fj_structure_type=~region~ fj_name=~Prevent Ghostwalking~ fj_reg_script=~MENOTEL~ END
+*/
+
+COPY_EXISTING ~mewi252x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi252~ resource= EVAL ~%mewi252%~ END
+	SAY NAME2 @33252
+	SAY IDENTIFIED_DESC @34252
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%0504.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=5 STR_VAR item_to_add=~mewi252x~ END
+
+COPY_EXISTING ~%arbg%3901.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi252x~ END
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0602.are~ ~override~ //Chateau Irenicus, first floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=12 STR_VAR item_to_add=~mewi252x~ END
+
+COPY_EXISTING ~ar0906.are~ ~override~ //Guarded Compound, first floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=6 STR_VAR item_to_add=~mewi252x~ END
+
+COPY_EXISTING ~bmthief.sto~ ~override~ //Black Market Thief (in Shadow Thief main building)
+	ADD_STORE_ITEM ~mewi252x~ AFTER ~scrl90~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi252x~ AFTER ~scrl3g~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar3201.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi252x~ END
+
+COPY_EXISTING ~edion.sto~ ~override~
+	ADD_STORE_ITEM ~mewi252x~ AFTER ~scrl96~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI2~ RET mewi253=filename END
+COPY_EXISTING ~mewi253.spl~ ~override/%mewi253%.spl~
+	SAY NAME1 @33253
+	SAY UNIDENTIFIED_DESC @34253
+
+COPY_EXISTING ~mewi253x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi253~ resource= EVAL ~%mewi253%~ END
+	SAY NAME2 @33253
+	SAY IDENTIFIED_DESC @34253
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%0615.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi253x~ END
+
+COPY_EXISTING ~friend.sto~ ~override~ //Friendly Arm Inn
+	ADD_STORE_ITEM ~mewi253x~ BEFORE ~book40~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0411.are~ ~override~ //Planar Sphere, first floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=4 STR_VAR item_to_add=~mewi253x~ END
+
+COPY_EXISTING ~ar1303.are~ ~override~ //D'Arnise keep, second floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=9 STR_VAR item_to_add=~mewi253x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi253x~ AFTER ~scrl6e~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kuork0.sto~ ~override~
+	ADD_STORE_ITEM ~mewi253x~ #1 #0 #0 ~IDENTIFIED~ #1
+
+COPY_EXISTING ~kieran2.sto~ ~override~
+	ADD_STORE_ITEM ~mewi253x~ AFTER ~scrl95~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI2~ RET mewi254=filename END
+COPY_EXISTING ~mewi254.spl~ ~override/%mewi254%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi254~ resource= EVAL ~%mewi254%~ END
+	SAY NAME1 @33254
+	SAY UNIDENTIFIED_DESC @34254
+
+COPY_EXISTING ~mewi254x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi254~ resource= EVAL ~%mewi254%~ END
+	SAY NAME2 @33254
+	SAY IDENTIFIED_DESC @34254
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~inn3351.sto~ ~override~ //Feldepost's Inn
+	ADD_STORE_ITEM ~mewi254x~ AFTER ~scrla3~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ulgoth.sto~ ~override~ //Ulgoth's Beard Inn
+	ADD_STORE_ITEM ~mewi254x~ BEFORE ~scrl5g~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~bernard.sto~ ~override~ ~bernard2.sto~ ~override~ //Copper Coronet
+	ADD_STORE_ITEM ~mewi254x~ AFTER ~scrl1c~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~sarbar01.sto~ ~override~ //Saradush tavern
+	ADD_STORE_ITEM ~mewi254x~ BEFORE ~boot01~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kuork0.sto~ ~override~
+	ADD_STORE_ITEM ~mewi254x~ #1 #0 #0 ~IDENTIFIED~ #1
+
+COPY_EXISTING ~kieran2.sto~ ~override~
+	ADD_STORE_ITEM ~mewi254x~ AFTER ~scrl95~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI2~ RET mewi255=filename END
+COPY_EXISTING ~mewi255.spl~ ~override/%mewi255%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi255~ resource= EVAL ~%mewi255%~ END
+	SAY NAME1 @33255
+	SAY UNIDENTIFIED_DESC @34255
+
+COPY_EXISTING ~mewi255x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi255~ resource= EVAL ~%mewi255%~ END
+	SAY NAME2 @33255
+	SAY IDENTIFIED_DESC @34255
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%0505.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=4 STR_VAR item_to_add=~mewi255x~ END
+
+COPY_EXISTING ~%arbg%4400.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi255x~ END
+
+COPY_EXISTING ~vayya.cre~ ~override~
+	ADD_CRE_ITEM ~mewi255x~ #0 #0 #0 ~NONE~ ~INV1~
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0502.are~ ~override~ //Tanner shop, second floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi255x~ END
+
+COPY_EXISTING ~ar0802.are~ ~override~ //Graveyard District, optional crypt
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=6 STR_VAR item_to_add=~mewi255x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi255x~ AFTER ~scrl89~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar3601.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=9 STR_VAR item_to_add=~mewi255x~ END
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI2~ RET mewi256=filename END
+COPY_EXISTING ~mewi256.spl~ ~override/%mewi256%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi256~ resource= EVAL ~%mewi256%~ END
+	SAY NAME1 @33256
+	SAY UNIDENTIFIED_DESC @34256
+
+COPY_EXISTING ~mewi256f.spl~ ~override~
+	READ_LONG 0x6a effectsoffset
+	READ_SHORT 0x90 numeffects
+	FOR (i = 0; i < numeffects; ++i) BEGIN
+		me_off = effectsoffset + (i * 0x30)
+		READ_SHORT me_off theopcode
+		READ_ASCII (me_off + 0x14) theresource
+		PATCH_IF theopcode = 402 AND (~%theresource%~ STRING_EQUAL_CASE ~MESPLIM1~) BEGIN
+			WRITE_ASCIIE (me_off + 0x4) ~%mewi256%~ #8
+		END
+	END
+
+OUTER_SPRINT me_30012 @30012
+OUTER_SPRINT me_30013 @30013
+LAF ADD_CONTINGENCY INT_VAR new_title=0 new_action=1 description=RESOLVE_STR_REF(@34256) STR_VAR resource= EVAL ~mesplim1~ title=~ME_SPECIFIC_IMMUNITY_TITLE~ title_name= EVAL ~%me_30012%~ action=~ME_ADD_SPELLS_IMMUNITY_LABEL~ action_name= EVAL ~%me_30013%~ END
+LAF ADD_CONTINGENCY INT_VAR new_title=0 description=RESOLVE_STR_REF(@34256) STR_VAR resource= EVAL ~mesplim2~ title=~ME_SPECIFIC_IMMUNITY_TITLE~ title_name= EVAL ~%me_30012%~ action=~ME_ADD_SPELLS_IMMUNITY_LABEL~ END
+LAF ADD_CONTINGENCY INT_VAR new_title=0 description=RESOLVE_STR_REF(@34256) STR_VAR resource= EVAL ~mesplim3~ title=~ME_SPECIFIC_IMMUNITY_TITLE~ title_name= EVAL ~%me_30012%~ action=~ME_ADD_SPELLS_IMMUNITY_LABEL~ END
+
+COPY_EXISTING ~mewi256x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi256~ resource= EVAL ~%mewi256%~ END
+	SAY NAME2 @33256
+	SAY IDENTIFIED_DESC @34256
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%4501.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi256x~ END
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ribald.sto~ ~override~ //Adventurer Mart
+	ADD_STORE_ITEM ~mewi256x~ AFTER ~scrl3g~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi256x~ AFTER ~scrl94~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kuork0.sto~ ~override~
+	ADD_STORE_ITEM ~mewi256x~ AFTER ~spwi223a~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI3~ RET mewi351=filename END
+COPY_EXISTING ~mewi351.spl~ ~override/%mewi351%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi351~ resource= EVAL ~%mewi351%~ END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi351b~ resource= EVAL ~%mewi351%b~ END
+	SAY NAME1 @33351
+	SAY UNIDENTIFIED_DESC @34351
+
+COPY_EXISTING ~mewi351b.spl~ ~override/%mewi351%b.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi351~ resource= EVAL ~%mewi351%~ END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi351b~ resource= EVAL ~%mewi351%b~ END
+
+COPY_EXISTING ~mewi351x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi351~ resource= EVAL ~%mewi351%~ END
+	SAY NAME2 @33351
+	SAY IDENTIFIED_DESC @34351
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~friend.sto~ ~override~ //Friendly Arm Inn
+	ADD_STORE_ITEM ~mewi351x~ BEFORE ~book40~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~sto0703.sto~ ~override~ ~bdsorcsc.sto~ ~override~ //Sorcerous Sundries
+	ADD_STORE_ITEM ~mewi351x~ AFTER ~scrl1k~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~%arbg%0145.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi351x~ END
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0602.are~ ~override~ //Chateau Irenicus, first floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=9 STR_VAR item_to_add=~mewi351x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi351x~ BEFORE ~scrl1s~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kuork0.sto~ ~override~
+	ADD_STORE_ITEM ~mewi351x~ AFTER ~spwi223x~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI3~ RET mewi352=filename END
+COPY_EXISTING ~mewi352.spl~ ~override/%mewi352%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi352~ resource= EVAL ~%mewi352%~ END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		LPF ALTER_EFFECT INT_VAR header=i match_opcode=eeexinvokelua special=((i + 1) * 6) STR_VAR match_resource=~MESELFSP~ END
+		numheaders = numheaders + 1
+	END
+	SAY NAME1 @33352
+	SAY UNIDENTIFIED_DESC @34352
+
+COPY_EXISTING ~mewi352d.spl~ ~override~
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) duration_high=((i + 11) * 6) END
+		LPF ALTER_EFFECT INT_VAR header=i match_opcode=eeexsetextendedstat match_special=640 parameter1=(i + 41) END
+		numheaders = numheaders + 1
+	END
+
+COPY_EXISTING ~mewi352x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi352~ resource= EVAL ~%mewi352%~ END
+	SAY NAME2 @33352
+	SAY IDENTIFIED_DESC @34352
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~highhedg.sto~ ~override~ //High Hedge
+	ADD_STORE_ITEM ~mewi352x~ AFTER ~scrl1q~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
+COPY_EXISTING ~sto0703.sto~ ~override~ ~bdsorcsc.sto~ ~override~ //Sorcerous Sundries
+	ADD_STORE_ITEM ~mewi352x~ AFTER ~scrl1t~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~denak.cre~ ~override~
+	ADD_CRE_ITEM ~mewi352x~ #0 #0 #0 ~NONE~ ~INV2~
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~shop08.sto~ ~override~ //Galoomp the Bookkeeper
+	ADD_STORE_ITEM ~mewi352x~ AFTER ~scrl1g~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
+COPY_EXISTING ~trgeni01.sto~ ~override~ //Trademeet genie
+	ADD_STORE_ITEM ~mewi352x~ BEFORE ~scrl1f~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi352x~ AFTER ~scrl1h~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kuork0.sto~ ~override~
+	ADD_STORE_ITEM ~mewi352x~ AFTER ~mewi351x~ #1 #0 #0 ~IDENTIFIED~ #1
+
+COPY_EXISTING ~kieran2.sto~ ~override~
+	ADD_STORE_ITEM ~mewi352x~ BEFORE ~scrl1h~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI3~ RET mewi353=filename END
+COPY_EXISTING ~mewi353.spl~ ~override/%mewi353%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi353~ resource= EVAL ~%mewi353%~ END
+	SAY NAME1 @33353
+	SAY UNIDENTIFIED_DESC @34353
+
+COPY_EXISTING ~%mewi353%.spl~ ~override~ ~mewi353d.spl~ ~override~
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) duration_high=((i + 1) * 6) END
+		numheaders = numheaders + 1
+	END
+
+COPY_EXISTING ~mewi353x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi353~ resource= EVAL ~%mewi353%~ END
+	SAY NAME2 @33353
+	SAY IDENTIFIED_DESC @34353
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~halaca.cre~ ~override~
+	ADD_CRE_ITEM ~mewi353x~ #0 #0 #0 ~NONE~ ~INV4~
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~bernard2.sto~ ~override~ //Copper Coronet (discount)
+	ADD_STORE_ITEM ~mewi353x~ AFTER ~scrl1s~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~udsvir05.sto~ ~override~ //Underdark Svirfneblin store
+	ADD_STORE_ITEM ~mewi353x~ BEFORE ~scrl6h~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi353x~ AFTER ~scrl1e~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SPWI319X\",1,1)~ ~AddStoreItem("KUORK0","MEWI353X",1,1)
+AddStoreItem("KUORK0","SPWI319X",1,1)~
+	END
+END
+
+
+/*
+COPY_EXISTING ~rndscrol.2da~ ~override~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~SCRL1T~ ~MEWI353X~
+*/
+
+OUTER_SPRINT stringnecromancy @3407
+OUTER_SPRINT stringenchantmentcharm @3414
+
+COPY_EXISTING ~spwi104.spl~ ~override~
+	READ_LONG spellunusability thespellunusability
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~spwi205.spl~ ~override~
+	WRITE_ASCII castingsound ~CAS_M05~ #8
+	WRITE_SHORT castinganimation 11
+	WRITE_BYTE school enchantment
+	WRITE_LONG spellunusability thespellunusability
+	READ_SHORT 0x98 theprojectile ELSE 0
+	PATCH_IF theprojectile = 169 BEGIN
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=170 END
+	END ELSE PATCH_IF (GAME_IS ~iwdee~) AND (theprojectile = 361) BEGIN
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=371 END
+	END
+	READ_LONG UNIDENTIFIED_DESC description_ref
+	LPF PATCH_REPLACE_IN_STRING INT_VAR strref=description_ref new_string=1 STR_VAR match= EVAL ~%stringnecromancy%~ replace_with= EVAL ~%stringenchantmentcharm%~ RET description_ref_new=new_strref END
+	WRITE_LONG UNIDENTIFIED_DESC description_ref_new
+
+COPY_EXISTING ~scrl69.itm~ ~override~
+	READ_BYTE kitunusability3 thekitunusability3
+	READ_BYTE kitunusability4 thekitunusability4
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~scrl89.itm~ ~override~
+	WRITE_BYTE kitunusability3 thekitunusability3
+	WRITE_BYTE kitunusability4 thekitunusability4
+	READ_LONG IDENTIFIED_DESC description_ref
+	LPF PATCH_REPLACE_IN_STRING INT_VAR strref=description_ref new_string=1 STR_VAR match= EVAL ~%stringnecromancy%~ replace_with= EVAL ~%stringenchantmentcharm%~ RET description_ref_new=new_strref END
+	WRITE_LONG IDENTIFIED_DESC description_ref_new
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI3~ RET mewi354=filename END
+COPY_EXISTING ~mewi354.spl~ ~override/%mewi354%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi354~ resource= EVAL ~%mewi354%~ END
+	SAY NAME1 @33354
+	SAY UNIDENTIFIED_DESC @34354
+
+COPY_EXISTING ~mewi354x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi354~ resource= EVAL ~%mewi354%~ END
+	SAY NAME2 @33354
+	SAY IDENTIFIED_DESC @34354
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%2613.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi354x~ END
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~xappren1.cre~ ~override~
+	ADD_CRE_ITEM ~mewi354x~ #0 #0 #0 ~NONE~ ~INV3~
+
+COPY_EXISTING ~ar1202.are~ ~override~ //Firkraag's dungeon, second floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi354x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi354x~ AFTER ~scrl1i~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar4003.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi354x~ END
+
+END
+
+COPY_EXISTING ~mewi355.spl~ ~override~
+	SAY NAME1 @33355
+	SAY UNIDENTIFIED_DESC @34355
+
+COPY_EXISTING ~mewi355x.itm~ ~override~
+	SAY NAME2 @33355
+	SAY IDENTIFIED_DESC @34355
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~narcil.cre~ ~override~
+	ADD_CRE_ITEM ~mewi355x~ #0 #0 #0 ~NONE~ ~INV3~
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar3016.are~ ~override~ //Watcher's Keep, second floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=15 STR_VAR item_to_add=~mewi355x~ END
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~hobart.sto~ ~override~
+	ADD_STORE_ITEM ~mewi355x~ AFTER ~flamoil~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI3~ RET mewi356=filename END
+COPY_EXISTING ~mewi356.spl~ ~override/%mewi356%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi356~ resource= EVAL ~%mewi356%~ END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) duration_high=((i + 1) * 6) END
+		numheaders = numheaders + 1
+	END
+	SAY NAME1 @33356
+	SAY UNIDENTIFIED_DESC @34356
+
+COPY_EXISTING ~mewi356x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi356~ resource= EVAL ~%mewi356%~ END
+	SAY NAME2 @33356
+	SAY IDENTIFIED_DESC @34356
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~tem2601.sto~ ~override~ //Temple of Oghma
+	ADD_STORE_ITEM ~mewi356x~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~sto0703.sto~ ~override~ ~bdsorcsc.sto~ ~override~ //Sorcerous Sundries
+	ADD_STORE_ITEM ~mewi356x~ AFTER ~scrl1i~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~doghma.sto~ ~override~ //Temple of Oghma
+	ADD_STORE_ITEM ~mewi356x~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi356x~ AFTER ~scrl1d~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SPWI319X\",1,1)~ ~AddStoreItem("KUORK0","MEWI356X",1,1)
+AddStoreItem("KUORK0","SPWI319X",1,1)~
+	END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI4~ RET mewi451=filename END
+COPY_EXISTING ~mewi451.spl~ ~override/%mewi451%.spl~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=mewofire END
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi451~ resource= EVAL ~%mewi451%~ END
+	SAY NAME1 @33451
+	SAY UNIDENTIFIED_DESC @34451
+
+COPY_EXISTING ~mewi451x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi451~ resource= EVAL ~%mewi451%~ END
+	SAY NAME2 @33451
+	SAY IDENTIFIED_DESC @34451
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%0511.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=10 STR_VAR item_to_add=~mewi451x~ END
+
+COPY_EXISTING ~%arbg%1802.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=42 STR_VAR item_to_add=~mewi451x~ END
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0412.are~ ~override~ //Planar Sphere, elemental area
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi451x~ END
+/*
+COPY_EXISTING ~ar5204.are~ ~override~ //Yaga-Shura Temple, second floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=4 STR_VAR item_to_add=~mewi451x~ END
+*/
+
+COPY_EXISTING ~bernard2.sto~ ~override~ //Copper Coronet (discount)
+	ADD_STORE_ITEM ~mewi451x~ AFTER ~scrl1t~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi451x~ AFTER ~scrl1w~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SPWI319X\",1,1)~ ~AddStoreItem("KUORK0","MEWI451X",1,1)
+AddStoreItem("KUORK0","SPWI319X",1,1)~
+	END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI4~ RET mewi452=filename END
+COPY_EXISTING ~mewi452.spl~ ~override/%mewi452%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi452~ resource= EVAL ~%mewi452%~ END
+	SAY NAME1 @33452
+	SAY UNIDENTIFIED_DESC @34452
+
+COPY_EXISTING ~mewi452x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi452~ resource= EVAL ~%mewi452%~ END
+	SAY NAME2 @33452
+	SAY IDENTIFIED_DESC @34452
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%0511.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=8 STR_VAR item_to_add=~mewi452x~ END
+
+COPY_EXISTING ~mutami.cre~ ~override~
+	ADD_CRE_ITEM ~mewi452x~ #0 #0 #0 ~NONE~ ~INV8~
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0202.are~ ~override~ //Unseeing Eye sewers
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=11 STR_VAR item_to_add=~mewi452x~ END
+
+COPY_EXISTING ~ar0603.are~ ~override~ //Chateau Irenicus, second floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=5 STR_VAR item_to_add=~mewi452x~ END
+
+COPY_EXISTING ~udsvir05.sto~ ~override~ //Underdark Svirfneblin store
+	ADD_STORE_ITEM ~mewi452x~ AFTER ~scrl6o~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar4005.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi452x~ END
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI4~ RET mewi453=filename END
+COPY_EXISTING ~mewi453.spl~ ~override/%mewi453%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi453~ resource= EVAL ~%mewi453%~ END
+	SAY NAME1 @33453
+	SAY UNIDENTIFIED_DESC @34453
+
+COPY_EXISTING ~mewi453x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi453~ resource= EVAL ~%mewi453%~ END
+	SAY NAME2 @33453
+	SAY IDENTIFIED_DESC @34453
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%5001.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=5 STR_VAR item_to_add=~mewi453x~ END
+
+COPY_EXISTING ~cult2.cre~ ~override~
+	ADD_CRE_ITEM ~mewi453x~ #0 #0 #0 ~NONE~ ~INV8~
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~theshal.cre~ ~override~
+	ADD_CRE_ITEM ~mewi453x~ #0 #0 #0 ~NONE~ ~INV4~
+
+COPY_EXISTING ~ar2207.are~ ~override~ //Deirex's lair
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi453x~ END
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar3503.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi453x~ END
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI4~ RET mewi454=filename END
+COPY_EXISTING ~mewi454.spl~ ~override/%mewi454%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi454~ resource= EVAL ~%mewi454%~ END
+	SAY NAME1 @33454
+	SAY UNIDENTIFIED_DESC @34454
+
+COPY_EXISTING ~mewi454e.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi454~ resource= EVAL ~%mewi454%~ END
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=protectionfromspell2 match_parameter2=250 parameter2=splprot_backstabmultiplierlessthan END
+
+COPY_EXISTING ~mewi454f.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=protectionfromspell2 match_parameter2=750 parameter2=splprot_backstabmultipliergreaterthanorequalto END
+
+OUTER_SPRINT me_30023 @30023
+LAF ADD_CONTINGENCY INT_VAR description=RESOLVE_STR_REF(@34454) STR_VAR resource= EVAL ~%mewi454%~ title=~ME_BACKSTAB_SEQUENCER_TITLE~ title_name= EVAL ~%me_30023%~ action=~ADD_SPELLS_SEQUENCER_LABEL~ END
+
+COPY_EXISTING ~mewi454x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi454~ resource= EVAL ~%mewi454%~ END
+	SAY NAME2 @33454
+	SAY IDENTIFIED_DESC @34454
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~wiven.cre~ ~override~
+	ADD_CRE_ITEM ~mewi454x~ #0 #0 #0 ~NONE~ ~INV5~
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+/*
+COPY_EXISTING ~arnfgt06.cre~ ~override~ ~arnwar06.cre~ ~override~
+	ADD_CRE_ITEM ~mewi454x~ #0 #0 #0 ~NONE~ ~INV5~
+*/
+
+COPY_EXISTING ~maevar.cre~ ~override~
+	ADD_CRE_ITEM ~mewi454x~ #0 #0 #0 ~NONE~ ~INV2~
+
+COPY_EXISTING ~amsmug02.sto~ ~override~ //Amkethran smugglers
+	ADD_STORE_ITEM ~mewi454x~ AFTER ~misc3p~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ldd_nym.sto~ ~override~
+	ADD_STORE_ITEM ~mewi454x~ AFTER ~sclich~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI4~ RET mewi455=filename END
+COPY_EXISTING ~mewi455.spl~ ~override/%mewi455%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi455~ resource= EVAL ~%mewi455%~ END
+	SAY NAME1 @33455
+	SAY UNIDENTIFIED_DESC @34455
+
+COPY_EXISTING ~mewi455x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi455~ resource= EVAL ~%mewi455%~ END
+	SAY NAME2 @33455
+	SAY IDENTIFIED_DESC @34455
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~kahrk.cre~ ~override~
+	ADD_CRE_ITEM ~mewi455x~ #0 #0 #0 ~NONE~ ~INV7~
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0309.are~ ~override~ //Harper Hold, 2nd floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi455x~ END
+
+COPY_EXISTING ~udsvir05.sto~ ~override~ //Underdark Svirfneblin store
+	ADD_STORE_ITEM ~mewi455x~ BEFORE ~scrl6p~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi455x~ AFTER ~scrl1z~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SPWI319X\",1,1)~ ~AddStoreItem("KUORK0","MEWI455X",1,1)
+AddStoreItem("KUORK0","SPWI319X",1,1)~
+	END
+END
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI4~ RET mewi456=filename END
+COPY_EXISTING ~mewi456.spl~ ~override/%mewi456%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi456~ resource= EVAL ~%mewi456%~ END
+	SAY NAME1 @33456
+	SAY UNIDENTIFIED_DESC @34456
+
+COPY_EXISTING ~mewi456x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi456~ resource= EVAL ~%mewi456%~ END
+	SAY NAME2 @33456
+	SAY IDENTIFIED_DESC @34456
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~highhedg.sto~ ~override~ //High Hedge
+	ADD_STORE_ITEM ~mewi456x~ AFTER ~scrl6g~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~sto0703.sto~ ~override~ ~bdsorcsc.sto~ ~override~ //Sorcerous Sundries
+	ADD_STORE_ITEM ~mewi456x~ AFTER ~scrl6o~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0530.are~ ~override~ //Bridge District warehouse with enemy party
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi456x~ END
+
+COPY_EXISTING ~ar1605.are~ ~override~ //Perth the Adept's house
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi456x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi456x~ AFTER ~scrl1z~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SPWI319X\",1,1)~ ~AddStoreItem("KUORK0","MEWI456X",1,1)
+AddStoreItem("KUORK0","SPWI319X",1,1)~
+	END
+END
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI4~ RET mewi457=filename END
+COPY_EXISTING ~mewi457.spl~ ~override/%mewi457%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi457~ resource= EVAL ~%mewi457%~ END
+	SAY NAME1 @33457
+	SAY UNIDENTIFIED_DESC @34457
+
+COPY_EXISTING ~meportl1.spl~ ~override~ ~meportl2.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=meportl END
+
+COPY_EXISTING ~mewi457x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi457~ resource= EVAL ~%mewi457%~ END
+	SAY NAME2 @33457
+	SAY IDENTIFIED_DESC @34457
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~sto4906.sto~ ~override~ //Carnival Magic Trinkets Shop
+	ADD_STORE_ITEM ~mewi457x~ BEFORE ~amul01~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0705.are~ ~override~ //Mekrath's lair
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=6 STR_VAR item_to_add=~mewi457x~ END
+
+COPY_EXISTING ~ribald.sto~ ~override~ //Adventurer Mart
+	ADD_STORE_ITEM ~mewi457x~ AFTER ~scrl6m~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi457x~ AFTER ~scrl1z~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SPWI319X\",1,1)~ ~AddStoreItem("KUORK0","MEWI457X",1,1)
+AddStoreItem("KUORK0","SPWI319X",1,1)~
+	END
+END
+/*
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI4~ RET mewi458=filename END
+COPY_EXISTING ~mewi458.spl~ ~override/%mewi458%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi458~ resource= EVAL ~%mewi458%~ END
+	SAY NAME1 @33458
+	SAY UNIDENTIFIED_DESC @34458
+
+COPY_EXISTING ~mewi458x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi458~ resource= EVAL ~%mewi458%~ END
+	SAY NAME2 @33458
+	SAY IDENTIFIED_DESC @34458
+
+*/
+
+ACTION_IF (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI5~ RET mewi551=filename END
+COPY_EXISTING ~mewi551.spl~ ~override/%mewi551%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi551~ resource= EVAL ~%mewi551%~ END
+	SAY NAME1 @33551
+	SAY UNIDENTIFIED_DESC @34551
+
+COPY_EXISTING ~mewi551x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi551~ resource= EVAL ~%mewi551%~ END
+	SAY NAME2 @33551
+	SAY IDENTIFIED_DESC @34551
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~ramazi.dlg~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~GiveItem(\"BRAC02\",LastTalkedToBy)~ ~GiveItem("BRAC02",LastTalkedToBy)
+GiveItemCreate("MEWI551X",Player1,1,0,0)~
+    END
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0808.are~ ~override~ //Vampire crypts (Chapter 6)
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=6 STR_VAR item_to_add=~mewi551x~ END
+
+COPY_EXISTING ~ar1513.are~ ~override~ //Spellhold Dungeon, area with Dace and kobolds
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=5 STR_VAR item_to_add=~mewi551x~ END
+/*
+COPY_EXISTING ~ar1515.are~ ~override~ //Spellhold, first floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=5 STR_VAR item_to_add=~mewi551x~ END
+*/
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi551x~ AFTER ~scrl6z~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~edion.sto~ ~override~
+	ADD_STORE_ITEM ~mewi551x~ BEFORE ~spwi618x~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI5~ RET mewi552=filename END
+COPY_EXISTING ~mewi552.spl~ ~override/%mewi552%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi552~ resource= EVAL ~%mewi552%~ END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi552b~ resource= EVAL ~%mewi552%b~ END
+	SAY NAME1 @33552
+	SAY UNIDENTIFIED_DESC @34552
+
+COPY_EXISTING ~mewi552b.spl~ ~override/%mewi552%b.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi552~ resource= EVAL ~%mewi552%~ END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi552b~ resource= EVAL ~%mewi552%b~ END
+
+COPY_EXISTING ~mewi552x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi552~ resource= EVAL ~%mewi552%~ END
+	SAY NAME2 @33552
+	SAY IDENTIFIED_DESC @34552
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%1803.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=7 STR_VAR item_to_add=~mewi552x~ END
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0516.are~ ~override~ //Planar Prison
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi552x~ END
+
+COPY_EXISTING ~suelf10.sto~ ~override~ //Temple of Rillifane
+	ADD_STORE_ITEM ~mewi552x~ BEFORE ~scrl5t~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi552x~ AFTER ~scrl2h~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SPWI319X\",1,1)~ ~AddStoreItem("KUORK0","MEWI552X",1,1)
+AddStoreItem("KUORK0","SPWI319X",1,1)~
+	END
+
+COPY_EXISTING ~bandoth.sto~ ~override~
+	ADD_STORE_ITEM ~mewi552x~ AFTER ~scssha~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+COPY_EXISTING ~missile.ids~ ~override~
+	COUNT_2DA_ROWS 2 numrows
+	READ_2DA_ENTRY (numrows - 1) 0 2 newrow
+	newrow = newrow + 1
+	startrow = newrow + 8
+	FOR (i = 1; i <= 30; ++i) BEGIN
+ 		INSERT_2DA_ROW numrows 2 ~%newrow% Ball Lightning %i%~
+		numrows = numrows + 1
+		newrow = newrow + 1
+	END
+
+COPY_EXISTING ~projectl.ids~ ~override~
+	COUNT_2DA_ROWS 2 numrows
+	READ_2DA_ENTRY (numrows - 1) 0 2 newrow
+	newrow = newrow + 1
+	INSERT_2DA_ROW numrows 2 ~%newrow% meballi~
+	numrows = numrows + 1
+	newrow = newrow + 1
+	FOR (i = 2; i <= 30; ++i) BEGIN
+		INSERT_2DA_ROW numrows 2 ~%newrow% meballi2~
+		numrows = numrows + 1
+		newrow = newrow + 1
+	END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI5~ RET mewi554=filename END
+COPY_EXISTING ~mewi554.spl~ ~override/%mewi554%.spl~
+	READ_SHORT 0x68 numheaders
+	FOR (i = 1; i <= numheaders; ++i) BEGIN
+		LPF ALTER_SPELL_HEADER INT_VAR header=i projectile=startrow END
+		startrow = startrow + 1
+	END
+	SAY NAME1 @33554
+	SAY UNIDENTIFIED_DESC @34554
+
+COPY_EXISTING ~mewi554x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi554~ resource= EVAL ~%mewi554%~ END
+	SAY NAME2 @33554
+	SAY IDENTIFIED_DESC @34554
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%0161.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi554x~ END
+
+COPY_EXISTING ~%arbg%3901.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=7 STR_VAR item_to_add=~mewi554x~ END
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0904.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=6 STR_VAR item_to_add=~mewi554x~ END
+
+COPY_EXISTING ~ar3016.are~ ~override~ //Watcher's Keep, second floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=17 STR_VAR item_to_add=~mewi554x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi554x~ AFTER ~scrl2f~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SPWI319X\",1,1)~ ~AddStoreItem("KUORK0","MEWI554X",1,1)
+AddStoreItem("KUORK0","SPWI319X",1,1)~
+	END
+
+COPY_EXISTING ~bandoth.sto~ ~override~
+	ADD_STORE_ITEM ~mewi554x~ AFTER ~scssha~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI5~ RET mewi555=filename END
+COPY_EXISTING ~mewi555.spl~ ~override/%mewi555%.spl~
+	SAY NAME1 @33555
+	SAY UNIDENTIFIED_DESC @34555
+
+COPY_EXISTING ~mewi555d.spl~ ~override~
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		numheaders = numheaders + 1
+		LPF ADD_SPELL_EFFECT INT_VAR header=(i + 1) power=5 opcode=projectimage target=1 timing=0 duration=6 parameter2=1 resist_dispel=3 END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) duration_high=((i + 4) * 6) END
+	END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=removeeffectsbyresource target=1 timing=1 STR_VAR resource= EVAL ~%mewi555%~ END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=removeinvisibility1 target=1 timing=1 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=removeinvisibility2 target=1 timing=1 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=removeinvisibility1 target=1 timing=4 duration=1 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=removeinvisibility2 target=1 timing=4 duration=1 END
+
+COPY_EXISTING ~mislead.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=applyeffectslist target=1 timing=1 parameter1=69 parameter2=110 STR_VAR resource= EVAL ~mewi555i~ END
+
+COPY_EXISTING ~mewi555x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi555~ resource= EVAL ~%mewi555%~ END
+	SAY NAME2 @33555
+	SAY IDENTIFIED_DESC @34555
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~krysti.cre~ ~override~
+	ADD_CRE_ITEM ~mewi555x~ #0 #0 #0 ~NONE~ ~INV5~
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~kalah2.cre~ ~override~
+	ADD_CRE_ITEM ~mewi555x~ #1 #0 #0 ~NONE~ ~INV7~
+
+COPY_EXISTING ~suelf10.sto~ ~override~ //Temple of Rillifane
+	ADD_STORE_ITEM ~mewi555x~ BEFORE ~scrl5t~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi555x~ BEFORE ~scrl6u~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SPWI319X\",1,1)~ ~AddStoreItem("KUORK0","MEWI555X",1,1)
+AddStoreItem("KUORK0","SPWI319X",1,1)~
+	END
+END
+
+ACTION_IF !(MOD_IS_INSTALLED ~MESpells.tp2~ ~800~) AND !(MOD_IS_INSTALLED ~MESpells.tp2~ ~801~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI5~ RET mewi556=filename END
+COPY_EXISTING ~mewi556.spl~ ~override/%mewi556%.spl~
+	SAY NAME1 @33556
+	SAY UNIDENTIFIED_DESC @34556
+
+COPY_EXISTING ~mehordsu.cre~ ~override~
+	SAY NAME1 @30028
+	SAY NAME2 @30028
+
+COPY_EXISTING ~mewi556x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi556~ resource= EVAL ~%mewi556%~ END
+	SAY NAME2 @33556
+	SAY IDENTIFIED_DESC @34556
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+STRING_SET_EVALUATE 15015 @30027
+
+COPY_EXISTING ~arkion.cre~ ~override~
+	ADD_CRE_ITEM ~mewi556x~ #0 #0 #0 ~NONE~ ~INV7~
+
+COPY_EXISTING ~arkion.dlg~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~GivePartyGold(250)~ ~GivePartyGold(250)
+GiveItem("MEWI556X",LastTalkedToBy)~
+    END
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~xzar.cre~ ~override~
+	ADD_CRE_ITEM ~mewi556x~ #0 #0 #0 ~NONE~ ~INV4~
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~presio.cre~ ~override~
+	ADD_CRE_ITEM ~mewi556x~ #0 #0 #0 ~NONE~ ~INV10~
+
+END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI5~ RET mewi557=filename END
+COPY_EXISTING ~mewi557.spl~ ~override/%mewi557%.spl~
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) duration_high=((i + 1) * 6) END
+		numheaders = numheaders + 1
+	END
+	SAY NAME1 @33557
+	SAY UNIDENTIFIED_DESC @34557
+
+COPY_EXISTING ~mekob8su.cre~ ~override~
+	SAY NAME1 @30029
+	SAY NAME2 @30029
+
+COPY_EXISTING ~mewi557x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi557~ resource= EVAL ~%mewi557%~ END
+	SAY NAME2 @33557
+	SAY IDENTIFIED_DESC @34557
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~ogrema02.cre~ ~override~
+	ADD_CRE_ITEM ~mewi557x~ #0 #0 #0 ~NONE~ ~INV1~
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~sewrak01.cre~ ~override~
+	ADD_CRE_ITEM ~mewi557x~ #0 #0 #0 ~NONE~ ~INV6~
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi557x~ AFTER ~scrl2g~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SPWI319X\",1,1)~ ~AddStoreItem("KUORK0","MEWI557X",1,1)
+AddStoreItem("KUORK0","SPWI319X",1,1)~
+	END
+END
+
+ACTION_IF (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI5~ RET mewi558=filename END
+COPY_EXISTING ~mewi558.spl~ ~override/%mewi558%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi558~ resource= EVAL ~%mewi558%~ END
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=mepatien END
+	SAY NAME1 @33558
+	SAY UNIDENTIFIED_DESC @34558
+
+COPY_EXISTING ~mewi558x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi558~ resource= EVAL ~%mewi558%~ END
+	SAY NAME2 @33558
+	SAY IDENTIFIED_DESC @34558
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%1504.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi558x~ END
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar1800.are~ ~override~ //Wilderness area with graves and genie
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi558x~ END
+
+/*
+COPY_EXISTING ~ar1513.are~ ~override~ //Spellhold Dungeon, area with Dace and kobolds
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=5 STR_VAR item_to_add=~mewi558x~ END
+*/
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi558x~ AFTER ~scrl5q~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kieran2.sto~ ~override~
+	ADD_STORE_ITEM ~mewi558x~ AFTER ~scrl6u~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI5~ RET mewi559=filename END
+COPY_EXISTING ~mewi559.spl~ ~override/%mewi559%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi559~ resource= EVAL ~%mewi559%~ END
+	SAY NAME1 @33559
+	SAY UNIDENTIFIED_DESC @34559
+
+COPY_EXISTING ~mewi559d.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi559~ resource= EVAL ~%mewi559%~ END
+
+COPY_EXISTING ~mewi559d.eff~ ~override~
+	WRITE_LONG effparameter1 0
+	WRITE_LONG effparameter2 splprot_meflyingspeedequalto
+
+COPY_EXISTING ~meethreo.eff~ ~override~
+	WRITE_LONG effparameter1 0
+	WRITE_LONG effparameter2 splprot_meflyingspeedequalto
+
+COPY_EXISTING ~mewi559x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi559~ resource= EVAL ~%mewi559%~ END
+	SAY NAME2 @33559
+	SAY IDENTIFIED_DESC @34559
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~andris.cre~ ~override~
+	ADD_CRE_ITEM ~mewi559x~ #0 #0 #0 ~NONE~ ~INV7~
+
+COPY_EXISTING ~%arbg%2613.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi559x~ END
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar1401.are~ ~override~ //Temple Ruins, first floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=9 STR_VAR item_to_add=~mewi559x~ END
+
+COPY_EXISTING ~bernard2.sto~ ~override~ //Copper Coronet (discount)
+	ADD_STORE_ITEM ~mewi559x~ BEFORE ~arow08~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi559x~ AFTER ~scrl2h~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~de_lib.sto~ ~override~
+	ADD_STORE_ITEM ~mewi559x~ AFTER ~scrl5m~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI5~ RET mewi560=filename END
+COPY_EXISTING ~mewi560.spl~ ~override/%mewi560%.spl~
+	SAY NAME1 @33560
+	SAY UNIDENTIFIED_DESC @34560
+
+COPY_EXISTING ~mewi560x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi560~ resource= EVAL ~%mewi560%~ END
+	SAY NAME2 @33560
+	SAY IDENTIFIED_DESC @34560
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~schlum.cre~ ~override~
+	ADD_CRE_ITEM ~mewi560x~ #0 #0 #0 ~NONE~ ~INV7~
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~dagmag01.cre~ ~override~
+	ADD_CRE_ITEM ~mewi560x~ #0 #0 #0 ~NONE~ ~INV7~
+
+COPY_EXISTING ~ar3016.are~ ~override~ //Watcher's Keep, second floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=16 STR_VAR item_to_add=~mewi560x~ END
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar8010.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi560x~ END
+
+END
+/*
+
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI5~ RET mewi561=filename END
+COPY_EXISTING ~mewi561.spl~ ~override/%mewi561%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi561~ resource= EVAL ~%mewi561%~ END
+	SAY NAME1 @33561
+	SAY UNIDENTIFIED_DESC @34561
+
+COPY_EXISTING ~mewi561x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi561~ resource= EVAL ~%mewi561%~ END
+	SAY NAME2 @33561
+	SAY IDENTIFIED_DESC @34561
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~friend.sto~ ~override~ //Friendly Arm Inn
+	ADD_STORE_ITEM ~mewi561x~ BEFORE ~book40~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+*/
+/*
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI5~ RET mewi562=filename END
+COPY_EXISTING ~mewi562.spl~ ~override/%mewi562%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi562~ resource= EVAL ~%mewi562%~ END
+	SAY NAME1 @33562
+	SAY UNIDENTIFIED_DESC @34562
+
+COPY_EXISTING ~mewi562e.spl~ ~override~
+	READ_LONG 0x6a effectsoffset
+	READ_SHORT 0x90 numeffects
+	FOR (i = 0; i < numeffects; ++i) BEGIN
+		me_off = effectsoffset + (i * 0x30)
+		READ_SHORT me_off theopcode
+		READ_ASCII (me_off + 0x14) theresource
+		PATCH_IF theopcode = 402 AND (~%theresource%~ STRING_EQUAL_CASE ~MECRTSEQ~) BEGIN
+			WRITE_ASCIIE (me_off + 0x4) ~%mewi562%~ #8
+		END
+	END
+*/
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI6~ RET mewi651=filename END
+COPY_EXISTING ~mewi651.spl~ ~override/%mewi651%.spl~
+//	LPF ALTER_SPELL_HEADER INT_VAR projectile=memissto END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		numheaders = numheaders + 1
+		LPF ADD_SPELL_EFFECT INT_VAR header=(i + 1) opcode=castspell target=2 timing=1 parameter2=1 resist_dispel=2 STR_VAR resource=~MEWI651D~ END
+	END
+	SAY NAME1 @33651
+	SAY UNIDENTIFIED_DESC @34651
+
+COPY_EXISTING ~mewi651d.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=meranmis END
+
+COPY_EXISTING ~mewi651x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi651~ resource= EVAL ~%mewi651%~ END
+	SAY NAME2 @33651
+	SAY IDENTIFIED_DESC @34651
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0317.are~ ~override~ //Guarded Compound, top floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=17 STR_VAR item_to_add=~mewi651x~ END
+
+COPY_EXISTING ~scrolls.sto~ ~override~ //Scroll store in Adventurer Mart
+	ADD_STORE_ITEM ~mewi651x~ AFTER ~scrlal~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi651x~ AFTER ~scrl7s~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SCRL6W\",1,1)~ ~AddStoreItem("KUORK0","MEWI651X",1,1)
+AddStoreItem("KUORK0","SCRL6W",1,1)~
+	END
+
+COPY_EXISTING ~alpheus.cre~ ~override~ ~alpheusd.cre~ ~override~
+	ADD_CRE_ITEM ~mewi651x~ #0 #0 #0 ~NONE~ ~INV12~
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI6~ RET mewi652=filename END
+COPY_EXISTING ~mewi652.spl~ ~override/%mewi652%.spl~
+	SAY NAME1 @33652
+	SAY UNIDENTIFIED_DESC @34652
+
+COPY_EXISTING ~mewi652x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi652~ resource= EVAL ~%mewi652%~ END
+	SAY NAME2 @33652
+	SAY IDENTIFIED_DESC @34652
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar1103.are~ ~override~ //Jermien's house
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=4 STR_VAR item_to_add=~mewi652x~ END
+
+COPY_EXISTING ~udduer01.sto~ ~override~ //Duergar store (worse goods)
+	ADD_STORE_ITEM ~mewi652x~ AFTER ~scrl7q~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi652x~ AFTER ~scrl7k~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SCRL6W\",1,1)~ ~AddStoreItem("KUORK0","MEWI652X",1,1)
+AddStoreItem("KUORK0","SCRL6W",1,1)~
+	END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI6~ RET mewi653=filename END
+COPY_EXISTING ~mewi653.spl~ ~override/%mewi653%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=protectionfromspell2 match_parameter2=2250 parameter2=splprot_isnotsleeping END
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi653~ resource= EVAL ~%mewi653%~ END
+	SAY NAME1 @33653
+	SAY UNIDENTIFIED_DESC @34653
+
+COPY_EXISTING ~mewi653x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi653~ resource= EVAL ~%mewi653%~ END
+	SAY NAME2 @33653
+	SAY IDENTIFIED_DESC @34653
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~uddrow25.sto~ ~override~ //Ust Natha drow scroll store
+	ADD_STORE_ITEM ~mewi653x~ AFTER ~scrl7r~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ldd_nym.sto~ ~override~
+	ADD_STORE_ITEM ~mewi653x~ AFTER ~scrl8b~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI6~ RET mewi654=filename END
+COPY_EXISTING ~mewi654.spl~ ~override/%mewi654%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi654~ resource= EVAL ~%mewi654%~ END
+	SAY NAME1 @33654
+	SAY UNIDENTIFIED_DESC @34654
+
+COPY_EXISTING ~mewi654x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi654~ resource= EVAL ~%mewi654%~ END
+	SAY NAME2 @33654
+	SAY IDENTIFIED_DESC @34654
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~shandal2.dlg~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~TakePartyItem(\"MISC2H\")~ ~TakePartyItem("MISC2H")
+GiveItemCreate("MEWI654X",Player1,1,0,0)~
+    END
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~firrak01.cre~ ~override~
+	ADD_CRE_ITEM ~mewi654x~ #0 #0 #0 ~NONE~ ~INV7~
+
+COPY_EXISTING ~ar5201.are~ ~override~ //Yaga-Shura Temple, first floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi654x~ END
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~bandoth.sto~ ~override~
+	ADD_STORE_ITEM ~mewi654x~ BEFORE ~potn08~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI6~ RET mewi655=filename END
+COPY_EXISTING ~mewi655.spl~ ~override/%mewi655%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi655~ resource= EVAL ~%mewi655%~ END
+	SAY NAME1 @33655
+	SAY UNIDENTIFIED_DESC @34655
+
+COPY_EXISTING ~mewi655e.spl~ ~override~
+	READ_LONG 0x6a effectsoffset
+	READ_SHORT 0x90 numeffects
+	FOR (i = 0; i < numeffects; ++i) BEGIN
+		me_off = effectsoffset + (i * 0x30)
+		READ_SHORT me_off theopcode
+		READ_ASCII (me_off + 0x14) theresource
+		PATCH_IF theopcode = 402 AND (~%theresource%~ STRING_EQUAL_CASE ~MEKILLCN~) BEGIN
+			WRITE_ASCIIE (me_off + 0x4) ~%mewi655%~ #8
+		END
+	END
+
+OUTER_SPRINT me_30014 @30014
+OUTER_SPRINT me_30015 @30015
+LAF ADD_CONTINGENCY INT_VAR new_action=1 description=RESOLVE_STR_REF(@34655) STR_VAR resource= EVAL ~%mewi655%~ title=~ME_SLAYING_SEQUENCER_TITLE~ title_name= EVAL ~%me_30014%~ action=~ME_SLAYING_SEQUENCER_LABEL~ action_name= EVAL ~%me_30015%~ END
+
+COPY_EXISTING ~mewi655x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi655~ resource= EVAL ~%mewi655%~ END
+	SAY NAME2 @33655
+	SAY IDENTIFIED_DESC @34655
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~lavok01.cre~ ~override~ ~lavok02.cre~ ~override~
+	REPLACE_CRE_ITEM ~mewi655x~ #0 #0 #0 ~UNSTEALABLE~ ~INV6~
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ldd_nym.sto~ ~override~
+	ADD_STORE_ITEM ~mewi655x~ AFTER ~scrl8b~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI6~ RET mewi656=filename END
+COPY_EXISTING ~mewi656.spl~ ~override/%mewi656%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi656~ resource= EVAL ~%mewi656%~ END
+	LPF ALTER_EFFECT INT_VAR multi_match=1 match_opcode=immunitytospellandmessage match_parameter2=113 parameter2=splprot_nothumanoidorgianthumanoid END
+	SAY NAME1 @33656
+	SAY UNIDENTIFIED_DESC @34656
+
+COPY_EXISTING ~mewi656x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi656~ resource= EVAL ~%mewi656%~ END
+	SAY NAME2 @33656
+	SAY IDENTIFIED_DESC @34656
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0317.are~ ~override~ //Rayic Gethras' home, top floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi656x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi656x~ AFTER ~scrl7l~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar5104.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi656x~ END
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI7~ RET mewi751=filename END
+COPY_EXISTING ~mewi751.spl~ ~override/%mewi751%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi751~ resource= EVAL ~%mewi751%~ END
+	SAY NAME1 @33751
+	SAY UNIDENTIFIED_DESC @34751
+
+COPY_EXISTING ~mewi751x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi751~ resource= EVAL ~%mewi751%~ END
+	SAY NAME2 @33751
+	SAY IDENTIFIED_DESC @34751
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~hlshang.cre~ ~override~
+	ADD_CRE_ITEM ~mewi751x~ #0 #0 #0 ~NONE~ ~INV6~
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~vaarglan.cre~ ~override~ ~vaarglnd.cre~ ~override~
+	ADD_CRE_ITEM ~mewi751x~ #0 #0 #0 ~NONE~ ~INV12~
+
+END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI7~ RET mewi752=filename END
+COPY_EXISTING ~mewi752.spl~ ~override/%mewi752%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi752~ resource= EVAL ~%mewi752%~ END
+	SAY NAME1 @33752
+	SAY UNIDENTIFIED_DESC @34752
+
+COPY_EXISTING ~mewi752e.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi752~ resource= EVAL ~%mewi752%~ END
+
+LAF ADD_CONTINGENCY INT_VAR description=RESOLVE_STR_REF(@34752) STR_VAR resource= EVAL ~%mewi752%~ title=~ME_FAR_SEQUENCER_TITLE~ title_name=~Far Sequencer~ action=~ADD_SPELLS_SEQUENCER_LABEL~ END
+
+COPY_EXISTING ~mewi752x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi752~ resource= EVAL ~%mewi752%~ END
+	SAY NAME2 @33752
+	SAY IDENTIFIED_DESC @34752
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar1513.are~ ~override~ //Spellhold Dungeon, area with Dace and kobolds
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=6 STR_VAR item_to_add=~mewi752x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi752x~ AFTER ~scrl8o~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar5104.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi752x~ END
+
+END
+
+ACTION_IF (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI7~ RET mewi753=filename END
+COPY_EXISTING ~mewi753.spl~ ~override/%mewi753%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi753~ resource= EVAL ~%mewi753%~ END
+	SAY NAME1 @33753
+	SAY UNIDENTIFIED_DESC @34753
+
+COPY_EXISTING ~mewi753x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi753~ resource= EVAL ~%mewi753%~ END
+	SAY NAME2 @33753
+	SAY IDENTIFIED_DESC @34753
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar6110.are~ ~override~ //Sendai's Enclave, lich's lair
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi753x~ END
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar9712.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=6 STR_VAR item_to_add=~mewi753x~ END
+
+END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI7~ RET mewi754=filename END
+COPY_EXISTING ~mewi754.spl~ ~override/%mewi754%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi754~ resource= EVAL ~%mewi754%~ END
+	SAY NAME1 @33754
+	SAY UNIDENTIFIED_DESC @34754
+
+COPY_EXISTING ~mewi754.eff~ ~override~
+	SAY effparameter1 @30011
+
+COPY_EXISTING ~mewi754x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi754~ resource= EVAL ~%mewi754%~ END
+	SAY NAME2 @33754
+	SAY IDENTIFIED_DESC @34754
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~uddrow25.sto~ ~override~ //Ust Natha drow scroll store
+	ADD_STORE_ITEM ~mewi754x~ AFTER ~scrl8p~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ar3013.are~ ~override~ //Watcher's Keep, Karashur lair
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi754x~ END
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar7004.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=8 STR_VAR item_to_add=~mewi754x~ END
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI7~ RET mewi755=filename END
+COPY_EXISTING ~mewi755.spl~ ~override/%mewi755%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi755~ resource= EVAL ~%mewi755%~ END
+	SAY NAME1 @33755
+	SAY UNIDENTIFIED_DESC @34755
+
+COPY_EXISTING ~mewi755e.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi755~ resource= EVAL ~%mewi755%~ END
+	READ_LONG 0x6a effectsoffset
+	READ_SHORT 0x90 numeffects
+	FOR (i = 0; i < numeffects; ++i) BEGIN
+		me_off = effectsoffset + (i * 0x30)
+		READ_SHORT me_off theopcode
+		READ_ASCII (me_off + 0x14) theresource
+		PATCH_IF theopcode = 402 AND (~%theresource%~ STRING_EQUAL_CASE ~MEDEATCS~) BEGIN
+			WRITE_ASCIIE (me_off + 0x4) ~%mewi755%~ #8
+		END
+	END
+
+COPY_EXISTING ~mewi755f.spl~ ~override~
+	READ_LONG 0x6a effectsoffset
+	READ_SHORT 0x90 numeffects
+	FOR (i = 0; i < numeffects; ++i) BEGIN
+		me_off = effectsoffset + (i * 0x30)
+		READ_SHORT me_off theopcode
+		READ_ASCII (me_off + 0x14) theresource
+		PATCH_IF theopcode = 402 AND (~%theresource%~ STRING_EQUAL_CASE ~MEDEATCN~) BEGIN
+			WRITE_ASCIIE (me_off + 0x4) ~%mewi755%~ #8
+		END
+	END
+
+OUTER_SPRINT me_30016 @30016
+LAF ADD_CONTINGENCY INT_VAR description=RESOLVE_STR_REF(@34755) STR_VAR resource= EVAL ~%mewi755%~ title=~ME_DEATH_TRIGGER_TITLE~ title_name= EVAL ~%me_30016%~ action=~ADD_SPELLS_TRIGGER_LABEL~ END
+
+COPY_EXISTING ~mewi755x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi755~ resource= EVAL ~%mewi755%~ END
+	SAY NAME2 @33755
+	SAY IDENTIFIED_DESC @34755
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar2210.are~ ~override~ //Deirex's tower treasury
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi755x~ END
+
+COPY_EXISTING ~telwrai.cre~ ~override~ //Demon Wraith
+	ADD_CRE_ITEM ~mewi755x~ #0 #0 #0 ~NONE~ ~INV4~
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar6006.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=10 STR_VAR item_to_add=~mewi755x~ END
+
+END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI7~ RET mewi756=filename END
+COPY_EXISTING ~mewi756.spl~ ~override/%mewi756%.spl~ ~mewi756e.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi756~ resource= EVAL ~%mewi756%~ END
+	SAY NAME1 @33756
+	SAY UNIDENTIFIED_DESC @34756
+
+OUTER_SPRINT me_33756 @33756
+LAF ADD_CONTINGENCY INT_VAR description=RESOLVE_STR_REF(@34756) STR_VAR resource= EVAL ~%mewi756%~ title=~ME_CRITICAL_SEQUENCER_TITLE~ title_name= EVAL ~%me_33756%~ action=~ADD_SPELLS_SEQUENCER_LABEL~ END
+
+COPY_EXISTING ~mewi756x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi756~ resource= EVAL ~%mewi756%~ END
+	SAY NAME2 @33756
+	SAY IDENTIFIED_DESC @34756
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ribald3.sto~ ~override~ //Adventurer Mart special goods
+	ADD_STORE_ITEM ~mewi756x~ BEFORE ~scrl9a~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~amarch01.cre~ ~override~
+	ADD_CRE_ITEM ~mewi756x~ #0 #0 #0 ~NONE~ ~INV6~
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar8006.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi756x~ END
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi851=filename END
+COPY_EXISTING ~mewi851.spl~ ~override/%mewi851%.spl~
+	SAY NAME1 @33851
+	SAY UNIDENTIFIED_DESC @34851
+
+COPY_EXISTING ~mewi851d.spl~ ~override~
+	SAY NAME1 @30004
+
+COPY_EXISTING ~mewi851e.spl~ ~override~
+	SAY NAME1 @30005
+
+COPY_EXISTING ~mewi851f.spl~ ~override~
+	SAY NAME1 @30006
+
+COPY_EXISTING ~mewi851g.spl~ ~override~
+	SAY NAME1 @30007
+
+COPY_EXISTING ~mewi851h.spl~ ~override~
+	SAY NAME1 @30008
+
+COPY_EXISTING ~mewi851i.spl~ ~override~
+	SAY NAME1 @30009
+
+COPY_EXISTING ~mewi851x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi851~ resource= EVAL ~%mewi851%~ END
+	SAY NAME2 @33851
+	SAY IDENTIFIED_DESC @34851
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~scrolls.sto~ ~override~ //Scroll store in Adventurer Mart
+	ADD_STORE_ITEM ~mewi851x~ BEFORE ~scrlam~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi851x~ AFTER ~scrlb1~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SCRL6W\",1,1)~ ~AddStoreItem("KUORK0","MEWI851X",1,1)
+AddStoreItem("KUORK0","SCRL6W",1,1)~
+	END
+
+COPY_EXISTING ~ldd_nym.sto~ ~override~
+	ADD_STORE_ITEM ~mewi851x~ AFTER ~scblank~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi852=filename END
+COPY_EXISTING ~mewi852.spl~ ~override/%mewi852%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi852~ resource= EVAL ~%mewi852%~ END
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=meinvglb END
+	SAY NAME1 @33852
+	SAY UNIDENTIFIED_DESC @34852
+
+COPY_EXISTING ~mewi852x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi852~ resource= EVAL ~%mewi852%~ END
+	SAY NAME2 @33852
+	SAY IDENTIFIED_DESC @34852
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~udsvir05.sto~ ~override~ //Underdark Svirfneblin store
+	ADD_STORE_ITEM ~mewi852x~ AFTER ~scrl7i~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi852x~ BEFORE ~scrl9e~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ldd_nym.sto~ ~override~
+	ADD_STORE_ITEM ~mewi852x~ AFTER ~scblank~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi853=filename END
+COPY_EXISTING ~mewi853.spl~ ~override/%mewi853%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi853~ resource= EVAL ~%mewi853%~ END
+	SAY NAME1 @33853
+	SAY UNIDENTIFIED_DESC @34853
+
+COPY_EXISTING ~mewi853x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi853~ resource= EVAL ~%mewi853%~ END
+	SAY NAME2 @33853
+	SAY IDENTIFIED_DESC @34853
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~mage18z.cre~ ~override~
+	ADD_CRE_ITEM ~mewi853x~ #0 #0 #0 ~NONE~ ~INV9~
+
+COPY_EXISTING ~ar2206.are~ ~override~ //Qilue's home
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=5 STR_VAR item_to_add=~mewi853x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi853x~ AFTER ~scrl9j~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ldd_nym.sto~ ~override~
+	ADD_STORE_ITEM ~mewi853x~ AFTER ~scblank~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi854=filename END
+COPY_EXISTING ~mewi854.spl~ ~override/%mewi854%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi854~ resource= EVAL ~%mewi854%~ END
+	SAY NAME1 @33854
+	SAY UNIDENTIFIED_DESC @34854
+
+COPY_EXISTING ~mewi854d.spl~ ~override~
+	READ_LONG 0x6a effectsoffset
+	READ_SHORT 0x90 numeffects
+	FOR (i = 0; i < numeffects; ++i) BEGIN
+		me_off = effectsoffset + (i * 0x30)
+		READ_SHORT me_off theopcode
+		READ_ASCII (me_off + 0x14) theresource
+		PATCH_IF theopcode = 402 AND (~%theresource%~ STRING_EQUAL_CASE ~MEPERMCN~) BEGIN
+			WRITE_ASCIIE (me_off + 0x4) ~%mewi854%~ #8
+		END
+	END
+
+OUTER_SPRINT me_30017 @30017
+LAF ADD_CONTINGENCY INT_VAR description=RESOLVE_STR_REF(@34854) STR_VAR resource= EVAL ~%mewi854%~ title=~ME_RECURRING_CONTINGENCY_TITLE~ title_name= EVAL ~%me_30017%~ action=~ADD_SPELLS_CONTINGENCY_LABEL~ END
+
+COPY_EXISTING ~mewi854x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi854~ resource= EVAL ~%mewi854%~ END
+	SAY NAME2 @33854
+	SAY IDENTIFIED_DESC @34854
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar3027.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi854x~ END
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar9101.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi854x~ END
+
+END
+END
+
+ACTION_IF (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi855=filename END
+COPY_EXISTING ~mewi855.spl~ ~override/%mewi855%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi855~ resource= EVAL ~%mewi855%~ END
+	SAY NAME1 @33855
+	SAY UNIDENTIFIED_DESC @34855
+
+COPY_EXISTING ~mewi855x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi855~ resource= EVAL ~%mewi855%~ END
+	SAY NAME2 @33855
+	SAY IDENTIFIED_DESC @34855
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ribald3.sto~ ~override~ //Adventurer Mart special goods
+	ADD_STORE_ITEM ~mewi855x~ AFTER ~scrl9h~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ar5204.are~ ~override~ //Yaga-Shura Temple, second floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi855x~ END
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~edion.sto~ ~override~
+	ADD_STORE_ITEM ~mewi855x~ AFTER ~scrl8y~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+END
+/*
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi856=filename END
+COPY_EXISTING ~mewi856.spl~ ~override/%mewi856%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi856~ resource= EVAL ~%mewi856%~ END
+	SAY NAME1 @33856
+	SAY UNIDENTIFIED_DESC @34856
+
+COPY_EXISTING ~mewi856e.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=meintrv3 END
+	READ_LONG 0x6a effectsoffset
+	READ_SHORT 0x90 numeffects
+	FOR (i = 0; i < numeffects; ++i) BEGIN
+		me_off = effectsoffset + (i * 0x30)
+		READ_SHORT me_off theopcode
+		READ_ASCII (me_off + 0x14) theresource
+		PATCH_IF theopcode = 402 AND (~%theresource%~ STRING_EQUAL_CASE ~MECURSCN~) BEGIN
+			WRITE_ASCIIE (me_off + 0x4) ~%mewi856%~ #8
+		END
+	END
+
+OUTER_SPRINT me_33856 @33856
+LAF ADD_CONTINGENCY INT_VAR description=RESOLVE_STR_REF(@34856) STR_VAR resource= EVAL ~mewi856d~ title=~ME_CURSE_CONTINGENCY_TITLE~ title_name= EVAL ~%me_33856%~ action=~ADD_SPELLS_CONTINGENCY_LABEL~ END
+
+COPY_EXISTING ~mewi856x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi856~ resource= EVAL ~%mewi856%~ END
+	SAY NAME2 @33856
+	SAY IDENTIFIED_DESC @34856
+
+END
+*/
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi857=filename END
+COPY_EXISTING ~mewi857.spl~ ~override/%mewi857%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi857~ resource= EVAL ~%mewi857%~ END
+	SAY NAME1 @33857
+	SAY UNIDENTIFIED_DESC @34857
+
+COPY_EXISTING ~mewi857x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi857~ resource= EVAL ~%mewi857%~ END
+	SAY NAME2 @33857
+	SAY IDENTIFIED_DESC @34857
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~mage18z.cre~ ~override~
+	ADD_CRE_ITEM ~mewi857x~ #0 #0 #0 ~NONE~ ~INV10~
+
+COPY_EXISTING ~udduer02.sto~ ~override~ //Duergar store (better goods)
+	ADD_STORE_ITEM ~mewi857x~ AFTER ~scrl9c~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi857x~ AFTER ~mewi851x~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar8010.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi857x~ END
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi858=filename END
+COPY_EXISTING ~mewi858.spl~ ~override/%mewi858%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi858~ resource= EVAL ~%mewi858%~ END
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=megrvglb END
+	SAY NAME1 @33858
+	SAY UNIDENTIFIED_DESC @34858
+
+COPY_EXISTING ~mewi858x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi858~ resource= EVAL ~%mewi858%~ END
+	SAY NAME2 @33858
+	SAY IDENTIFIED_DESC @34858
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~firmag01.cre~ ~override~ //Conster (mage in Firkraag Dungeon)
+	ADD_CRE_ITEM ~mewi858x~ #0 #0 #0 ~UNSTEALABLE~ ~INV8~
+
+COPY_EXISTING ~udduer02.sto~ ~override~ //Duergar store (better goods)
+	ADD_STORE_ITEM ~mewi858x~ AFTER ~mewi857x~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi858x~ AFTER ~mewi852x~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~bandoth.sto~ ~override~
+	ADD_STORE_ITEM ~mewi858x~ BEFORE ~potn08~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi859=filename END
+COPY_EXISTING ~mewi859.spl~ ~override/%mewi859%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi859~ resource= EVAL ~%mewi859%~ END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) match_opcode=modifycurrenthp parameter1=((i + 1) * 10) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) match_opcode=modifymaxhp parameter1=((i + 1) * 10) END
+		numheaders = numheaders + 1
+	END
+	SAY NAME1 @33859
+	SAY UNIDENTIFIED_DESC @34859
+
+COPY_EXISTING ~mewi859x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi859~ resource= EVAL ~%mewi859%~ END
+	SAY NAME2 @33859
+	SAY IDENTIFIED_DESC @34859
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~lavok01.cre~ ~override~ ~lavok02.cre~ ~override~
+	ADD_CRE_ITEM ~mewi859x~ #0 #0 #0 ~UNSTEALABLE~ ~INV7~
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi859x~ AFTER ~scrl9h~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar6006.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=10 STR_VAR item_to_add=~mewi859x~ END
+
+COPY_EXISTING ~edion.sto~ ~override~
+	ADD_STORE_ITEM ~mewi859x~ AFTER ~scrl8y~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+//LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi951=filename END
+COPY_EXISTING ~mewi951.spl~ ~override~
+	SAY NAME1 @33951
+	SAY UNIDENTIFIED_DESC @34951
+
+COPY_EXISTING ~mewi951x.itm~ ~override~
+//	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi951~ resource= EVAL ~%mewi951%~ END
+	SAY NAME2 @33951
+	SAY IDENTIFIED_DESC @34951
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar3026.are~ ~override~ //Watcher's Keep, Imp Challenge
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi951x~ END
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kieran2.sto~ ~override~
+	ADD_STORE_ITEM ~mewi951x~ AFTER ~spwi805x~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi952=filename END
+COPY_EXISTING ~mewi952.spl~ ~override/%mewi952%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi952~ resource= EVAL ~%mewi952%~ END
+	SAY NAME1 @33952
+	SAY UNIDENTIFIED_DESC @34952
+
+COPY_EXISTING ~mewi952x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi952~ resource= EVAL ~%mewi952%~ END
+	SAY NAME2 @33952
+	SAY IDENTIFIED_DESC @34952
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar2400.are~ ~override~ //Underdark, mind flayer city
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=7 STR_VAR item_to_add=~mewi952x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi952x~ AFTER ~scrl9q~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar8010.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi952x~ END
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi953=filename END
+COPY_EXISTING ~mewi953.spl~ ~override/%mewi953%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi953~ resource= EVAL ~%mewi953%~ END
+	SAY NAME1 @33953
+	SAY UNIDENTIFIED_DESC @34953
+
+COPY_EXISTING ~mewi953x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi953~ resource= EVAL ~%mewi953%~ END
+	SAY NAME2 @33953
+	SAY IDENTIFIED_DESC @34953
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar1515.are~ ~override~ //Spellhold, first floor
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi953x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi953x~ AFTER ~scrl9p~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~edion.sto~ ~override~
+	ADD_STORE_ITEM ~mewi953x~ AFTER ~scrl9z~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi954=filename END
+COPY_EXISTING ~mewi954.spl~ ~override/%mewi954%.spl~
+	SAY NAME1 @33954
+	SAY UNIDENTIFIED_DESC @34954
+
+COPY_EXISTING ~mewi954x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi954~ resource= EVAL ~%mewi954%~ END
+	SAY NAME2 @33954
+	SAY IDENTIFIED_DESC @34954
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0809.are~ ~override~ //Bodhi's lair (Chapter 6)
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi954x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi954x~ AFTER ~scrl9v~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~edion.sto~ ~override~
+	ADD_STORE_ITEM ~mewi954x~ AFTER ~scrl9w~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+ACTION_IF (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi955=filename END
+COPY_EXISTING ~mewi955.spl~ ~override/%mewi955%.spl~ ~mewi955d.spl~ ~override/%mewi955%d.spl~ ~mewi955p.spl~ ~override/%mewi955%p.spl~
+	SAY NAME1 @33955
+	SAY UNIDENTIFIED_DESC @34955
+
+COPY_EXISTING ~mewi955e.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi955~ resource= EVAL ~%mewi955%~ END
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi955d~ resource= EVAL ~%mewi955%d~ END
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi955p~ resource= EVAL ~%mewi955%p~ END
+
+OUTER_SPRINT me_30018 @30018
+LAF ADD_CONTINGENCY INT_VAR description=RESOLVE_STR_REF(@34955) STR_VAR resource= EVAL ~%mewi955%~ title=~ME_MASS_SEQUENCER_TITLE~ title_name= EVAL ~%me_30018%~ action=~ADD_SPELLS_SEQUENCER_LABEL~ END
+
+COPY_EXISTING ~mewi955x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi955~ resource= EVAL ~%mewi955%~ END
+	SAY NAME2 @33955
+	SAY IDENTIFIED_DESC @34955
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar6003.are~ ~override~ //Abazigal's Lair, eyes area
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi955x~ END
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar9711.are~ ~override~ //Planar Prison
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi955x~ END
+
+END
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi956=filename END
+COPY_EXISTING ~mewi956.spl~ ~override/%mewi956%.spl~
+	SAY NAME1 @33956
+	SAY UNIDENTIFIED_DESC @34956
+
+COPY_EXISTING ~mewi956x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi956~ resource= EVAL ~%mewi956%~ END
+	SAY NAME2 @33956
+	SAY IDENTIFIED_DESC @34956
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar3017.are~ ~override~ //Watcher's Keep, fourth level
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi956x~ END
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~adran.cre~ ~override~
+	ADD_CRE_ITEM ~mewi956x~ #1 #0 #0 ~NONE~ ~INV13~
+
+END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi957=filename END
+COPY_EXISTING ~mewi957.spl~ ~override/%mewi957%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi957~ resource= EVAL ~%mewi957%~ END
+	SAY NAME1 @33957
+	SAY UNIDENTIFIED_DESC @34957
+
+COPY_EXISTING ~mewi957x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi957~ resource= EVAL ~%mewi957%~ END
+	SAY NAME2 @33957
+	SAY IDENTIFIED_DESC @34957
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ribald3.sto~ ~override~ //Adventurer Mart special goods
+	ADD_STORE_ITEM ~mewi957x~ BEFORE ~scrl9z~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi957x~ BEFORE ~scrl9z~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar9714.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=12 STR_VAR item_to_add=~mewi957x~ END
+
+END
+
+/*
+COPY_EXISTING_REGEXP ~.*\.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEPR151\"~ ~"%mepr151%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEPR251\"~ ~"%mepr251%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEPR252\"~ ~"%mepr252%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEPR351\"~ ~"%mepr351%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEPR352\"~ ~"%mepr352%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEPR451\"~ ~"%mepr451%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEPR452\"~ ~"%mepr452%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEPR551\"~ ~"%mepr551%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEPR652\"~ ~"%mepr652%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEPR751\"~ ~"%mepr751%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEPR752\"~ ~"%mepr752%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEPR753\"~ ~"%mepr753%"~
+	END
+	IF ~MEPR~
+
+COPY_EXISTING_REGEXP ~.*\.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI151\"~ ~"%mewi151%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI152\"~ ~"%mewi152%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI153\"~ ~"%mewi153%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI154\"~ ~"%mewi154%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI155\"~ ~"%mewi155%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI251\"~ ~"%mewi251%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI252\"~ ~"%mewi252%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI253\"~ ~"%mewi253%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI254\"~ ~"%mewi254%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI255\"~ ~"%mewi255%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI256\"~ ~"%mewi256%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI351\"~ ~"%mewi351%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI352\"~ ~"%mewi352%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI353\"~ ~"%mewi353%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI354\"~ ~"%mewi354%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI356\"~ ~"%mewi356%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI451\"~ ~"%mewi451%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI452\"~ ~"%mewi452%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI453\"~ ~"%mewi453%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI454\"~ ~"%mewi454%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI455\"~ ~"%mewi455%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI456\"~ ~"%mewi456%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI457\"~ ~"%mewi457%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI551\"~ ~"%mewi551%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI552\"~ ~"%mewi552%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI554\"~ ~"%mewi554%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI555\"~ ~"%mewi555%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI556\"~ ~"%mewi556%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI557\"~ ~"%mewi557%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI558\"~ ~"%mewi558%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI559\"~ ~"%mewi559%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI560\"~ ~"%mewi560%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI561\"~ ~"%mewi561%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI562\"~ ~"%mewi562%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI651\"~ ~"%mewi651%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI652\"~ ~"%mewi652%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI653\"~ ~"%mewi653%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI654\"~ ~"%mewi654%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI655\"~ ~"%mewi655%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI656\"~ ~"%mewi656%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI751\"~ ~"%mewi751%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI752\"~ ~"%mewi752%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI753\"~ ~"%mewi753%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI754\"~ ~"%mewi754%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI755\"~ ~"%mewi755%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI851\"~ ~"%mewi851%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI852\"~ ~"%mewi852%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI853\"~ ~"%mewi853%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI854\"~ ~"%mewi854%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI855\"~ ~"%mewi855%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI856\"~ ~"%mewi856%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI951\"~ ~"%mewi951%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI952\"~ ~"%mewi952%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI953\"~ ~"%mewi953%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI954\"~ ~"%mewi954%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI955\"~ ~"%mewi955%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI956\"~ ~"%mewi956%"~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\"MEWI957\"~ ~"%mewi957%"~
+	END
+	IF ~MEWI~
+
+COPY_EXISTING_REGEXP ~.*\.are~ ~override~
+	READ_SHORT 0x48 theareatype
+	PATCH_IF ((theareatype BAND 0b00000001) = 0b00000001) BEGIN
+		LPF fj_are_structure INT_VAR fj_loc_x=0 fj_loc_y=0 STR_VAR fj_structure_type=~actor~ fj_name=~ME_Fix_Wing_Buffet~ fj_cre_resref=~MEFIXWBU~ END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+*/
+
+// Creatures with the Doom Guard animation are often stationary creatures or objects, so they should be immune to effects that could move them.
+
+COPY_EXISTING_REGEXP ~.*\.cre~ ~override~
+	READ_LONG animation ulgiash
+	PATCH_IF (ulgiash = 25605) OR (ulgiash = 25606) BEGIN
+		LPF ADD_CRE_EFFECT INT_VAR opcode=protectionfromopcode target=1 timing=9 parameter2=wingbuffet END
+		LPF ADD_CRE_EFFECT INT_VAR opcode=protectionfromopcode target=1 timing=9 parameter2=teleport END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+// Turning regeneration into a repeated heal effect so that a regeneration effect can be temporarily turned off.
+
+COPY_EXISTING_REGEXP ~.*\.cre~ ~override~ ~.*\.spl~ ~override~ ~.*\.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR silent=1 multi_match=60 match_opcode=regeneration opcode=applyrepeatingeff STR_VAR resource=~meregen1~ END
+	IF ~b~
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING_REGEXP ~.*\.eff~ ~override~
+	READ_LONG effopcode theopcode
+	PATCH_IF theopcode = regeneration BEGIN
+		WRITE_LONG effopcode applyrepeatingeff
+		WRITE_ASCII effresource ~meregen1~ #8
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+// Patching for Far Sequencer
+
+COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
+	READ_SHORT 0x68 numheaders
+	PATCH_IF numheaders > 0 BEGIN
+		READ_SHORT 0x80 therange
+		PATCH_IF therange > 14 BEGIN
+			LPF ALTER_SPELL_HEADER INT_VAR range=10000 END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+ACTION_IF !(MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
+	LPF DELETE_EFFECT INT_VAR silent=1 check_headers=0 check_globals=1 match_opcode=402 STR_VAR match_resource=~MEINHOST~ END
+	BUT_ONLY_IF_IT_CHANGES
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND !(FILE_EXISTS_IN_GAME ~M_MEFLYA.lua~) BEGIN
+	COPY ~MESpells/lua/M_MEFLYA.lua~ ~override~
+
+	OUTER_SPRINT stringspikegrowth @4018
+	OUTER_SPRINT stringspikestones @4019
+	COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
+		READ_LONG NAME1 thenameref
+		GET_STRREF thenameref thename
+		READ_SHORT 0x98 theprojectile ELSE 0
+		PATCH_IF (theprojectile = 64) OR (theprojectile = 101) OR (theprojectile = 243) OR (~%thename%~ STRING_EQUAL_CASE ~%stringspikegrowth%~) OR (~%thename%~ STRING_EQUAL_CASE ~%stringspikestones%~) BEGIN
+			LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=eeexinvokelua target=2 parameter2=(0 - 30) STR_VAR resource=~MEPRTAIR~ END
+		END
+		BUT_ONLY_IF_IT_CHANGES
+
+	COPY_EXISTING ~sppr720.spl~ ~override~
+		LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=eeexinvokelua target=2 STR_VAR resource=~MEPRTAIR~ END
+		IF_EXISTS
+
+END

@@ -1,0 +1,2220 @@
+BACKUP ~MESpells/backup~
+AUTHOR ~OlvynChuru~
+
+ALWAYS
+
+ACTION_IF GAME_IS ~eet~ BEGIN
+	OUTER_TEXT_SPRINT arbg ~bg~
+END ELSE BEGIN
+	OUTER_TEXT_SPRINT arbg ~ar~
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND !(FILE_EXISTS_IN_GAME ~M__MEFUN.lua~) BEGIN
+	COPY ~MESpells/lua/M__MEFUN.lua~ ~override~
+
+END
+
+
+
+OUTER_PATCH alltheconstants BEGIN
+	none=0
+	noprojectile=1
+
+	creflags=0x10
+	creatureflags=0x10
+	killxp=0x14
+	xp=0x18
+	status=0x20
+	statepoisoned=0x4000
+	currenthp=0x24
+	maxhp=0x26
+	animation=0x28
+	colormetal=0x2c
+	colorminor=0x2d
+	colormajor=0x2e
+	colorskin=0x2f
+	colorleather=0x30
+	colorarmor=0x31
+	colorhair=0x32
+	hideinshadows=0x45
+	naturalac=0x46
+	effectiveac=0x48
+	acmodcrushing=0x4a
+	acmodmissile=0x4c
+	acmodmissiles=0x4c
+	acmodpiercing=0x4e
+	acmodslashing=0x50
+	thac0=0x52
+	attacksperround=0x53
+	savevsdeath=0x54
+	savevswand=0x55
+	savevspolymorph=0x56
+	savevsbreath=0x57
+	savevsspell=0x58
+	fireresistance=0x59
+	coldresistance=0x5a
+	elecresistance=0x5b
+	electricityresistance=0x5b
+	acidresistance=0x5c
+	magicresistance=0x5d
+	magicfireresistance=0x5e
+	magiccoldresistance=0x5f
+	slashingresistance=0x60
+	crushingresistance=0x61
+	piercingresistance=0x62
+	missilesresistance=0x63
+	missileresistance=0x63
+	detectillusion=0x64
+	detectillusions=0x64
+	settraps=0x65
+	lore=0x66
+	openlocks=0x67
+	movesilently=0x68
+	findtraps=0x69
+	pickpockets=0x6A
+	levelfirstclass=0x234
+	levelsecondclass=0x235
+	levelthirdclass=0x236
+	sex=0x237
+	strength=0x238
+	exceptionalstrength=0x239
+	intelligence=0x23a
+	wisdom=0x23b
+	dexterity=0x23c
+	constitution=0x23d
+	charisma=0x23e
+	kit=0x246
+	overridescript=0x248
+	classscript=0x250
+	racescript=0x258
+	generalscript=0x260
+	defaultscript=0x268
+	allegiance=0x270
+	general=0x271
+	race=0x272
+	class=0x273
+	specifics=0x274
+	gender=0x275
+	alignment=0x27b
+	scriptname=0x280
+	dialog=0x2cc
+	dialogue=0x2cc
+	dialogfile=0x2cc
+	notabname=0x800000
+	disabletooltip=0x800000
+
+	actorsize=0x110
+	atnight=0xFFE0000F
+
+	effopcode=0x10
+	effstring=0x1c
+	effparameter1=0x1c
+	effparameter2=0x20
+	effresource=0x30
+	effsavingthrow=0x40
+	effsavebonus=0x44
+	effspecial=0x48
+	effresistdispel=0x5c
+	effparameter3=0x60
+	effparameter4=0x64
+	effresource2=0x70
+
+	areascript=0x94
+
+	itmflags=0x18
+	itemflags=0x18
+	category=0x1c
+	unusability=0x1e
+	unusabilityflags=0x1e
+	appearance=0x22
+	equippedappearance=0x22
+	noappearance=0x2020
+	kitunusability1=0x29
+	kitunusability2=0x2B
+	kitunusability3=0x2D
+	kitunusability4=0x2F
+	minstrength=0x26
+	minimumstrength=0x26
+	minexstrength=0x28
+	minimumexceptionalstrength=0x28
+	minintelligence=0x2a
+	minimumintelligence=0x2a
+	mindexterity=0x2c
+	minimumdexterity=0x2c
+	minwisdom=0x2e
+	minwisdom=0x2e
+	minconstitution=0x30
+	minimumconstitution=0x30
+	mincharisma=0x32
+	minimumcharisma=0x32
+	price=0x34
+	icon=0x3a
+	loretoidentify=0x42
+	groundicon=0x44
+	weight=0x4c
+	weaponproficiency=0x31
+	descriptionimage=0x58
+	weaponenchantment=0x60
+	itemnumberofheaders=0x68
+	itemeffectsoffset=0x6A
+	firstheadericon=0x76
+	firstheaderrange=0x80
+	firstheaderspeed=0x84
+	firstheaderspeedfactor=0x84
+	firstheaderthac0=0x86
+	firstheaderdiesize=0x88
+	firstheaderdicesize=0x88
+	firstheadernumdice=0x8A
+	firstheadernumberofdice=0x8A
+	firstheaderdamage=0x8C
+	firstheaderdamagebonus=0x8C
+	firstheaderdamagetype=0x8E
+	firstheadercharges=0x94
+	firstheaderchargeflags=0x96
+	firstheaderchargeoptions=0x96
+	firstheaderwhendrained=0x96
+	firstheaderflags=0x98
+	firstheaderprojectile=0x9C
+
+	castingsound=0x10
+	splflags=0x18
+	spellflags=0x18
+	spelltype=0x1C
+	spellunusability=0x1E
+	spellexclusion=0x1E
+	exclusionflags=0x1E
+	castinganimation=0x22
+	animationnecromancy=9
+	animationalteration=10
+	animationtransmutation=10
+	animationenchantment=11
+	animationabjuration=12
+	animationillusion=13
+	animationconjuration=14
+	animationinvocation=15
+	animationevocation=15
+	animationdivination=16
+	school=0x25
+	spellschool=0x25
+	abjurer=1
+	abjuration=1
+	conjurer=2
+	conjuration=2
+	diviner=3
+	divination=3
+	enchanter=4
+	enchantment=4
+	enchanting=4
+	illusionist=5
+	illusion=5
+	invoker=6
+	evoker=6
+	invocation=6
+	evocation=6
+	necromancer=7
+	necromancy=7
+	transmuter=8
+	transmutation=8
+	alteration=8
+	generalist=9
+	secondarytype=0x27
+	secondaryspellprotection=1
+	secondaryspellprotections=1
+	secondaryspecificprotection=2
+	secondaryspecificprotections=2
+	secondaryillusionaryprotection=3
+	secondaryillusionaryprotections=3
+	secondarymagicattack=4
+	secondarydivinationattack=5
+	secondaryconjuration=6
+	secondarycombatprotection=7
+	secondarycombatprotections=7
+	secondarycontigency=8
+	secondarybattleground=9
+	secondaryoffensivedamage=10
+	secondarydisabling=11
+	secondarycombination=12
+	secondarynoncombat=13
+	secondarydornssword=14
+	spelllevel=0x34
+	spellicon=0x3A
+
+	headermelee=1
+	headerranged=2
+	headermagical=3
+	headerlauncher=4
+	yesyouhavetoidentifythisitembeforeyoucanuseitsability=1
+	weaponslots=1
+	itemslots=3
+	livingactor=1
+	pointwithinrange=4
+	anypointwithinrange=4
+	caster=5
+	typepiercing=1
+	typecrushing=2
+	typeslashing=3
+	typemissile=4
+	typefist=5
+	typenonlethal=5
+	typestunning=5
+	typepiercingorcrushing=6
+	typepiercingorslashing=7
+	typecrushingorslashing=8
+	itemremains=0
+	itemvanishes=1
+	itembreaks=2
+	replacewithusedup=2
+	itemrecharges=3
+	strengthbonus=1
+	plusstrengthbonus=1
+	addstrengthbonus=1
+	damagestrengthbonus=4
+	thac0strengthbonus=8
+	rechargeafterresting=2048
+	self=1
+	presettarget=2
+	limited=0
+	permanentuntildeath=1
+	whileequipped=2
+	delayed=4
+	permanentafterdeath=9
+	limitedticks=10
+	nodispelbypassresistance=0
+	dispelnotbypassresistance=1
+	dispelbypassresistance=3
+	nosave=0
+	vsspell=1
+	vsbreath=2
+	vsdeath=4
+	vswand=8
+	vswands=8
+	vspolymorph=16
+	bypassmirrorimage=16777216
+	ignoredifficulty=33554432
+
+	idsea=2
+	eaanyone=0
+	eapc=2
+	eafamiliar=3
+	eaally=4
+	eacontrolled=5
+	eacharmed=6
+	eareallycharmed=7
+	eagoodbutblue=28
+	eagoodbutred=29
+	eagoodcutoff=30
+	eaneutral=128
+	eaevilcutoff=200
+	eaevilbutgreen=201
+	eaevilbutblue=202
+	eaenemy=255
+	idsgeneral=3
+	generalhumanoid=1
+	generalanimal=2
+	generalundead=4
+	generalgianthumanoid=5
+	generalmonster=255
+	idsrace=4
+	racehuman=1
+	raceelf=2
+	racehalfelf=3
+	racedwarf=4
+	racehalfling=5
+	racegnome=6
+	racehalforc=7
+	racedoppleganger=106
+	racedoppelganger=106
+	raceskeleton=115
+	racelycanthrope=122
+	racerakshasa=128
+	racetroll=129
+	racenorace=255
+	idsclass=5
+	classmage=1
+	classfighter=2
+	classcleric=3
+	classthief=4
+	classbard=5
+	classpaladin=6
+	classfightermage=7
+	classfightercleric=8
+	classfighterthief=9
+	classfightermagethief=10
+	classdruid=11
+	classranger=12
+	classmagethief=13
+	classclericmage=14
+	classclericthief=15
+	classfighterdruid=16
+	classfightermagecleric=17
+	classclericranger=18
+	classsorcerer=19
+	classmonk=20
+	classshaman=21
+	classpolarbear=107
+	classdoppleganger=111
+	classdoppelganger=111
+	classdopplegangergreater=112
+	classdoppelgangergreater=112
+	classwinterwolf=146
+	classinnocent=155
+	classflamingfist=156
+	classwerewolf=157
+	classwolfwere=158
+	classrakshasa=166
+	classlongbow=202
+	classmageall=202
+	classfighterall=203
+	classclericall=204
+	classthiefall=205
+	classbardall=206
+	classpaladinall=207
+	classdruidall=208
+	classrangerall=209
+	classnoclass=255
+	idsspecific=6
+	idsgender=7
+	gendermale=1
+	genderfemale=2
+	genderneither=4
+	gendersummoned=6
+	genderillusionary=7
+	gendersummoneddemon=9
+	idsalignment=8
+	alignmentnone=0
+	alignmentmaskgood=1
+	alignmentmaskgeneutral=2
+	alignmentmaskevil=3
+	alignmentmasklawful=16
+	alignmentlawfulgood=17
+	alignmentlawfulneutral=18
+	alignmentlawfulevil=19
+	alignmentmasklcneutral=32
+	alignmentneutralgood=33
+	alignmentneutral=34
+	alignmenttrueneutral=34
+	alignmentneutralevil=35
+	alignmentmaskchaotic=48
+	alignmentchaoticgood=49
+	alignmentchaoticneutral=50
+	alignmentchaoticevil=51
+	idskit=9
+	kitmageschoolabjurer=64
+	kitabjurer=64
+	kitmageschoolconjurer=128
+	kitconjurer=128
+	kitmageschooldiviner=256
+	kitdiviner=256
+	kitmageschoolenchanter=512
+	kitenchanter=512
+	kitmageschoolillusionist=1024
+	kitillusionist=1024
+	kitmageschoolinvoker=2048
+	kitinvoker=2048
+	kitmageschoolnecromancer=4096
+	kitnecromancer=4096
+	kitmageschooltransmuter=8192
+	kittransmuter=8192
+	kittrueclass=16384
+	kitberserker=16385
+	kitwizardslayer=16386
+	kitkensai=16387
+	kitcavalier=16388
+	kitinquisitor=16389
+	kitundeadhunter=16390
+	kitferalan=16391
+	kitarcher=16391
+	kitstalker=16392
+	kitbeastmaster=16393
+	kitassassin=16394
+	kitbountyhunter=16395
+	kitswashbuckler=16396
+	kitblade=16397
+	kitjester=16398
+	kitskald=16399
+	kittotemic=16400
+	kittotemicdruid=16400
+	kitshapeshifter=16401
+	kitbeastfriend=16402
+	kitavenger=16402
+	kitgodtalos=16403
+	kitpriestoftalos=16403
+	kitgodhelm=16404
+	kitpriestofhelm=16404
+	kitgodlathander=16405
+	kitpriestoflathander=16405
+	kitblackguard=16416
+	kitshadowdancer=16417
+	kitdwarvendefender=16418
+	kitdragondisciple=16419
+	kitdarkmoon=16420
+	kitdarkmoonmonk=16420
+	kitsunsoul=16421
+	kitsunsoulmonk=16421
+	kitohtyr=16422
+	kitgodtyr=16422
+	kitpriestoftyr=16422
+	kitbarbarian=1073741824
+
+	modifyarmorclass=0
+	modifyac=0
+	modifyacvscrushing=1
+	modifyacvsmissile=2
+	modifyacvsmissiles=2
+	modifyacvspiercing=4
+	modifyacvsslashing=8
+	modifybaseac=16
+	setbaseac=16
+	modifyattacksperround=1
+	curesleep=2
+	removesleep=2
+	charm=5
+	charm1=5
+	modifycharisma=6
+	setcolor=7
+	setcolorglowsolid=8
+	modifyconstitution=10
+	curepoison=11
+	removepoison=11
+	damage=12
+	increment=0
+	set=1
+	settopercentage=2
+	dealpercentage=3
+	crushingdamage=0
+	aciddamage=0x10000
+	colddamage=0x20000
+	elecdamage=0x40000
+	electricitydamage=0x40000
+	firedamage=0x80000
+	piercingdamage=0x100000
+	poisondamage=0x200000
+	magicdamage=0x400000
+	missiledamage=0x800000
+	slashingdamage=0x1000000
+	magicfiredamage=0x2000000
+	magiccolddamage=0x4000000
+	nonlethaldamage=0x8000000
+	killtarget=13
+	modifydexterity=15
+	haste1=16
+	normalhaste=0
+	improvedhaste=1
+	hastenoextraattacks=2
+	modifycurrenthp=17
+	modifymaxhp=18
+	modifymaximumhp=18
+	modifyintelligence=19
+	invisibility=20
+	normalinvisibility=0
+	partialinvisibility=1
+	modifylore=21
+	modifyluck=22
+	resetmorale=23
+	panic=24
+	poison=25
+	modifyacidresistance=27
+	modifycoldresistance=28
+	modifyelecresistance=29
+	modifyelectricresistance=29
+	modifyelectricityresistance=29
+	modifyfireresistance=30
+	modifymagicdamageresistance=31
+	modifysavevsdeath=33
+	modifysavevswand=34
+	modifysavevswands=34
+	modifysavevspolymorph=35
+	modifysavevspoly=35
+	modifysavevsbreath=36
+	modifysavevsspell=37
+	silence=38
+	sleep=39
+	wakewhendamaged=0
+	donotwakewhendamaged=1
+	slow=40
+	bonuswizardspells=42
+	doublespellsoflevelorlower=0
+	level1=1
+	level2=2
+	level3=4
+	level4=8
+	level5=16
+	level6=32
+	level7=64
+	level8=128
+	level9=256
+	doublespellsoflevel=512
+	modifystrength=44
+	stun=45
+	curestun=46
+	curestunning=46
+	removestun=46
+	removestunning=46
+	removeinvisibility1=47
+	modifywisdom=49
+	colorpulse=50
+	modifybasethac0=54
+	slay=55
+	dispeleffects=58
+	modifymovesilently=59
+	castingfailure=60
+	spellfailure=60
+	modifyspellfailure=60
+	bonuspriestspells=62
+	infravision=63
+	blur=65
+	translucency=66
+	summoncreature=67
+	createcreature=67
+	nondetection=69
+	modifydamage=73
+	modifyattackdamage=73
+	blindness=74
+	feeblemind=76
+	feeblemindedness=76
+	disease=78
+	deafness=80
+	protectionfromprojectile=83
+	modifymagicfireresistance=84
+	modifymagiccoldresistance=85
+	modifyslashingresistance=86
+	modifycrushingresistance=87
+	modifypiercingresistance=88
+	modifymissileresistance=89
+	modifymissilesresistance=89
+	modifyopenlocks=90
+	modifyfindtraps=91
+	modifypickpockets=92
+	modifyfatigue=93
+	modifyintoxication=94
+	modifyexceptionalstrength=97
+	regenerate=98
+	regeneration=98
+	modifyregenerationrate=98
+	modifyduration=99
+	modifyspellduration=99
+	protectionfromcreaturetype=100
+	protectionfromopcode=101
+	protectionfromspelllevel=102
+	removegold=105
+	moralebreak=106
+	modifymoralebreak=106
+	paralyze=109
+	createweapon=111
+	createmagicalweapon=111
+	magicalweapon=111
+	removeitem=112
+	detectalignment=115
+	removeinvisibility2=116
+	clairvoyance=117
+	mirrorimagebasedonlevel=119
+	mirrorimage1=119
+	protectionfromweapons=120
+	enchanted=0
+	magical=1
+	nonmagical=2
+	nonsilver=4
+	noncoldiron=11
+	createitem=122
+	teleport=124
+	switchwithtarget=3
+	modifymovementrate1=126
+	summonmonsters=127
+	summonmonsters1=127
+	confusion=128
+	aid=129
+	bless=130
+	chant=131
+	positivechant=131
+	goodchant=131
+	drawuponholymight=132
+	lucknoncumulative=133
+	petrify=134
+	petrification=134
+	polymorph=135
+	forcevisible=136
+	negativechant=137
+	badchant=137
+	displaystring=139
+	playvisualeffectbg1=141
+	visualeffectbg1=141
+	displayportraiticon=142
+	createiteminslot=143
+	disablebutton=144
+	buttonstealth=0
+	buttonthieving=1
+	buttonmagic=2
+	buttonquickspell1=3
+	buttonquickspell2=4
+	buttonquickspell3=5
+	buttonturnundead=6
+	buttontalk=7
+	buttonuseitem=8
+	buttonquickitem1=9
+	buttonbardsong=10
+	buttonquickitem2=11
+	buttonquickitem3=12
+	buttonabilities=13
+	buttonfindtraps=14
+	buttoninventory=15
+	disablespellcasting=145
+	castspell=146
+	castnormally=0
+	castinstantlyatcasterlevel=1
+	castinstantlyatspecifiedlevel=2
+	learnspell=147
+	castspellpoint=148
+	castspellatpoint=148
+	findtraps=150
+	replaceself=151
+	removesilently=0
+	removeviachunkeddeath=1
+	removevianormaldeath=2
+	sanctuary=153
+	entangle=154
+	minorglobe=155
+	protectionfromnormalmissiles=156
+	web=157
+	grease=158
+	mirrorimage=159
+	mirrorimage2=159
+	removesanctuary=160
+	removefear=161
+	cureparalysis=162
+	removeparalysis=162
+	freeaction=163
+	pausetarget=165
+	modifymagicresistance=166
+	modifymissilethac0=167
+	removecreature=168
+	disableportraiticon=169
+	protectionfromportraiticon=169
+	giveability=171
+	removeability=172
+	modifypoisonresistance=173
+	playsound=174
+	holdcreature1=175
+	modifymovementrate2=176
+	useefffile=177
+	modifythac0vscreaturetype=178
+	thac0vscreaturetype=178
+	damagevscreaturetype=179
+	passwall=184
+	holdcreature2=185
+	movecreaturetonewarea=186
+	setlocalvariable=187
+	auracleansing=188
+	modifycastingtime=189
+	modifycastingspeed=189
+	modifyspeedfactor=190
+	modifycastinglevel=191
+	modifycasterlevel=191
+	wizard=0
+	priest=1
+	innate=2
+	invisibilitydetection=193
+	familiardeatheffect=195
+	reflectprojectile=197
+	reflectopcode=198
+	reflectspelllevel=199
+	spellturning=200
+	spelldeflection=201
+	reflectspellschool=202
+	abjuration=1
+	conjuration=2
+	divination=3
+	enchantment=4
+	illusion=5
+	evocation=6
+	necromancy=7
+	alteration=8
+	reflectspelltype=203
+	spellprotections=1
+	specificprotections=2
+	illusionaryprotections=3
+	magicattack=4
+	divinationattack=5
+	combatprotections=7
+	offensivedamage=10
+	disabling=11
+	protectionfromspellschool=204
+	protectionfromspelltype=205
+	protectionfromspell=206
+	reflectspell=207
+	minhp=208
+	minimumhp=208
+	powerwordkill=209
+	powerwordstun=210
+	imprisonment=211
+	freedom=212
+	maze=213
+	selectspell=214
+	playvisualeffectbg2=215
+	visualeffectbg2=215
+	leveldrain=216
+	powerwordsleep=217
+	stoneskin=218
+	modifyacvscreaturetype=219
+	acvscreaturetype=219
+	removespellsofschool=220
+	removespellsbyschool=220
+	removespellsoftype=221
+	removespellsbytype=221
+	teleportfield=222
+	restoration=224
+	removeonespellofschool=229
+	removeonespelloftype=230
+	timestop=231
+	castspelloncondition=232
+	targetcaster=0
+	targetlasthitby=1
+	targetnearestenemy=2
+	targetnearest=3
+	ifhit=0
+	ifseeenemy=1
+	ifhplessthan50percent=2
+	ifhplessthan25percent=3
+	ifhplessthan10percent=4
+	ifhelpless=5
+	ifpoisoned=6
+	ifattacked=7
+	ifwithinrange4=8
+	ifwithinrange10=9
+	iftookdamage=11
+	iftakedamage=11
+	ifcasterkillssomeone=12
+	iftimeofdayisspecial=13
+	daytime=0
+	dusk=1
+	nighttime=2
+	morning=3
+	ifwithinrangespecial=14
+	ifstatespecial=15
+	statenormal=0
+	ifcasterdies=16
+	ifcasterdied=17
+	ifhplessthanspecial=19
+	ifhplessthanspecialpercent=20
+	modifyproficiency=233
+	modifyproficiencies=233
+	contingency=234
+	createcontingency=234
+	wingbuffet=235
+	awayfromtarget=1
+	awayfromsource=2
+	towardstarget=3
+	towardssource=4
+	projectimage=236
+	disintegrate=238
+	farsight=239
+	removeportraiticon=240
+	charm2=241
+	drainitemcharges=243
+	drainwizardspells=244
+	attacknearestcreature=247
+	meleehiteffect=248
+	setmeleeeffect=248
+	rangedhiteffect=249
+	setrangedeffect=249
+	modifyminimumdamage=250
+	modifybardsong=251
+	settrap=252
+	addautomapnote=253
+	removeautomapnote=254
+	createspellsequencer=257
+	spelltrap=259
+	restorelostspells=261
+	modifyvisionrange=262
+	modifyvisualrange=262
+	modifybackstabmultiplier=263
+	setglobalvariable=265
+	modifyglobalvariable=265
+	modifyglobal=265
+	disablestring=267
+	disabledisplaystring=267
+	protectionfromstring=267
+	clearfogofwar=268
+	wizardeye=268
+	shakescreen=269
+	applyrepeatingeff=272
+	valuepersecond=2
+	oncepervalueseconds=3
+	zoneofsweetair=273
+	phase=274
+	modifyhideinshadows=275
+	modifydetectillusion=276
+	modifydetectillusions=276
+	modifysettraps=277
+	modifythac0=278
+	enablebutton=279
+	modifywildsurge=281
+	wildsurgebonus=281
+	useefffileascurse=283
+	modifymeleethac0=284
+	modifymeleedamage=285
+	modifymissiledamage=286
+	removecircle=287
+	modifyfistthac0=288
+	modifyfistdamage=289
+	disablevisualeffects=291
+	protectionfrombackstab=292
+	offscreenai=293
+	disablepermanentdeath=295
+	protectionfromanimation=296
+	protectionfromturnundead=297
+	npcbump=300
+	criticalhitbonus=301
+	modifycriticalhitchance=301
+	withbothweapons=0
+	withthisweapon=1
+	allweapons=0
+	meleeweapons=1
+	missileweapons=2
+	useanyitem=302
+	canuseanyitem=302
+	backstabeveryhit=303
+	backstabeachhit=303
+	backstaboneveryhit=303
+	massraisedead=304
+	modifyoffhandthac0=305
+	modifymainhandthac0=306
+	setlocalvariable=309
+	modifylocalvariable=309
+	protectionfromtimestop=310
+	rest=316
+	haste2=317
+	protectionfromspell2=318
+	removeeffectsbyresource=321
+	modifyturnundeadlevel=323
+	protectionfromspell3=324
+	immunitytospellandmessage=324
+	modifyallsavingthrows=325
+	modifyallsaves=325
+	applyeffectslist=326
+	playvisualeffectiwd=327
+	visualeffectiwd=327
+	setstate=328
+	setspellstate=328
+	floattext=330
+	damagetypebonus=332
+	bonusall=0
+	bonusfire=1
+	bonuscold=2
+	bonuselec=3
+	bonuselectricity=3
+	bonusacid=4
+	bonusmagic=5
+	bonuspoison=6
+	bonusslashing=7
+	bonuspiercing=8
+	bonuscrushing=9
+	bonusmissile=10
+	removeeffect=337
+	removeopcode=337
+	removeeffectsbyopcode=337
+	castspellonbackstab=340
+	backstabhiteffect=340
+	castspelloncriticalhit=341
+	criticalhiteffect=341
+	hpswap=343
+	swaphp=343
+	enchantmentvscreaturetype=344
+	modifyenchantment=345
+	modifysavevsschool=346
+	modifysavingthrowvsschool=346
+	castspelloncriticalmiss=361
+	movementratecheck=363
+	castspellonmovement=366
+	applyspellonmovement=366
+	eeexsettemporaryaiscript=400
+	eeexsetextendedstat=401
+	eeexinvokelua=402
+	eeexscreeneffects=403
+	gulp=16233
+	spellineffective=24534
+	stringpanic=25818
+	stringstunned=26050
+	stringblinded=31786
+END
+
+/**
+ * Patch function. Converts any decimal number into a hexadecimal number.
+ * INT_VAR value      The decimal number to convert.
+ * INT_VAR minDigits  Minimum number of digits for the returned hex value. (default: 1)
+ * INT_VAR prefix     A flag that indicates whether the returned number will be prefixed with "0x". (default: 0)
+ * RET hexNumber      The converted hexadecimal number as string.
+ */
+DEFINE_PATCH_FUNCTION TO_HEX_NUMBER
+INT_VAR
+  value     = 0
+  minDigits = 1
+  prefix    = 0
+RET
+  hexNumber
+BEGIN
+  SET minDigits = (minDigits < 1) ? 1 : minDigits
+  SET minDigits = (minDigits > 8) ? 8 : minDigits
+  TEXT_SPRINT hexNumber ~~
+  PATCH_DEFINE_ARRAY digit BEGIN ~0~ ~1~ ~2~ ~3~ ~4~ ~5~ ~6~ ~7~ ~8~ ~9~ ~a~ ~b~ ~c~ ~d~ ~e~ ~f~ END
+
+  PATCH_IF (value < 0) BEGIN
+    SET signed = 1
+    SET value = 0 - value
+  END ELSE BEGIN
+    SET signed = 0
+  END
+
+  WHILE (value != 0) BEGIN
+    SET curDigit = value BAND 0xf
+    SET value = value BLSR 4
+    TEXT_SPRINT hexDigit $EVAL digit(~%curDigit%~)
+    TEXT_SPRINT hexNumber ~%hexDigit%%hexNumber%~
+  END
+
+  WHILE (STRING_LENGTH ~%hexNumber%~ < minDigits) BEGIN
+    TEXT_SPRINT hexNumber ~0%hexNumber%~
+  END
+
+  PATCH_IF (prefix) BEGIN
+    TEXT_SPRINT hexNumber ~0x%hexNumber%~
+  END
+
+  PATCH_IF (signed) BEGIN
+    TEXT_SPRINT hexNumber ~-%hexNumber%~
+  END
+END
+
+// Action version of TO_HEX_NUMBER
+DEFINE_ACTION_FUNCTION TO_HEX_NUMBER
+INT_VAR
+  value     = 0
+  minDigits = 1
+  prefix    = 0
+RET
+  hexNumber
+BEGIN
+  OUTER_PATCH ~~ BEGIN
+    LPF TO_HEX_NUMBER INT_VAR value = value minDigits = minDigits prefix = prefix RET hexNumber END
+  END
+END
+
+// Internally used: Animation slots reserved by vanilla or mod-added game creatures (in hexadecimal format)
+// Mods with fixed animation slots that are currently considered:
+// - Bearwalker + extended Werebear animation
+// - Pack Mule
+OUTER_TEXT_SPRINT animationSlots ~"0410" "1000" "1003" "1004" "1100" "1101" "1102" "1103" "1104" "1105" "1200" "1201" "1202" "1203" "1204" "1205" "1206" "1207" "1208" "1300" "2000" "2100" "2200" "2300" "3000" "3001" "4000" "4001" "4002" "4010" "4012" "4100" "4101" "4102" "4110" "4112" "4200" "4300" "4400" "4410" "4500" "4600" "4700" "4710" "4800" "5000" "5001" "5002" "5003" "5010" "5011" "5012" "5013" "5100" "5101" "5102" "5103" "5110" "5111" "5112" "5113" "5200" "5201" "5202" "5210" "5211" "5212" "5300" "5301" "5302" "5303" "5310" "5311" "5312" "5313" "6000" "6001" "6002" "6003" "6004" "6005" "6010" "6011" "6012" "6013" "6014" "6015" "6100" "6101" "6102" "6103" "6104" "6105" "6110" "6111" "6112" "6113" "6114" "6115" "6200" "6201" "6202" "6204" "6205" "6210" "6211" "6212" "6214" "6215" "6300" "6301" "6302" "6303" "6304" "6305" "6310" "6311" "6312" "6313" "6314" "6315" "6400" "6401" "6402" "6403" "6404" "6405" "6406" "6500" "6510" "6621" "7000" "7001" "7100" "7101" "7200" "7201" "7202" "7203" "7300" "7301" "7302" "7310" "7311" "7312" "7313" "7314" "7320" "7321" "7400" "7401" "7402" "7500" "7501" "7600" "7601" "7602" "7603" "7604" "7700" "7701" "7702" "7703" "7800" "7801" "7802" "7900" "7901" "7902" "7903" "7904" "7a00" "7a01" "7a02" "7a03" "7a04" "7b00" "7b01" "7b02" "7b03" "7b04" "7b05" "7b06" "7c00" "7c01" "7d00" "7d01" "7d02" "7d03" "7d04" "7d05" "7d06" "7d07" "7d08" "7e00" "7e01" "7f00" "7f01" "7f02" "7f03" "7f04" "7f05" "7f06" "7f07" "7f08" "7f09" "7f0a" "7f0b" "7f0c" "7f0d" "7f0e" "7f0f" "7f10" "7f11" "7f12" "7f13" "7f14" "7f15" "7f16" "7f17" "7f18" "7f19" "7f20" "7f21" "7f22" "7f23" "7f24" "7f27" "7f28" "7f29" "7f2a" "7f2b" "7f2c" "7f2d" "7f2e" "7f2f" "7f30" "7f31" "7f32" "7f33" "7f34" "7f35" "7f36" "7f37" "7f38" "7f39" "7f3a" "7f3b" "7f3c" "7f3d" "7f3e" "7f3f" "7f40" "7f41" "7f42" "7f43" "7f44" "7f45" "7f46" "7f47" "7f48" "7f49" "7f4a" "7f4b" "7f4c" "7f4d" "7f4e" "7f4f" "7f50" "7f51" "7f52" "7f53" "7f54" "7f55" "7f56" "7f57" "7f58" "7f59" "7f5a" "7f5b" "7f5c" "7f5d" "7f5e" "7f5f" "7f60" "7f61" "7f62" "8000" "8100" "8200" "9000" "a000" "a100" "a200" "a201" "a202" "b000" "b100" "b200" "b210" "b300" "b310" "b400" "b410" "b500" "b510" "b600" "b610" "b700" "c000" "c100" "c200" "c300" "c400" "c500" "c600" "c610" "c700" "c710" "c800" "c810" "c900" "c910" "ca00" "ca10" "cb00" "cc00" "cc01" "cc02" "cc04" "d000" "d100" "d200" "d300" "d400" "e000" "e010" "e020" "e040" "e050" "e060" "e070" "e080" "e090" "e0a0" "e0b0" "e0c0" "e0d0" "e0e0" "e0f0" "e0f1" "e0f2" "e200" "e210" "e220" "e230" "e240" "e241" "e242" "e243" "e244" "e245" "e246" "e247" "e248" "e249" "e24a" "e24b" "e24c" "e24d" "e24e" "e24f" "e250" "e251" "e252" "e253" "e254" "e255" "e256" "e257" "e258" "e259" "e25a" "e25b" "e25c" "e25d" "e25e" "e25f" "e260" "e261" "e262" "e263" "e264" "e265" "e266" "e267" "e26a" "e26b" "e26d" "e26e" "e26f" "e270" "e271" "e272" "e273" "e274" "e276" "e279" "e27d" "e27e" "e27f" "e280" "e281" "e282" "e283" "e288" "e289" "e28a" "e28b" "e28c" "e28d" "e28e" "e28f" "e290" "e291" "e292" "e293" "e294" "e300" "e310" "e320" "e330" "e400" "e410" "e420" "e430" "e440" "e441" "e442" "e443" "e444" "e500" "e510" "e520" "e600" "e610" "e6fe" "e700" "e710" "e720" "e800" "e810" "e820" "e830" "e840" "e900" "e910" "ea00" "ea10" "ea20" "eb00" "eb10" "eb20" "ec00" "ec10" "ec20" "ed00" "ed10" "ed20" "ee00" "ee10" "ef10" "f000" "f001" "f002" "f003" "f004" "f005" "f006" "f007" "f008" "f009" "f00a" "f00b" "f00c" "f00d" "f00e" "f00f" "f010" "f011" "f012" "f013" "f014" "f015" "f016" "f017" "f018" "f019" "f01a" "f01b" "f01c" "f01d" "f01e" "f01f" "f020" "f021" "f022" "f023" "f024" "f025" "f026" "f027" "f028" "f029" "f02a" "f02b" "f02c" "f02d" "f02e" "f02f" "f030" "f031" "f032" "f033" "f034" "f035" "f036" "f037" "f038" "f039" "f03a" "f03b" "f03c" "f03d" "f03e" "f03f" "f040" "f041" "f042" "f043" "f044" "f045" "f046" "f047" "f048" "f049" "f04a" "f04b" "f04c" "f04d" "f04e" "f04f" "f050" "f051" "f052" "f053" "f054" "f055" "f056" "f057" "f058" "f059" "f05a" "f05b" "f05c" "f05d" "f05e" "f05f" "f060" "f061" "f062" "f100" "f101" "f22e" "f80e"~
+
+/**
+ * Patch function. Returns the first free creature animation slot in the range defined by slotMin and slotMax.
+ * INT_VAR slotMin    Lowest available creature animation slot for the animation, inclusive. (Default: 0)
+ * INT_VAR slotMax    Highest available creature animation slot for the animation, exclusive.
+ *                    (Default: highest value for slot type indicated by "slotMin")
+ * INT_VAR slotSteps  How many slots to skip after each iteration, starting from slotMin.
+ *                    Setting this parameter is useful if compatible animation slots are always 
+ *                    a fixed distance apart (e.g. at a distance of 0x10 each). (Default: 1)
+ * RET slot           A free animation slot. Returns -1 if none are found in the given range.
+ */
+DEFINE_PATCH_FUNCTION FIND_FREE_ANIM_SLOT
+INT_VAR
+  slotMin   = 0
+  slotMax   = (slotMin BAND 0xf000) + 0x1000
+  slotSteps = 1
+RET
+  slot
+BEGIN
+  SET slot = "-1"
+  SET slotSteps = (slotSteps < 1) ? 1 : slotSteps
+  SET slotMin = (slotMin < 0) ? 0 : slotMin
+  SET slotMax = (slotMax < 0) ? 0 : slotMax
+  PATCH_IF (slotMax < slotMin) BEGIN
+    SET tmp = slotMin
+    SET slotMin = slotMax
+    SET slotMax = tmp
+  END
+
+  INNER_PATCH ~%animationSlots%~ BEGIN
+    FOR (idx = slotMin; idx < slotMax; idx += slotSteps) BEGIN
+      LOOKUP_IDS_SYMBOL_OF_INT name ~animate~ idx
+      PATCH_IF (~%name%~ STR_EQ ~%idx%~) BEGIN
+        LPF TO_HEX_NUMBER INT_VAR value = idx minDigits = 4 RET hexNumber END
+        PATCH_IF (NOT FILE_EXISTS_IN_GAME ~%hexNumber%.ini~ AND 
+                  ~%slotList%~ STRING_CONTAINS_REGEXP ~"%hexNumber%"~ != 0) BEGIN
+          SET slot = idx
+          SET idx = slotMax
+        END
+      END
+    END
+  END
+END
+
+// Action version of FIND_FREE_ANIM_SLOT
+DEFINE_ACTION_FUNCTION FIND_FREE_ANIM_SLOT
+INT_VAR
+  slotMin   = 0
+  slotMax   = (slotMin BAND 0xf000) + 0x1000
+  slotSteps = 1
+RET
+  slot
+BEGIN
+  OUTER_PATCH ~~ BEGIN
+    LPF FIND_FREE_ANIM_SLOT
+    INT_VAR
+      slotMin = slotMin
+      slotMax = slotMax
+      slotSteps = slotSteps
+    RET
+      slot
+    END
+  END
+END
+
+DEFINE_ACTION_FUNCTION ADD_ANIMATION
+	INT_VAR
+		minSlot=0
+		start_animate=1
+		start_anisnd=0
+	STR_VAR
+		ini=~~
+		directory=~~
+	RET
+		end_animate
+		end_anisnd
+		slotDecimal
+		slotHex
+BEGIN
+	LAF FIND_FREE_ANIM_SLOT INT_VAR slotMin=minSlot RET slotDecimal=slot END
+	LAF TO_HEX_NUMBER INT_VAR value=slotDecimal RET hexNumber END
+	OUTER_TEXT_SPRINT slotHex ~%hexNumber%~
+	ACTION_TO_UPPER %slotHex%
+	ACTION_IF (~%directory%~ STRING_EQUAL_CASE ~~) BEGIN
+		COPY_EXISTING ~%ini%.ini~ ~override/%slotHex%.ini~
+			READ_2DA_ENTRY 0 1 3 animationprefix
+			READ_2DA_ENTRY 0 2 3 animationname
+	END ELSE BEGIN
+		COPY ~%directory%/%ini%.ini~ ~override/%slotHex%.ini~
+			READ_2DA_ENTRY 0 1 3 animationprefix
+			READ_2DA_ENTRY 0 2 3 animationname
+	END
+	ACTION_TO_UPPER %animationname%
+
+	COPY_EXISTING ~animate.ids~ ~override~
+		FOR (i = start_animate; i < 0xFFFF; ++i) BEGIN
+			READ_2DA_ENTRY i 0 2 current
+			PATCH_IF (current > slotDecimal) BEGIN
+				INSERT_2DA_ROW i 2 ~0x%slotHex% %animationname%~
+				end_animate=i
+				i=0xFFFF
+			END
+		END
+	
+	COPY_EXISTING ~anisnd.ids~ ~override~
+		FOR (i = start_anisnd; i < 0xFFFF; ++i) BEGIN
+			READ_2DA_ENTRY i 0 3 current
+			PATCH_IF (current > slotDecimal) BEGIN
+				INSERT_2DA_ROW i 3 ~0x%slotHex% %animationprefix%    CGAMEANIMATIONTYPE_%animationname%~
+				end_anisnd=i
+				i=0xFFFF
+			END
+		END
+END
+
+DEFINE_ACTION_FUNCTION ~GET_UNIQUE_SPELL_NAME~
+	STR_VAR
+		prefix=~DEFA~
+	RET
+		filename
+	BEGIN
+		OUTER_FOR(i=0; i<10; ++i) BEGIN
+			OUTER_FOR(j=0; j<10; ++j) BEGIN
+				ACTION_IF (NOT FILE_EXISTS_IN_GAME ~%prefix%%i%%j%.spl~ AND NOT (i=0 AND j=0)) BEGIN
+					OUTER_TEXT_SPRINT filename ~%prefix%%i%%j%~
+					OUTER_SET i = 10
+					OUTER_SET j = 10
+				END
+			END
+		END
+	END
+
+DEFINE_PATCH_FUNCTION ~ALTER_ACTOR_AT_POINT~
+	INT_VAR
+		match_x_coord=3
+		match_y_coord=3
+		x_coord=3
+		y_coord=3
+		schedule=0xEFFFFFFF
+	STR_VAR
+		actor_name=~ndgnfldiiwds~
+		cre_file=~pbfjkwxz~
+	BEGIN
+		READ_LONG 0x54 actoroffset
+		READ_SHORT 0x58 actornumber
+		FOR (i = 0; i < actornumber; ++i) BEGIN
+			SET offset = actoroffset + (i * 0x110)
+			READ_SHORT (offset + 0x20) xpos
+			READ_SHORT (offset + 0x22) ypos
+			PATCH_IF (xpos = match_x_coord AND ypos = match_y_coord) BEGIN
+				PATCH_IF (schedule != 0xEFFFFFFF) BEGIN
+					WRITE_LONG (offset + 0x40) schedule
+				END
+				PATCH_IF (x_coord != 3 AND y_coord != 3) BEGIN
+					WRITE_SHORT (offset + 0x20) x_coord
+					WRITE_SHORT (offset + 0x22) y_coord
+					WRITE_SHORT (offset + 0x24) x_coord
+					WRITE_SHORT (offset + 0x26) y_coord
+				END
+				PATCH_IF (~%actor_name%~ STRING_EQUAL ~ndgnfldiiwds~)=0 BEGIN
+					WRITE_ASCIIE offset ~%actor_name%~ #32
+				END
+				PATCH_IF (~%cre_file%~ STRING_EQUAL ~pbfjkwxz~)=0 BEGIN
+					WRITE_ASCIIE (offset + 0x80) ~%cre_file%~ #8
+				END
+			END
+		END
+	END
+
+DEFINE_PATCH_FUNCTION ~ADD_ITEM_HEADER~
+  INT_VAR
+    type=3
+    required_id=0
+    location=3
+    alt_dicesize=0
+    target=1
+    target_count=0
+    range=0
+    projectile_type=0
+    alt_dicenumber=0
+    speed=0
+    alt_damage=0
+    thaco=0
+    dicesize=0
+    school=0
+    dicenumber=0
+    sectype=0
+    damage=0
+    damage_type=0
+    charges=0
+    depletion=0
+    flags=0
+    projectile=1
+    overhand=0
+    backhand=0
+    thrust=0
+    is_bow=0
+    is_xbow=0
+    is_sling=0
+
+    copy_header=0
+    insert_point=~-1~
+  STR_VAR
+    icon=~~
+  RET
+    insert_point
+BEGIN
+  hs=0x38
+
+  READ_LONG 0x64 ho
+  READ_SHORT 0x68 hc
+  READ_LONG 0x6a eo
+  insert_point = (insert_point>hc || insert_point<0) ? hc : insert_point
+  copy_header = (copy_header<0) ? 0 : copy_header
+
+  PATCH_IF copy_header>hc BEGIN
+    PATCH_WARN ~Unable to copy %copy_header%th header, %SOURCE_FILE% contains only %hc% headers!~
+  END ELSE BEGIN
+    INSERT_BYTES ho+insert_point*hs hs
+    hc+=1
+    eo+=hs
+    PATCH_IF copy_header BEGIN
+      READ_SHORT ho+(copy_header - 1)*hs+0x1e ec
+      READ_SHORT ho+(copy_header - 1)*hs+0x20 ei
+      READ_ASCII eo+ei*0x30 effs (ec*0x30)
+      READ_ASCII ho+(copy_header - 1)*hs copy (hs)
+      WRITE_ASCIIE ho+insert_point*hs ~%copy%~ (hs)
+    END
+    WRITE_SHORT 0x68 hc
+    WRITE_LONG 0x6a eo
+
+    READ_SHORT 0x70 ei
+    FOR (i=ho;i<ho+hc*hs;i+=hs) BEGIN
+      READ_SHORT i+0x1e ec
+      WRITE_SHORT i+0x20 ei
+      ei+=ec
+    END
+
+    PATCH_IF copy_header BEGIN
+      READ_SHORT ho+insert_point*hs+0x1e ec
+      READ_SHORT ho+insert_point*hs+0x20 ei
+      INSERT_BYTES eo+ei*0x30 ec*0x30
+      WRITE_ASCIIE eo+ei*0x30 ~%effs%~ (ec*0x30)
+    END ELSE BEGIN
+      off=ho+insert_point*hs
+      WRITE_BYTE off type
+      WRITE_BYTE off+0x1 required_id
+      WRITE_BYTE off+0x2 location
+      WRITE_BYTE off+0x3 alt_dicesize
+      WRITE_ASCIIE off+0x4 ~%icon%~ (8)
+      WRITE_BYTE off+0xc target
+      WRITE_BYTE off+0xd target_count
+      WRITE_SHORT off+0xe range
+      WRITE_BYTE off+0x10 projectile_type
+      WRITE_BYTE off+0x11 alt_dicenumber
+      WRITE_BYTE off+0x12 speed
+      WRITE_BYTE off+0x13 alt_damage
+      WRITE_SHORT off+0x14 thaco
+      WRITE_BYTE off+0x16 dicesize
+      WRITE_BYTE off+0x17 school
+      WRITE_BYTE off+0x18 dicenumber
+      WRITE_BYTE off+0x19 sectype
+      WRITE_SHORT off+0x1a damage
+      WRITE_SHORT off+0x1c damage_type
+      WRITE_SHORT off+0x22 charges
+      WRITE_SHORT off+0x24 depletion
+      WRITE_LONG off+0x26 flags
+      WRITE_SHORT off+0x2a projectile
+      WRITE_SHORT off+0x2c overhand
+      WRITE_SHORT off+0x2e backhand
+      WRITE_SHORT off+0x30 thrust
+      WRITE_SHORT off+0x32 is_bow
+      WRITE_SHORT off+0x34 is_xbow
+      WRITE_SHORT off+0x36 is_sling
+    END
+  END
+END
+
+DEFINE_PATCH_FUNCTION ~ADD_SPELL_HEADER~
+	INT_VAR
+		type=1
+		location=4
+		target=1
+		target_count=0
+		range=0
+		required_level=1
+		speed=0
+		projectile=1
+
+		copy_header=0
+		insert_point=~-1~
+	STR_VAR
+		icon=~~
+	RET
+		insert_point
+BEGIN
+  hs=0x28
+
+  READ_LONG 0x64 ho
+  READ_SHORT 0x68 hc
+  READ_LONG 0x6a eo
+  insert_point = (insert_point>hc || insert_point<0) ? hc : insert_point
+  copy_header = (copy_header<0) ? 0 : copy_header
+
+  PATCH_IF copy_header>hc BEGIN
+    PATCH_WARN ~Unable to copy %copy_header%th header, %SOURCE_FILE% contains only %hc% headers!~
+  END ELSE BEGIN
+    INSERT_BYTES ho+insert_point*hs hs
+    hc+=1
+    eo+=hs
+    PATCH_IF copy_header BEGIN
+      READ_SHORT ho+(copy_header - 1)*hs+0x1e ec
+      READ_SHORT ho+(copy_header - 1)*hs+0x20 ei
+      READ_ASCII eo+ei*0x30 effs (ec*0x30)
+      READ_ASCII ho+(copy_header - 1)*hs copy (hs)
+      WRITE_ASCIIE ho+insert_point*hs ~%copy%~ (hs)
+    END
+    WRITE_SHORT 0x68 hc
+    WRITE_LONG 0x6a eo
+
+    READ_SHORT 0x70 ei
+    FOR (i=ho;i<ho+hc*hs;i+=hs) BEGIN
+      READ_SHORT i+0x1e ec
+      WRITE_SHORT i+0x20 ei
+      ei+=ec
+    END
+
+    PATCH_IF copy_header BEGIN
+      READ_SHORT ho+insert_point*hs+0x1e ec
+      READ_SHORT ho+insert_point*hs+0x20 ei
+      INSERT_BYTES eo+ei*0x30 ec*0x30
+      WRITE_ASCIIE eo+ei*0x30 ~%effs%~ (ec*0x30)
+    END ELSE BEGIN
+      off=ho+insert_point*hs
+      WRITE_BYTE off type
+      WRITE_BYTE off+0x2 location
+      WRITE_ASCIIE off+0x4 ~%icon%~ (8)
+      WRITE_BYTE off+0xc target
+      WRITE_BYTE off+0xd target_count
+      WRITE_SHORT off+0xe range
+      WRITE_SHORT off+0x10 required_level
+      WRITE_LONG off+0x12 speed
+      WRITE_SHORT off+0x26 projectile
+    END
+  END
+END
+
+DEFINE_ACTION_FUNCTION ADD_SPLPROT_CONDITION
+	STR_VAR
+		splprot_stat=~*~
+		splprot_value=~*~
+		splprot_relation=~*~
+	RET
+		splprot_slot
+BEGIN
+	COPY_EXISTING ~splprot.2da~ ~override~
+		COUNT_2DA_ROWS 4 numrows
+		INSERT_2DA_ROW numrows 4 ~%numrows%        %splprot_stat%         %splprot_value%        %splprot_relation%~
+		splprot_slot=numrows
+END
+
+DEFINE_ACTION_FUNCTION ~ADD_AREA_ACTORS_2DA~
+	INT_VAR
+		addthroughscript=1
+	STR_VAR
+		variablename=~ME_Add_Creatures~
+		the2da=~~
+BEGIN
+	SILENT
+	COPY_EXISTING ~%the2da%.2da~ ~override~
+		COUNT_2DA_COLS numcolumns
+		COUNT_2DA_ROWS numcolumns numrows		
+		TEXT_SPRINT previousarea ~DEFA~
+		PATCH_IF addthroughscript=1 BEGIN
+			FOR (i = 0; i < numrows; ++i) BEGIN
+				READ_2DA_ENTRY i 0 numcolumns thearea
+				READ_2DA_ENTRY i 1 numcolumns thex
+				READ_2DA_ENTRY i 2 numcolumns they
+				READ_2DA_ENTRY i 4 numcolumns thefile
+				READ_2DA_ENTRY i 5 numcolumns theorientation
+				PATCH_IF !(FILE_EXISTS_IN_GAME ~%thearea%.bcs~) BEGIN
+					INNER_ACTION BEGIN
+<<<<<<<< .../%thearea%.baf
+>>>>>>>>
+COMPILE ~.../%thearea%.baf~ EVAL
+					END
+				END
+				PATCH_IF !(~%thearea%~ STRING_EQUAL_CASE ~%previousarea%~) BEGIN
+					INNER_ACTION BEGIN
+<<<<<<<< .../script.baf
+	
+IF
+	Global("%variablename%","MYAREA",0)
+THEN
+	RESPONSE #100
+		SetGlobal("%variablename%","MYAREA",1)
+END
+	
+>>>>>>>>
+	
+EXTEND_TOP ~%thearea%.bcs~ ~.../script.baf~ EVAL
+					END
+				END
+				INNER_ACTION BEGIN
+					COPY_EXISTING ~%thearea%.bcs~ ~override~
+						DECOMPILE_BCS_TO_BAF
+						REPLACE_TEXTUALLY CASE_INSENSITIVE ~SetGlobal(\"%variablename%\",\"MYAREA\",1)~ ~SetGlobal("%variablename%","MYAREA",1)
+	CreateCreatureImpassable("%thefile%",[%thex%.%they%],%theorientation%)~
+						COMPILE_BAF_TO_BCS
+				END
+				TEXT_SPRINT previousarea ~%thearea%~
+			END
+		END
+		ELSE BEGIN
+			FOR (i = 0; i < numrows; ++i) BEGIN
+				READ_2DA_ENTRY i 0 numcolumns thearea
+				READ_2DA_ENTRY i 1 numcolumns thex
+				READ_2DA_ENTRY i 2 numcolumns they
+				READ_2DA_ENTRY i 3 numcolumns thename
+				READ_2DA_ENTRY i 4 numcolumns thefile
+				READ_2DA_ENTRY i 5 numcolumns theorientation
+				INNER_ACTION BEGIN
+					COPY_EXISTING ~%thearea%.are~ ~override~
+						LPF fj_are_structure INT_VAR fj_loc_x=thex fj_loc_y=they fj_orientation=theorientation STR_VAR fj_structure_type=~actor~ fj_name= EVAL ~%thename%~ fj_cre_resref= EVAL ~%thefile%~ END
+				END
+				TEXT_SPRINT previousarea ~%thearea%~
+			END
+		END
+		BUT_ONLY_IF_IT_CHANGES
+	VERBOSE
+END
+
+DEFINE_PATCH_FUNCTION ~GET_2DA_ROW~
+	INT_VAR
+		numcolumns=0
+		match_column=0
+		found_it=0
+	STR_VAR
+		match=~DEFA~
+	RET
+		numcols
+		matched
+BEGIN
+		COUNT_2DA_ROWS numcolumns numrows
+		FOR (i = 0; i < numrows; ++i) BEGIN
+			READ_2DA_ENTRY i match_column numcolumns string_to_match
+			PATCH_IF (~%string_to_match%~ STRING_EQUAL_CASE ~%match%~) BEGIN
+				matched = i
+				found_it = 1
+				i = numrows
+			END
+		END
+		numcols = numcolumns
+		PATCH_IF (found_it = 0) BEGIN
+			PATCH_FAIL ~GET_2DA_ROW: Could not find a row that contains %match% in column %match_column%.~
+		END
+END
+
+DEFINE_ACTION_FUNCTION ~SPELL_EXISTS_AND_HAS_NAME~
+	STR_VAR
+		resource=~DEFA~
+		match_name=~DEFA~
+		match_nameor=~DEFA~
+
+	RET
+		spell_found
+BEGIN
+		OUTER_SET spell_found = 0
+		COPY_EXISTING ~%resource%.spl~ ~override~
+			PATCH_IF !(~%match_name%~ STRING_EQUAL_CASE ~DEFA~) BEGIN
+				READ_LONG NAME1 description_ref
+				GET_STRREF description_ref description_old
+				PATCH_IF !(~%description_old%~ STRING_CONTAINS_REGEXP ~%match_name%~) BEGIN
+					spell_found = 1
+				END		
+			END
+			PATCH_IF !(~%match_nameor%~ STRING_EQUAL_CASE ~DEFA~) BEGIN
+				READ_LONG NAME1 description_ref
+				GET_STRREF description_ref description_old
+				PATCH_IF !(~%description_old%~ STRING_CONTAINS_REGEXP ~%match_nameor%~) BEGIN
+					spell_found = 1
+				END		
+			END
+			IF_EXISTS
+			BUT_ONLY_IF_IT_CHANGES
+END
+
+DEFINE_ACTION_FUNCTION ~ADD_PERMANENT_SPELL~
+	INT_VAR
+		level=0xDEFA
+		type=0xDEFA
+		make_selectable=1
+	STR_VAR
+		spell=~~
+		permanent_version=~~
+		permanent_2da_good_cleric=~mepglv~
+		permanent_2da_neutral_cleric=~mepnlv~
+		permanent_2da_evil_cleric=~mepelv~
+		permanent_2da_druid=~mepdlv~
+		permanent_2da_wizard=~mepwlv~
+BEGIN
+
+ACTION_IF make_selectable = 1 BEGIN
+
+	COPY_EXISTING ~%spell%.spl~ ~override/%permanent_version%.spl~
+		PATCH_IF level = 0xDEFA BEGIN
+			READ_LONG 0x34 level
+		END
+		PATCH_IF type = 0xDEFA BEGIN
+			READ_SHORT 0x1c type
+			type = type - 1
+		END
+		me_castable_by_good_cleric = 0
+		me_castable_by_neutral_cleric = 0
+		me_castable_by_evil_cleric = 0
+		me_castable_by_druid = 0
+		PATCH_IF type = 1 BEGIN
+			READ_LONG 0x1e me_spell_unusability
+			PATCH_IF ((me_spell_unusability BAND 0b01000000000000000000000000000000) = 0b00000000000000000000000000000000) BEGIN
+				PATCH_IF ((me_spell_unusability BAND 0b00000000000000000000000000000100) = 0b00000000000000000000000000000000) BEGIN
+					me_castable_by_good_cleric = 1
+				END
+				PATCH_IF ((me_spell_unusability BAND 0b00000000000000000000000000001000) = 0b00000000000000000000000000000000) BEGIN
+					me_castable_by_neutral_cleric = 1
+				END
+				PATCH_IF ((me_spell_unusability BAND 0b00000000000000000000000000000010) = 0b00000000000000000000000000000000) BEGIN
+					me_castable_by_evil_cleric = 1
+				END
+			END
+			PATCH_IF ((me_spell_unusability BAND 0b10000000000000000000000000000000) = 0b00000000000000000000000000000000) BEGIN
+				me_castable_by_druid = 1
+			END
+		END
+	
+		FOR (i = 2; i <= 60; ++i) BEGIN
+			LPF DELETE_SPELL_HEADER INT_VAR header_type=(0 - 1) min_level=i END
+		END
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=1 END
+		LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=(0 - 1) END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=modifycastinglevel target=1 timing=10 duration=3 parameter1=60 parameter2=type END
+		IF_EXISTS
+	
+	COPY_EXISTING ~%permanent_version%.spl~ ~override~
+		READ_BYTE 0x7e me_target
+		PATCH_IF me_target = 4 BEGIN
+			LPF ADD_SPELL_EFFECT INT_VAR opcode=castspellpoint target=1 timing=1 parameter2=1 STR_VAR resource= EVAL ~%spell%~ END
+		END
+		ELSE BEGIN
+			LPF ADD_SPELL_EFFECT INT_VAR opcode=castspell target=2 timing=1 parameter2=1 STR_VAR resource= EVAL ~%spell%~ END
+		END
+		INNER_ACTION BEGIN
+			ACTION_IF me_castable_by_good_cleric = 1 BEGIN
+				OUTER_FOR (i = level; i <= 7; ++i) BEGIN
+					APPEND ~%permanent_2da_good_cleric%%i%.2da~ ~%spell% %permanent_version% 3~
+				END
+			END
+			ACTION_IF me_castable_by_neutral_cleric = 1 BEGIN
+				OUTER_FOR (i = level; i <= 7; ++i) BEGIN
+					APPEND ~%permanent_2da_neutral_cleric%%i%.2da~ ~%spell% %permanent_version% 3~
+				END
+			END
+			ACTION_IF me_castable_by_evil_cleric = 1 BEGIN
+				OUTER_FOR (i = level; i <= 7; ++i) BEGIN
+					APPEND ~%permanent_2da_evil_cleric%%i%.2da~ ~%spell% %permanent_version% 3~
+				END
+			END
+			ACTION_IF me_castable_by_druid = 1 BEGIN
+				OUTER_FOR (i = level; i <= 7; ++i) BEGIN
+					APPEND ~%permanent_2da_druid%%i%.2da~ ~%spell% %permanent_version% 3~
+				END
+			END
+			ACTION_IF type = 0 BEGIN
+				OUTER_FOR (i = level; i <= 9; ++i) BEGIN
+					APPEND ~%permanent_2da_wizard%%i%.2da~ ~%spell% %permanent_version% 3~
+				END
+			END
+		END
+		IF_EXISTS
+
+END
+
+COPY_EXISTING ~%spell%.spl~ ~override~
+	READ_SHORT 0x68 me_numheaders
+	me_off = 0x72
+	FOR (i = 0; i < me_numheaders; ++i) BEGIN
+		READ_SHORT (me_off + 0x10) me_min_level
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=(i + 1) insert_point=(i + me_numheaders) END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1 + me_numheaders) min_level=(me_min_level + 60) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1 + me_numheaders) duration_high=3600000 END
+		me_off = me_off + 0x28
+	END
+	IF_EXISTS
+END
+
+DEFINE_PATCH_FUNCTION ~REPLACE_IN_SPELL_DESCRIPTION~
+	INT_VAR
+		match_case=0
+		new_string=0
+	STR_VAR
+		match=~DEFA~
+		replace_with=~~
+BEGIN
+	READ_LONG UNIDENTIFIED_DESC description_ref
+	GET_STRREF description_ref description_old
+	INNER_PATCH_SAVE description_new ~%description_old%~ BEGIN
+		PATCH_IF match_case = 0 BEGIN
+			REPLACE_TEXTUALLY CASE_INSENSITIVE ~%match%~ ~%replace_with%~
+		END
+		ELSE BEGIN
+			REPLACE_TEXTUALLY CASE_SENSITIVE ~%match%~ ~%replace_with%~
+		END
+	END
+	PATCH_IF new_string = 0 BEGIN
+		INNER_ACTION BEGIN
+			STRING_SET_EVALUATE description_ref ~%description_new%~
+		END
+	END
+	ELSE BEGIN
+		SAY_EVALUATED UNIDENTIFIED_DESC ~%description_new%~
+	END
+END
+
+DEFINE_ACTION_FUNCTION ~ACTION_APPEND_TO_STRING~
+	INT_VAR
+		strref=(0 - 1)
+		new_string=0
+	STR_VAR
+		newtext=~~
+	RET
+		new_strref
+		description_new
+BEGIN
+	ACTION_GET_STRREF strref description_old
+	OUTER_SPRINT description_new ~%description_old%~ ^ ~%newtext%~
+	ACTION_IF new_string = 0 BEGIN
+		STRING_SET_EVALUATE strref ~%description_new%~
+	END
+	OUTER_SET new_strref = RESOLVE_STR_REF(~%description_new%~)
+END
+
+DEFINE_PATCH_FUNCTION ~PATCH_APPEND_TO_STRING~
+	INT_VAR
+		strref=(0 - 1)
+		new_string=0
+	STR_VAR
+		newtext=~~
+	RET
+		new_strref
+		description_new
+BEGIN
+	GET_STRREF strref description_old
+	SPRINT description_new ~%description_old%~ ^ ~%newtext%~
+	PATCH_IF new_string = 0 BEGIN
+		INNER_ACTION BEGIN
+			STRING_SET_EVALUATE strref ~%description_new%~
+		END
+	END
+	new_strref = RESOLVE_STR_REF(~%description_new%~)
+END
+
+DEFINE_ACTION_FUNCTION ~ACTION_REPLACE_IN_STRING~
+	INT_VAR
+		strref=(0 - 1)
+		match_case=0
+		new_string=0
+	STR_VAR
+		match=~DEFA~
+		replace_with=~~
+	RET
+		new_strref
+		description_new
+BEGIN
+	ACTION_GET_STRREF strref description_old
+	OUTER_PATCH_SAVE description_new ~%description_old%~ BEGIN
+		PATCH_IF match_case = 0 BEGIN
+			REPLACE_TEXTUALLY CASE_INSENSITIVE ~%match%~ ~%replace_with%~
+		END
+		ELSE BEGIN
+			REPLACE_TEXTUALLY CASE_SENSITIVE ~%match%~ ~%replace_with%~
+		END
+	END
+	ACTION_IF new_string = 0 BEGIN
+		STRING_SET_EVALUATE strref ~%description_new%~
+	END
+	OUTER_SET new_strref = RESOLVE_STR_REF(~%description_new%~)
+END
+
+DEFINE_PATCH_FUNCTION ~PATCH_REPLACE_IN_STRING~
+	INT_VAR
+		strref=(0 - 1)
+		match_case=0
+		new_string=0
+	STR_VAR
+		match=~DEFA~
+		replace_with=~~
+	RET
+		new_strref
+		description_new
+BEGIN
+	GET_STRREF strref description_old
+	INNER_PATCH_SAVE description_new ~%description_old%~ BEGIN
+		PATCH_IF match_case = 0 BEGIN
+			REPLACE_TEXTUALLY CASE_INSENSITIVE ~%match%~ ~%replace_with%~
+		END
+		ELSE BEGIN
+			REPLACE_TEXTUALLY CASE_SENSITIVE ~%match%~ ~%replace_with%~
+		END
+	END
+	PATCH_IF new_string = 0 BEGIN
+		INNER_ACTION BEGIN
+			STRING_SET_EVALUATE strref ~%description_new%~
+		END
+	END
+	new_strref = RESOLVE_STR_REF(~%description_new%~)
+END
+
+DEFINE_ACTION_FUNCTION ~ADD_CONTINGENCY~
+	INT_VAR
+		description=0
+		new_title=1
+		new_action=0
+	STR_VAR
+		resource=~~
+		title=~~
+		title_name=~~
+		action=~~
+		action_name=~~
+BEGIN
+
+ACTION_IF new_title = 1 BEGIN
+	COPY_EXISTING ~l_en_us.lua~ ~override~
+		REPLACE_TEXTUALLY EXACT_MATCH ~uiStrings = {~ ~uiStrings = {
+	%title% = "%title_name%",~
+END
+
+ACTION_IF new_action = 1 BEGIN
+	COPY_EXISTING ~l_en_us.lua~ ~override~
+		REPLACE_TEXTUALLY EXACT_MATCH ~uiStrings = {~ ~uiStrings = {
+	%action% = "%action_name%",~
+END
+
+COPY_EXISTING ~bgee.lua~ ~override~
+	REPLACE_TEXTUALLY EXACT_MATCH ~mageBookStrings = {~ ~mageBookStrings = {
+	%resource% = {tip = %description%, title = '%title%', action = "%action%"},~
+END
+
+END
+
+LANGUAGE
+"English"
+ENGLISH
+ ~MESpells/tra/english/english.tra~
+
+/*
+
+BEGIN @2 DESIGNATED 100
+SUBCOMPONENT @1
+
+OUTER_SPRINT stringduration @3001
+OUTER_SPRINT stringduration60 @3200
+OUTER_SPRINT stringcursename @4000
+OUTER_SPRINT stringbanename @4001
+
+COPY_EXISTING ~sppr101.spl~ ~override~
+	LPF ALTER_SPELL_EFFECT INT_VAR duration_high=60 END
+	LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringduration%
+~ replace_with= EVAL ~%stringduration60%
+~ END
+
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr112~ match_name= EVAL ~%stringcursename%~ match_nameor= EVAL ~%stringbanename%~ RET spell_found_curse=spell_found END
+
+ACTION_IF spell_found_curse = 1 BEGIN
+	COPY_EXISTING ~sppr112.spl~ ~override~
+		LPF ALTER_SPELL_EFFECT INT_VAR duration_high=60 END
+		LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringduration%
+~ replace_with= EVAL ~%stringduration60%
+~ END
+END
+
+BEGIN @3 DESIGNATED 101
+SUBCOMPONENT @1
+
+OUTER_SPRINT stringcastingtime @3000
+OUTER_SPRINT stringcastingtime1 @3101
+OUTER_SPRINT stringcursename @4000
+OUTER_SPRINT stringbanename @4001
+
+COPY_EXISTING ~sppr101.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR speed=1 END
+	LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringcastingtime%
+~ replace_with= EVAL ~%stringcastingtime1%
+~ END
+
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr112~ match_name= EVAL ~%stringcursename%~ match_nameor= EVAL ~%stringbanename%~ RET spell_found_curse=spell_found END
+
+ACTION_IF spell_found_curse = 1 BEGIN
+	COPY_EXISTING ~sppr112.spl~ ~override~
+		LPF ALTER_SPELL_HEADER INT_VAR speed=1 END
+		LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringcastingtime%
+~ replace_with= EVAL ~%stringcastingtime1%
+~ END
+END
+
+BEGIN @4 DESIGNATED 102
+SUBCOMPONENT @1
+
+OUTER_SPRINT stringcastingtime @3000
+OUTER_SPRINT stringcastingtime1 @3101
+OUTER_SPRINT stringduration @3001
+OUTER_SPRINT stringduration60 @3200
+OUTER_SPRINT stringcursename @4000
+OUTER_SPRINT stringbanename @4001
+
+COPY_EXISTING ~sppr101.spl~ ~override~
+	LPF ALTER_SPELL_EFFECT INT_VAR duration_high=60 END
+	LPF ALTER_SPELL_HEADER INT_VAR speed=1 END
+	LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringduration%
+~ replace_with= EVAL ~%stringduration60%
+~ END
+	LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringcastingtime%
+~ replace_with= EVAL ~%stringcastingtime1%
+~ END
+
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr112~ match_name= EVAL ~%stringcursename%~ match_nameor= EVAL ~%stringbanename%~ RET spell_found_curse=spell_found END
+
+ACTION_IF spell_found_curse = 1 BEGIN
+	COPY_EXISTING ~sppr112.spl~ ~override~
+		LPF ALTER_SPELL_EFFECT INT_VAR duration_high=60 END
+		LPF ALTER_SPELL_HEADER INT_VAR speed=1 END
+		LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringduration%
+~ replace_with= EVAL ~%stringduration60%
+~ END
+		LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringcastingtime%
+~ replace_with= EVAL ~%stringcastingtime1%
+~ END
+END
+
+
+BEGIN @5 DESIGNATED 150
+	
+COPY_EXISTING ~sppr102.spl~ ~override~
+	READ_LONG splflags ulgiash
+	ulgiash&=0xFFFFFBFF
+	WRITE_LONG splflags ulgiash
+	LPF ALTER_EFFECT INT_VAR match_opcode=sleep opcode=charm2 parameter1=0 parameter2=1004 END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=displayportraiticon END
+	SAY UNIDENTIFIED_DESC @11021
+
+COPY_EXISTING ~sppr512.spl~ ~override~
+	READ_LONG splflags ulgiash
+	ulgiash&=0xFFFFFBFF
+	WRITE_LONG splflags ulgiash
+	LPF ALTER_SPELL_EFFECT INT_VAR duration_high=6 savebonus=(0 - 4) END
+	LPF ALTER_EFFECT INT_VAR match_opcode=sleep opcode=charm2 parameter1=0 parameter2=1004 END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=displayportraiticon END
+	SAY UNIDENTIFIED_DESC @15121
+
+
+BEGIN @7 REQUIRE_PREDICATE !(GAME_IS ~iwdee~) ~~ FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 DESIGNATED 200
+SUBCOMPONENT @6
+
+COPY_EXISTING ~sppr105.spl~ ~override~
+	LPF ALTER_SPELL_EFFECT INT_VAR duration_high=60 END
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=159 END
+	SAY UNIDENTIFIED_DESC @11051
+
+BEGIN @8 DESIGNATED 201
+SUBCOMPONENT @6
+
+OUTER_SPRINT stringentangletextold1 @3902
+
+COPY_EXISTING ~sppr105.spl~ ~override~
+	LPF ALTER_SPELL_EFFECT INT_VAR savebonus=0 END
+	LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match=~%stringentangletextold1%~ replace_with=~~ END
+
+BEGIN @9 DESIGNATED 202
+SUBCOMPONENT @6
+
+COPY_EXISTING ~sppr105.spl~ ~override~
+	LPF ALTER_SPELL_EFFECT INT_VAR duration_high=60 END
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=159 END
+	LPF ALTER_SPELL_EFFECT INT_VAR savebonus=0 END
+	SAY UNIDENTIFIED_DESC @11053
+
+
+BEGIN @10 DESIGNATED 350 DEPRECATED ~~
+
+
+BEGIN @11 FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 DESIGNATED 400
+
+COPY ~MESpells/Restore_Summon_Monsters~ ~override~
+
+COPY_EXISTING ~bearbl.cre~ ~override/mesubrbl.cre~ ~bearbr.cre~ ~override/mesubrbr.cre~ ~bearca.cre~ ~override/mesubrca.cre~ ~bearpo.cre~ ~override/mesubrpo.cre~ ~dogwa.cre~ ~override/mesudgwa.cre~ ~dogwi.cre~ ~override/mesudgwi.cre~ ~wolf.cre~ ~override/mesuwolf.cre~ ~wolfdi.cre~ ~override/mesuwodi.cre~ ~wolfdr.cre~ ~override/mesuwodr.cre~ ~wolfwi.cre~ ~override/mesuwowi.cre~ ~worg.cre~ ~override/mesuworg.cre~ ~spidsm01.cre~ ~override/mesuspsm.cre~ ~spidhu.cre~ ~override/mesusphu.cre~ ~spidgi.cre~ ~override/mesuspgi.cre~ ~spidph.cre~ ~override/mesuspph.cre~ ~spidwr.cre~ ~override/mesuspwr.cre~ ~spidsw.cre~ ~override/mesuspsw.cre~ ~spidphas.cre~ ~override/mesuspas.cre~ ~kobold.cre~ ~override/mesukobo.cre~ ~kobolda.cre~ ~override/mesukoar.cre~ ~kobcomm.cre~ ~override/mesukoco.cre~ ~xvart.cre~ ~override/mesuxvar.cre~ ~gibber.cre~ ~override/mesugibb.cre~ ~hobgob.cre~ ~override/mesuhobg.cre~ ~hobgoba.cre~ ~override/mesuhoar.cre~ ~hobelite.cre~ ~override/mesuhoel.cre~ ~gnoll.cre~ ~override/mesugnol.cre~ ~ogregr.cre~ ~override/mesuogri.cre~ ~ogre.cre~ ~override/mesuogre.cre~ ~ogreberz.cre~ ~override/mesuogbe.cre~ ~ogrema.cre~ ~override/mesuogma.cre~ ~carrio.cre~ ~override/mesucarr.cre~ ~ankheg.cre~ ~override/mesuankh.cre~ ~sirine_a.cre~ ~override/mesusire.cre~ ~wyvern.cre~ ~override/mesuwyve.cre~ ~wyverba.cre~ ~override/mesuwyba.cre~
+	READ_LONG killxp ulgiash
+	ulgiash = (ulgiash + 19) / 20
+	PATCH_IF ulgiash = 0 BEGIN
+		ulgiash = 1
+	END
+	WRITE_LONG xp ulgiash
+	WRITE_LONG killxp 0
+	WRITE_ASCII overridescript ~~ #8
+	WRITE_ASCII classscript ~~ #8
+	WRITE_ASCII racescript ~~ #8
+	WRITE_ASCII generalscript ~~ #8
+	WRITE_ASCII defaultscript ~bdsum00~ #8
+
+COPY_EXISTING ~mesuankh.cre~ ~override~
+	WRITE_ASCII racescript ~ankheg~ #8
+	WRITE_ASCII defaultscript ~~ #8
+
+COPY_EXISTING ~mesuogma.cre~ ~override~
+	WRITE_ASCII racescript ~mage03~ #8
+
+COPY_EXISTING ~mesusire.cre~ ~override~
+	WRITE_ASCII racescript ~sirspell~ #8
+
+COPY_EXISTING ~mesuwyve.cre~ ~override~ ~mesuwyba.cre~ ~override~
+	WRITE_ASCII racescript ~wyvern~ #8
+
+COPY_EXISTING ~mepr402.spl~ ~override/sppr402.spl~
+	SAY UNIDENTIFIED_DESC @14021
+
+COPY_EXISTING ~mepr501.spl~ ~override/sppr501.spl~
+	SAY UNIDENTIFIED_DESC @15011
+
+COPY_EXISTING ~mepr602.spl~ ~override/sppr602.spl~
+	SAY UNIDENTIFIED_DESC @16021
+
+COPY_EXISTING ~mewi309.spl~ ~override/spwi309.spl~
+	SAY UNIDENTIFIED_DESC @23091
+
+COPY_EXISTING ~mewi407.spl~ ~override/spwi407.spl~
+	SAY UNIDENTIFIED_DESC @24071
+
+COPY_EXISTING ~mewi504.spl~ ~override/spwi504.spl~
+	SAY UNIDENTIFIED_DESC @25041
+
+
+COPY ~MESpells/Restore_Animate_Dead~ ~override~
+
+BEGIN @13 DESIGNATED 800
+SUBCOMPONENT @12
+
+COPY ~MESpells/Restore_Animate_Dead~ ~override~
+
+COPY_EXISTING ~mepr301.spl~ ~override/sppr301.spl~
+	SAY UNIDENTIFIED_DESC @13011
+
+COPY_EXISTING ~mewi501.spl~ ~override/spwi501.spl~
+	SAY UNIDENTIFIED_DESC @25011
+
+BEGIN @14 DESIGNATED 801
+SUBCOMPONENT @12
+
+COPY ~MESpells/Restore_Animate_Dead~ ~override~
+
+COPY_EXISTING ~mewi501.spl~ ~override/spwi501.spl~
+	SAY UNIDENTIFIED_DESC @25011
+
+
+BEGIN @15
+
+OUTER_SPRINT stringsavingthrow @3002
+OUTER_SPRINT stringsavingthrownone @3300
+OUTER_SPRINT stringotiluketextold1 @3900
+OUTER_SPRINT stringotiluketextnew1 @3901
+
+COPY_EXISTING ~spwi413.spl~ ~override~
+	LPF ALTER_SPELL_EFFECT INT_VAR savingthrow=nosave END
+	READ_LONG UNIDENTIFIED_DESC description_ref
+	GET_STRREF description_ref description_old
+	INNER_PATCH_SAVE description_new ~%description_old%~ BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~%stringsavingthrow%
+~ ~%stringsavingthrownone%
+~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~%stringotiluketextold1%~ ~%stringotiluketextnew1%~
+	END
+	SAY_EVALUATED UNIDENTIFIED_DESC ~%description_new%~
+
+
+BEGIN @16
+
+COPY_EXISTING ~spwi503.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=25 END
+	READ_SHORT 0x68 numheaders
+	maxlength = 8
+	FOR (i = 1; i <= numheaders; ++i) BEGIN
+		LPF ALTER_SPELL_HEADER INT_VAR header=i range=maxlength END
+		maxlength += 2
+	END
+
+
+BEGIN @17
+
+COPY_EXISTING ~spwi617.spl~ ~override~ ~spwi908.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR target=7 speed=0 END
+
+
+BEGIN @18
+
+COPY_EXISTING ~sppr415.spl~ ~override~ ~spwi424.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR target=7 speed=0 END
+*/
+BEGIN @20 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1001 DESIGNATED 1000
+SUBCOMPONENT @19
+
+OUTER_SET me_power_spells = 1
+
+INCLUDE ~MESpells/components/NewSpells.tpa~
+
+BEGIN @21 DESIGNATED 1001
+SUBCOMPONENT @19
+
+OUTER_SET me_power_spells = 0
+
+INCLUDE ~MESpells/components/NewSpells.tpa~
+
+/*
+BEGIN @22 DESIGNATED 1200 DEPRECATED ~~
+
+COPY ~MESpells/Permanent_Spells~ ~override~
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~sppr4~ RET mepclv1=filename END
+COPY_EXISTING ~mepclv1.spl~ ~override/%mepclv1%.spl~
+	SAY NAME1 @4002
+	SAY UNIDENTIFIED_DESC @4003
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~sppr5~ RET mepclv2=filename END
+COPY_EXISTING ~mepclv2.spl~ ~override/%mepclv2%.spl~
+	SAY NAME1 @4004
+	SAY UNIDENTIFIED_DESC @4005
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~sppr6~ RET mepclv3=filename END
+COPY_EXISTING ~mepclv3.spl~ ~override/%mepclv3%.spl~
+	SAY NAME1 @4006
+	SAY UNIDENTIFIED_DESC @4007
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~sppr7~ RET mepclv4=filename END
+COPY_EXISTING ~mepclv4.spl~ ~override/%mepclv4%.spl~
+	SAY NAME1 @4008
+	SAY UNIDENTIFIED_DESC @4009
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~sppr4~ RET mepdlv1=filename END
+COPY_EXISTING ~mepdlv1.spl~ ~override/%mepdlv1%.spl~
+	SAY NAME1 @4010
+	SAY UNIDENTIFIED_DESC @4011
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~sppr5~ RET mepdlv2=filename END
+COPY_EXISTING ~mepdlv2.spl~ ~override/%mepdlv2%.spl~
+	SAY NAME1 @4012
+	SAY UNIDENTIFIED_DESC @4013
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~sppr6~ RET mepdlv3=filename END
+COPY_EXISTING ~mepdlv3.spl~ ~override/%mepdlv3%.spl~
+	SAY NAME1 @4014
+	SAY UNIDENTIFIED_DESC @4015
+
+COPY_EXISTING ~xplevel.2da~ ~override~
+	LPF GET_2DA_ROW INT_VAR numcolumns=30 STR_VAR match=~DRUID~ RET therow=matched END
+	me_druid_epic_level = 15
+	FOR (i = 1; i < 30; ++i) BEGIN
+		READ_2DA_ENTRY therow i 30 theexperience
+		PATCH_IF theexperience >= 3000000 BEGIN
+			me_druid_epic_level = i
+			i = 30
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~sppr7~ RET mepdlv4=filename END
+COPY_EXISTING ~mepdlv4.spl~ ~override/%mepdlv4%.spl~
+	SAY NAME1 @4016
+	SAY UNIDENTIFIED_DESC @4017
+	PATCH_IF me_druid_epic_level != 15 BEGIN
+		me_druid_epic_level_plus_8 = me_druid_epic_level + 8
+		me_druid_epic_level_plus_16 = me_druid_epic_level + 16
+		LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match=~level 31~ replace_with= EVAL ~level %me_druid_epic_level_plus_16%~ END
+		LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match=~level 23~ replace_with= EVAL ~level %me_druid_epic_level_plus_8%~ END
+		LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match=~level 15~ replace_with= EVAL ~level %me_druid_epic_level%~ END
+		LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 dicenumber=(me_druid_epic_level - 1) dicesize=0 STR_VAR match_resource=~mepdlv4~ END
+		LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 dicenumber=(me_druid_epic_level + 7) dicesize=me_druid_epic_level STR_VAR match_resource=~mepdlv5~ END
+		LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 dicenumber=(me_druid_epic_level + 15) dicesize=(me_druid_epic_level + 8) STR_VAR match_resource=~mepdlv6~ END
+		LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 dicenumber=100 dicesize=(me_druid_epic_level + 16) STR_VAR match_resource=~mepdlv7~ END
+	END
+
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr101~ permanent_version=~mepp101~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr107~ permanent_version=~mepp107~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr108~ permanent_version=~mepp108~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr109~ permanent_version=~mepp109~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr110~ permanent_version=~mepp110~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr111~ permanent_version=~mepp111~ END
+
+ACTION_IF (GAME_IS ~iwdee~) OR (FILE_EXISTS_IN_GAME ~b_IWD.itm~) BEGIN
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr112~ permanent_version=~mepp112~ END
+END
+
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr113~ permanent_version=~mepp113~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr201~ permanent_version=~mepp201~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr202~ permanent_version=~mepp202~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr203~ permanent_version=~mepp203~ END
+LAF ADD_PERMANENT_SPELL INT_VAR make_selectable=0 STR_VAR spell=~sppr203d~ END
+LAF ADD_PERMANENT_SPELL INT_VAR make_selectable=0 STR_VAR spell=~sppr203e~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr204~ permanent_version=~mepp204~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr206~ permanent_version=~mepp206~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr208~ permanent_version=~mepp208~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr210~ permanent_version=~mepp210~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr211~ permanent_version=~mepp211~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr213~ permanent_version=~mepp213~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr214~ permanent_version=~mepp214~ END
+
+ACTION_IF (GAME_IS ~iwdee~) OR (FILE_EXISTS_IN_GAME ~b_IWD.itm~) BEGIN
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr216~ permanent_version=~mepp216~ END
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr219~ permanent_version=~mepp219~ END
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~MESpells.tp2~ ~1000~) BEGIN
+	LAF ADD_PERMANENT_SPELL STR_VAR spell= EVAL ~%mepr251%~ permanent_version=~mexp251~ END
+END
+
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr301~ permanent_version=~mepp301~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr305~ permanent_version=~mepp305~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr306~ permanent_version=~mepp306~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr310~ permanent_version=~mepp310~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr311~ permanent_version=~mepp311~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr312~ permanent_version=~mepp312~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr319~ permanent_version=~mepp319~ END
+
+ACTION_IF (GAME_IS ~iwdee~) OR (FILE_EXISTS_IN_GAME ~b_IWD.itm~) BEGIN
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr320~ permanent_version=~mepp320~ END
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr321~ permanent_version=~mepp321~ END
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr322~ permanent_version=~mepp322~ END
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr323~ permanent_version=~mepp323~ END
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr327~ permanent_version=~mepp327~ END
+END
+
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr402~ permanent_version=~mepp402~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr403~ permanent_version=~mepp403~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr405~ permanent_version=~mepp405~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr406~ permanent_version=~mepp406~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr407~ permanent_version=~mepp407~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr408~ permanent_version=~mepp408~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr409~ permanent_version=~mepp409~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr410~ permanent_version=~mepp410~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr411~ permanent_version=~mepp411~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr412~ permanent_version=~mepp412~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr413~ permanent_version=~mepp413~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr415~ permanent_version=~mepp415~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr416~ permanent_version=~mepp416~ END
+
+ACTION_IF (GAME_IS ~iwdee~) OR (FILE_EXISTS_IN_GAME ~b_IWD.itm~) BEGIN
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr418~ permanent_version=~mepp418~ END
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr421~ permanent_version=~mepp421~ END
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr425~ permanent_version=~mepp425~ END
+END
+
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr501~ permanent_version=~mepp501~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr506~ permanent_version=~mepp506~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr507~ permanent_version=~mepp507~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr508~ permanent_version=~mepp508~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr509~ permanent_version=~mepp509~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr513~ permanent_version=~mepp513~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr515~ permanent_version=~mepp515~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr516~ permanent_version=~mepp516~ END
+
+ACTION_IF (GAME_IS ~iwdee~) OR (FILE_EXISTS_IN_GAME ~b_IWD.itm~) BEGIN
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr518~ permanent_version=~mepp518~ END
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr522~ permanent_version=~mepp522~ END
+END
+
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr601~ permanent_version=~mepp601~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr602~ permanent_version=~mepp602~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr603~ permanent_version=~mepp603~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr604~ permanent_version=~mepp604~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr605~ permanent_version=~mepp605~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr606~ permanent_version=~mepp606~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr610~ permanent_version=~mepp610~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr613~ permanent_version=~mepp613~ END
+
+ACTION_IF (GAME_IS ~iwdee~) OR (FILE_EXISTS_IN_GAME ~b_IWD.itm~) BEGIN
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr615~ permanent_version=~mepp615~ END
+END
+
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr701~ permanent_version=~mepp701~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr702~ permanent_version=~mepp702~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr703~ permanent_version=~mepp703~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr706~ permanent_version=~mepp706~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr709~ permanent_version=~mepp709~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr710~ permanent_version=~mepp710~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr711~ permanent_version=~mepp711~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr715~ permanent_version=~mepp715~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr718~ permanent_version=~mepp718~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr719~ permanent_version=~mepp719~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr721~ permanent_version=~mepp721~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr725~ permanent_version=~mepp725~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr726~ permanent_version=~mepp726~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr727~ permanent_version=~mepp727~ END
+LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr730~ permanent_version=~mepp730~ END
+
+ACTION_IF (GAME_IS ~iwdee~) OR (FILE_EXISTS_IN_GAME ~b_IWD.itm~) BEGIN
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr733~ permanent_version=~mepp733~ END
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr737~ permanent_version=~mepp737~ END
+	LAF ADD_PERMANENT_SPELL STR_VAR spell=~sppr740~ permanent_version=~mepp737~ END
+END
+
+COPY_EXISTING ~sppr101.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=removeeffectsbyresource target=2 timing=1 insert_point=0 STR_VAR resource=~sppr101~ END
+
+COPY_EXISTING ~sppr201.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=removeeffectsbyresource target=2 timing=1 insert_point=0 STR_VAR resource=~sppr201~ END
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=visualeffectbg2 duration=6 STR_VAR match_resource=~sphlybls~ END
+
+COPY_EXISTING ~sppr214.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=removeeffectsbyresource target=2 timing=1 insert_point=0 STR_VAR resource=~sppr214~ END
+
+*/

@@ -1749,6 +1749,50 @@ COPY_EXISTING ~bgee.lua~ ~override~
 	%resource% = {tip = %description%, title = '%title%', action = "%action%"},~
 END
 
+DEFINE_PATCH_FUNCTION ADD_HLA
+	STR_VAR
+		ability=~*~
+		icon=~*~
+		strref=~*~
+		min_lev=~*~
+		max_lev=~*~
+		num_allowed=~*~
+		prerequisite=~*~
+		excluded_by=~*~
+		alignment_restrict=~*~
+BEGIN
+	LPF GET_2DA_ROW INT_VAR numcolumns=7 match_column=1 STR_VAR match=~*~ RET numcolumns=numcols row=matched END
+	COUNT_2DA_ROWS numcolumns numrows
+	PATCH_IF row<numrows BEGIN
+//		PATCH_PRINT ~%row% %numrows%~
+		SET_2DA_ENTRY row 1 numcolumns ~%ability%~
+		SET_2DA_ENTRY row 2 numcolumns ~%icon%~
+		SET_2DA_ENTRY row 3 numcolumns ~%strref%~
+		SET_2DA_ENTRY row 4 numcolumns ~%min_lev%~
+		SET_2DA_ENTRY row 5 numcolumns ~%max_lev%~
+		SET_2DA_ENTRY row 6 numcolumns ~%num_allowed%~
+		SET_2DA_ENTRY row 7 numcolumns ~%prerequisite%~
+		SET_2DA_ENTRY row 8 numcolumns ~%excluded_by%~
+		COUNT_2DA_COLS totalcolumns
+		PATCH_IF totalcolumns > 9 BEGIN
+			SET_2DA_ENTRY row 9 numcolumns ~%alignment_restrict%~
+		END
+	END
+	ELSE BEGIN
+		//numrows = numrows - 1
+		READ_2DA_ENTRY (numrows - 1) 0 numcolumns previousnumber
+		previousnumber = previousnumber + 1
+		COUNT_2DA_COLS totalcolumns
+		PATCH_IF totalcolumns > 9 BEGIN
+			INSERT_2DA_ROW numrows numcolumns ~%previousnumber%         %ability%           %icon%          %strref%         %min_lev%         %max_lev%          %num_allowed%            %prerequisite%            %excluded_by%             %alignment_restrict%~
+		END
+		ELSE BEGIN
+			INSERT_2DA_ROW numrows numcolumns ~%previousnumber%         %ability%           %icon%          %strref%         %min_lev%         %max_lev%          %num_allowed%            %prerequisite%            %excluded_by%~
+		END
+	END
+
+END
+
 END
 
 LANGUAGE

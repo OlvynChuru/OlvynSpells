@@ -175,6 +175,13 @@ Saving Throw: None
 Permanent Druid Spell IV allows the druid to cast a spell with an extremely long duration. After finishing the incantation, the druid chooses a spell, which must be of 4th-level or lower and be castable by a druid, and that spell is cast as if it had a duration of 500 days, or 600000 rounds. Note that the spell can still be dispelled by normal means, and it can end in any way that the particular spell can normally end. The spell also wears off if the target dies. Some spells cannot be chosen to cast with this spell. If the druid is level 15 or higher, they can choose a 5th-level spell. At level 23 or higher, they can choose a 6th-level spell. At level 31 or higher, they can choose a 7th-level spell.~
 @4018=~Spike Growth~
 @4019=~Spike Stones~
+@4020=~Produce Fire~
+@4021=~Lower Fire Resistance~
+@4022=~Silence, 15' Radius~
+@4023=~Stoneskin~
+@4024=~Wing Buffet~
+@4025=~Red Dragon Breath~
+@4026=~Dragon Fear~
 
 @11021=~Command
 (Enchantment/Charm)
@@ -354,19 +361,26 @@ The creature jumps to the target point, which must be within range.~
 @30028=~Skeleton~
 @30029=~Kobold Commando~
 @30030=~You cannot cast this spell in this area.~
-
+@30031=~All damage taken will be converted to fire damage~
+@30032=~Red Dragon~
 
 @31151=~Snake's Swiftness~
 @31251=~Beast Sense~
 @31252=~Fiery Link~
+@31253=~Null Healing~
 @31351=~Call Water Weirds~
 @31352=~Shortening~
+@31353=~Fire Curse~
 @31451=~Disarm~
 @31452=~Forest's Blessing~
+@31453=~Turn Creature~
+@31454=~Wall of Fire~
 @31551=~Prolongment~
 @31652=~Drown~
 @31751=~Power Word, Heal~
 @31753=~Nonrandom Zone~
+@31754=~Colossal Growth~
+@31755=~Enhance Attribute~
 
 @32151=~Snake's Swiftness
 (Alteration)
@@ -384,7 +398,7 @@ Snake's Swiftness allows a single creature to move and attack extremely fast for
 (Divination)
 
 Level: 2
-Sphere: Divination
+Sphere: Animal, Divination
 Range: Visual range of the caster
 Duration: 1 hour
 Casting Time: 2
@@ -404,6 +418,18 @@ Area of Effect: All creatures in a narrow line between the caster and an ally
 Saving Throw: 1/2
 
 In casting Fiery Link, the caster must choose an allied creature other than <PRO_HIMHER>self. This spell creates a ray of fire linking the caster and that ally, damaging any creatures in between. If the caster and/or the ally move, the fiery link will stretch and contract to fill the distance between them. Every three seconds, any creature that crosses the fiery link (not including the caster or the ally) takes 1d8 fire damage (Save vs. Breath for half). A single caster can cast Fiery Link on multiple allies, but a single ally cannot be targeted by more than one Fiery Link at once.~
+@32253=~Null Healing
+(Necromancy)
+
+Level: 2
+Sphere: Healing
+Range: Visual range of the caster
+Duration: 1 day
+Casting Time: 2
+Area of Effect: 1 creature
+Saving Throw: Neg.
+
+This necromantic curse prevents the target from healing. Once cast, the target must Save vs. Spell at -3 or be cursed for 1 day. While cursed, the target cannot regain Hit Points via spells, abilities, items, regeneration, or resting. The curse can be removed early using a Remove Curse spell.~
 @32351=~Call Water Weirds
 (Conjuration/Summoning)
 
@@ -428,6 +454,18 @@ Area of Effect: 1 creature
 Saving Throw: Special
 
 Shortening halves the duration of certain effects on the target creature. If the target is an enemy, then all non-harmful effects on the target will have their duration halved unless the target makes a Save vs. Spell at -4. If the target is not an enemy, then all harmful effects on the target will have their duration halved. A "harmful effect" is any effect from a spell or ability that turns a non-hostile creature hostile. The duration is halved from the total duration of the effect, not the remaining duration. An effect can only be shortened once.~
+@32353=~Fire Curse
+(Alteration)
+
+Level: 3
+Sphere: Elemental Fire
+Range: Visual range of the caster
+Duration: 1 turn
+Casting Time: 5
+Area of Effect: 1 creature
+Saving Throw: None
+
+This spell can only be cast on enemies. For the duration, all damage dealt to the target is converted to fire damage, regardless of the original damage type. The creature will be dealt damage based on its fire resistance, not its resistance to the original damage type. Physical damage converted to fire damage will bypass Stoneskin. There is no saving throw, though magic resistance can still block the spell.~
 @32451=~Disarm
 (Enchantment)
 
@@ -452,6 +490,30 @@ Area of Effect: The caster
 Saving Throw: None
 
 With this spell, the caster calls the forest <PRO_HESHE> is currently in for aid in casting spells. For the duration, the caster casts spells as if 10 levels higher. Forest's Blessing has no effect if not cast outside in a forest.~
+@32453=~Turn Creature
+(Abjuration)
+
+Level: 4
+Sphere: Guardian
+Range: Visual range of the caster
+Duration: Special
+Casting Time: 4
+Area of Effect: 1 creature
+Saving Throw: Neg.
+
+Turn Creature allows the priest to turn a non-undead creature. Once the spell is cast, the target creatue must Save vs. Polymorph at -4. On a failure, the creature is turned as if it was an undead creature affected by the priest's Turn Undead ability. Depending on the level of the target, the level of the priest, the alignment of the priest, and random chance, the target may either be forced to run away from the priest temporarily, controlled by the priest temporarily, or killed instantly.~
+@32454=~Wall of Fire
+(Evocation)
+
+Level: 4
+Sphere: Elemental Fire
+Range: Visual range of the caster
+Duration: 1 turn
+Casting Time: 7
+Area of Effect: 8 ft. long, 2 ft. wide wall
+Saving Throw: None
+
+This spell creates a wall of raging flames. Any creature who attempts to pass through the wall takes 1d4 fire damage per caster level, up to a maximum of 12d4 at level 12. There is no Saving Throw, since the flames cannot be dodged except by going around the wall. A creature that has passed through a Wall of Fire cannot take damage from passing through a Wall of Fire again for 1 round.~
 @32551=~Prolongment
 (Alteration)
 
@@ -500,6 +562,31 @@ Area of Effect: Entire area
 Saving Throw: None
 
 This spell drains the randomness out of the current area. For the duration, all creatures automatically hit, never critically miss, deal maximum physical damage with weapons, take minimum damage from spells, succeed on all Saving Throws automatically, and do not trigger wild surges. Nonrandom Zone can only be cast by lawful characters.~
+@32754=~Colossal Growth
+(Conjuration/Summoning)
+
+Level: Quest
+Sphere: Plant
+Range: 0
+Duration: 1 turn
+Casting Time: 15
+Area of Effect: 60-ft. radius
+Saving Throw: Neg.
+
+This spell causes enormous vines to burst forth from the ground throughout the area of effect. Creatures within 60 feet of the caster must Save vs. Paralysis at -6 each round or be immobilized, completely entangled by giant vines. Even large creatures such as giants and dragons can be entangled this way.~
+@32755=~Enhance Attribute
+(Alteration)
+
+Level: 7
+Sphere: Combat, Thought
+Range: Visual range of the caster
+Duration: 4 hours
+Casting Time: 8
+Area of Effect: 1 creature
+Saving Throw: None
+
+An Enhance Attribute spell can vastly improve a single attribute of a creature. In casting this spell, the caster first chooses whether <PRO_HESHE> wishes to enhance a creature's Strength, Dexterity, Constitution, Intelligence, Wisdom, or Charisma. Then <PRO_HESHE> points at a creature, or chooses <PRO_HIMHER>self. The spell sets the chosen attribute of the target creature to 24 for the duration, or until dispelled. The spell has no effect if the chosen attribute of the creature is already higher than 24.~
+
 
 @33151=~Disruptive Surge~
 @33152=~Inertia~
@@ -519,6 +606,7 @@ This spell drains the randomness out of the current area. For the duration, all 
 @33354=~Terror~
 @33355=~Control Slime~
 @33356=~Legend Lore~
+@33357=~Glyph of Spell Storing~
 @33451=~Wall of Fire~
 @33452=~Phantasmal Killer~
 @33453=~Ghoulish Feast~
@@ -559,6 +647,7 @@ This spell drains the randomness out of the current area. For the duration, all 
 @33857=~Extend Vision~
 @33858=~Sphere of Reversed Gravity~
 @33859=~False Life~
+@33860=~Enslave~
 @33951=~Perfect Invisibility~
 @33952=~Mass Domination~
 @33953=~Attain Perfection~
@@ -566,6 +655,7 @@ This spell drains the randomness out of the current area. For the duration, all 
 @33955=~Mass Sequencer~
 @33956=~Enoll Eva's Duplication~
 @33957=~Executioner's Eyes~
+@33958=~Phantasmal Dragon~
 
 @34151=~Disruptive Surge
 (Wild Magic)
@@ -777,6 +867,17 @@ Area of Effect: The caster
 Saving Throw: None
 
 A more powerful version of the spell Identify, Legend Lore temporarily increases the lore of the caster, allowing <PRO_HIMHER> to identify multiple magical items. For the duration, the caster's lore is increased by 100.~
+@34357=~Glyph of Spell Storing
+(Abjuration)
+
+Level: 3
+Range: 60 ft.
+Duration: Permanent until discharged
+Casting Time: 5
+Area of Effect: 12-ft. radius
+Saving Throw: None
+
+A Glyph of Spell Storing is a ward which stores a spell and releases it upon each hostile creature that enters the warded area. When this spell is cast, the caster stores a single 1st-level spell in the glyph, which is placed on a circular, 9-ft. radius area of the caster's choice. When a hostile creature passes within 9 feet of the glyph, it explodes, releasing a copy of the stored spell on each hostile creature within 12 feet.~
 @34451=~Wall of Fire
 (Evocation)
 
@@ -787,7 +888,7 @@ Casting Time: 7
 Area of Effect: 8 ft. long, 2 ft. wide wall
 Saving Throw: None
 
-This spell creates a wall of raging flames. Any creature who attempts to pass through the wall takes 1d4 fire damage per caster level, up to a maximum of 12d4 at level 12. There is no Saving Throw, since the flames cannot be dodged except by going around the wall. A creature that has passed through a Wall of Fire cannot take damage from passing through a Wall of Fire again for 1 turn.~
+This spell creates a wall of raging flames. Any creature who attempts to pass through the wall takes 1d4 fire damage per caster level, up to a maximum of 12d4 at level 12. There is no Saving Throw, since the flames cannot be dodged except by going around the wall. A creature that has passed through a Wall of Fire cannot take damage from passing through a Wall of Fire again for 1 round.~
 @34452=~Phantasmal Killer
 (Illusion/Phantasm)
 
@@ -947,7 +1048,7 @@ Missile of Patience fires a slow magical projectile at the target, which will de
 
 Level: 5
 Range: 0
-Duration: 5 rounds
+Duration: 3 rounds + 1 round/2 levels
 Casting Time: 1
 Area of Effect: The caster
 Saving Throw: None
@@ -1223,6 +1324,17 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 This spell bolsters a creature's life force through necromancy. For 8 hours, the target gains 10 temporary hit points per caster level. However, this arcane form of pseudo-healing has a flaw: for the duration, the target cannot regain any hit points through spells, abilities, items, resting, or regeneration.~
+@34860=~Enslave
+(Enchantment)
+
+Level: 8
+Range: Touch
+Duration: Permanent
+Casting Time: 9
+Area of Effect: 1 creature
+Saving Throw: Neg.
+
+An especially potent mind-control spell, Enslave will make the target a permanent thrall of the caster. If the target fails its Save vs. Spell at -4, it is dominated by the caster until the effect is dispelled. The enslaved creature will not take any actions unless ordered by the caster, and it will not turn hostile if hurt by a party member. Undead and constructs are unaffected by Enslave.~
 @34951=~Perfect Invisibility
 (Illusion/Phantasm)
 
@@ -1255,7 +1367,7 @@ Casting Time: 9
 Area of Effect: The caster
 Saving Throw: None
 
-This spell temporarily makes the caster perfect in every way. For 1 turn, the caster's Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma are all set to 25. The caster can potentially use this time to equip items with high stat requirements.~
+This spell temporarily makes the caster perfect in every way. For 1 turn, the caster's Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma are all set to 25.~
 @34954=~Vampiric Feast
 (Necromancy)
 
@@ -1311,6 +1423,17 @@ Area of Effect: 15-ft. radius
 Saving Throw: None
 
 Executioner's Eyes enhances the vision of allies, allowing them to see the hidden weaknesses of all creatures.  The spell grants +4 THAC0 and a +20% chance to get critical hits to all allies within the area of effect for the duration of the spell.~
+@34958=~Phantasmal Dragon
+(Illusion/Phantasm)
+
+Level: 9
+Range: Visual range of the caster
+Duration: 2 turns
+Casting Time: 9
+Area of Effect: Special
+Saving Throw: None
+
+This spell creates an illusory adult red dragon, which will serve the caster for the duration. The illusory dragon has only 20% the hit points of a real dragon of the same age, and its attacks deal nonlethal damage, but its stats are otherwise the same as those of a real dragon, and it has the same abilities, including an fire breath and an aura of fear.~
 
 @35327=~I am the channel through which your wish shall be fulfilled. You may ask for a wish I can repeat, or you may ask for a wish that will happen once only. Decide.~
 @35328=~Choose wisely then, as I can perform each of these tasks once and once only.~

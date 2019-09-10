@@ -250,7 +250,7 @@ COPY_EXISTING_REGEXP ~sppr4[0-9][0-9]\.spl~ ~override~
 	GET_STRREF thespellnameref thespellname
 	PATCH_IF (produce_fire_found = 0) AND (~%thespellname%~ STRING_EQUAL_CASE ~%stringproducefirename%~) BEGIN
 		produce_fire_found = 1
-		mepr454 = SOURCE_RES
+		TEXT_SPRINT mepr454 ~%SOURCE_RES%~
 	END
 	BUT_ONLY_IF_IT_CHANGES
 

@@ -106,7 +106,7 @@ LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~637~ splprot_value=~0~ splprot_r
 
 LAF ADD_ANIMATION INT_VAR minSlot=0xD000 STR_VAR directory=~MESpells/animations~ ini=~meanibnu~ RET slotbirdnullcreaturedecimal=slotDecimal END
 
-COPY_EXISTING_REGEXP ~mefixwbu.cre~ ~override~ ~meportst.cre~ ~override~ ~meportl[0-9].cre~ ~override~
+COPY_EXISTING_REGEXP ~mefixwbu.cre~ ~override~ ~meportst.cre~ ~override~ ~meportl[0-9].cre~ ~override~ ~mesightm.cre~ ~override~
 	WRITE_SHORT animation slotbirdnullcreaturedecimal
 
 COPY_EXISTING ~menofly.eff~ ~override~
@@ -117,6 +117,58 @@ COPY_EXISTING ~mepr151.spl~ ~override/%mepr151%.spl~
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mepr151~ resource= EVAL ~%mepr151%~ END
 	SAY NAME1 @31151
 	SAY UNIDENTIFIED_DESC @32151
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR1~ RET mepr152=filename END
+COPY_EXISTING ~mepr152.spl~ ~override/%mepr152%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mepr152~ resource= EVAL ~%mepr152%~ END
+	SAY NAME1 @31152
+	SAY UNIDENTIFIED_DESC @32152
+
+END
+
+COPY_EXISTING ~mepr153.spl~ ~override~
+	SAY NAME1 @31153
+	SAY UNIDENTIFIED_DESC @32153
+
+OUTER_SET ranger_level_one = 1
+COPY_EXISTING ~mxsplran.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 1 numcolumns num_spells_level_one
+		PATCH_IF num_spells_level_one > 0 BEGIN
+			READ_2DA_ENTRY i 0 numcolumns ranger_level_one
+			i = numrows
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classranger BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_PR153   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 ranger_level_one 1 ~GA_MEPR153~
+					IF_EXISTS
+					UNLESS ~GA_MEPR153~
+			END
+		END
+	END
+
+COPY_EXISTING ~clabrn01.2da~ ~override~
+	COUNT_2DA_ROWS 1 numrows
+	INSERT_2DA_ROW numrows 1 ~ME_PR153   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+	LPF GET_2DA_ROW INT_VAR numcolumns=1 match_column=0 STR_VAR match=~ME_PR153~ RET therow=matched END
+	SET_2DA_ENTRY numrows ranger_level_one 1 ~GA_MEPR153~
+	IF_EXISTS
+	UNLESS ~GA_MEPR153~
 
 ACTION_IF !(MOD_IS_INSTALLED ~SetUp-B_Spells.tp2~ ~101~) AND !(MOD_IS_INSTALLED ~SetUp-B_Spells.tp2~ ~103~) BEGIN
 
@@ -214,6 +266,16 @@ COPY_EXISTING ~mepr353.spl~ ~override/%mepr353%.spl~
 
 END
 
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR3~ RET mepr354=filename END
+COPY_EXISTING ~mepr354.spl~ ~override/%mepr354%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=displaystring match_parameter1=30035 parameter1=RESOLVE_STR_REF(@30035) END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mepr354~ resource= EVAL ~%mepr354%~ END
+	SAY NAME1 @31354
+	SAY UNIDENTIFIED_DESC @32354
+
+COPY_EXISTING ~mepr354d.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=displaystring match_parameter1=30035 parameter1=RESOLVE_STR_REF(@30035) END
+
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR4~ RET mepr451=filename END
 COPY_EXISTING ~mepr451.spl~ ~override/%mepr451%.spl~
 	SAY NAME1 @31451
@@ -282,6 +344,16 @@ LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR6~ RET mepr652=filename END
 COPY_EXISTING ~mepr652.spl~ ~override/%mepr652%.spl~
 	SAY NAME1 @31652
 	SAY UNIDENTIFIED_DESC @32652
+
+ACTION_IF (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR6~ RET mepr653=filename END
+COPY_EXISTING ~mepr653.spl~ ~override/%mepr653%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mepr653~ resource= EVAL ~%mepr653%~ END
+	SAY NAME1 @31653
+	SAY UNIDENTIFIED_DESC @32653
+
+END
 
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR7~ RET mepr751=filename END
 COPY_EXISTING ~mepr751.spl~ ~override/%mepr751%.spl~
@@ -450,6 +522,10 @@ COPY_EXISTING ~mewi154x.itm~ ~override~
 	SAY NAME2 @33154
 	SAY IDENTIFIED_DESC @34154
 
+COPY_EXISTING ~mekobosu.cre~ ~override~
+	SAY NAME1 @30033
+	SAY NAME2 @30033
+
 ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 
 COPY_EXISTING ~tarnes.cre~ ~override~
@@ -610,6 +686,50 @@ COPY_EXISTING ~ar5004.are~ ~override~
 
 COPY_EXISTING ~kieran2.sto~ ~override~
 	ADD_STORE_ITEM ~mewi156x~ BEFORE ~scrl5u~ #1 #0 #0 ~IDENTIFIED~ #2
+
+END
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI1~ RET mewi157=filename END
+COPY_EXISTING ~mewi157.spl~ ~override/%mewi157%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi157~ resource= EVAL ~%mewi157%~ END
+	SAY NAME1 @33157
+	SAY UNIDENTIFIED_DESC @34157
+
+COPY_EXISTING ~mewi157x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi157~ resource= EVAL ~%mewi157%~ END
+	SAY NAME2 @33157
+	SAY IDENTIFIED_DESC @34157
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~yago.cre~ ~override~
+	REPLACE_CRE_ITEM ~mewi157x~ #0 #0 #0 ~NONE~ ~INV2~
+
+COPY_EXISTING ~ar5001.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi157x~ END
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~pthral02.cre~ ~override~
+	REPLACE_CRE_ITEM ~mewi157x~ #0 #0 #0 ~NONE~ ~INV3~
+	IF_EXISTS
+
+COPY_EXISTING ~ar0602.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=23 STR_VAR item_to_add=~mewi157x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi157x~ AFTER ~scrl67~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar3401.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi157x~ END
 
 END
 END

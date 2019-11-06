@@ -363,20 +363,27 @@ The creature jumps to the target point, which must be within range.~
 @30030=~You cannot cast this spell in this area.~
 @30031=~All damage taken will be converted to fire damage~
 @30032=~Red Dragon~
+@30033=~Kobold~
+@30034=~Rendered incapable of dealing damage~
+@30035=~Deals healing instead of damage~
 
 @31151=~Snake's Swiftness~
+@31152=~Hex~
+@31153=~Hunter's Mark~
 @31251=~Beast Sense~
 @31252=~Fiery Link~
 @31253=~Null Healing~
 @31351=~Call Water Weirds~
 @31352=~Shortening~
 @31353=~Fire Curse~
+@31354=~Healing Curse~
 @31451=~Disarm~
 @31452=~Forest's Blessing~
 @31453=~Turn Creature~
 @31454=~Wall of Fire~
 @31551=~Prolongment~
 @31652=~Drown~
+@31653=~Antiharm Shell~
 @31751=~Power Word, Heal~
 @31753=~Nonrandom Zone~
 @31754=~Colossal Growth~
@@ -394,6 +401,30 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 Snake's Swiftness allows a single creature to move and attack extremely fast for a single round. During the round, the creature's movement rate and attacks per round are doubled. In addition, if the target is an animal, a lycanthrope, a yuan-ti, or a character shapeshifted into one such creature, it is sped up further, gaining 2 additional attacks per round and moving at the maximum possible movement rate for the duration.~
+@32152=~Hex
+(Enchantment)
+
+Level: 1
+Sphere: Numbers
+Range: 60 ft.
+Duration: 6 rounds
+Casting Time: 6
+Area of Effect: 1 creature
+Saving Throw: Neg.
+
+This spell curses the target to take more magical and elemental damage. The target must make a Save vs. Polymorph. On a failure, the target is cursed for 6 rounds. During that time, whenever the target would be dealt fire, cold, electricity, acid, or magic damage, it takes an additional 6 damage of that type. Hex is especially effective when combined with spells that deal damage multiple times, such as Magic Missile or Melf's Acid Arrow. Hex can only be cast by evil-aligned characters.~
+@32153=~Hunter's Mark
+(Divination)
+
+Level: 1
+Sphere: Divination
+Range: 10000 ft.
+Duration: 1 hour
+Casting Time: 1
+Area of Effect: 1 creature
+Saving Throw: None
+
+By casting Hunter's Mark, the ranger magically marks a non-allied creature to be hunted. For the duration, the ranger's attacks against the marked target deal an additional 1d6 damage, plus another 1d6 for every 10 levels of the ranger. In addition, when the target is out of sight, the spell greatly enhances the ranger's ability to track the target, sufficient for the ranger to know the target's exact location and direction. Hunter's Mark can be cast on any creature the party sees, even if the ranger does not see them.~
 @32251=~Beast Sense
 (Divination)
 
@@ -466,6 +497,18 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 This spell can only be cast on enemies. For the duration, all damage dealt to the target is converted to fire damage, regardless of the original damage type. The creature will be dealt damage based on its fire resistance, not its resistance to the original damage type. Physical damage converted to fire damage will bypass Stoneskin. There is no saving throw, though magic resistance can still block the spell.~
+@32354=~Healing Curse
+(Alteration)
+
+Level: 3
+Sphere: Healing
+Range: Visual range of the caster
+Duration: 5 rounds
+Casting Time: 3
+Area of Effect: 1 creature
+Saving Throw: Neg. if enemy
+
+Healing Curse causes a creature's attacks to heal rather than harm. If the recipient is an ally, there is no Saving Throw necessary; otherwise, the recipient may make a Save vs. Polymorph at -2 to avoid the effects. While affected by Healing Curse, any damage the creature would deal through attacks, spells or abilities is negated, and the creature that would have been damaged is instead healed by the amount of damage they would have taken.~
 @32451=~Disarm
 (Enchantment)
 
@@ -538,6 +581,18 @@ Area of Effect: 1 creature
 Saving Throw: Neg.
 
 This spell effectively causes a creature to drown, whether or not that creature is currently underwater. When cast, the target must Save vs. Breath at -2. On a failure, the target's lungs become filled with water, and the target immediately takes nonlethal damage equal to 90% of its maximum hit points, knocking it unconscious if it would be reduced to 1 Hit Point. For 5 rounds, the target also suffers -4 AC, -4 THAC0, -6 Dexterity, and -1 attack per round. Drown has no effect on undead, constructs, elementals, or other creatures that don't breathe.~
+@32653=~Antiharm Shell
+(Abjuration)
+
+Level: 6
+Sphere: Protection
+Range: Touch
+Duration: 6 rounds
+Casting Time: 9
+Area of Effect: 1 creature
+Saving Throw: None
+
+This spell functions like an antimagic shell, except it blocks damage instead of magic. For the duration, the recipient is immune to damage but cannot deal any damage. The recipient can still move, attack, and cast spells, but any damage those attacks or spells would deal is prevented.~
 @32751=~Power Word, Heal
 (Necromancy)
 	
@@ -591,9 +646,10 @@ An Enhance Attribute spell can vastly improve a single attribute of a creature. 
 @33151=~Disruptive Surge~
 @33152=~Inertia~
 @33153=~Detect Shapeshifters~
-@33154=~Summon Lesser Kobold~
+@33154=~Summon Kobold~
 @33155=~Dimension Door~
 @33156=~Jump~
+@33157=~Hex~
 @33251=~Power Word, Pull~
 @33252=~Ghostwalk~
 @33253=~Power Word, Push~
@@ -723,6 +779,17 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 This spell allows a creature to jump higher and farther. Until the duration ends, the creature gains an ability they can use at will, which lets the creature jump up to 10 feet away. The maximum jump distance is increased by 3 feet per 5 caster levels, to a maximum of 28 feet at level 30. The creature is able to jump over normally impassable obstacles like fences or walls, as long as they are narrow enough to jump over. At higher levels, the increased jump distance will allow the creature to jump over thicker obstacles. While in the air, the creature is unaffected by certain ground-based spells like Entangle, Web, and Earthquake.~
+@34157=~Hex
+(Enchantment)
+
+Level: 1
+Range: 60 ft.
+Duration: 6 rounds
+Casting Time: 6
+Area of Effect: 1 creature
+Saving Throw: Neg.
+
+This spell curses the target to take more magical and elemental damage. The target must make a Save vs. Polymorph. On a failure, the target is cursed for 6 rounds. During that time, whenever the target would be dealt fire, cold, electricity, acid, or magic damage, it takes an additional 6 damage of that type. Hex is especially effective when combined with spells that deal damage multiple times, such as Magic Missile or Melf's Acid Arrow. Hex can also be cast by Invokers.~
 @34251=~Power Word, Pull
 (Conjuration/Summoning)
 
@@ -1096,7 +1163,7 @@ Level: 6
 Range: Visual range of the caster
 Duration: Instant
 Casting Time: 6
-Area of Effect: 1 creatutr
+Area of Effect: 1 creature
 Saving Throw: None 
 
 This spell creates a large number of projectiles akin to those created by the Magic Missile spell, which hit a single target. Each missile deals 1d4+1 magic damage with no Saving Throw. The spell fires one missile per level of the wizard. There is no cap on the number of missiles the spell can produce - it is only limited by the caster's level.~

@@ -1395,21 +1395,21 @@ COMPILE ~.../%thearea%.baf~ EVAL
 <<<<<<<< .../script.baf
 	
 IF
-	Global("%variablename%","MYAREA",0)
+	Global("%variablename%_%thearea%","GLOBAL",0)
 THEN
 	RESPONSE #100
-		SetGlobal("%variablename%","MYAREA",1)
+		SetGlobal("%variablename%_%thearea%","GLOBAL",1)
 END
 	
 >>>>>>>>
-	
+
 EXTEND_TOP ~%thearea%.bcs~ ~.../script.baf~ EVAL
 					END
 				END
 				INNER_ACTION BEGIN
 					COPY_EXISTING ~%thearea%.bcs~ ~override~
 						DECOMPILE_BCS_TO_BAF
-						REPLACE_TEXTUALLY CASE_INSENSITIVE ~SetGlobal(\"%variablename%\",\"MYAREA\",1)~ ~SetGlobal("%variablename%","MYAREA",1)
+						REPLACE_TEXTUALLY CASE_INSENSITIVE ~SetGlobal(\"%variablename%_%thearea%\",\"GLOBAL\",1)~ ~SetGlobal("%variablename%_%thearea%","GLOBAL",1)
 	CreateCreatureImpassable("%thefile%",[%thex%.%they%],%theorientation%)~
 						COMPILE_BAF_TO_BCS
 				END

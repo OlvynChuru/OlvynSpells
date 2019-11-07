@@ -213,30 +213,7 @@ END ELSE ACTION_IF GAME_IS ~eet~ BEGIN
 	LAF ADD_AREA_ACTORS_2DA STR_VAR variablename=~ME_Add_Water_Weirds~ the2da=~mewateet~ END
 END
 
-ACTION_IF GAME_IS ~bgee eet~ BEGIN
-	COPY_EXISTING_REGEXP ~%arbg%0123.are~ ~override~ ~%arbg%022[456].are~ ~override~ ~%arbg%0505.are~ ~override~ ~%arbg%0609.are~ ~override~ ~%arbg%1010.are~ ~override~ ~%arbg%2626.are~ ~override~ ~%arbg%3601.are~ ~override~ ~%arbg%5506.are~ ~override~ ~%arbg%5801.are~ ~override~ ~%arbg%5810.are~ ~override~ ~%arbg%0[459]00.are~ ~override~ ~%arbg%1[02456789]00.are~ ~override~ ~%arbg%2[012467]00.are~ ~override~ ~%arbg%3[12678]00.are~ ~override~ ~%arbg%4[012346789]00.are~ ~override~ ~%arbg%5[123458]00.are~ ~override~ ~%arbg%540[2345].are~ ~override~
-		LPF fj_are_structure STR_VAR fj_structure_type=~region~ fj_name=~ME_Water_Weird_Spawn~ fj_reg_script=~MEWATWSP~ END
-
-	COPY_EXISTING ~oh2000.are~ ~override~ ~oh2010.are~ ~override~
-		LPF fj_are_structure STR_VAR fj_structure_type=~region~ fj_name=~ME_Water_Weird_Spawn~ fj_reg_script=~MEWATWSP~ END
-		IF_EXISTS
-
-	ACTION_IF GAME_INCLUDES ~sod~ BEGIN
-		LAF ADD_AREA_ACTORS_2DA STR_VAR variablename=~ME_Add_Water_Weirds~ the2da=~mewatsod~ END
-		COPY_EXISTING_REGEXP ~bd[1267]000.are~ ~override~ ~bd5100.are~ ~override~ ~bd7220.are~ ~override~
-			LPF fj_are_structure STR_VAR fj_structure_type=~region~ fj_name=~ME_Water_Weird_Spawn~ fj_reg_script=~MEWATWSP~ END
-	END
-END
-ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
-
-	COPY_EXISTING_REGEXP ~ar00[48]6.are~ ~override~ ~ar03[01]0.are~ ~override~ ~ar0315.are~ ~override~ ~ar0404.are~ ~override~ ~ar0413.are~ ~override~ ~ar0[56]0[03].are~ ~override~ ~ar0527.are~ ~override~ ~ar0604.are~ ~override~ ~ar0710.are~ ~override~ ~ar090[05].are~ ~override~ ~ar100[01679].are~ ~override~ ~ar110[06].are~ ~override~ ~ar120[013].are~ ~override~ ~ar1403.are~ ~override~ ~ar1500.are~ ~override~ ~ar1514.are~ ~override~ ~ar160[0147].are~ ~override~ ~ar1700.are~ ~override~ ~ar1800.are~ ~override~ ~ar190[01].are~ ~override~ ~ar201[12].are~ ~override~ ~ar210[02].are~ ~override~ ~ar2210.are~ ~override~ ~ar2300.are~ ~override~ ~ar2400.are~ ~override~ ~ar2500.are~ ~override~ ~ar260[02].are~ ~override~ ~ar2700.are~ ~override~ ~ar280[1289].are~ ~override~ ~ar281[01].are~ ~override~ ~ar3000.are~ ~override~ ~ar3015.are~ ~override~ ~ar302[456].are~ ~override~ ~ar4000.are~ ~override~ ~ar5000.are~ ~override~ ~ar520[23].are~ ~override~ ~ar5504.are~ ~override~ ~ar600[128].are~ ~override~ ~ar6012.are~ ~override~ ~ar6100.are~ ~override~ ~ar6300.are~ ~override~ ~ar6400.are~ ~override~
-		LPF fj_are_structure STR_VAR fj_structure_type=~region~ fj_name=~ME_Water_Weird_Spawn~ fj_reg_script=~MEWATWSP~ END
-		IF_EXISTS
-
-END
-ACTION_IF GAME_IS ~iwdee~ BEGIN
-
-END
+EXTEND_TOP ~baldur.bcs~ ~override/mewatwsp.bcs~
 
 END
 

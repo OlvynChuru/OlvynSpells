@@ -377,6 +377,7 @@ The creature jumps to the target point, which must be within range.~
 @31352=~Shortening~
 @31353=~Fire Curse~
 @31354=~Healing Curse~
+@31355=~Guardian Magic~
 @31451=~Disarm~
 @31452=~Forest's Blessing~
 @31453=~Turn Creature~
@@ -509,6 +510,18 @@ Area of Effect: 1 creature
 Saving Throw: Neg. if enemy
 
 Healing Curse causes a creature's attacks to heal rather than harm. If the recipient is an ally, there is no Saving Throw necessary; otherwise, the recipient may make a Save vs. Polymorph at -2 to avoid the effects. While affected by Healing Curse, any damage the creature would deal through attacks, spells or abilities is negated, and the creature that would have been damaged is instead healed by the amount of damage they would have taken.~
+@32355=~Guardian Magic
+(Abjuration)
+
+Level: 3
+Sphere: Guardian
+Range: 5 ft.
+Duration: 1 hour
+Casting Time: 7
+Area of Effect: Special
+Saving Throw: None
+
+This spell grants magical protection to any creature the paladin guards with the Guard action. For the duration, as long as the paladin is guarding another creature within 5 feet, that creature gains a +6 Armor Class bonus and +30% Magic Resistance.~
 @32451=~Disarm
 (Enchantment)
 

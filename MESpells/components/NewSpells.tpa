@@ -253,6 +253,54 @@ COPY_EXISTING ~mepr354.spl~ ~override/%mepr354%.spl~
 COPY_EXISTING ~mepr354d.spl~ ~override~
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=displaystring match_parameter1=30035 parameter1=RESOLVE_STR_REF(@30035) END
 
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+COPY_EXISTING ~mepr355.spl~ ~override~
+	SAY NAME1 @31355
+	SAY UNIDENTIFIED_DESC @32355
+
+OUTER_SET paladin_level_one = 1
+COPY_EXISTING ~mxsplpal.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 3 numcolumns num_spells_level_three
+		PATCH_IF num_spells_level_three > 0 BEGIN
+			READ_2DA_ENTRY i 0 numcolumns paladin_level_three
+			i = numrows
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classpaladin BEGIN
+			READ_2DA_ENTRY i 1 10 name_of_kit
+			PATCH_IF !(~%name_of_kit%~ STRING_EQUAL_CASE ~Blackguard~) BEGIN
+				READ_2DA_ENTRY i 5 10 abilities_of_kit
+				INNER_ACTION BEGIN
+					COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+						COUNT_2DA_ROWS 1 numrows_2
+						INSERT_2DA_ROW numrows_2 1 ~ME_PR355   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 paladin_level_three 1 ~GA_MEPR355~
+						IF_EXISTS
+						UNLESS ~GA_MEPR355~
+				END
+			END
+		END
+	END
+
+COPY_EXISTING ~clabpa01.2da~ ~override~
+	COUNT_2DA_ROWS 1 numrows
+	INSERT_2DA_ROW numrows 1 ~ME_PR355   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+	SET_2DA_ENTRY numrows paladin_level_three 1 ~GA_MEPR355~
+	IF_EXISTS
+	UNLESS ~GA_MEPR355~
+
+END
+
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR4~ RET mepr451=filename END
 COPY_EXISTING ~mepr451.spl~ ~override/%mepr451%.spl~
 	SAY NAME1 @31451
@@ -385,6 +433,7 @@ COPY_EXISTING ~clastext.2da~ ~override~
 	END
 	BUT_ONLY_IF_IT_CHANGES
 
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR7~ RET mepr755=filename END
 COPY_EXISTING ~mepr755.spl~ ~override~
 	SAY NAME1 @31755
 	SAY UNIDENTIFIED_DESC @32755
@@ -1070,7 +1119,7 @@ COPY_EXISTING ~mewi352d.spl~ ~override~
 		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
 		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
 		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) duration_high=((i + 11) * 6) END
-		LPF ALTER_EFFECT INT_VAR header=i match_opcode=eeexsetextendedstat match_special=640 parameter1=(i + 21) END
+		LPF ALTER_EFFECT INT_VAR silent=1 header=i match_opcode=eeexsetextendedstat match_special=640 parameter1=(i + 21) END
 		numheaders = numheaders + 1
 	END
 

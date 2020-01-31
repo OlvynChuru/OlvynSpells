@@ -79,6 +79,7 @@ ADD_PROJECTILE ~override/meportl.pro~ //Linked portal
 ADD_PROJECTILE ~override/meintrv3.pro~ //Invisible traveling 3
 ADD_PROJECTILE ~override/megrvglb.pro~ //Reversed Gravity Sphere
 ADD_PROJECTILE ~override/meverdig.pro~ //Entangle 60-foot radius
+ADD_PROJECTILE ~override/mepolera.pro~ //Agannazar's Scorcher cold
 
 LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~0x106~ splprot_value=~1~ splprot_relation=~9~ RET splprot_areaisnotoutdoor=splprot_slot END
 
@@ -3015,6 +3016,36 @@ COPY_EXISTING ~ar8007.are~ ~override~
 
 END
 
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi861=filename END
+COPY_EXISTING ~mewi861.spl~ ~override/%mewi861%.spl~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=mepolera END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi861~ resource= EVAL ~%mewi861%~ END
+	SAY NAME1 @33861
+	SAY UNIDENTIFIED_DESC @34861
+
+COPY_EXISTING ~mewi861x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi861~ resource= EVAL ~%mewi861%~ END
+	SAY NAME2 @33861
+	SAY IDENTIFIED_DESC @34861
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ribald3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi861x~ AFTER ~scrl9e~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ar3016.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=7 STR_VAR item_to_add=~mewi861x~ END
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~tiernon.sto~ ~override~
+	ADD_STORE_ITEM ~mewi861x~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+
 //LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi951=filename END
 COPY_EXISTING ~mewi951.spl~ ~override~
 	SAY NAME1 @33951
@@ -3390,6 +3421,18 @@ COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
 		END
 	END
 	BUT_ONLY_IF_IT_CHANGES
+
+ACTION_IF MOD_IS_INSTALLED ~MESpells.tp2~ ~850~ BEGIN
+
+COPY_EXISTING ~spwi503.spl~ ~override~
+	READ_SHORT 0x68 numheaders
+	maxlength = 8
+	FOR (i = 1; i <= numheaders; ++i) BEGIN
+		LPF ALTER_SPELL_HEADER INT_VAR header=i range=maxlength END
+		maxlength += 2
+	END
+
+END
 
 ACTION_IF !(MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
 

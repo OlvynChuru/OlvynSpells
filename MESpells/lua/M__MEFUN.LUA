@@ -3771,3 +3771,38 @@ function MEMODDTP(originatingEffectData, effectData, creatureData)
 	end
 	return false
 end
+
+function MERANDSP(effectData, creatureData)
+	EEex_WriteDword(effectData + 0x110, 0x1)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	local spellRES = EEex_ReadLString(effectData + 0x18, 8)
+	local casterlvl = EEex_ReadDword(effectData + 0xC4)
+	local maxradius = EEex_ReadDword(effectData + 0x44)
+	local targetX = EEex_ReadDword(creatureData + 0x8)
+	local targetY = EEex_ReadDword(creatureData + 0xC)
+	local sourceX = EEex_ReadDword(effectData + 0x84)
+	local sourceY = EEex_ReadDword(effectData + 0x88)
+	local deltaX = math.random(maxradius * 2 + 1) - maxradius - 1
+	local deltaY = math.random(maxradius * 2 + 1) - maxradius - 1
+	while math.floor((deltaX ^ 2 + deltaY ^ 2) ^ .5) > maxradius do
+		deltaX = math.random(maxradius * 2 + 1) - maxradius - 1
+		deltaY = math.random(maxradius * 2 + 1) - maxradius - 1
+	end
+		EEex_ApplyEffectToActor(sourceID, {
+["opcode"] = 148,
+["target"] = 2,
+["timing"] = 9,
+["parameter1"] = casterlvl,
+["parameter2"] = 2,
+["resource"] = spellRES,
+["casterlvl"] = casterlvl,
+["source_target"] = targetID,
+["source_id"] = sourceID,
+["source_x"] = sourceX,
+["source_y"] = sourceY,
+["target_x"] = targetX + deltaX,
+["target_y"] = targetY + deltaY
+})
+
+end

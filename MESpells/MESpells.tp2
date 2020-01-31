@@ -14,7 +14,22 @@ ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND !(FILE_EXISTS_IN_GAME ~M__MEFUN.
 
 END
 
-
+OUTER_SPRINT stringcastingtime @3000
+OUTER_SPRINT stringduration @3001
+OUTER_SPRINT stringsavingthrow @3002
+OUTER_SPRINT stringcastingtime1 @3101
+OUTER_SPRINT stringcastingtime2 @3102
+OUTER_SPRINT stringcastingtime3 @3103
+OUTER_SPRINT stringcastingtime4 @3104
+OUTER_SPRINT stringcastingtime5 @3105
+OUTER_SPRINT stringcastingtime6 @3106
+OUTER_SPRINT stringcastingtime7 @3107
+OUTER_SPRINT stringcastingtime8 @3108
+OUTER_SPRINT stringcastingtime9 @3109
+OUTER_SPRINT stringcastingtime10 @3110
+OUTER_SPRINT stringcastingtimeinstant @3199
+OUTER_SPRINT stringduration60 @3200
+OUTER_SPRINT stringsavingthrownone @3300
 
 OUTER_PATCH alltheconstants BEGIN
 	none=0
@@ -1800,13 +1815,11 @@ LANGUAGE
 ENGLISH
  ~MESpells/tra/english/english.tra~
 
-/*
+
 
 BEGIN @2 DESIGNATED 100
 SUBCOMPONENT @1
 
-OUTER_SPRINT stringduration @3001
-OUTER_SPRINT stringduration60 @3200
 OUTER_SPRINT stringcursename @4000
 OUTER_SPRINT stringbanename @4001
 
@@ -1829,8 +1842,6 @@ END
 BEGIN @3 DESIGNATED 101
 SUBCOMPONENT @1
 
-OUTER_SPRINT stringcastingtime @3000
-OUTER_SPRINT stringcastingtime1 @3101
 OUTER_SPRINT stringcursename @4000
 OUTER_SPRINT stringbanename @4001
 
@@ -1853,10 +1864,6 @@ END
 BEGIN @4 DESIGNATED 102
 SUBCOMPONENT @1
 
-OUTER_SPRINT stringcastingtime @3000
-OUTER_SPRINT stringcastingtime1 @3101
-OUTER_SPRINT stringduration @3001
-OUTER_SPRINT stringduration60 @3200
 OUTER_SPRINT stringcursename @4000
 OUTER_SPRINT stringbanename @4001
 
@@ -1886,7 +1893,7 @@ END
 
 
 BEGIN @5 DESIGNATED 150
-	
+
 COPY_EXISTING ~sppr102.spl~ ~override~
 	READ_LONG splflags ulgiash
 	ulgiash&=0xFFFFFBFF
@@ -1899,7 +1906,7 @@ COPY_EXISTING ~sppr512.spl~ ~override~
 	READ_LONG splflags ulgiash
 	ulgiash&=0xFFFFFBFF
 	WRITE_LONG splflags ulgiash
-	LPF ALTER_SPELL_EFFECT INT_VAR duration_high=6 savebonus=(0 - 4) END
+	LPF ALTER_SPELL_EFFECT INT_VAR duration_high=18 savebonus=(0 - 4) END
 	LPF ALTER_EFFECT INT_VAR match_opcode=sleep opcode=charm2 parameter1=0 parameter2=1004 END
 	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=displayportraiticon END
 	SAY UNIDENTIFIED_DESC @15121
@@ -1934,6 +1941,35 @@ COPY_EXISTING ~sppr105.spl~ ~override~
 
 BEGIN @10 DESIGNATED 350 DEPRECATED ~~
 
+BEGIN @23 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 DESIGNATED 375
+
+ACTION_IF !(FILE_EXISTS_IN_GAME ~M__MEFUN.LUA~) BEGIN
+	COPY ~MESpells/lua~ ~override~
+END
+
+COPY ~MESpells/Identify_Creature~ ~override~
+
+COPY_EXISTING ~sppr209.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR speed=1 END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=(0 - 1) END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=immunitytospellandmessage target=2 timing=0 duration=1 parameter1=2097152 parameter2=138 special=(0 - 1) STR_VAR resource=~sppr209~ END
+	LPF ADD_SPELL_EFFECT INT_VAR power=2 opcode=castspell target=2 timing=9 parameter1=0 parameter2=1 resist_dispel=1 STR_VAR resource=~MEIDECRE~ END
+	LPF ADD_SPELL_EFFECT INT_VAR power=2 opcode=402 target=2 timing=0 resist_dispel=1 STR_VAR resource=~MESTATPR~ END
+	SAY NAME1 @4027
+	SAY UNIDENTIFIED_DESC @12091
+
+COPY_EXISTING ~spwi208.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR speed=1 END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=(0 - 1) END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=immunitytospellandmessage target=2 timing=0 duration=1 parameter1=2097152 parameter2=138 special=(0 - 1) STR_VAR resource=~spwi208~ END
+	LPF ADD_SPELL_EFFECT INT_VAR power=2 opcode=castspell target=2 timing=9 parameter1=0 parameter2=1 resist_dispel=1 STR_VAR resource=~MEIDECRE~ END
+	LPF ADD_SPELL_EFFECT INT_VAR power=2 opcode=402 target=2 timing=0 resist_dispel=1 STR_VAR resource=~MESTATPR~ END
+	SAY NAME1 @4027
+	SAY UNIDENTIFIED_DESC @22081
+
+COPY_EXISTING ~scrl92.itm~ ~override~
+	SAY NAME2 @4027
+	SAY IDENTIFIED_DESC @22081
 
 BEGIN @11 FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 DESIGNATED 400
 
@@ -1952,6 +1988,7 @@ COPY_EXISTING ~bearbl.cre~ ~override/mesubrbl.cre~ ~bearbr.cre~ ~override/mesubr
 	WRITE_ASCII racescript ~~ #8
 	WRITE_ASCII generalscript ~~ #8
 	WRITE_ASCII defaultscript ~bdsum00~ #8
+	IF_EXISTS
 
 COPY_EXISTING ~mesuankh.cre~ ~override~
 	WRITE_ASCII racescript ~ankheg~ #8
@@ -1978,11 +2015,20 @@ COPY_EXISTING ~mepr602.spl~ ~override/sppr602.spl~
 COPY_EXISTING ~mewi309.spl~ ~override/spwi309.spl~
 	SAY UNIDENTIFIED_DESC @23091
 
+COPY_EXISTING ~scrl1l.itm~ ~override~
+	SAY IDENTIFIED_DESC @23091
+
 COPY_EXISTING ~mewi407.spl~ ~override/spwi407.spl~
 	SAY UNIDENTIFIED_DESC @24071
 
+COPY_EXISTING ~scrl2a.itm~ ~override~
+	SAY IDENTIFIED_DESC @24071
+
 COPY_EXISTING ~mewi504.spl~ ~override/spwi504.spl~
 	SAY UNIDENTIFIED_DESC @25041
+
+COPY_EXISTING ~scrl2g.itm~ ~override~
+	SAY IDENTIFIED_DESC @25041
 
 
 COPY ~MESpells/Restore_Animate_Dead~ ~override~
@@ -1998,6 +2044,9 @@ COPY_EXISTING ~mepr301.spl~ ~override/sppr301.spl~
 COPY_EXISTING ~mewi501.spl~ ~override/spwi501.spl~
 	SAY UNIDENTIFIED_DESC @25011
 
+COPY_EXISTING ~scrl2d.itm~ ~override~
+	SAY IDENTIFIED_DESC @25011
+
 BEGIN @14 DESIGNATED 801
 SUBCOMPONENT @12
 
@@ -2006,11 +2055,11 @@ COPY ~MESpells/Restore_Animate_Dead~ ~override~
 COPY_EXISTING ~mewi501.spl~ ~override/spwi501.spl~
 	SAY UNIDENTIFIED_DESC @25011
 
+COPY_EXISTING ~scrl2d.itm~ ~override~
+	SAY IDENTIFIED_DESC @25011
 
-BEGIN @15
+BEGIN @15 DESIGNATED 850
 
-OUTER_SPRINT stringsavingthrow @3002
-OUTER_SPRINT stringsavingthrownone @3300
 OUTER_SPRINT stringotiluketextold1 @3900
 OUTER_SPRINT stringotiluketextnew1 @3901
 
@@ -2026,8 +2075,10 @@ COPY_EXISTING ~spwi413.spl~ ~override~
 	END
 	SAY_EVALUATED UNIDENTIFIED_DESC ~%description_new%~
 
+COPY_EXISTING ~scrl5j.itm~ ~override~
+	SAY_EVALUATED IDENTIFIED_DESC ~%description_new%~
 
-BEGIN @16
+BEGIN @16 DESIGNATED 900
 
 COPY_EXISTING ~spwi503.spl~ ~override~
 	LPF ALTER_SPELL_HEADER INT_VAR projectile=25 END
@@ -2039,17 +2090,89 @@ COPY_EXISTING ~spwi503.spl~ ~override~
 	END
 
 
-BEGIN @17
+BEGIN @24 DESIGNATED 925
+
+ACTION_IF !(FILE_EXISTS_IN_GAME ~M__MEFUN.LUA~) BEGIN
+	COPY ~MESpells/lua~ ~override~
+END
+
+COPY ~MESpells/New_Meteor_Swarm~ ~override~
+
+ADD_PROJECTILE ~override/mecomsml.pro~
+
+ACTION_IF MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
+
+	ADD_PROJECTILE ~override/memswarx.pro~
+	
+	COPY_EXISTING ~spwi911.spl~ ~override~
+		LPF ALTER_SPELL_HEADER INT_VAR target=4 projectile=memswarx END
+		LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=(0 - 1) END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=1 timing=1 parameter1=eaanyone parameter2=idsea STR_VAR resource=~MEMSWARS~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=402 target=2 timing=0 parameter1=0x534D454D parameter2=0x44524157 special=240 STR_VAR resource=~MERANDSP~ END
+		SAY UNIDENTIFIED_DESC @29111
+	
+	COPY_EXISTING ~memsward.spl~ ~override~
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=mecomsml END
+
+END ELSE BEGIN
+
+	ADD_PROJECTILE ~override/memswarm.pro~
+	ADD_PROJECTILE ~override/memswar2.pro~
+
+	COPY_EXISTING ~spwi911.spl~ ~override~
+		LPF ALTER_SPELL_HEADER INT_VAR target=4 projectile=memswarm END
+		LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=(0 - 1) END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=1 timing=1 parameter1=eaanyone parameter2=idsea STR_VAR resource=~MEMSWARS~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=1 timing=1 parameter1=eaanyone parameter2=idsea STR_VAR resource=~MEMSWARS~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=1 timing=1 parameter1=eaanyone parameter2=idsea STR_VAR resource=~MEMSWARS~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=1 timing=1 parameter1=eaanyone parameter2=idsea STR_VAR resource=~MEMSWARS~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=1 timing=1 parameter1=eaanyone parameter2=idsea STR_VAR resource=~MEMSWARS~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=1 timing=1 parameter1=eaanyone parameter2=idsea STR_VAR resource=~MEMSWARS~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=1 timing=1 parameter1=eaanyone parameter2=idsea STR_VAR resource=~MEMSWARS~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=1 timing=1 parameter1=eaanyone parameter2=idsea STR_VAR resource=~MEMSWARS~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=1 timing=1 parameter1=eaanyone parameter2=idsea STR_VAR resource=~MEMSWARS~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=1 timing=1 parameter1=eaanyone parameter2=idsea STR_VAR resource=~MEMSWARS~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=1 timing=1 parameter1=eaanyone parameter2=idsea STR_VAR resource=~MEMSWARS~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=1 timing=1 parameter1=eaanyone parameter2=idsea STR_VAR resource=~MEMSWARS~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=applyeffectslist target=2 timing=1 STR_VAR resource=~MEMSWARD~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=castspellpoint target=1 timing=1 parameter2=1 STR_VAR resource=~MEMSWAR2~ END
+		SAY UNIDENTIFIED_DESC @29111
+	
+	COPY_EXISTING ~memswar2.spl~ ~override~
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=memswar2 END
+	
+	COPY_EXISTING ~memsward.spl~ ~override~
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=1 END
+	
+	COPY_EXISTING ~memswarm.pro~ ~override~
+		WRITE_SHORT 0x21A mecomsml
+	
+	COPY_EXISTING ~memswars.cre~ ~override~
+		LPF ADD_CRE_EFFECT INT_VAR opcode=teleportfield target=1 timing=1 parameter1=120 END
+
+END
+
+COPY_EXISTING ~scrl9t.itm~ ~override~ ~mescrl9t.itm~ ~override~
+	SAY IDENTIFIED_DESC @29111
+	IF_EXISTS
+
+BEGIN @17 DESIGNATED 950
 
 COPY_EXISTING ~spwi617.spl~ ~override~ ~spwi908.spl~ ~override~
 	LPF ALTER_SPELL_HEADER INT_VAR target=7 speed=0 END
+	LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringcastingtime%
+~ replace_with= EVAL ~%stringcastingtimeinstant%
+~ END
 
 
-BEGIN @18
+BEGIN @18 DESIGNATED 975
 
 COPY_EXISTING ~sppr415.spl~ ~override~ ~spwi424.spl~ ~override~
 	LPF ALTER_SPELL_HEADER INT_VAR target=7 speed=0 END
-*/
+	LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringcastingtime%
+~ replace_with= EVAL ~%stringcastingtimeinstant%
+~ END
+
 BEGIN @20 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1001 DESIGNATED 1000
 SUBCOMPONENT @19
 

@@ -1,8 +1,8 @@
-@1=~Improve Bless and Curse~
+@1=~Improve Bless and (if in-game) Curse~
 @2=~A: Change duration of Bless and Curse to 1 turn~
 @3=~B: Change casting time of Bless and Curse to 1~
 @4=~A and B~
-@5=~Make it so that Command and Greater Command take control of the target(s) for 1 round instead of putting them to sleep~
+@5=~Make it so that Command takes control of the target for 1 round instead of putting them to sleep~
 @6=~Improve Entangle~
 @7=~A: Original BG1-style Entangle~
 @8=~B: Remove the saving throw penalty from Entangle~
@@ -20,9 +20,12 @@
 @20=~Add all the new spells to the game, including the really powerful spells~
 @21=~Add all the new spells to the game, excluding the really powerful spells~
 @22=~Add special spells that allow high-level spellcasters to cast low-level spells with essentially permanent durations~
+@23=~Turn Know Alignment into Identify Creature, which reveals info about the target (e.g. HP, stats, resistances)~
+@24=~Make Meteor Swarm bombard the area randomly with small meteors rather than a single area of effect~
 
 @1000=~Unnecessary as Spell Revisions is already installed~
 @1001=~The new spells are already added by High Power Baldur's Gate~
+@1002=~This component requires EEex to be installed~
 
 //This regexp should match the Casting Time: line in a spell description
 @3000=~Casting Time:.*~
@@ -41,6 +44,7 @@
 @3108=~Casting Time: 8~
 @3109=~Casting Time: 9~
 @3110=~Casting Time: 10~
+@3199=~Casting Time: Instant~
 
 @3200=~Duration: 1 turn~
 
@@ -182,6 +186,7 @@ Permanent Druid Spell IV allows the druid to cast a spell with an extremely long
 @4024=~Wing Buffet~
 @4025=~Red Dragon Breath~
 @4026=~Dragon Fear~
+@4027=~Identify Creature~
 
 @11021=~Command
 (Enchantment/Charm)
@@ -219,6 +224,18 @@ Area of Effect: 15-ft. radius
 Saving Throw: Neg.
 
 By means of this spell, the caster is able to cause plants in the area of effect to entangle enemies within the area. The grasses, weeds, bushes, and even trees wrap, twist, and entwine about the creatures, holding them fast for the duration if they fail a Save vs. Spell. An entangled creature can still attack, but receives a -2 penalty to its Armor Class.~
+@12091=~Identify Creature
+(Divination)
+
+Level: 2
+Sphere: Divination
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 1
+Area of Effect: 1 creature
+Saving Throw: None
+
+An Identify Creature spell enables the caster to learn useful information about a creature. The information will include the creature's level, class, Hit Points, Armor Class, base THAC0 (excluding THAC0 bonuses), attacks per round, attributes, resistances, saving throws, and various other effects. Some specific creatures will also display additional information.~
 @13011=~Animate Dead
 (Necromancy)
 
@@ -261,12 +278,12 @@ By means of this spell, the caster calls a multitude of animals, each of which a
 Level: 5
 Sphere: Charm 
 Range: Visual range of the caster 
-Duration: 1 round
+Duration: 3 rounds
 Casting Time: 1
 Area of Effect: 15-ft. radius
 Saving Throw: Neg.
 
-As with the 1st-level spell Command, this spell enables the priest to command other creatures for 1 round, except that this spell can target multiple creatures, and the Save vs. Spell is made at -4. At the end of the round, the creature(s) awaken and are unharmed. The area of effect is similar to that of a Stinking Cloud or a Fireball.~
+As with the 1st-level spell Command, this spell enables the priest to command other creatures, except that this spell can target multiple creatures, the Save vs. Spell is made at -4, and the effect lasts 4 rounds. The area of effect is similar to that of a Stinking Cloud or a Fireball.~
 @16021=~Animal Summoning III
 (Conjuration/Summoning)
 
@@ -279,14 +296,24 @@ Area of Effect: Special
 Saving Throw: None 
 
 By means of this spell, the caster calls a multitude of animals, each of which are worth between 650 and 975 experience points. The animals appearing are randomly determined and ignore the summoning limit. They will remain under the caster's control until slain or the spell duration expires. The animals summoned are worth a total of around 120 XP per caster level.~
+@22081=~Identify Creature
+(Divination)
 
+Level: 2
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 1
+Area of Effect: 1 creature
+Saving Throw: None
+
+An Identify Creature spell enables the caster to learn useful information about a creature. The information will include the creature's level, class, Hit Points, Armor Class, base THAC0 (excluding THAC0 bonuses), attacks per round, attributes, resistances, saving throws, and various other effects. Some specific creatures will also display additional information.~
 @23091=~Monster Summoning I
 (Conjuration/Summoning)
 
 Level: 3
 Range: 20 ft. 
 Duration: 1 round/level
-Casting Time: 4 
+Casting Time: 4
 Area of Effect: Special 
 Saving Throw: None 
 
@@ -324,7 +351,17 @@ Area of Effect: Special
 Saving Throw: None 
 
 By means of this spell, the caster summons a horde of monsters, each of which are worth between 175 and 450 experience points. The monsters appearing are randomly determined and ignore the summoning limit. They will remain under the caster's control until slain or the spell duration expires. The monsters summoned are worth a total of around 60 XP per caster level.~
+@29111=~Meteor Swarm
+(Evocation)
 
+Level: 9
+Range: 270 ft.
+Duration: 1 round
+Casting Time: 9
+Area of Effect: 15-ft. radius
+Saving Throw: None
+
+When the caster utters the words to this powerful spell, <PRO_HESHE> calls upon powerful forces indeed. These forces pull down meteors from above, hurling them randomly at anyone in the area of effect. For every level of the caster, one meteor falls upon a random location within 15 feet of the target. All creatures within 8 feet of the meteor take 2d10 fire damage and 2d10 crushing damage, with a Save vs. Breath at -5 for half damage. Only a fraction of the meteors are likely to strike a specific creature.~
 
 
 
@@ -557,7 +594,7 @@ Casting Time: 4
 Area of Effect: 1 creature
 Saving Throw: Neg.
 
-Turn Creature allows the priest to turn a non-undead creature. Once the spell is cast, the target creatue must Save vs. Polymorph at -4. On a failure, the creature is turned as if it was an undead creature affected by the priest's Turn Undead ability. Depending on the level of the target, the level of the priest, the alignment of the priest, and random chance, the target may either be forced to run away from the priest temporarily, controlled by the priest temporarily, or killed instantly.~
+Turn Creature allows the priest to turn a non-undead creature. Once the spell is cast, the target creature must Save vs. Polymorph at -4. On a failure, the creature is turned as if it was an undead creature affected by the priest's Turn Undead ability. Depending on the level of the target, the level of the priest, the alignment of the priest, and random chance, the target may either be forced to run away from the priest temporarily, controlled by the priest temporarily, or killed instantly.~
 @32454=~Wall of Fire
 (Evocation)
 
@@ -717,6 +754,7 @@ An Enhance Attribute spell can vastly improve a single attribute of a creature. 
 @33858=~Sphere of Reversed Gravity~
 @33859=~False Life~
 @33860=~Enslave~
+@33861=~Polar Ray~
 @33951=~Perfect Invisibility~
 @33952=~Mass Domination~
 @33953=~Attain Perfection~
@@ -1415,6 +1453,17 @@ Area of Effect: 1 creature
 Saving Throw: Neg.
 
 An especially potent mind-control spell, Enslave will make the target a permanent thrall of the caster. If the target fails its Save vs. Spell at -4, it is dominated by the caster until the effect is dispelled. The enslaved creature will not take any actions unless ordered by the caster, and it will not turn hostile if hurt by a party member. Undead and constructs are unaffected by Enslave.~
+@34861=~Polar Ray
+(Evocation)
+
+Level: 8
+Range: 30 ft.
+Duration: 1 round
+Casting Time: 5
+Area of Effect: 2-ft. by 30-ft. jet
+Saving Throw: None
+
+Upon casting Polar Ray, the caster emits a powerful beam of frost at the target. The target and all creatures between the caster and the target take 12d6 cold damage. The polar ray deals the same damage again half a round later to the target and anyone who is still in the ray's path.~
 @34951=~Perfect Invisibility
 (Illusion/Phantasm)
 
@@ -1513,7 +1562,7 @@ Casting Time: 9
 Area of Effect: Special
 Saving Throw: None
 
-This spell creates an illusory adult red dragon, which will serve the caster for the duration. The illusory dragon has only 20% the hit points of a real dragon of the same age, and its attacks deal nonlethal damage, but its stats are otherwise the same as those of a real dragon, and it has the same abilities, including an fire breath and an aura of fear.~
+This spell creates an illusory adult red dragon, which will serve the caster for the duration. The illusory dragon has only 20% the hit points of a real dragon of the same age, and its attacks deal nonlethal damage, but its stats are otherwise the same as those of a real dragon, and it has the same abilities, including fire breath and an aura of fear.~
 
 @35327=~I am the channel through which your wish shall be fulfilled. You may ask for a wish I can repeat, or you may ask for a wish that will happen once only. Decide.~
 @35328=~Choose wisely then, as I can perform each of these tasks once and once only.~

@@ -399,7 +399,7 @@ COPY_EXISTING ~mepr754.spl~ ~override~
 	LPF ALTER_SPELL_HEADER INT_VAR projectile=meverdig END
 	SAY NAME1 @31754
 	SAY UNIDENTIFIED_DESC @32754
-
+/*
 ACTION_IF NOT FILE_EXISTS_IN_GAME ~AvengerHLAFix.txt~ BEGIN
 
 COPY ~MESpells/mrk/AvengerHLAFix.txt~ ~override~
@@ -410,18 +410,18 @@ AVENGER                 Dr0
 ~
 
 END
+*/
 
-
-COPY_EXISTING ~clastext.2da~ ~override~
+COPY_EXISTING ~kitlist.2da~ ~override~
 	COUNT_2DA_COLS numcolumns
 	COUNT_2DA_ROWS numcolumns numrows
-	FOR (i = 0; i < numrows; ++i) BEGIN
-		READ_2DA_ENTRY i 1 numcolumns theclass
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 numcolumns theclass
 		PATCH_IF (~%theclass%~ STRING_EQUAL_CASE ~11~) BEGIN
-			READ_2DA_ENTRY i 0 numcolumns theclassname
+			READ_2DA_ENTRY i 1 numcolumns theclassname
 			INNER_ACTION BEGIN
 				COPY_EXISTING ~luabbr.2da~ ~override~
-					LPF GET_2DA_ROW INT_VAR STR_VAR match= EVAL ~%theclassname%~ RET numcolumns2=numcols row=matched END
+					LPF GET_2DA_ROW INT_VAR found_it=1 STR_VAR match= EVAL ~%theclassname%~ RET numcolumns2=numcols row=matched END
 					READ_2DA_ENTRY row 1 numcolumns2 thehlatable
 					INNER_ACTION BEGIN
 						COPY_EXISTING ~lu%thehlatable%.2da~ ~override~
@@ -3069,7 +3069,7 @@ COPY_EXISTING ~kieran2.sto~ ~override~
 
 END
 
-LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi952=filename END
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ default=~SPWI933~ replaced_new_filename=~MEEW933~ RET mewi952=filename END
 COPY_EXISTING ~mewi952.spl~ ~override/%mewi952%.spl~
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi952~ resource= EVAL ~%mewi952%~ END
 	SAY NAME1 @33952
@@ -3097,7 +3097,7 @@ COPY_EXISTING ~ar8010.are~ ~override~
 
 END
 
-LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi953=filename END
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ default=~SPWI935~ replaced_new_filename=~MEEW935~ RET mewi953=filename END
 COPY_EXISTING ~mewi953.spl~ ~override/%mewi953%.spl~
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi953~ resource= EVAL ~%mewi953%~ END
 	SAY NAME1 @33953
@@ -3125,7 +3125,7 @@ COPY_EXISTING ~edion.sto~ ~override~
 
 END
 
-LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi954=filename END
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ default=~SPWI936~ replaced_new_filename=~MEEW936~ RET mewi954=filename END
 COPY_EXISTING ~mewi954.spl~ ~override/%mewi954%.spl~
 	SAY NAME1 @33954
 	SAY UNIDENTIFIED_DESC @34954
@@ -3154,7 +3154,7 @@ END
 
 ACTION_IF (me_power_spells = 1) BEGIN
 
-LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi955=filename END
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ default=~SPWI937~ replaced_new_filename=~MEEW937~ RET mewi955=filename END
 COPY_EXISTING ~mewi955.spl~ ~override/%mewi955%.spl~ ~mewi955d.spl~ ~override/%mewi955%d.spl~ ~mewi955p.spl~ ~override/%mewi955%p.spl~
 	SAY NAME1 @33955
 	SAY UNIDENTIFIED_DESC @34955
@@ -3188,7 +3188,7 @@ END
 
 ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND (me_power_spells = 1) BEGIN
 
-LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi956=filename END
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ default=~SPWI941~ replaced_new_filename=~MEEW941~ RET mewi956=filename END
 COPY_EXISTING ~mewi956.spl~ ~override/%mewi956%.spl~
 	SAY NAME1 @33956
 	SAY UNIDENTIFIED_DESC @34956
@@ -3212,7 +3212,7 @@ COPY_EXISTING ~adran.cre~ ~override~
 END
 END
 
-LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi957=filename END
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ default=~SPWI942~ replaced_new_filename=~MEEW942~ RET mewi957=filename END
 COPY_EXISTING ~mewi957.spl~ ~override/%mewi957%.spl~
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi957~ resource= EVAL ~%mewi957%~ END
 	SAY NAME1 @33957
@@ -3241,7 +3241,7 @@ COPY_EXISTING ~ar9714.are~ ~override~
 
 END
 
-LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi958=filename END
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ default=~SPWI944~ replaced_new_filename=~MEEW944~ RET mewi958=filename END
 COPY_EXISTING ~mewi958.spl~ ~override/%mewi958%.spl~
 	SAY NAME1 @33958
 	SAY UNIDENTIFIED_DESC @34958

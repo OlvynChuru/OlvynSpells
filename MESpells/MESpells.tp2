@@ -1461,6 +1461,7 @@ DEFINE_PATCH_FUNCTION ~GET_2DA_ROW~
 		numcols
 		matched
 BEGIN
+		matched=~-1~
 		COUNT_2DA_ROWS numcolumns numrows
 		FOR (i = 0; i < numrows; ++i) BEGIN
 			READ_2DA_ENTRY i match_column numcolumns string_to_match
@@ -1472,7 +1473,7 @@ BEGIN
 		END
 		numcols = numcolumns
 		PATCH_IF (found_it = 0) BEGIN
-			PATCH_FAIL ~GET_2DA_ROW: Could not find a row that contains %match% in column %match_column%.~
+			PATCH_WARN ~GET_2DA_ROW: Could not find a row that contains %match% in column %match_column%.~
 		END
 END
 
@@ -1776,9 +1777,12 @@ DEFINE_PATCH_FUNCTION ADD_HLA
 		excluded_by=~*~
 		alignment_restrict=~*~
 BEGIN
-	LPF GET_2DA_ROW INT_VAR numcolumns=7 match_column=1 STR_VAR match=~*~ RET numcolumns=numcols row=matched END
+	LPF GET_2DA_ROW INT_VAR found_it=1 numcolumns=7 match_column=1 STR_VAR match=~*~ RET numcolumns=numcols row=matched END
 	COUNT_2DA_ROWS numcolumns numrows
-	PATCH_IF row<numrows BEGIN
+	PATCH_IF row < 0 BEGIN
+		row = numrows
+	END
+	PATCH_IF row < numrows BEGIN
 //		PATCH_PRINT ~%row% %numrows%~
 		SET_2DA_ENTRY row 1 numcolumns ~%ability%~
 		SET_2DA_ENTRY row 2 numcolumns ~%icon%~

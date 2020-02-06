@@ -403,6 +403,9 @@ The creature jumps to the target point, which must be within range.~
 @30033=~Kobold~
 @30034=~Rendered incapable of dealing damage~
 @30035=~Deals healing instead of damage~
+@30036=~Too high level to be cloned~
+@30037=~Spell Ineffective~
+@30038=~Protected by Damage Turning~
 
 @31151=~Snake's Swiftness~
 @31152=~Hex~
@@ -426,6 +429,7 @@ The creature jumps to the target point, which must be within range.~
 @31753=~Nonrandom Zone~
 @31754=~Colossal Growth~
 @31755=~Enhance Attribute~
+@31756=~Contingent Resurrection~
 
 @32151=~Snake's Swiftness
 (Alteration)
@@ -691,6 +695,18 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 An Enhance Attribute spell can vastly improve a single attribute of a creature. In casting this spell, the caster first chooses whether <PRO_HESHE> wishes to enhance a creature's Strength, Dexterity, Constitution, Intelligence, Wisdom, or Charisma. Then <PRO_HESHE> points at a creature, or chooses <PRO_HIMHER>self. The spell sets the chosen attribute of the target creature to 24 for the duration, or until dispelled. The spell has no effect if the chosen attribute of the creature is already higher than 24.~
+@32756=~Contingent Resurrection
+(Necromancy)
+
+Level: Quest
+Sphere: Necromantic
+Range: Touch
+Duration: Permanent until triggered
+Casting Time: 9
+Area of Effect: 1 creature
+Saving Throw: None 
+
+This spell stores a Resurrection spell in the target, to be released when the creature dies. The slain creature is automatically brought back to life and immediately restored to full health. Contingent Resurrection then ends, and cannot be applied to the same creature again for 7 days.~
 
 
 @33151=~Disruptive Surge~
@@ -732,6 +748,7 @@ An Enhance Attribute spell can vastly improve a single attribute of a creature. 
 @33560=~Slime Drop~
 @33561=~Baleful Teleport~
 //@33562=~Critical Sequencer~
+@33563=~Warrior Simulacrum~
 @33651=~Isaac's Greater Missile Storm~
 @33652=~Freeze Inanimates~
 @33653=~Greater Nightmare~
@@ -755,6 +772,7 @@ An Enhance Attribute spell can vastly improve a single attribute of a creature. 
 @33859=~False Life~
 @33860=~Enslave~
 @33861=~Polar Ray~
+@33862=~Clone Other~
 @33951=~Perfect Invisibility~
 @33952=~Mass Domination~
 @33953=~Attain Perfection~
@@ -763,6 +781,7 @@ An Enhance Attribute spell can vastly improve a single attribute of a creature. 
 @33956=~Enoll Eva's Duplication~
 @33957=~Executioner's Eyes~
 @33958=~Phantasmal Dragon~
+@33959=~Damage Turning~
 
 @34151=~Disruptive Surge
 (Wild Magic)
@@ -1083,7 +1102,7 @@ Casting Time: 3
 Area of Effect: 1 creature
 Saving Throw: None
 
-Vampiric Link lets the caster absorb any life energy the target loses. For the duration, whenever the target creature takes damage, the caster regains about that many Hit Points. The caster can cast Vampiric Link on allies or enemies, but not on <PRO_HIMHER>self. A single caster can establish Vampiric Links on multiple creatures, but no one creature can be affected by more than one Vampiric Link at once. Undead and constructs cannot be the target of this spell, but they can still cast it on other creatures.~
+Vampiric Link lets the caster absorb any life energy the target loses. For the duration, whenever the target creature takes damage, the caster regains that many Hit Points. The caster can cast Vampiric Link on allies or enemies, but not on <PRO_HIMHER>self. A single caster can establish Vampiric Links on multiple creatures, but no one creature can be affected by more than one Vampiric Link at once. Undead and constructs cannot be the target of this spell, but they can still cast it on other creatures.~
 @34551=~Life Transfer
 (Necromancy)
 
@@ -1207,6 +1226,17 @@ Saving Throw: None
 
 Critical Sequencer lets the caster repeatedly cast a spell through critical hits. The caster is prompted to store a single 1st-level spell, and the caster's weapons are temporarily imbued with that spell. For the duration, whenever the caster gets a critical hit on a creature, <PRO_HESHE> instantly casts a copy of the stored spell on that creature. This will not happen if the critical hit is averted.~
 */
+@34563=~Warrior Simulacrum
+(Illusion/Phantasm)
+
+Level: 5
+Range: 0
+Duration: 1 round/level
+Casting Time: 5
+Area of Effect: The caster
+Saving Throw: None
+
+This spell is similar to Simulacrum in that it creates an illusionary copy of the caster which is under the caster's control. The simulacrum cannot cast spells or use special abilities of items or innate abilities. It is 60% the level of the caster as has 60% of the caster's Hit Points. This spell is most useful for fighter/mages and other spellcasters with decent fighting skills.~
 @34651=~Isaac's Greater Missile Storm
 (Evocation)
 
@@ -1464,6 +1494,17 @@ Area of Effect: 2-ft. by 30-ft. jet
 Saving Throw: None
 
 Upon casting Polar Ray, the caster emits a powerful beam of frost at the target. The target and all creatures between the caster and the target take 12d6 cold damage. The polar ray deals the same damage again half a round later to the target and anyone who is still in the ray's path.~
+@34862=~Clone Other
+(Illusion/Phantasm)
+
+Level: 8
+Range: Visual range of the caster
+Duration: 16 rounds
+Casting Time: 9
+Area of Effect: 1 creature
+Saving Throw: None
+
+An offensive version of Simulacrum, Clone Other creates a simulacrum of another creature. The simulacrum is under the caster's control. The caster cannot clone <PRO_HIMHER>self, and the target's level must be less than or equal to the caster's. The simulacrum is at 60% of the target's level and has 60% of their Hit Points.~
 @34951=~Perfect Invisibility
 (Illusion/Phantasm)
 
@@ -1563,6 +1604,17 @@ Area of Effect: Special
 Saving Throw: None
 
 This spell creates an illusory adult red dragon, which will serve the caster for the duration. The illusory dragon has only 20% the hit points of a real dragon of the same age, and its attacks deal nonlethal damage, but its stats are otherwise the same as those of a real dragon, and it has the same abilities, including fire breath and an aura of fear.~
+@34959=~Damage Turning
+(Abjuration) 
+
+Level: 9
+Range: 0
+Duration: 3 rounds
+Casting Time: 1
+Area of Effect: The caster
+Saving Throw: None 
+
+Damage Turning reflects damage from the caster back to the attacker. While Damage Turning is active, any damage that would be dealt to the caster from an attack, spell or ability is prevented. The source is dealt the full damage they would have dealt the caster. Other effects of attacks, spells, and abilities are not reflected; just the damage. Damage Turning can only be cast by Abjurers.~
 
 @35327=~I am the channel through which your wish shall be fulfilled. You may ask for a wish I can repeat, or you may ask for a wish that will happen once only. Decide.~
 @35328=~Choose wisely then, as I can perform each of these tasks once and once only.~

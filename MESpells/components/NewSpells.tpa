@@ -366,6 +366,21 @@ COPY_EXISTING ~mepr551d.spl~ ~override~
 
 END
 
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR5~ RET mepr552=filename END
+COPY_EXISTING ~mepr552.spl~ ~override/%mepr552%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mepr552~ resource= EVAL ~%mepr552%~ END
+	SAY NAME1 @31552
+	SAY UNIDENTIFIED_DESC @32552
+
+COPY_EXISTING ~instant.ids~ ~override~
+	REPLACE_TEXTUALLY ~327~ ~323 CreateCreatureImpassableAllowOverlap(S:NewObject*,P:Location*,I:Face*DIR)
+323 CreateCreatureImpassableAllowOverlapEffect(S:NewObject*,S:Effect*,P:Location*,I:Face*DIR)
+327~
+	UNLESS ~323~
+END
+
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR6~ RET mepr652=filename END
 COPY_EXISTING ~mepr652.spl~ ~override/%mepr652%.spl~
 	SAY NAME1 @31652
@@ -2348,6 +2363,62 @@ ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
 COPY_EXISTING ~ar5403.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi563x~ END
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI5~ RET mewi564=filename END
+COPY_EXISTING ~mewi564.spl~ ~override/%mewi564%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi564~ resource= EVAL ~%mewi564%~ END
+	SAY NAME1 @33564
+	SAY UNIDENTIFIED_DESC @34564
+
+COPY_EXISTING ~instant.ids~ ~override~
+	REPLACE_TEXTUALLY ~327~ ~323 CreateCreatureImpassableAllowOverlap(S:NewObject*,P:Location*,I:Face*DIR)
+323 CreateCreatureImpassableAllowOverlapEffect(S:NewObject*,S:Effect*,P:Location*,I:Face*DIR)
+327~
+	UNLESS ~323~
+
+COPY_EXISTING ~mewi564x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi564~ resource= EVAL ~%mewi564%~ END
+	SAY NAME2 @33564
+	SAY IDENTIFIED_DESC @34564
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~sto0703.sto~ ~override~ //Sorcerous Sundries
+	ADD_STORE_ITEM ~mewi564x~ AFTER ~scrlal~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~bdcrus13.cre~ ~override~
+	ADD_CRE_ITEM ~mewi564x~ #0 #0 #0 ~NONE~ ~INV4~
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar1202.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=12 STR_VAR item_to_add=~mewi564x~ END
+
+COPY_EXISTING ~udduer01.sto~ ~override~
+	ADD_STORE_ITEM ~mewi564x~ AFTER ~scrl8x~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~
+	ADD_STORE_ITEM ~mewi564x~ AFTER ~scrl5q~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SCRL6W\",1,1)~ ~AddStoreItem("KUORK0","SCRL6W",1,1)
+		AddStoreItem("KUORK0","MEWI564X",1,1)~
+	END
+
+END
 
 END
 

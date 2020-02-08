@@ -423,6 +423,7 @@ The creature jumps to the target point, which must be within range.~
 @31453=~Turn Creature~
 @31454=~Wall of Fire~
 @31551=~Prolongment~
+@31552=~Wall of Force~
 @31652=~Drown~
 @31653=~Antiharm Shell~
 @31751=~Power Word, Heal~
@@ -623,6 +624,18 @@ Area of Effect: 1 creature
 Saving Throw: Special
 
 Prolongment doubles the duration of certain effects on the target creature. If the target is an enemy, then all harmful effects on the target will have their duration doubled unless the target makes a Save vs. Spell at -4. If the target is not an enemy, then all non-harmful effects on the target will have their duration doubled. A "harmful effect" is any effect from a spell or ability that turns a non-hostile creature hostile. The duration is doubled from the total duration of the effect, not the remaining duration. An effect can only be prolonged once.~
+@32552=~Wall of Force
+(Abjuration)
+
+Level: 5
+Sphere: Guardian
+Range: Visual range of the caster
+Duration: 5 rounds
+Casting Time: 7
+Area of Effect: 8 ft. long, 2 ft. wide wall
+Saving Throw: None
+
+This spell creates a wall of magical force, which stays for 5 rounds. Creatures cannot pass through the wall, though they can still fly over it, teleport past it, or float past it while ethereal. The wall cannot be dispelled.~
 @32652=~Drown
 (Alteration)
 
@@ -749,6 +762,7 @@ This spell stores a Resurrection spell in the target, to be released when the cr
 @33561=~Baleful Teleport~
 //@33562=~Critical Sequencer~
 @33563=~Warrior Simulacrum~
+@33564=~Wall of Force~
 @33651=~Isaac's Greater Missile Storm~
 @33652=~Freeze Inanimates~
 @33653=~Greater Nightmare~
@@ -1237,6 +1251,17 @@ Area of Effect: The caster
 Saving Throw: None
 
 This spell is similar to Simulacrum in that it creates an illusionary copy of the caster which is under the caster's control. The simulacrum cannot cast spells or use special abilities of items or innate abilities. It is 60% the level of the caster as has 60% of the caster's Hit Points. This spell is most useful for fighter/mages and other spellcasters with decent fighting skills.~
+@34564=~Wall of Force
+(Abjuration)
+
+Level: 5
+Range: Visual range of the caster
+Duration: 5 rounds
+Casting Time: 7
+Area of Effect: 8 ft. long, 2 ft. wide wall
+Saving Throw: None
+
+This spell creates a wall of magical force, which stays for 5 rounds. Creatures cannot pass through the wall, though they can still fly over it, teleport past it, or float past it while ethereal. The wall cannot be dispelled.~
 @34651=~Isaac's Greater Missile Storm
 (Evocation)
 

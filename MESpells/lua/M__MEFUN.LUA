@@ -3978,3 +3978,194 @@ function MERANDSP(effectData, creatureData)
 })
 
 end
+key_angles = {-90, -67.5, -45, -22.5, 0, 22.5, 45, 67.5, 90}
+function MEWOFORC(effectData, creatureData)
+	EEex_WriteDword(effectData + 0x110, 0x1)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	local creatureRES = EEex_ReadLString(effectData + 0x18, 8)
+	local casterlvl = EEex_ReadDword(effectData + 0xC4)
+	local numCreatures = EEex_ReadWord(effectData + 0x44, 0x0)
+	if numCreatures == 0 then return end
+	local savingthrow = EEex_ReadDword(effectData + 0x3C)
+	local wallAnimation = ""
+	local wallDeltaBase = EEex_ReadWord(effectData + 0x46, 0x0)
+	if wallDeltaBase == 0 then
+		wallDeltaBase = 30
+	end
+	local duration = EEex_ReadDword(effectData + 0x5C)
+	local timing = 0
+	if duration == 0 then
+		timing = 9
+		duration = 60
+	end
+
+	local vvcresource = EEex_ReadLString(effectData + 0x6C, 8)
+	if vvcresource == "" then
+		vvcresource = "SNONE"
+	end
+	local targetX = EEex_ReadDword(effectData + 0x84)
+	local targetY = EEex_ReadDword(effectData + 0x88)
+	local sourceX = EEex_ReadDword(creatureData + 0x8)
+	local sourceY = EEex_ReadDword(creatureData + 0xC)
+	local deltaX = targetX - sourceX
+	local deltaY = targetY - sourceY
+	local angle = 90
+	if deltaX ~= 0 then
+		angle = math.deg(math.atan(deltaY / deltaX))
+		local angleRounded = false
+		for i = 1, 9, 1 do
+			if angleRounded == false and ((angle >= key_angles[i] and angle - 11.25 <= key_angles[i]) or (angle <= key_angles[i] and angle + 11.25 >= key_angles[i])) then
+				angleRounded = true
+				angle = key_angles[i]
+				if bit32.band(savingthrow, 0x100000) > 0 then
+					wallAnimation = "MEWOFOR" .. i
+				end
+			end
+		end
+	else
+		if bit32.band(savingthrow, 0x100000) > 0 then
+			wallAnimation = "MEWOFOR9"
+		end
+	end
+	
+	local wallDeltaX = math.floor(math.sin(math.rad(angle)) * wallDeltaBase * -1)
+	local wallDeltaY = math.floor(math.cos(math.rad(angle)) * wallDeltaBase)
+	if wallAnimation ~= "" then
+		EEex_ApplyEffectToActor(sourceID, {
+["opcode"] = 215,
+["target"] = 2,
+["timing"] = 0,
+["duration"] = duration,
+["parameter2"] = 2,
+["resource"] = wallAnimation,
+["source_target"] = sourceID,
+["source_id"] = sourceID,
+["source_x"] = sourceX,
+["source_y"] = sourceY,
+["target_x"] = targetX,
+["target_y"] = targetY
+})
+	end
+	if numCreatures % 2 == 1 then
+		C:Eval('CreateCreatureImpassableAllowOverlap(\"' .. creatureRES .. '\", [' .. targetX .. '.' .. targetY + 7 .. '], ' .. 0, sourceID)
+--[[
+		EEex_ApplyEffectToActor(sourceID, {
+["opcode"] = 67,
+["target"] = 2,
+["timing"] = timing,
+["duration"] = duration,
+["parameter2"] = 2,
+["resource"] = creatureRES,
+["vvcresource"] = vvcresource,
+["casterlvl"] = casterlvl,
+["source_target"] = sourceID,
+["source_id"] = sourceID,
+["source_x"] = sourceX,
+["source_y"] = sourceY,
+["target_x"] = targetX,
+["target_y"] = targetY
+})
+--]]
+		numCreatures = math.floor((numCreatures - 1) / 2)
+		for i = 1, numCreatures, 1 do
+			C:Eval('CreateCreatureImpassableAllowOverlap(\"' .. creatureRES .. '\", [' .. targetX + (wallDeltaX * i) .. '.' .. targetY + (wallDeltaY * i) + 7 .. '], ' .. 0, sourceID)
+--[[
+			EEex_ApplyEffectToActor(sourceID, {
+	["opcode"] = 67,
+	["target"] = 2,
+	["timing"] = timing,
+	["duration"] = duration,
+	["parameter2"] = 2,
+	["resource"] = creatureRES,
+	["vvcresource"] = vvcresource,
+	["casterlvl"] = casterlvl,
+	["source_target"] = sourceID,
+	["source_id"] = sourceID,
+	["source_x"] = sourceX,
+	["source_y"] = sourceY,
+	["target_x"] = targetX + (wallDeltaX * i),
+	["target_y"] = targetY + (wallDeltaY * i)
+	})
+--]]
+			C:Eval('CreateCreatureImpassableAllowOverlap(\"' .. creatureRES .. '\", [' .. targetX - (wallDeltaX * i) .. '.' .. targetY - (wallDeltaY * i) + 7 .. '], ' .. 0, sourceID)
+--[[
+			EEex_ApplyEffectToActor(sourceID, {
+	["opcode"] = 67,
+	["target"] = 2,
+	["timing"] = timing,
+	["duration"] = duration,
+	["parameter2"] = 2,
+	["resource"] = creatureRES,
+	["vvcresource"] = vvcresource,
+	["casterlvl"] = casterlvl,
+	["source_target"] = sourceID,
+	["source_id"] = sourceID,
+	["source_x"] = sourceX,
+	["source_y"] = sourceY,
+	["target_x"] = targetX - (wallDeltaX * i),
+	["target_y"] = targetY - (wallDeltaY * i)
+	})
+--]]
+		end
+	else
+		for i = 1, numCreatures, 1 do
+			C:Eval('CreateCreatureImpassableAllowOverlap(\"' .. creatureRES .. '\", [' .. targetX + math.floor(wallDeltaX / 2) + (wallDeltaX * i) .. '.' .. targetY + math.floor(wallDeltaY / 2) + (wallDeltaY * i) + 7 .. '], ' .. 0, sourceID)
+--[[
+			EEex_ApplyEffectToActor(sourceID, {
+	["opcode"] = 67,
+	["target"] = 2,
+	["timing"] = timing,
+	["duration"] = duration,
+	["parameter2"] = 2,
+	["resource"] = creatureRES,
+	["vvcresource"] = vvcresource,
+	["casterlvl"] = casterlvl,
+	["source_target"] = sourceID,
+	["source_id"] = sourceID,
+	["source_x"] = sourceX,
+	["source_y"] = sourceY,
+	["target_x"] = targetX + math.floor(wallDeltaX / 2) + (wallDeltaX * i),
+	["target_y"] = targetY + math.floor(wallDeltaY / 2) + (wallDeltaY * i)
+	})
+--]]
+			C:Eval('CreateCreatureImpassableAllowOverlap(\"' .. creatureRES .. '\", [' .. targetX - math.floor(wallDeltaX / 2) - (wallDeltaX * i) .. '.' .. targetY - math.floor(wallDeltaY / 2) - (wallDeltaY * i) + 7 .. '], ' .. 0, sourceID)
+--[[
+			EEex_ApplyEffectToActor(sourceID, {
+	["opcode"] = 67,
+	["target"] = 2,
+	["timing"] = timing,
+	["duration"] = duration,
+	["parameter2"] = 2,
+	["resource"] = creatureRES,
+	["vvcresource"] = vvcresource,
+	["casterlvl"] = casterlvl,
+	["source_target"] = sourceID,
+	["source_id"] = sourceID,
+	["source_x"] = sourceX,
+	["source_y"] = sourceY,
+	["target_x"] = targetX - math.floor(wallDeltaX / 2) - (wallDeltaX * i),
+	["target_y"] = targetY - math.floor(wallDeltaY / 2) - (wallDeltaY * i)
+	})
+--]]
+		end
+	end
+end
+
+function MEUNSTUC(effectData, creatureData)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local targetX = EEex_ReadDword(creatureData + 0x8)
+	local targetY = EEex_ReadDword(creatureData + 0xC)
+	EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 222,
+["target"] = 2,
+["timing"] = 1,
+["duration"] = duration,
+["source_target"] = targetID,
+["source_id"] = targetID,
+["source_x"] = targetX,
+["source_y"] = targetY,
+["target_x"] = targetX,
+["target_y"] = targetY
+})
+end

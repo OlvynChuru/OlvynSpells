@@ -22,6 +22,8 @@
 @22=~Add special spells that allow high-level spellcasters to cast low-level spells with essentially permanent durations~
 @23=~Turn Know Alignment into Identify Creature, which reveals info about the target (e.g. HP, stats, resistances)~
 @24=~Make Meteor Swarm bombard the area randomly with small meteors rather than a single area of effect~
+@25=~Improve Chain Lightning~
+@26=~Make it so Protection from Magical Weapons only lasts 3 rounds but Absolute Immunity lasts 5 rounds~
 
 @1000=~Unnecessary as Spell Revisions is already installed~
 @1001=~The new spells are already added by High Power Baldur's Gate~
@@ -47,6 +49,9 @@
 @3199=~Casting Time: Instant~
 
 @3200=~Duration: 1 turn~
+@3203=~Duration: 3 rounds~
+@3204=~Duration: 4 rounds~
+@3205=~Duration: 5 rounds~
 
 @3300=~Saving Throw: None~
 
@@ -187,6 +192,7 @@ Permanent Druid Spell IV allows the druid to cast a spell with an extremely long
 @4025=~Red Dragon Breath~
 @4026=~Dragon Fear~
 @4027=~Identify Creature~
+@4028=~Chain Lightning~
 
 @11021=~Command
 (Enchantment/Charm)
@@ -351,6 +357,17 @@ Area of Effect: Special
 Saving Throw: None 
 
 By means of this spell, the caster summons a horde of monsters, each of which are worth between 175 and 450 experience points. The monsters appearing are randomly determined and ignore the summoning limit. They will remain under the caster's control until slain or the spell duration expires. The monsters summoned are worth a total of around 60 XP per caster level.~
+@26151=~Chain Lightning
+(Evocation)
+
+Level: 6
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 5
+Area of Effect: Special
+Saving Throw: 1/2
+
+This spell releases a burst of electrical energy at a target; unlike the Lightning Bolt spell, however, once the bolt strikes the initial target, the electricity then jumps to the next nearest foe, losing a small amount of energy with each additional strike until it is expended. The bolt initially inflicts 1d6 Hit Points of electrical damage per level of the caster, to a maximum of 20d6 points of damage. Each jump the bolt makes reduces the damage by 1d6. Each creature that is hit is allowed a Save vs. Spell for half damage.~
 @29111=~Meteor Swarm
 (Evocation)
 
@@ -406,6 +423,11 @@ The creature jumps to the target point, which must be within range.~
 @30036=~Too high level to be cloned~
 @30037=~Spell Ineffective~
 @30038=~Protected by Damage Turning~
+@30039=~Regained Spell: ~
+@30040=~Lost Spell: ~
+@30041=~You do not own the familiar.~
+@30042=~The spell <ME_FAMSES> will be released whenever your familiar hits a creature with an attack.~
+@30043=~Add a spell for your familiar to cast~
 
 @31151=~Snake's Swiftness~
 @31152=~Hex~
@@ -413,6 +435,7 @@ The creature jumps to the target point, which must be within range.~
 @31251=~Beast Sense~
 @31252=~Fiery Link~
 @31253=~Null Healing~
+@31254=~Critical Boon~
 @31351=~Call Water Weirds~
 @31352=~Shortening~
 @31353=~Fire Curse~
@@ -504,6 +527,18 @@ Area of Effect: 1 creature
 Saving Throw: Neg.
 
 This necromantic curse prevents the target from healing. Once cast, the target must Save vs. Spell at -3 or be cursed for 1 day. While cursed, the target cannot regain Hit Points via spells, abilities, items, regeneration, or resting. The curse can be removed early using a Remove Curse spell.~
+@32254=~Critical Boon
+(Alteration)
+
+Level: 2
+Sphere: Combat
+Range: Visual range of the caster
+Duration: 3 rounds or until a critical hit
+Casting Time: 1
+Area of Effect: 1 creature
+Saving Throw: None
+
+Critical Boon empowers an ally, allowing them to get a guaranteed critical hit on their next attack. If the target attacks a creature that is immune to critical hits, the spell won't trigger, saving the effect for when the target attacks a creature that isn't immune.~
 @32351=~Call Water Weirds
 (Conjuration/Summoning)
 
@@ -742,6 +777,7 @@ This spell stores a Resurrection spell in the target, to be released when the cr
 @33355=~Control Slime~
 @33356=~Legend Lore~
 @33357=~Glyph of Spell Storing~
+@33358=~Familiar Spell~
 @33451=~Wall of Fire~
 @33452=~Phantasmal Killer~
 @33453=~Ghoulish Feast~
@@ -769,6 +805,8 @@ This spell stores a Resurrection spell in the target, to be released when the cr
 @33654=~Spellshaping: Fireball~
 @33655=~Slaying Sequencer~
 @33656=~Mass Charm~
+@33657=~Mind Fog~
+@33658=~Empower Familiar~
 @33751=~Mass Cast~
 @33752=~Far Sequencer~
 @33753=~Protection from Time Stop~
@@ -796,6 +834,7 @@ This spell stores a Resurrection spell in the target, to be released when the cr
 @33957=~Executioner's Eyes~
 @33958=~Phantasmal Dragon~
 @33959=~Damage Turning~
+@33960=~Eclectic Recall~
 
 @34151=~Disruptive Surge
 (Wild Magic)
@@ -1029,6 +1068,17 @@ Area of Effect: 12-ft. radius
 Saving Throw: None
 
 A Glyph of Spell Storing is a ward which stores a spell and releases it upon each hostile creature that enters the warded area. When this spell is cast, the caster stores a single 1st-level spell in the glyph, which is placed on a circular, 9-ft. radius area of the caster's choice. When a hostile creature passes within 9 feet of the glyph, it explodes, releasing a copy of the stored spell on each hostile creature within 12 feet.~
+@34358=~Familiar Spell
+(Conjuration)
+
+Level: 3
+Range: Familiar must be in the same area
+Duration: 8 hours
+Casting Time: 8
+Area of Effect: The caster's familiar
+Saving Throw: None
+
+Familiar Spell imbues the caster's familiar with a spell. The caster chooses one of their 1st-level spells, consuming one use of that spell. For the next 8 hours, each time their familiar hits a creature with an attack, it instantly casts a copy of the chosen spell on the target. The spell is cast at the level of the familiar's owner, not at the level of the familiar. The familiar must be owned by the caster, and it must be in the same area as the caster when Familiar Spell is cast (and not in the caster's inventory).~
 @34451=~Wall of Fire
 (Evocation)
 
@@ -1328,6 +1378,28 @@ Area of Effect: 15-ft. radius
 Saving Throw: Neg.
 
 This spell charms all hostile humanoids and giant humanoids in the area of effect who fail a Save vs. Spell. The charmed creatures will serve the caster for the duration, though the effect could expire early if the creatures are attacked by an ally. Charmed creatures will be hostile after the effect expires.~
+@34657=~Mind Fog
+(Enchantment)
+
+Level: 6
+Range: Visual range of the caster
+Duration: 1 turn
+Casting Time: 6
+Area of Effect: 15-ft. radius
+Saving Throw: None
+
+This spell creates a special, pinkish fog in the area of effect. All creatures within the mind fog have their willpower and concentration weakened, gaining a -5 penalty to saving throws against enchantment and illusion spells, as well as 30% spell failure. There is no Saving Throw. Undead, constructs, oozes, and mind flayers are unaffected.~
+@34658=~Empower Familiar
+(Conjuration)
+
+Level: 6
+Range: Familiar must be in the same area
+Duration: 2 hours
+Casting Time: 6
+Area of Effect: The caster's familiar
+Saving Throw: None
+
+This spell greatly strengthens the caster's familiar. For the duration, the familiar gains +1 to hit and damage per 2 caster levels, and an additional attack per round. In addition, the familiar's physical damage resistances are set to 75% (replacing their normal values). The familiar must be owned by the caster, and it must be in the same area as the caster (and not in the caster's inventory).~
 @34751=~Mass Cast
 (Alteration)
 
@@ -1640,6 +1712,19 @@ Area of Effect: The caster
 Saving Throw: None 
 
 Damage Turning reflects damage from the caster back to the attacker. While Damage Turning is active, any damage that would be dealt to the caster from an attack, spell or ability is prevented. The source is dealt the full damage they would have dealt the caster. Other effects of attacks, spells, and abilities are not reflected; just the damage. Damage Turning can only be cast by Abjurers.~
+@34960=~Eclectic Recall
+(All)
+
+Level: 10
+Range: 0
+Duration: Instant
+Casting Time: 9
+Area of Effect: The caster
+Saving Throw: None
+
+Eclectic Recall restores spells the caster has cast previously, so that the spells may be cast again. Up to eight spells are restored, no more than one per school of magic. Eclectic Recall prioritizes restoring higher-level spells over lower-level spells.
+
+All the spells restored must be 6th-level or lower. Eclectic Recall can restore 7th-level spells once the caster reaches level 24, and 8th-level spells once the caster reaches level 30.~
 
 @35327=~I am the channel through which your wish shall be fulfilled. You may ask for a wish I can repeat, or you may ask for a wish that will happen once only. Decide.~
 @35328=~Choose wisely then, as I can perform each of these tasks once and once only.~

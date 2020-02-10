@@ -1,0 +1,7 @@
+ex_modify_memory_string_1 = ""
+ex_modify_memory_string_2 = ""
+ex_no_familiar_strref_1 = 0
+ex_familiar_spell_strref_1 = 0
+ex_damage_reduction_feedback_string_2 = " damage"
+ex_damage_reduction_feedback_string_3 = " points remaining"
+ex_damage_reduction_feedback_string_4 = " point remaining"

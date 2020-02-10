@@ -11,7 +11,6 @@ END
 
 ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
 	COPY ~MESpells/lua/M__MEFUN.lua~ ~override~
-
 END
 
 OUTER_SPRINT stringcastingtime @3000
@@ -29,6 +28,9 @@ OUTER_SPRINT stringcastingtime9 @3109
 OUTER_SPRINT stringcastingtime10 @3110
 OUTER_SPRINT stringcastingtimeinstant @3199
 OUTER_SPRINT stringduration60 @3200
+OUTER_SPRINT stringduration18 @3203
+OUTER_SPRINT stringduration24 @3204
+OUTER_SPRINT stringduration30 @3205
 OUTER_SPRINT stringsavingthrownone @3300
 
 OUTER_PATCH alltheconstants BEGIN
@@ -1838,9 +1840,24 @@ LANGUAGE
 ENGLISH
  ~MESpells/tra/english/english.tra~
 
+BEGIN ~Deprecated Component 1~ DESIGNATED 100 DEPRECATED ~~
+BEGIN ~Deprecated Component 2~ DESIGNATED 101 DEPRECATED ~~
+BEGIN ~Deprecated Component 3~ DESIGNATED 102 DEPRECATED ~~
+BEGIN ~Deprecated Component 4~ DESIGNATED 150 DEPRECATED ~~
+BEGIN ~Deprecated Component 5~ DESIGNATED 200 DEPRECATED ~~
+BEGIN ~Deprecated Component 6~ DESIGNATED 201 DEPRECATED ~~
+BEGIN ~Deprecated Component 7~ DESIGNATED 202 DEPRECATED ~~
+BEGIN ~Deprecated Component 8~ DESIGNATED 375 DEPRECATED ~~
+BEGIN ~Deprecated Component 9~ DESIGNATED 400 DEPRECATED ~~
+BEGIN ~Deprecated Component 10~ DESIGNATED 800 DEPRECATED ~~
+BEGIN ~Deprecated Component 11~ DESIGNATED 801 DEPRECATED ~~
+BEGIN ~Deprecated Component 12~ DESIGNATED 850 DEPRECATED ~~
+BEGIN ~Deprecated Component 13~ DESIGNATED 900 DEPRECATED ~~
+BEGIN ~Deprecated Component 14~ DESIGNATED 925 DEPRECATED ~~
+BEGIN ~Deprecated Component 15~ DESIGNATED 950 DEPRECATED ~~
+BEGIN ~Deprecated Component 16~ DESIGNATED 975 DEPRECATED ~~
 
-
-BEGIN @2 DESIGNATED 100
+BEGIN @2 DESIGNATED 11011
 SUBCOMPONENT @1
 
 OUTER_SPRINT stringcursename @4000
@@ -1862,7 +1879,7 @@ ACTION_IF spell_found_curse = 1 BEGIN
 ~ END
 END
 
-BEGIN @3 DESIGNATED 101
+BEGIN @3 DESIGNATED 11012
 SUBCOMPONENT @1
 
 OUTER_SPRINT stringcursename @4000
@@ -1884,7 +1901,7 @@ ACTION_IF spell_found_curse = 1 BEGIN
 ~ END
 END
 
-BEGIN @4 DESIGNATED 102
+BEGIN @4 DESIGNATED 11013
 SUBCOMPONENT @1
 
 OUTER_SPRINT stringcursename @4000
@@ -1915,7 +1932,7 @@ ACTION_IF spell_found_curse = 1 BEGIN
 END
 
 
-BEGIN @5 DESIGNATED 150
+BEGIN @5 DESIGNATED 11021
 
 COPY_EXISTING ~sppr102.spl~ ~override~
 	READ_LONG splflags ulgiash
@@ -1935,7 +1952,7 @@ COPY_EXISTING ~sppr512.spl~ ~override~
 	SAY UNIDENTIFIED_DESC @15121
 
 
-BEGIN @7 REQUIRE_PREDICATE !(GAME_IS ~iwdee~) ~~ FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 DESIGNATED 200
+BEGIN @7 REQUIRE_PREDICATE !(GAME_IS ~iwdee~) ~~ FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 DESIGNATED 11051
 SUBCOMPONENT @6
 
 COPY_EXISTING ~sppr105.spl~ ~override~
@@ -1943,7 +1960,7 @@ COPY_EXISTING ~sppr105.spl~ ~override~
 	LPF ALTER_SPELL_HEADER INT_VAR projectile=159 END
 	SAY UNIDENTIFIED_DESC @11051
 
-BEGIN @8 DESIGNATED 201
+BEGIN @8 DESIGNATED 11052
 SUBCOMPONENT @6
 
 OUTER_SPRINT stringentangletextold1 @3902
@@ -1952,7 +1969,7 @@ COPY_EXISTING ~sppr105.spl~ ~override~
 	LPF ALTER_SPELL_EFFECT INT_VAR savebonus=0 END
 	LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match=~%stringentangletextold1%~ replace_with=~~ END
 
-BEGIN @9 DESIGNATED 202
+BEGIN @9 DESIGNATED 11053
 SUBCOMPONENT @6
 
 COPY_EXISTING ~sppr105.spl~ ~override~
@@ -1964,7 +1981,7 @@ COPY_EXISTING ~sppr105.spl~ ~override~
 
 BEGIN @10 DESIGNATED 350 DEPRECATED ~~
 
-BEGIN @23 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 DESIGNATED 375
+BEGIN @23 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 DESIGNATED 12091
 
 ACTION_IF !(FILE_EXISTS_IN_GAME ~M__MEFUN.LUA~) BEGIN
 	COPY ~MESpells/lua~ ~override~
@@ -1994,7 +2011,7 @@ COPY_EXISTING ~scrl92.itm~ ~override~
 	SAY NAME2 @4027
 	SAY IDENTIFIED_DESC @22081
 
-BEGIN @11 FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 DESIGNATED 400
+BEGIN @11 FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 DESIGNATED 14021
 
 COPY ~MESpells/Restore_Summon_Monsters~ ~override~
 
@@ -2056,7 +2073,7 @@ COPY_EXISTING ~scrl2g.itm~ ~override~
 
 COPY ~MESpells/Restore_Animate_Dead~ ~override~
 
-BEGIN @13 DESIGNATED 800
+BEGIN @13 DESIGNATED 25011
 SUBCOMPONENT @12
 
 COPY ~MESpells/Restore_Animate_Dead~ ~override~
@@ -2070,7 +2087,7 @@ COPY_EXISTING ~mewi501.spl~ ~override/spwi501.spl~
 COPY_EXISTING ~scrl2d.itm~ ~override~
 	SAY IDENTIFIED_DESC @25011
 
-BEGIN @14 DESIGNATED 801
+BEGIN @14 DESIGNATED 25012
 SUBCOMPONENT @12
 
 COPY ~MESpells/Restore_Animate_Dead~ ~override~
@@ -2081,7 +2098,7 @@ COPY_EXISTING ~mewi501.spl~ ~override/spwi501.spl~
 COPY_EXISTING ~scrl2d.itm~ ~override~
 	SAY IDENTIFIED_DESC @25011
 
-BEGIN @15 DESIGNATED 850
+BEGIN @15 DESIGNATED 24131
 
 OUTER_SPRINT stringotiluketextold1 @3900
 OUTER_SPRINT stringotiluketextnew1 @3901
@@ -2101,7 +2118,7 @@ COPY_EXISTING ~spwi413.spl~ ~override~
 COPY_EXISTING ~scrl5j.itm~ ~override~
 	SAY_EVALUATED IDENTIFIED_DESC ~%description_new%~
 
-BEGIN @16 DESIGNATED 900
+BEGIN @16 DESIGNATED 25031
 
 COPY_EXISTING ~spwi503.spl~ ~override~
 	LPF ALTER_SPELL_HEADER INT_VAR projectile=25 END
@@ -2112,8 +2129,96 @@ COPY_EXISTING ~spwi503.spl~ ~override~
 		maxlength += 2
 	END
 
+BEGIN @26 DESIGNATED 26111
 
-BEGIN @24 DESIGNATED 925
+COPY_EXISTING ~spwi611.spl~ ~override~
+	LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringduration%
+~ replace_with= EVAL ~%stringduration18%
+~ END
+
+COPY_EXISTING ~spwi907.spl~ ~override~
+	LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringduration%
+~ replace_with= EVAL ~%stringduration30%
+~ END
+
+BEGIN @25 DESIGNATED 26151
+/*
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~0x112~ splprot_value=~251~ splprot_relation=~1~ RET splprot_chainlightningstate=splprot_slot END
+
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~20~ splprot_value=~128~ splprot_relation=~4~ RET splprot_weaktomagiccold=splprot_slot END
+
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~0x103~ splprot_value= EVAL ~splprot_hitbychainlightning~ splprot_relation=~52~ RET splprot_notchainlightningtarget=splprot_slot END
+*/
+COPY ~MESpells/New_Chain_Lightning~ ~override~
+
+ADD_PROJECTILE ~override/mechali1.pro~
+ADD_PROJECTILE ~override/mechali2.pro~
+
+COPY_EXISTING ~mechali2.pro~ ~override~
+//	WRITE_SHORT 0x3C 0
+//	WRITE_SHORT 0x3E splprot_notchainlightningtarget
+	WRITE_SHORT 0x21A mechali1
+
+COPY_EXISTING ~spwi615.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 power=0 opcode=setspellstate target=3 timing=0 duration=6 parameter2=251 special=1 END
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=mechali1 END
+	SAY NAME1 @4028
+	SAY UNIDENTIFIED_DESC @26151
+
+COPY_EXISTING ~spwi615b.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=mechali2 END
+
+ACTION_IF MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
+
+	ADD_PROJECTILE ~override/mechali3.pro~
+
+	COPY_EXISTING ~mechali1.pro~ ~override/mechali4.pro~
+
+	ADD_PROJECTILE ~override/mechali4.pro~
+
+	COPY_EXISTING ~mechali2.pro~ ~override/mechali5.pro~
+		WRITE_SHORT 0x21A mechali4
+
+	ADD_PROJECTILE ~override/mechali5.pro~
+
+	COPY_EXISTING ~mechali1.pro~ ~override~
+		WRITE_ASCII 0x104 ~~ #8
+
+	COPY_EXISTING ~spwi615.spl~ ~override/mewi615.spl~
+		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 STR_VAR match_resource=~spwi615~ resource=~mewi615~ END
+		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 STR_VAR match_resource=~spwi615b~ resource=~mewi615b~ END
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=mechali4 END
+
+	COPY_EXISTING ~spwi615b.spl~ ~override/mewi615b.spl~
+		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 STR_VAR match_resource=~spwi615~ resource=~mewi615~ END
+		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 STR_VAR match_resource=~spwi615b~ resource=~mewi615b~ END
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=mechali5 END
+
+	COPY_EXISTING ~spwi615.spl~ ~override~
+		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 match_opcode=setspellstate match_parameter2=251 duration=2 END
+		LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 power=6 opcode=402 target=2 timing=0 parameter1=0x4957454D parameter2=0x44353136 savingthrow=0x100000 special=1 STR_VAR resource=~MECHAINL~ END
+
+	COPY_EXISTING ~spwi615b.spl~ ~override~
+		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 match_opcode=setspellstate match_parameter2=251 duration=2 END
+		LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 power=6 opcode=402 target=2 timing=0 parameter1=0x4957454D parameter2=0x44353136 special=1 STR_VAR resource=~MECHAINL~ END
+
+	COPY_EXISTING ~mewi615d.spl~ ~override~
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=mechali3 END
+
+END
+
+COPY_EXISTING ~scrl7s.itm~ ~override~ ~mescrl7s.itm~ ~override~ ~scclite.itm~ ~override~
+	SAY NAME2 @4028
+	SAY IDENTIFIED_DESC @26151
+	IF_EXISTS
+
+COPY_EXISTING ~spwi615.spl~ ~override/spdr601.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 STR_VAR match_resource=~spwi615~ resource=~spdr601~ END
+	WRITE_ASCII castingsound ~CAS_P06~ #8
+	WRITE_SHORT spelltype 2
+	WRITE_LONG spellunusability 0
+
+BEGIN @24 DESIGNATED 29111
 
 ACTION_IF !(FILE_EXISTS_IN_GAME ~M__MEFUN.LUA~) BEGIN
 	COPY ~MESpells/lua~ ~override~
@@ -2179,7 +2284,7 @@ COPY_EXISTING ~scrl9t.itm~ ~override~ ~mescrl9t.itm~ ~override~
 	SAY IDENTIFIED_DESC @29111
 	IF_EXISTS
 
-BEGIN @17 DESIGNATED 950
+BEGIN @17 DESIGNATED 26171
 
 COPY_EXISTING ~spwi617.spl~ ~override~ ~spwi908.spl~ ~override~
 	LPF ALTER_SPELL_HEADER INT_VAR target=7 speed=0 END
@@ -2188,7 +2293,7 @@ COPY_EXISTING ~spwi617.spl~ ~override~ ~spwi908.spl~ ~override~
 ~ END
 
 
-BEGIN @18 DESIGNATED 975
+BEGIN @18 DESIGNATED 14151
 
 COPY_EXISTING ~sppr415.spl~ ~override~ ~spwi424.spl~ ~override~
 	LPF ALTER_SPELL_HEADER INT_VAR target=7 speed=0 END

@@ -526,7 +526,7 @@ Casting Time: 2
 Area of Effect: 1 creature
 Saving Throw: Neg.
 
-This necromantic curse prevents the target from healing. Once cast, the target must Save vs. Spell at -3 or be cursed for 1 day. While cursed, the target cannot regain Hit Points via spells, abilities, items, regeneration, or resting. The curse can be removed early using a Remove Curse spell.~
+This necromantic curse prevents the target from healing. Once cast, the target must save vs. Spell at -8 or be cursed for 1 day. While cursed, the target cannot regain Hit Points via spells, abilities, items, regeneration, or resting. The curse can be removed early using a Remove Curse spell.~
 @32254=~Critical Boon
 (Alteration)
 
@@ -560,9 +560,9 @@ Range: Visual range of the caster
 Duration: Instant
 Casting Time: 3
 Area of Effect: 1 creature
-Saving Throw: Special
+Saving Throw: None
 
-Shortening halves the duration of certain effects on the target creature. If the target is an enemy, then all non-harmful effects on the target will have their duration halved unless the target makes a Save vs. Spell at -4. If the target is not an enemy, then all harmful effects on the target will have their duration halved. A "harmful effect" is any effect from a spell or ability that turns a non-hostile creature hostile. The duration is halved from the total duration of the effect, not the remaining duration. An effect can only be shortened once.~
+Shortening halves the duration of certain effects on the target creature. If the target is an enemy, then all non-harmful effects on the target will have their duration halved. If the target is not an enemy, then all harmful effects on the target will have their duration halved. A "harmful effect" is any effect from a spell or ability that turns a non-hostile creature hostile. The duration is halved from the total duration of the effect, not the remaining duration. An effect can only be shortened once.~
 @32353=~Fire Curse
 (Alteration)
 
@@ -656,9 +656,9 @@ Range: Visual range of the caster
 Duration: Instant
 Casting Time: 3
 Area of Effect: 1 creature
-Saving Throw: Special
+Saving Throw: None
 
-Prolongment doubles the duration of certain effects on the target creature. If the target is an enemy, then all harmful effects on the target will have their duration doubled unless the target makes a Save vs. Spell at -4. If the target is not an enemy, then all non-harmful effects on the target will have their duration doubled. A "harmful effect" is any effect from a spell or ability that turns a non-hostile creature hostile. The duration is doubled from the total duration of the effect, not the remaining duration. An effect can only be prolonged once.~
+Prolongment doubles the duration of certain effects on the target creature. If the target is an enemy, then all harmful effects on the target will have their duration doubled. If the target is not an enemy, then all non-harmful effects on the target will have their duration doubled. A "harmful effect" is any effect from a spell or ability that turns a non-hostile creature hostile. The duration is doubled from the total duration of the effect, not the remaining duration. An effect can only be prolonged once.~
 @32552=~Wall of Force
 (Abjuration)
 
@@ -770,6 +770,7 @@ This spell stores a Resurrection spell in the target, to be released when the cr
 @33254=~Intoxicate~
 @33255=~Null Healing~
 @33256=~Specific Spell Immunity~
+@33257=~Levitate~
 @33351=~Bounce Spell~
 @33352=~Fly~
 @33353=~Displacement~
@@ -835,6 +836,7 @@ This spell stores a Resurrection spell in the target, to be released when the cr
 @33958=~Phantasmal Dragon~
 @33959=~Damage Turning~
 @33960=~Eclectic Recall~
+@33961=~Teleport Step~
 
 @34151=~Disruptive Surge
 (Wild Magic)
@@ -846,7 +848,7 @@ Casting Time: 1
 Area of Effect: 1 creature
 Saving Throw: Neg.
 
-In using this spell, the Wild Mage deliberately employs wild magic to disrupt another creature's spell. The Wild Mage chooses a creature, which should be a spellcaster (arcane or divine). That creature must make a Save vs. Polymorph at -5. If it fails the save, the next spell it casts within 5 rounds will trigger a wild surge. This surge will often cause the spell to fail, though it could have other, unpredictable effects.~
+In using this spell, the Wild Mage deliberately employs wild magic to disrupt another creature's spell. The Wild Mage chooses a creature, which should be a spellcaster (arcane or divine). That creature must make a Save vs. Polymorph at -8. If it fails the save, the next spell it casts within 5 rounds will trigger a wild surge. This surge will often cause the spell to fail, though it could have other, unpredictable effects.~
 @34152=~Inertia
 (Alteration)
 
@@ -857,7 +859,7 @@ Casting Time: 1
 Area of Effect: 1 creature
 Saving Throw: Neg.
 
-This spell drastically increases the inertia of the target, locking its movement in the direction it is currently moving. The effect of this spell depends on whether or not the target was moving when it was hit by the spell. If it was moving, it will continue hurtling nonstop in that direction against its will for 4 rounds. If it was standing in place, it will be immobilized for 4 rounds. A successful Saving Throw vs. Polymorph at -2 negates the effects of this spell.~
+This spell drastically increases the inertia of the target, locking its movement in the direction it is currently moving. The effect of this spell depends on whether or not the target was moving when it was hit by the spell. If it was moving, it will continue hurtling nonstop in that direction against its will for 4 rounds. If it was standing in place, it will be immobilized for 4 rounds. A successful Saving Throw vs. Polymorph at -4 negates the effects of this spell.~
 @34153=~Detect Shapeshifters
 (Divination)
 
@@ -956,7 +958,7 @@ Casting Time: 2
 Area of Effect: 1 creature
 Saving Throw: Neg.
 
-The target of this spell will instantly become dangerously drunk, far more than is pleasurable. The target gains four intoxication points for every Constitution point they have less than 25. For example, if the target has 10 Constitution, they will gain 60 intoxication points. Like normal drunkenness, this magical intoxication will wear off over time. A successful Save vs. Spell at -2 negates the effect. Intoxicate has no effect on undead or constructs. Multiple uses of this spell are cumulative.
+The target of this spell will instantly become dangerously drunk, far more than is pleasurable. The target gains four intoxication points for every Constitution point they have less than 25. For example, if the target has 10 Constitution, they will gain 60 intoxication points. Like normal drunkenness, this magical intoxication will wear off over time. A successful Save vs. Spell at -5 negates the effect. Intoxicate has no effect on undead or constructs. Multiple uses of this spell are cumulative.
 
 Note: High levels of intoxication give luck penalties. The size of the penalty depends on the number of intoxication points:
 
@@ -977,7 +979,7 @@ Casting Time: 2
 Area of Effect: 1 creature
 Saving Throw: Neg.
 
-This necromantic curse prevents the target from healing. Once cast, the target must Save vs. Spell at -3 or be cursed for 1 day. While cursed, the target cannot regain Hit Points via spells, abilities, items, regeneration, or resting. The curse can be removed early using a Remove Curse spell.~
+This necromantic curse prevents the target from healing. Once cast, the target must save vs. Spell at -8 or be cursed for 1 day. While cursed, the target cannot regain Hit Points via spells, abilities, items, regeneration, or resting. The curse can be removed early using a Remove Curse spell.~
 @34256=~Specific Spell Immunity
 (Abjuration)
 
@@ -989,6 +991,17 @@ Area of Effect: All allies
 Saving Throw: None
 
 Specific Spell Immunity lets the caster channel the power of their spells to shield the party from those same spells. The caster may choose up to three spells <PRO_HESHE> has memorized. Those spells are then consumed (expending one of each spell), giving allies immunity to each of those spells for 8 hours. The spell affects all allied creatures in the current area, including party members and summoned creatures.~
+@34257=~Levitate
+(Alteration)
+
+Level: 1
+Range: Visual range of the caster
+Duration: 3 rounds + 1 round/2 levels
+Casting Time: 2
+Area of Effect: 1 creature
+Saving Throw: Neg.
+
+This spell suspends a creature in midair. For the duration, the target is stuck in midair and cannot move unless it can fly. While levitating, it is almost impossible for the target to hit or be hit by other creatures with melee weapons. The target is also unaffected by ground-based spells such as Grease, Entangle, Web and Earthquake. If the target is an ally, there is no Saving Throw necessary; otherwise, the target may make a Save vs. Polymorph at -3 to avoid the effects.~
 @34351=~Bounce Spell
 (Abjuration)
 
@@ -1497,12 +1510,12 @@ This spell creates a large, immobile sphere of illusionary magic. Any creature t
 
 Level: 8
 Range: Visual range of the caster
-Duration: 8 hours
+Duration: 1 turn
 Casting Time: 4
 Area of Effect: 15-ft. radius
 Saving Throw: None
 
-Otto's Irresistible Spin forces multiple creatures to spin in place against their will for a full 8 hours. Affected creatures will do nothing other than repeatedly spin in place, even if they see enemies. The spell is irresistible - there is no Saving Throw, and Magic Resistance will not block the spell. If an affected creature takes damage, the effects of the spell immediately end for that creature.~
+Otto's Irresistible Spin forces multiple creatures to spin in place against their will for 1 turn. Affected creatures will do nothing other than repeatedly spin in place, even if they see enemies. The spell is irresistible - there is no Saving Throw, and Magic Resistance will not block the spell. If an affected creature takes damage, the effects of the spell immediately end for that creature.~
 @34854=~Recurring Contingency
 (All)
 
@@ -1725,6 +1738,17 @@ Saving Throw: None
 Eclectic Recall restores spells the caster has cast previously, so that the spells may be cast again. Up to eight spells are restored, no more than one per school of magic. Eclectic Recall prioritizes restoring higher-level spells over lower-level spells.
 
 All the spells restored must be 6th-level or lower. Eclectic Recall can restore 7th-level spells once the caster reaches level 24, and 8th-level spells once the caster reaches level 30.~
+@34961=~Teleport Step
+(Alteration)
+
+Level: 9
+Range: Touch
+Duration: 4 hours
+Casting Time: 3
+Area of Effect: 1 creature
+Saving Throw: None
+
+Among the greatest teleportation spells, Teleport Step lets the recipient teleport anywhere in the area any number of times. The recipient must simply start moving toward a destination, and they will instantly find themself at that destination.~
 
 @35327=~I am the channel through which your wish shall be fulfilled. You may ask for a wish I can repeat, or you may ask for a wish that will happen once only. Decide.~
 @35328=~Choose wisely then, as I can perform each of these tasks once and once only.~

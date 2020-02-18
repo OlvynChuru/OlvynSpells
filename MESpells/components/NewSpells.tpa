@@ -138,6 +138,9 @@ COPY_EXISTING ~mepr152.spl~ ~override/%mepr152%.spl~
 	SAY NAME1 @31152
 	SAY UNIDENTIFIED_DESC @32152
 
+COPY_EXISTING ~sppr307.spl~ ~override~ ~spwi410.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=321 target=2 timing=1 STR_VAR resource= EVAL ~%mepr152%~ END
+
 END
 
 COPY_EXISTING ~mepr153.spl~ ~override~
@@ -203,6 +206,9 @@ COPY_EXISTING ~mepr253.spl~ ~override/%mepr253%.spl~
 	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mepr253~ resource= EVAL ~%mepr253%~ END
 	SAY NAME1 @31253
 	SAY UNIDENTIFIED_DESC @32253
+
+COPY_EXISTING ~sppr307.spl~ ~override~ ~spwi410.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=321 target=2 timing=1 STR_VAR resource= EVAL ~%mepr253%~ END
 
 COPY_EXISTING ~mepr254.spl~ ~override~
 	SAY NAME1 @31254
@@ -333,6 +339,9 @@ COPY_EXISTING ~mepr353.spl~ ~override/%mepr353%.spl~
 	SAY NAME1 @31353
 	SAY UNIDENTIFIED_DESC @32353
 
+COPY_EXISTING ~sppr307.spl~ ~override~ ~spwi410.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=321 target=2 timing=1 STR_VAR resource= EVAL ~%mepr353%~ END
+
 END
 
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR3~ RET mepr354=filename END
@@ -341,6 +350,10 @@ COPY_EXISTING ~mepr354.spl~ ~override/%mepr354%.spl~
 	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mepr354~ resource= EVAL ~%mepr354%~ END
 	SAY NAME1 @31354
 	SAY UNIDENTIFIED_DESC @32354
+
+COPY_EXISTING ~sppr307.spl~ ~override~ ~spwi410.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=321 target=2 timing=1 STR_VAR resource= EVAL ~%mepr354%~ END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=321 target=2 timing=1 STR_VAR resource=~mepr354d~ END
 
 COPY_EXISTING ~mepr354d.spl~ ~override~
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=displaystring match_parameter1=30035 parameter1=RESOLVE_STR_REF(@30035) END
@@ -621,6 +634,10 @@ GiveItemCreate("MEWI151X",Player1,1,0,0)~
 	END
 	IF_EXISTS
 
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi151x~ AFTER ~scrl70~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -630,6 +647,10 @@ COPY_EXISTING ~oh6100.are~ ~override~
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi151x~ BEFORE ~scrl71~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi151x~ AFTER ~scrl70~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -660,6 +681,14 @@ COPY_EXISTING ~sto0703.sto~ ~override~ //Sorcerous Sundries
 	ADD_STORE_ITEM ~mewi152x~ AFTER ~scrl76~ #1 #0 #0 ~IDENTIFIED~ #1
 	IF_EXISTS	
 
+COPY_EXISTING ~bdbeleg3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi152x~ BEFORE ~scrl76~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi152x~ BEFORE ~scrl76~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -672,6 +701,10 @@ COPY_EXISTING ~shop08.sto~ ~override~ //Galoomp the Bookkeeper
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi152x~ AFTER ~scrl76~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi152x~ BEFORE ~scrl76~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -698,6 +731,10 @@ COPY_EXISTING ~friend.sto~ ~override~ //Friendly Arm Inn
 
 COPY_EXISTING ~sto0703.sto~ ~override~ //Sorcerous Sundries
 	ADD_STORE_ITEM ~mewi153x~ AFTER ~scrl70~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi153x~ AFTER ~scrl70~ #1 #0 #0 ~IDENTIFIED~ #5
 	IF_EXISTS
 */
 ACTION_IF !(MOD_IS_INSTALLED ~setup-spell_rev.tp2~ ~0~) BEGIN
@@ -729,6 +766,10 @@ COPY_EXISTING ~sto0703.sto~ ~override~ //Sorcerous Sundries
 	ADD_STORE_ITEM ~mewi154x~ AFTER ~scrl81~ #1 #0 #0 ~IDENTIFIED~ #2
 	IF_EXISTS
 
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi154x~ AFTER ~scrla6~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -741,6 +782,10 @@ COPY_EXISTING ~shop08.sto~ ~override~ //Galoomp the Bookkeeper
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi154x~ AFTER ~scrl70~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi154x~ AFTER ~scrla6~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -798,6 +843,10 @@ COPY_EXISTING ~friend.sto~ ~override~ //Friendly Arm Inn
 COPY_EXISTING ~kirian.cre~ ~override~
 	REPLACE_CRE_ITEM ~mewi155x~ #0 #0 #0 ~NONE~ ~INV1~
 
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi155x~ AFTER ~scrl70~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -813,6 +862,10 @@ COPY_EXISTING ~shop08.sto~ ~override~ //Galoomp the Bookkeeper
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi155x~ AFTER ~scrl76~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi155x~ AFTER ~scrl70~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -854,6 +907,14 @@ COPY_EXISTING ~sto4906.sto~ ~override~ //Carnival Magic Trinkets Shop
 	ADD_STORE_ITEM ~mewi156x~ BEFORE ~amul01~ #1 #0 #0 ~IDENTIFIED~ #1
 	IF_EXISTS
 
+COPY_EXISTING ~bdbeleg3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi156x~ BEFORE ~scrl84~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi156x~ BEFORE ~scrl84~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -866,6 +927,10 @@ COPY_EXISTING ~ribald.sto~ ~override~ //Adventurer Mart
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi156x~ AFTER ~scrl67~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi156x~ BEFORE ~scrl84~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -901,6 +966,10 @@ COPY_EXISTING ~yago.cre~ ~override~
 COPY_EXISTING ~ar5001.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi157x~ END
 
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi157x~ AFTER ~scrl66~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -913,6 +982,10 @@ COPY_EXISTING ~ar0602.are~ ~override~
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi157x~ AFTER ~scrl67~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi157x~ AFTER ~scrl66~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -947,6 +1020,14 @@ COPY_EXISTING ~highhedg.sto~ ~override~ //High Hedge
 	ADD_STORE_ITEM ~mewi251x~ AFTER ~scrl6e~ #1 #0 #0 ~IDENTIFIED~ #1
 	IF_EXISTS
 
+COPY_EXISTING ~bdbeleg3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi251x~ BEFORE ~scrl6e~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi251x~ BEFORE ~scrl6e~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -962,6 +1043,10 @@ COPY_EXISTING ~scrolls.sto~ ~override~ //Scroll store in Adventurer Mart
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi251x~ AFTER ~scrl6e~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi251x~ BEFORE ~scrl6e~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -999,6 +1084,14 @@ COPY_EXISTING ~%arbg%0504.are~ ~override~
 COPY_EXISTING ~%arbg%3901.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi252x~ END
 
+COPY_EXISTING ~bdbeleg3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi252x~ BEFORE ~scrl1c~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi252x~ BEFORE ~scrl1c~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1014,6 +1107,10 @@ COPY_EXISTING ~bmthief.sto~ ~override~ //Black Market Thief (in Shadow Thief mai
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi252x~ AFTER ~scrl3g~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi252x~ BEFORE ~scrl1c~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1047,6 +1144,14 @@ COPY_EXISTING ~friend.sto~ ~override~ //Friendly Arm Inn
 	ADD_STORE_ITEM ~mewi253x~ BEFORE ~book40~ #1 #0 #0 ~IDENTIFIED~ #1
 	IF_EXISTS
 
+COPY_EXISTING ~bdbeleg3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi253x~ BEFORE ~scrl6e~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi253x~ BEFORE ~scrl6e~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1058,6 +1163,10 @@ COPY_EXISTING ~ar1303.are~ ~override~ //D'Arnise keep, second floor
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi253x~ AFTER ~scrl6e~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi253x~ BEFORE ~scrl6e~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1092,6 +1201,10 @@ COPY_EXISTING ~ulgoth.sto~ ~override~ //Ulgoth's Beard Inn
 	ADD_STORE_ITEM ~mewi254x~ BEFORE ~scrl5g~ #1 #0 #0 ~IDENTIFIED~ #1
 	IF_EXISTS
 
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi254x~ BEFORE ~scrl90~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1101,6 +1214,10 @@ COPY_EXISTING ~bernard.sto~ ~override~ ~bernard2.sto~ ~override~ //Copper Corone
 
 COPY_EXISTING ~sarbar01.sto~ ~override~ //Saradush tavern
 	ADD_STORE_ITEM ~mewi254x~ BEFORE ~boot01~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi254x~ BEFORE ~scrl90~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1120,6 +1237,9 @@ COPY_EXISTING ~mewi255.spl~ ~override/%mewi255%.spl~
 	SAY NAME1 @33255
 	SAY UNIDENTIFIED_DESC @34255
 
+COPY_EXISTING ~sppr307.spl~ ~override~ ~spwi410.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=321 target=2 timing=1 STR_VAR resource= EVAL ~%mewi255%~ END
+
 COPY_EXISTING ~mewi255x.itm~ ~override~
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi255~ resource= EVAL ~%mewi255%~ END
 	SAY NAME2 @33255
@@ -1136,6 +1256,14 @@ COPY_EXISTING ~%arbg%4400.are~ ~override~
 COPY_EXISTING ~vayya.cre~ ~override~
 	ADD_CRE_ITEM ~mewi255x~ #0 #0 #0 ~NONE~ ~INV1~
 
+COPY_EXISTING ~bdbeleg3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi255x~ AFTER ~scrl96~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi255x~ AFTER ~scrl96~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1147,6 +1275,10 @@ COPY_EXISTING ~ar0802.are~ ~override~ //Graveyard District, optional crypt
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi255x~ AFTER ~scrl89~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi255x~ AFTER ~scrl96~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1193,6 +1325,14 @@ ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 COPY_EXISTING ~%arbg%4501.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi256x~ END
 
+COPY_EXISTING ~bdsorcsc.sto~ ~override~
+	ADD_STORE_ITEM ~mewi256x~ BEFORE ~scrl97~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi256x~ BEFORE ~scrl97~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1204,6 +1344,10 @@ COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi256x~ AFTER ~scrl94~ #1 #0 #0 ~IDENTIFIED~ #1
 	IF_EXISTS
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi256x~ BEFORE ~scrl97~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -1211,6 +1355,64 @@ COPY_EXISTING ~kuork0.sto~ ~override~
 	ADD_STORE_ITEM ~mewi256x~ AFTER ~spwi223a~ #1 #0 #0 ~IDENTIFIED~ #1
 
 END
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI2~ RET mewi257=filename END
+COPY_EXISTING ~mewi257.spl~ ~override/%mewi257%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi257~ resource= EVAL ~%mewi257%~ END
+	SAY NAME1 @33257
+	SAY UNIDENTIFIED_DESC @34257
+
+COPY_EXISTING ~mewi257x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi257~ resource= EVAL ~%mewi257%~ END
+	SAY NAME2 @33257
+	SAY IDENTIFIED_DESC @34257
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~sto0703.sto~ ~override~ //Sorcerous Sundries
+	ADD_STORE_ITEM ~mewi257x~ AFTER ~scrl1c~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~rndscrol.2da~ ~override~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~SCRL98~ ~MEWI257X~
+END
+
+COPY_EXISTING ~bdbeleg3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi257x~ BEFORE ~scrl93~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi257x~ BEFORE ~scrl93~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~shop08.sto~ ~override~
+	ADD_STORE_ITEM ~mewi257x~ BEFORE ~scrl93~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ar1302.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi257x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi257x~ BEFORE ~scrl93~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi257x~ BEFORE ~scrl93~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kuork0.sto~ ~override~
+	ADD_STORE_ITEM ~mewi257x~ BEFORE ~scrl96~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
 END
 
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI3~ RET mewi351=filename END
@@ -1236,11 +1438,15 @@ COPY_EXISTING ~friend.sto~ ~override~ //Friendly Arm Inn
 	IF_EXISTS
 
 COPY_EXISTING ~sto0703.sto~ ~override~ ~bdsorcsc.sto~ ~override~ //Sorcerous Sundries
-	ADD_STORE_ITEM ~mewi351x~ AFTER ~scrl1k~ #1 #0 #0 ~IDENTIFIED~ #1
+	ADD_STORE_ITEM ~mewi351x~ AFTER ~scrl1k~ #1 #0 #0 ~IDENTIFIED~ #2
 	IF_EXISTS
 
 COPY_EXISTING ~%arbg%0145.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi351x~ END
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi351x~ BEFORE ~scrl1d~ #1 #0 #0 ~IDENTIFIED~ #4
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
@@ -1250,6 +1456,10 @@ COPY_EXISTING ~ar0602.are~ ~override~ //Chateau Irenicus, first floor
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi351x~ BEFORE ~scrl1s~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi351x~ BEFORE ~scrl1d~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1302,8 +1512,16 @@ COPY_EXISTING ~sto0703.sto~ ~override~ ~bdsorcsc.sto~ ~override~ //Sorcerous Sun
 	ADD_STORE_ITEM ~mewi352x~ AFTER ~scrl1t~ #1 #0 #0 ~IDENTIFIED~ #2
 	IF_EXISTS
 
+COPY_EXISTING ~bdbeleg3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi352x~ AFTER ~scrl1f~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 COPY_EXISTING ~denak.cre~ ~override~
 	ADD_CRE_ITEM ~mewi352x~ #0 #0 #0 ~NONE~ ~INV2~
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi352x~ AFTER ~scrl1f~ #1 #0 #0 ~IDENTIFIED~ #4
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
@@ -1318,6 +1536,10 @@ COPY_EXISTING ~trgeni01.sto~ ~override~ //Trademeet genie
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi352x~ AFTER ~scrl1h~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi352x~ AFTER ~scrl1f~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1357,6 +1579,14 @@ ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 COPY_EXISTING ~halaca.cre~ ~override~
 	ADD_CRE_ITEM ~mewi353x~ #0 #0 #0 ~NONE~ ~INV4~
 
+COPY_EXISTING ~bdbeleg3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi353x~ AFTER ~scrl1e~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi353x~ AFTER ~scrl1e~ #1 #0 #0 ~IDENTIFIED~ #4
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1370,6 +1600,10 @@ COPY_EXISTING ~udsvir05.sto~ ~override~ //Underdark Svirfneblin store
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi353x~ AFTER ~scrl1e~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi353x~ AFTER ~scrl1e~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1438,6 +1672,14 @@ ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 COPY_EXISTING ~%arbg%2613.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi354x~ END
 
+COPY_EXISTING ~bd7230.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=4 STR_VAR item_to_add=~mewi354x~ END
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi354x~ AFTER ~scrl6j~ #1 #0 #0 ~IDENTIFIED~ #4
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1449,6 +1691,10 @@ COPY_EXISTING ~ar1202.are~ ~override~ //Firkraag's dungeon, second floor
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi354x~ AFTER ~scrl1i~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi354x~ AFTER ~scrl6j~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1471,6 +1717,10 @@ ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 
 COPY_EXISTING ~narcil.cre~ ~override~
 	ADD_CRE_ITEM ~mewi355x~ #0 #0 #0 ~NONE~ ~INV3~
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi355x~ AFTER ~scrl1d~ #1 #0 #0 ~IDENTIFIED~ #4
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
@@ -1510,8 +1760,16 @@ COPY_EXISTING ~tem2601.sto~ ~override~ //Temple of Oghma
 	ADD_STORE_ITEM ~mewi356x~ #1 #0 #0 ~IDENTIFIED~ #1
 	IF_EXISTS
 
-COPY_EXISTING ~sto0703.sto~ ~override~ ~bdsorcsc.sto~ ~override~ //Sorcerous Sundries
+COPY_EXISTING ~sto0703.sto~ ~override~ //Sorcerous Sundries
 	ADD_STORE_ITEM ~mewi356x~ AFTER ~scrl1i~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~bdsorcsc.sto~ ~override~
+	ADD_STORE_ITEM ~mewi356x~ BEFORE ~scrl1k~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi356x~ BEFORE ~scrl1k~ #1 #0 #0 ~IDENTIFIED~ #4
 	IF_EXISTS
 
 END
@@ -1523,6 +1781,10 @@ COPY_EXISTING ~doghma.sto~ ~override~ //Temple of Oghma
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi356x~ AFTER ~scrl1d~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi356x~ BEFORE ~scrl1k~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1556,6 +1818,14 @@ ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 COPY_EXISTING ~%arbg%3901.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=7 STR_VAR item_to_add=~mewi357x~ END
 
+COPY_EXISTING ~bdbeleg3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi357x~ AFTER ~scrl1t~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi357x~ AFTER ~scrl1t~ #1 #0 #0 ~IDENTIFIED~ #4
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1565,6 +1835,10 @@ COPY_EXISTING ~scrolls.sto~ ~override~
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi357x~ AFTER ~scrl1e~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi357x~ AFTER ~scrl1t~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1598,6 +1872,14 @@ ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 COPY_EXISTING ~%arbg%2612.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=5 STR_VAR item_to_add=~mewi358x~ END
 
+COPY_EXISTING ~bdsorcsc.sto~ ~override~
+	ADD_STORE_ITEM ~mewi358x~ BEFORE ~scrl1g~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi358x~ BEFORE ~scrl1g~ #1 #0 #0 ~IDENTIFIED~ #4
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1606,6 +1888,10 @@ COPY_EXISTING ~sevpat02.cre~ ~override~
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi358x~ AFTER ~scrl1e~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi358x~ BEFORE ~scrl1g~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1640,6 +1926,18 @@ COPY_EXISTING ~%arbg%0511.are~ ~override~
 COPY_EXISTING ~%arbg%1802.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=42 STR_VAR item_to_add=~mewi451x~ END
 
+COPY_EXISTING ~bd0130.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=24 STR_VAR item_to_add=~mewi451x~ END
+	IF_EXISTS
+
+COPY_EXISTING ~bdbeleg3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi451x~ BEFORE ~scrla1~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi451x~ BEFORE ~scrla1~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1656,6 +1954,10 @@ COPY_EXISTING ~bernard2.sto~ ~override~ //Copper Coronet (discount)
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi451x~ AFTER ~scrl1w~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi451x~ BEFORE ~scrlal~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1687,6 +1989,14 @@ COPY_EXISTING ~%arbg%0511.are~ ~override~
 COPY_EXISTING ~mutami.cre~ ~override~
 	ADD_CRE_ITEM ~mewi452x~ #0 #0 #0 ~NONE~ ~INV8~
 
+COPY_EXISTING ~bd0130.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=10 STR_VAR item_to_add=~mewi452x~ END
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi452x~ BEFORE ~scrl5l~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1698,6 +2008,10 @@ COPY_EXISTING ~ar0603.are~ ~override~ //Chateau Irenicus, second floor
 
 COPY_EXISTING ~udsvir05.sto~ ~override~ //Underdark Svirfneblin store
 	ADD_STORE_ITEM ~mewi452x~ AFTER ~scrl6o~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi452x~ BEFORE ~scrl51~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1714,6 +2028,13 @@ COPY_EXISTING ~mewi453.spl~ ~override/%mewi453%.spl~
 	SAY NAME1 @33453
 	SAY UNIDENTIFIED_DESC @34453
 
+ACTION_IF GAME_IS ~iwdee~ BEGIN
+
+COPY_EXISTING ~mewi453d.itm~ ~override~
+	WRITE_ASCII 0x30 ~MS3GHL~ #8
+
+END
+
 COPY_EXISTING ~mewi453x.itm~ ~override~
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi453~ resource= EVAL ~%mewi453%~ END
 	SAY NAME2 @33453
@@ -1727,6 +2048,10 @@ COPY_EXISTING ~%arbg%5001.are~ ~override~
 COPY_EXISTING ~cult2.cre~ ~override~
 	ADD_CRE_ITEM ~mewi453x~ #0 #0 #0 ~NONE~ ~INV8~
 
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi453x~ BEFORE ~scrl5i~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1735,6 +2060,10 @@ COPY_EXISTING ~theshal.cre~ ~override~
 
 COPY_EXISTING ~ar2207.are~ ~override~ //Deirex's lair
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi453x~ END
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi453x~ BEFORE ~scrl5i~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
@@ -1770,6 +2099,18 @@ ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 COPY_EXISTING ~wiven.cre~ ~override~
 	ADD_CRE_ITEM ~mewi454x~ #0 #0 #0 ~NONE~ ~INV5~
 
+COPY_EXISTING ~bdwaizah.sto~ ~override~
+	ADD_STORE_ITEM ~mewi454x~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~bd0122.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=6 STR_VAR item_to_add=~mewi454x~ END
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi454x~ BEFORE ~scrl1u~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1783,6 +2124,10 @@ COPY_EXISTING ~maevar.cre~ ~override~
 
 COPY_EXISTING ~amsmug02.sto~ ~override~ //Amkethran smugglers
 	ADD_STORE_ITEM ~mewi454x~ AFTER ~misc3p~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi454x~ BEFORE ~scrl1u~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1811,6 +2156,14 @@ ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 COPY_EXISTING ~kahrk.cre~ ~override~
 	ADD_CRE_ITEM ~mewi455x~ #0 #0 #0 ~NONE~ ~INV7~
 
+COPY_EXISTING ~bdsorcsc.sto~ ~override~
+	ADD_STORE_ITEM ~mewi455x~ AFTER ~scrl5m~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi455x~ BEFORE ~scrl5g~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1823,6 +2176,10 @@ COPY_EXISTING ~udsvir05.sto~ ~override~ //Underdark Svirfneblin store
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi455x~ AFTER ~scrl1z~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi455x~ BEFORE ~scrl5g~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1855,8 +2212,16 @@ COPY_EXISTING ~highhedg.sto~ ~override~ //High Hedge
 	ADD_STORE_ITEM ~mewi456x~ AFTER ~scrl6g~ #1 #0 #0 ~IDENTIFIED~ #1
 	IF_EXISTS
 
-COPY_EXISTING ~sto0703.sto~ ~override~ ~bdsorcsc.sto~ ~override~ //Sorcerous Sundries
+COPY_EXISTING ~sto0703.sto~ ~override~ //Sorcerous Sundries
 	ADD_STORE_ITEM ~mewi456x~ AFTER ~scrl6o~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~bdsorcsc.sto~ ~override~
+	ADD_STORE_ITEM ~mewi456x~ AFTER ~scrl5m~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi456x~ AFTER ~scrla8~ #1 #0 #0 ~IDENTIFIED~ #3
 	IF_EXISTS
 
 END
@@ -1870,6 +2235,10 @@ COPY_EXISTING ~ar1605.are~ ~override~ //Perth the Adept's house
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi456x~ AFTER ~scrl1z~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi456x~ AFTER ~scrla8~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1905,6 +2274,10 @@ COPY_EXISTING ~sto4906.sto~ ~override~ //Carnival Magic Trinkets Shop
 	ADD_STORE_ITEM ~mewi457x~ BEFORE ~amul01~ #1 #0 #0 ~IDENTIFIED~ #1
 	IF_EXISTS
 
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi457x~ BEFORE ~scrl1z~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1917,6 +2290,10 @@ COPY_EXISTING ~ribald.sto~ ~override~ //Adventurer Mart
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi457x~ AFTER ~scrl1z~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi457x~ BEFORE ~scrl1z~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -1951,6 +2328,10 @@ COPY_EXISTING ~bd0115.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi458x~ END
 	IF_EXISTS
 
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi458x~ AFTER ~scrl2b~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -1959,6 +2340,10 @@ COPY_EXISTING ~ar0803.are~ ~override~
 
 COPY_EXISTING ~ar5006.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi458x~ END
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi458x~ AFTER ~scrl2b~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
@@ -1991,6 +2376,14 @@ COPY_EXISTING ~ramazi.dlg~ ~override~
 GiveItemCreate("MEWI551X",Player1,1,0,0)~
     END
 
+COPY_EXISTING ~bd1200.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=6 STR_VAR item_to_add=~mewi551x~ END
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi551x~ BEFORE ~scrl6v~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -2006,6 +2399,10 @@ COPY_EXISTING ~ar1515.are~ ~override~ //Spellhold, first floor
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi551x~ AFTER ~scrl6z~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi551x~ BEFORE ~scrl6v~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -2038,6 +2435,14 @@ ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 COPY_EXISTING ~%arbg%1803.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=7 STR_VAR item_to_add=~mewi552x~ END
 
+COPY_EXISTING ~bdsorcsc.sto~ ~override~
+	ADD_STORE_ITEM ~mewi552x~ BEFORE ~scrl2d~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi552x~ BEFORE ~scrl2d~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -2050,6 +2455,10 @@ COPY_EXISTING ~suelf10.sto~ ~override~ //Temple of Rillifane
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi552x~ AFTER ~scrl2h~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi552x~ BEFORE ~scrl2d~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -2113,6 +2522,14 @@ COPY_EXISTING ~%arbg%0161.are~ ~override~
 COPY_EXISTING ~%arbg%3901.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=7 STR_VAR item_to_add=~mewi554x~ END
 
+COPY_EXISTING ~bdsorcsc.sto~ ~override~
+	ADD_STORE_ITEM ~mewi554x~ AFTER ~scrl2d~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi554x~ AFTER ~scrl2d~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -2124,6 +2541,10 @@ COPY_EXISTING ~ar3016.are~ ~override~ //Watcher's Keep, second floor
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi554x~ AFTER ~scrl2f~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi554x~ AFTER ~scrl2d~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -2173,6 +2594,14 @@ ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 COPY_EXISTING ~krysti.cre~ ~override~
 	ADD_CRE_ITEM ~mewi555x~ #0 #0 #0 ~NONE~ ~INV5~
 
+COPY_EXISTING ~bdsorcsc.sto~ ~override~
+	ADD_STORE_ITEM ~mewi555x~ BEFORE ~scrl2g~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi555x~ BEFORE ~scrl7d~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -2185,6 +2614,10 @@ COPY_EXISTING ~suelf10.sto~ ~override~ //Temple of Rillifane
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi555x~ BEFORE ~scrl6u~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi555x~ BEFORE ~scrl7d~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -2226,11 +2659,23 @@ COPY_EXISTING ~arkion.dlg~ ~override~
 GiveItem("MEWI556X",LastTalkedToBy)~
     END
 
+COPY_EXISTING ~bd0130.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=26 STR_VAR item_to_add=~mewi556x~ END
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi556x~ AFTER ~scrl2h~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
 COPY_EXISTING ~xzar.cre~ ~override~
 	ADD_CRE_ITEM ~mewi556x~ #0 #0 #0 ~NONE~ ~INV4~
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi556x~ AFTER ~scrl2h~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
@@ -2267,6 +2712,10 @@ ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 COPY_EXISTING ~ogrema02.cre~ ~override~
 	ADD_CRE_ITEM ~mewi557x~ #0 #0 #0 ~NONE~ ~INV1~
 
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi557x~ BEFORE ~scrl2g~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -2275,6 +2724,10 @@ COPY_EXISTING ~sewrak01.cre~ ~override~
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi557x~ AFTER ~scrl2g~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi557x~ BEFORE ~scrl2g~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -2306,6 +2759,14 @@ ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 COPY_EXISTING ~%arbg%1504.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi558x~ END
 
+COPY_EXISTING ~bdolvena.cre~ ~override~
+	ADD_CRE_ITEM ~mewi558x~ #0 #0 #0 ~NONE~ ~INV7~
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi558x~ AFTER ~scrl7d~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -2318,6 +2779,10 @@ COPY_EXISTING ~ar1513.are~ ~override~ //Spellhold Dungeon, area with Dace and ko
 */
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi558x~ AFTER ~scrl5q~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi558x~ AFTER ~scrl7d~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -2371,6 +2836,14 @@ COPY_EXISTING ~andris.cre~ ~override~
 COPY_EXISTING ~%arbg%2613.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi559x~ END
 
+COPY_EXISTING ~bdsorcsc.sto~ ~override~
+	ADD_STORE_ITEM ~mewi559x~ AFTER ~scrl2f~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi559x~ BEFORE ~scrl5q~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -2383,6 +2856,10 @@ COPY_EXISTING ~bernard2.sto~ ~override~ //Copper Coronet (discount)
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi559x~ AFTER ~scrl2h~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi559x~ BEFORE ~scrl5q~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -2409,6 +2886,10 @@ ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 COPY_EXISTING ~schlum.cre~ ~override~
 	ADD_CRE_ITEM ~mewi560x~ #0 #0 #0 ~NONE~ ~INV7~
 
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi560x~ BEFORE ~scrl6s~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -2417,6 +2898,10 @@ COPY_EXISTING ~dagmag01.cre~ ~override~
 
 COPY_EXISTING ~ar3016.are~ ~override~ //Watcher's Keep, second floor
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=16 STR_VAR item_to_add=~mewi560x~ END
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi560x~ BEFORE ~scrl6s~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
@@ -2493,6 +2978,10 @@ COPY_EXISTING ~bd7230.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=4 STR_VAR item_to_add=~mewi563x~ END
 	IF_EXISTS
 
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi563x~ AFTER ~scrlal~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -2501,6 +2990,10 @@ COPY_EXISTING ~pwarden.cre~ ~override~
 
 COPY_EXISTING ~ar2100.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=6 STR_VAR item_to_add=~mewi563x~ END
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi563x~ AFTER ~scrlar~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
@@ -2539,6 +3032,10 @@ COPY_EXISTING ~bdcrus13.cre~ ~override~
 	ADD_CRE_ITEM ~mewi564x~ #0 #0 #0 ~NONE~ ~INV4~
 	IF_EXISTS
 
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi564x~ AFTER ~scrlal~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
@@ -2551,6 +3048,10 @@ COPY_EXISTING ~udduer01.sto~ ~override~
 
 COPY_EXISTING ~25spell.sto~ ~override~
 	ADD_STORE_ITEM ~mewi564x~ AFTER ~scrl5q~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi564x~ AFTER ~scrlar~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -2600,6 +3101,10 @@ COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi651x~ AFTER ~scrl7s~ #1 #0 #0 ~IDENTIFIED~ #2
 	IF_EXISTS
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi651x~ AFTER ~scrl7e~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -2637,6 +3142,10 @@ COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi652x~ AFTER ~scrl7k~ #1 #0 #0 ~IDENTIFIED~ #1
 	IF_EXISTS
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi652x~ AFTER ~scrl7h~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -2663,6 +3172,10 @@ ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
 COPY_EXISTING ~uddrow25.sto~ ~override~ //Ust Natha drow scroll store
 	ADD_STORE_ITEM ~mewi653x~ AFTER ~scrl7r~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi653x~ AFTER ~scrl7f~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -2702,6 +3215,10 @@ COPY_EXISTING ~firrak01.cre~ ~override~
 
 COPY_EXISTING ~ar5201.are~ ~override~ //Yaga-Shura Temple, first floor
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi654x~ END
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi654x~ AFTER ~scrl7v~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
@@ -2746,6 +3263,10 @@ ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 COPY_EXISTING ~lavok01.cre~ ~override~ ~lavok02.cre~ ~override~
 	REPLACE_CRE_ITEM ~mewi655x~ #0 #0 #0 ~UNSTEALABLE~ ~INV6~
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi655x~ BEFORE ~scrl7v~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -2771,6 +3292,10 @@ ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
 COPY_EXISTING ~ar0317.are~ ~override~ //Rayic Gethras' home, top floor
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi656x~ END
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi656x~ BEFORE ~scrl7k~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi656x~ AFTER ~scrl7l~ #1 #0 #0 ~IDENTIFIED~ #2
@@ -2810,6 +3335,10 @@ COPY_EXISTING ~ar3021.are~ ~override~
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi657x~ AFTER ~scrl7l~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi657x~ BEFORE ~scrl7k~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -2861,6 +3390,10 @@ COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi658x~ AFTER ~scrl7l~ #1 #0 #0 ~IDENTIFIED~ #1
 	IF_EXISTS
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi658x~ AFTER ~scrl7t~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -2888,6 +3421,10 @@ ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
 COPY_EXISTING ~hlshang.cre~ ~override~
 	ADD_CRE_ITEM ~mewi751x~ #0 #0 #0 ~NONE~ ~INV6~
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi751x~ BEFORE ~scrl8w~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
@@ -2923,6 +3460,10 @@ COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi752x~ AFTER ~scrl8o~ #1 #0 #0 ~IDENTIFIED~ #2
 	IF_EXISTS
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi752x~ BEFORE ~scrl8o~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -2948,6 +3489,10 @@ ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
 COPY_EXISTING ~ar6110.are~ ~override~ //Sendai's Enclave, lich's lair
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi753x~ END
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi753x~ AFTER ~scrl8e~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
@@ -2980,6 +3525,10 @@ COPY_EXISTING ~uddrow25.sto~ ~override~ //Ust Natha drow scroll store
 
 COPY_EXISTING ~ar3013.are~ ~override~ //Watcher's Keep, Karashur lair
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi754x~ END
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi754x~ AFTER ~scrl8l~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
@@ -3038,6 +3587,10 @@ COPY_EXISTING ~ar2210.are~ ~override~ //Deirex's tower treasury
 COPY_EXISTING ~telwrai.cre~ ~override~ //Demon Wraith
 	ADD_CRE_ITEM ~mewi755x~ #0 #0 #0 ~NONE~ ~INV4~
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi755x~ BEFORE ~scrl8n~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -3069,6 +3622,10 @@ COPY_EXISTING ~ribald3.sto~ ~override~ //Adventurer Mart special goods
 
 COPY_EXISTING ~amarch01.cre~ ~override~
 	ADD_CRE_ITEM ~mewi756x~ #0 #0 #0 ~NONE~ ~INV6~
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi756x~ AFTER ~scrl8v~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
@@ -3116,6 +3673,10 @@ COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi851x~ AFTER ~scrlb1~ #1 #0 #0 ~IDENTIFIED~ #2
 	IF_EXISTS
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi851x~ AFTER ~scrlb1~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -3152,6 +3713,10 @@ COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi852x~ BEFORE ~scrl9e~ #1 #0 #0 ~IDENTIFIED~ #2
 	IF_EXISTS
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi852x~ BEFORE ~scrl9c~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -3183,6 +3748,10 @@ COPY_EXISTING ~ar2206.are~ ~override~ //Qilue's home
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi853x~ AFTER ~scrl9j~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi853x~ AFTER ~scrl9h~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -3227,6 +3796,10 @@ ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 COPY_EXISTING ~ar3027.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi854x~ END
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi854x~ BEFORE ~scrl8z~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -3258,6 +3831,10 @@ COPY_EXISTING ~ribald3.sto~ ~override~ //Adventurer Mart special goods
 COPY_EXISTING ~ar5204.are~ ~override~ //Yaga-Shura Temple, second floor
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi855x~ END
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi855x~ AFTER ~scrl9h~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -3266,38 +3843,6 @@ COPY_EXISTING ~edion.sto~ ~override~
 
 END
 END
-/*
-ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
-
-LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi856=filename END
-COPY_EXISTING ~mewi856.spl~ ~override/%mewi856%.spl~
-	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi856~ resource= EVAL ~%mewi856%~ END
-	SAY NAME1 @33856
-	SAY UNIDENTIFIED_DESC @34856
-
-COPY_EXISTING ~mewi856e.spl~ ~override~
-	LPF ALTER_SPELL_HEADER INT_VAR projectile=meintrv3 END
-	READ_LONG 0x6a effectsoffset
-	READ_SHORT 0x90 numeffects
-	FOR (i = 0; i < numeffects; ++i) BEGIN
-		me_off = effectsoffset + (i * 0x30)
-		READ_SHORT me_off theopcode
-		READ_ASCII (me_off + 0x14) theresource
-		PATCH_IF theopcode = 402 AND (~%theresource%~ STRING_EQUAL_CASE ~MECURSCN~) BEGIN
-			WRITE_ASCIIE (me_off + 0x4) ~%mewi856%~ #8
-		END
-	END
-
-OUTER_SPRINT me_33856 @33856
-LAF ADD_CONTINGENCY INT_VAR description=RESOLVE_STR_REF(@34856) STR_VAR resource= EVAL ~mewi856d~ title=~ME_CURSE_CONTINGENCY_TITLE~ title_name= EVAL ~%me_33856%~ action=~ADD_SPELLS_CONTINGENCY_LABEL~ END
-
-COPY_EXISTING ~mewi856x.itm~ ~override~
-	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi856~ resource= EVAL ~%mewi856%~ END
-	SAY NAME2 @33856
-	SAY IDENTIFIED_DESC @34856
-
-END
-*/
 
 ACTION_IF !(MOD_IS_INSTALLED ~SetUp-B_Spells.tp2~ ~101~) AND !(MOD_IS_INSTALLED ~SetUp-B_Spells.tp2~ ~103~) BEGIN
 
@@ -3325,6 +3870,10 @@ COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi857x~ AFTER ~mewi851x~ #1 #0 #0 ~IDENTIFIED~ #2
 	IF_EXISTS
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi857x~ AFTER ~mewi851x~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -3333,6 +3882,8 @@ COPY_EXISTING ~ar8010.are~ ~override~
 
 END
 END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
 
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi858=filename END
 COPY_EXISTING ~mewi858.spl~ ~override/%mewi858%.spl~
@@ -3359,11 +3910,17 @@ COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi858x~ AFTER ~mewi852x~ #1 #0 #0 ~IDENTIFIED~ #2
 	IF_EXISTS
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi858x~ BEFORE ~scrl8z~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
 COPY_EXISTING ~bandoth.sto~ ~override~
 	ADD_STORE_ITEM ~mewi858x~ BEFORE ~potn08~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
 
 END
 
@@ -3386,6 +3943,13 @@ COPY_EXISTING ~mewi859x.itm~ ~override~
 	SAY NAME2 @33859
 	SAY IDENTIFIED_DESC @34859
 
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~bd1200.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=12 STR_VAR item_to_add=~mewi859x~ END
+	IF_EXISTS
+
+END
 ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
 COPY_EXISTING ~lavok01.cre~ ~override~ ~lavok02.cre~ ~override~
@@ -3393,6 +3957,10 @@ COPY_EXISTING ~lavok01.cre~ ~override~ ~lavok02.cre~ ~override~
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi859x~ AFTER ~scrl9h~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi859x~ BEFORE ~mewi852x~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -3429,6 +3997,10 @@ COPY_EXISTING ~ar0711.are~ ~override~
 COPY_EXISTING ~ar3021.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi860x~ END
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi860x~ AFTER ~mewi851x~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -3457,6 +4029,10 @@ COPY_EXISTING ~ribald3.sto~ ~override~
 
 COPY_EXISTING ~ar3016.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=7 STR_VAR item_to_add=~mewi861x~ END
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi861x~ BEFORE ~scrl9j~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
@@ -3501,11 +4077,69 @@ COPY_EXISTING ~ar1514.are~ ~override~
 COPY_EXISTING ~ar5014.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi862x~ END
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi862x~ AFTER ~scrlb1~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
 COPY_EXISTING ~kieran2.sto~ ~override~
 	ADD_STORE_ITEM ~mewi862x~ AFTER ~scrlb1~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+ACTION_IF (me_power_spells = 1) AND (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi856=filename END
+COPY_EXISTING ~mewi856.spl~ ~override/%mewi856%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi856~ resource= EVAL ~%mewi856%~ END
+	SAY NAME1 @33856
+	SAY UNIDENTIFIED_DESC @34856
+
+COPY_EXISTING ~mewi856e.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=meintrv3 END
+	READ_LONG 0x6a effectsoffset
+	READ_SHORT 0x90 numeffects
+	FOR (i = 0; i < numeffects; ++i) BEGIN
+		me_off = effectsoffset + (i * 0x30)
+		READ_SHORT me_off theopcode
+		READ_ASCII (me_off + 0x14) theresource
+		PATCH_IF theopcode = 402 AND (~%theresource%~ STRING_EQUAL_CASE ~MECURSCN~) BEGIN
+			WRITE_ASCIIE (me_off + 0x4) ~%mewi856%~ #8
+		END
+	END
+
+COPY_EXISTING ~sppr307.spl~ ~override~ ~spwi410.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=321 target=2 timing=1 STR_VAR resource=~mecurscn~ END
+
+OUTER_SPRINT me_33856 @33856
+LAF ADD_CONTINGENCY INT_VAR description=RESOLVE_STR_REF(@34856) STR_VAR resource= EVAL ~mewi856d~ title=~ME_CURSE_CONTINGENCY_TITLE~ title_name= EVAL ~%me_33856%~ action=~ADD_SPELLS_CONTINGENCY_LABEL~ END
+
+COPY_EXISTING ~mewi856x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi856~ resource= EVAL ~%mewi856%~ END
+	SAY NAME2 @33856
+	SAY IDENTIFIED_DESC @34856
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar2101.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=5 STR_VAR item_to_add=~mewi856x~ END
+
+COPY_EXISTING ~gromg08.cre~ ~override~
+	ADD_CRE_ITEM ~mewi856x~ #0 #0 #0 ~NONE~ ~INV7~
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi856x~ AFTER ~mewi862x~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kieran2.sto~ ~override~
+	ADD_STORE_ITEM ~mewi856x~ AFTER ~scrlb1~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
 
 END
 
@@ -3523,6 +4157,10 @@ ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
 COPY_EXISTING ~ar3026.are~ ~override~ //Watcher's Keep, Imp Challenge
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi951x~ END
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi951x~ BEFORE ~scrl9u~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
@@ -3550,6 +4188,10 @@ COPY_EXISTING ~ar2400.are~ ~override~ //Underdark, mind flayer city
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi952x~ AFTER ~scrl9q~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi952x~ BEFORE ~scrl9t~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -3580,6 +4222,10 @@ COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi953x~ AFTER ~scrl9p~ #1 #0 #0 ~IDENTIFIED~ #2
 	IF_EXISTS
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi953x~ AFTER ~scrl9p~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -3605,6 +4251,10 @@ COPY_EXISTING ~ar0809.are~ ~override~ //Bodhi's lair (Chapter 6)
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi954x~ AFTER ~scrl9v~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi954x~ BEFORE ~scrl9v~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -3640,6 +4290,10 @@ ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 COPY_EXISTING ~ar6003.are~ ~override~ //Abazigal's Lair, eyes area
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi955x~ END
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi955x~ BEFORE ~scrl9t~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -3665,6 +4319,10 @@ ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 
 COPY_EXISTING ~ar3017.are~ ~override~ //Watcher's Keep, fourth level
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=2 STR_VAR item_to_add=~mewi956x~ END
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi956x~ AFTER ~scrl9q~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
 
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
@@ -3696,6 +4354,10 @@ COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
 	ADD_STORE_ITEM ~mewi957x~ BEFORE ~scrl9z~ #1 #0 #0 ~IDENTIFIED~ #2
 	IF_EXISTS
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi957x~ BEFORE ~scrl9w~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -3704,7 +4366,7 @@ COPY_EXISTING ~ar9714.are~ ~override~
 
 END
 
-LAF GET_UNIQUE_SPELL_NAME INT_VAR automatic_default=1 STR_VAR prefix=~SPWI9~ default=~SPWI944~ replaced_new_filename=~MEEW944~ RET mewi958=filename END
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ default=~SPWI944~ replaced_new_filename=~MEEW944~ RET mewi958=filename END
 COPY_EXISTING ~mewi958.spl~ ~override/%mewi958%.spl~
 	SAY NAME1 @33958
 	SAY UNIDENTIFIED_DESC @34958
@@ -3751,6 +4413,10 @@ ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 COPY_EXISTING ~dragblac.cre~ ~override~
 	ADD_CRE_ITEM ~mewi958x~ #0 #0 #0 ~NONE~ ~INV11~
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi958x~ BEFORE ~scrl9u~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -3775,6 +4441,10 @@ ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
 COPY_EXISTING ~hgkar01.sto~ ~override~
 	ADD_STORE_ITEM ~mewi959x~ AFTER ~scrl9m~ #1 #0 #0 ~IDENTIFIED~ #1
 
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi959x~ AFTER ~scrl9q~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
@@ -3789,6 +4459,12 @@ ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
 COPY_EXISTING ~mewi960.spl~ ~override~
 	SAY NAME1 @33960
 	SAY UNIDENTIFIED_DESC @34960
+
+/*
+COPY_EXISTING ~m_mestr1.lua~ ~override~
+	SPRINT me_eclectic_recall_string_1 @30039
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_eclectic_recall_string_1[ %TAB%=].*~ ~me_eclectic_recall_string_1 = "%me_eclectic_recall_string_1%"~
+*/
 
 COPY_EXISTING ~luma0.2da~ ~override~
 	LPF ADD_HLA STR_VAR ability=~GA_MEWI960~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
@@ -3830,11 +4506,43 @@ COPY_EXISTING ~kitlist.2da~ ~override~
 		END
 	END
 	BUT_ONLY_IF_IT_CHANGES
-/*
-COPY_EXISTING ~m_mestr1.lua~ ~override~
-	SPRINT me_eclectic_recall_string_1 @30039
-	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_eclectic_recall_string_1[ %TAB%=].*~ ~me_eclectic_recall_string_1 = "%me_eclectic_recall_string_1%"~
-*/
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ default=~SPWI954~ replaced_new_filename=~MEEW954~ RET mewi961=filename END
+COPY_EXISTING ~mewi961.spl~ ~override/%mewi961%.spl~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi961~ resource= EVAL ~%mewi961%~ END
+	SAY NAME1 @33961
+	SAY UNIDENTIFIED_DESC @34961
+
+COPY_EXISTING ~mewi961x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi961~ resource= EVAL ~%mewi961%~ END
+	SAY NAME2 @33961
+	SAY IDENTIFIED_DESC @34961
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~udtrap04.cre~ ~override~
+	ADD_CRE_ITEM ~mewi961x~ #0 #0 #0 ~NONE~ ~INV7~
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi961x~ AFTER ~scrl9l~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi961x~ BEFORE ~scrl9r~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar9714.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=15 STR_VAR item_to_add=~mewi961x~ END
+
+END
+
 END
 /*
 COPY_EXISTING_REGEXP ~.*\.bcs~ ~override~
@@ -3942,11 +4650,15 @@ COPY_EXISTING_REGEXP ~.*\.cre~ ~override~ ~.*\.itm~ ~override~
 	IF ~b~
 	BUT_ONLY_IF_IT_CHANGES
 
+/*
 COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
-	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode=regeneration new_opcode=applyrepeatingeff STR_VAR resource=~meregen1~ END
+	PATCH_IF !(~%SOURCE_RES%~ STRING_EQUAL_CASE ~SPWI202~) BEGIN
+		LPF ALTER_SPELL_EFFECT INT_VAR match_opcode=regeneration new_opcode=applyrepeatingeff STR_VAR resource=~meregen1~ END
+	END
 	IF ~b~
 	BUT_ONLY_IF_IT_CHANGES
-
+*/
+/*
 COPY_EXISTING_REGEXP ~.*\.eff~ ~override~
 	READ_LONG effopcode theopcode
 	PATCH_IF theopcode = regeneration BEGIN
@@ -3954,7 +4666,7 @@ COPY_EXISTING_REGEXP ~.*\.eff~ ~override~
 		WRITE_ASCII effresource ~meregen1~ #8
 	END
 	BUT_ONLY_IF_IT_CHANGES
-
+*/
 // Patching for Far Sequencer
 
 COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
@@ -3983,6 +4695,7 @@ ACTION_IF !(MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
 
 COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
 	LPF DELETE_EFFECT INT_VAR silent=1 check_headers=0 check_globals=1 match_opcode=402 STR_VAR match_resource=~MEINHOST~ END
+	IF ~MEINHOST~
 	BUT_ONLY_IF_IT_CHANGES
 
 END

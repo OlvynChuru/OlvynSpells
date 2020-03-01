@@ -2030,7 +2030,7 @@ COPY_EXISTING ~mewi453.spl~ ~override/%mewi453%.spl~
 
 ACTION_IF GAME_IS ~iwdee~ BEGIN
 
-COPY_EXISTING ~mewi453d.itm~ ~override~
+COPY_EXISTING ~mewi453d.eff~ ~override~
 	WRITE_ASCII 0x30 ~MS3GHL~ #8
 
 END

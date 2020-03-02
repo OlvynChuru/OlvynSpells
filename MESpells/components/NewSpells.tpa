@@ -85,6 +85,7 @@ ADD_PROJECTILE ~override/megrvglb.pro~ //Reversed Gravity Sphere
 ADD_PROJECTILE ~override/meverdig.pro~ //Entangle 60-foot radius
 ADD_PROJECTILE ~override/mepolera.pro~ //Agannazar's Scorcher cold
 ADD_PROJECTILE ~override/memindfo.pro~ //Mind Fog
+ADD_PROJECTILE ~override/melivlig.pro~ //Living Lightning
 
 LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~0x106~ splprot_value=~1~ splprot_relation=~9~ RET splprot_areaisnotoutdoor=splprot_slot END
 
@@ -185,6 +186,48 @@ COPY_EXISTING ~clabrn01.2da~ ~override~
 	IF_EXISTS
 	UNLESS ~GA_MEPR153~
 
+COPY_EXISTING ~mepr154.spl~ ~override~
+	SAY NAME1 @31154
+	SAY UNIDENTIFIED_DESC @32154
+
+OUTER_SET paladin_level_one = 1
+COPY_EXISTING ~mxsplpal.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 1 numcolumns num_spells_level_one
+		PATCH_IF num_spells_level_one > 0 BEGIN
+			READ_2DA_ENTRY i 0 numcolumns paladin_level_one
+			i = numrows
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classpaladin BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_PR154   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 paladin_level_one 1 ~GA_MEPR154~
+					IF_EXISTS
+					UNLESS ~GA_MEPR154~
+			END
+		END
+	END
+
+COPY_EXISTING ~clabpa01.2da~ ~override~
+	COUNT_2DA_ROWS 1 numrows
+	INSERT_2DA_ROW numrows 1 ~ME_PR154   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+	LPF GET_2DA_ROW INT_VAR numcolumns=1 match_column=0 STR_VAR match=~ME_PR154~ RET therow=matched END
+	SET_2DA_ENTRY numrows paladin_level_one 1 ~GA_MEPR154~
+	IF_EXISTS
+	UNLESS ~GA_MEPR154~
+
 ACTION_IF !(MOD_IS_INSTALLED ~SetUp-B_Spells.tp2~ ~101~) AND !(MOD_IS_INSTALLED ~SetUp-B_Spells.tp2~ ~103~) BEGIN
 
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR2~ RET mepr251=filename END
@@ -253,7 +296,7 @@ COPY_EXISTING ~clabrn01.2da~ ~override~
 	UNLESS ~GA_MEPR254~
 
 OUTER_SET paladin_level_two = 1
-COPY_EXISTING ~mxsplran.2da~ ~override~
+COPY_EXISTING ~mxsplpal.2da~ ~override~
 	COUNT_2DA_COLS numcolumns
 	COUNT_2DA_ROWS numcolumns numrows
 	FOR (i = 0; i < numrows; ++i) BEGIN
@@ -275,7 +318,7 @@ COPY_EXISTING ~kitlist.2da~ ~override~
 				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
 					COUNT_2DA_ROWS 1 numrows_2
 					INSERT_2DA_ROW numrows_2 1 ~ME_PR254   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
-					SET_2DA_ENTRY numrows_2 ranger_level_two 1 ~GA_MEPR254~
+					SET_2DA_ENTRY numrows_2 paladin_level_two 1 ~GA_MEPR254~
 					IF_EXISTS
 					UNLESS ~GA_MEPR254~
 			END
@@ -286,9 +329,57 @@ COPY_EXISTING ~clabpa01.2da~ ~override~
 	COUNT_2DA_ROWS 1 numrows
 	INSERT_2DA_ROW numrows 1 ~ME_PR254   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
 	LPF GET_2DA_ROW INT_VAR numcolumns=1 match_column=0 STR_VAR match=~ME_PR254~ RET therow=matched END
-	SET_2DA_ENTRY numrows ranger_level_two 1 ~GA_MEPR254~
+	SET_2DA_ENTRY numrows paladin_level_two 1 ~GA_MEPR254~
 	IF_EXISTS
 	UNLESS ~GA_MEPR254~
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+COPY_EXISTING ~mepr255.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=immunitytospellandmessage target=2 timing=0 duration=1 parameter2=splprot_areaisanoteleportzone special=RESOLVE_STR_REF(@30030) STR_VAR resource=~MEPR255~ END
+	SAY NAME1 @31255
+	SAY UNIDENTIFIED_DESC @32255
+
+OUTER_SET shaman_level_two = 1
+COPY_EXISTING ~mxsplshm.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 2 numcolumns num_spells_level_two
+		PATCH_IF num_spells_level_two > 0 BEGIN
+			READ_2DA_ENTRY i 0 numcolumns shaman_level_two
+			i = numrows
+		END
+	END
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classshaman BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_PR255   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 shaman_level_two 1 ~GA_MEPR255~
+					IF_EXISTS
+					UNLESS ~GA_MEPR255~
+			END
+		END
+	END
+
+COPY_EXISTING ~clabsh01.2da~ ~override~
+	COUNT_2DA_ROWS 1 numrows
+	INSERT_2DA_ROW numrows 1 ~ME_PR255   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+	LPF GET_2DA_ROW INT_VAR numcolumns=1 match_column=0 STR_VAR match=~ME_PR255~ RET therow=matched END
+	SET_2DA_ENTRY numrows shaman_level_two 1 ~GA_MEPR255~
+	IF_EXISTS
+	UNLESS ~GA_MEPR255~
+
+END
 
 ACTION_IF !(GAME_IS ~iwdee~) BEGIN
 
@@ -406,6 +497,92 @@ COPY_EXISTING ~clabpa01.2da~ ~override~
 
 END
 
+COPY_EXISTING ~mepr356.spl~ ~override~
+	SAY NAME1 @31356
+	SAY UNIDENTIFIED_DESC @32356
+
+OUTER_SET ranger_level_three = 1
+COPY_EXISTING ~mxsplran.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 3 numcolumns num_spells_level_three
+		PATCH_IF num_spells_level_three > 0 BEGIN
+			READ_2DA_ENTRY i 0 numcolumns ranger_level_three
+			i = numrows
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classranger BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_PR356   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 ranger_level_three 1 ~GA_MEPR356~
+					IF_EXISTS
+					UNLESS ~GA_MEPR356~
+			END
+		END
+	END
+
+COPY_EXISTING ~clabrn01.2da~ ~override~
+	COUNT_2DA_ROWS 1 numrows
+	INSERT_2DA_ROW numrows 1 ~ME_PR356   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+	SET_2DA_ENTRY numrows ranger_level_three 1 ~GA_MEPR356~
+	IF_EXISTS
+	UNLESS ~GA_MEPR356~
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+COPY_EXISTING ~mepr357.spl~ ~override~
+	SAY NAME1 @31357
+	SAY UNIDENTIFIED_DESC @32357
+
+OUTER_SET ranger_level_three = 1
+COPY_EXISTING ~mxsplran.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 3 numcolumns num_spells_level_three
+		PATCH_IF num_spells_level_three > 0 BEGIN
+			READ_2DA_ENTRY i 0 numcolumns ranger_level_three
+			i = numrows
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classranger BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_PR357   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 ranger_level_three 1 ~GA_MEPR357~
+					IF_EXISTS
+					UNLESS ~GA_MEPR357~
+			END
+		END
+	END
+
+COPY_EXISTING ~clabrn01.2da~ ~override~
+	COUNT_2DA_ROWS 1 numrows
+	INSERT_2DA_ROW numrows 1 ~ME_PR357   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+	SET_2DA_ENTRY numrows ranger_level_three 1 ~GA_MEPR357~
+	IF_EXISTS
+	UNLESS ~GA_MEPR357~
+
+END
+
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR4~ RET mepr451=filename END
 COPY_EXISTING ~mepr451.spl~ ~override/%mepr451%.spl~
 	SAY NAME1 @31451
@@ -485,6 +662,76 @@ COPY_EXISTING ~instant.ids~ ~override~
 	UNLESS ~323~
 END
 
+OUTER_SPRINT stringlevel7 @3507
+OUTER_SPRINT stringpriestprotectionelements @30044
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR5~ RET mepr553=filename END
+COPY_EXISTING ~spwi702.spl~ ~override/%mepr553%.spl~
+	WRITE_ASCII castingsound ~CAS_P02~ #8
+	WRITE_SHORT spelltype 2
+	WRITE_LONG spelllevel 5
+	WRITE_LONG spellunusability 0x40000000
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 match_power=7 power=5 END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 match_timing=4 timing=1 END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~spwi702~ resource= EVAL ~%mepr553%~ END
+	LPF REPLACE_IN_SPELL_DESCRIPTION INT_VAR new_string=1 STR_VAR match= EVAL ~%stringlevel7%~ replace_with= EVAL ~%stringpriestprotectionelements%~ END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+COPY_EXISTING ~mepr554.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=protectionfromspell2 match_parameter2=2500 parameter2=splprot_meinflight END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=immunitytospellandmessage target=1 timing=0 duration=1 parameter2=splprot_areaisanoteleportzone special=RESOLVE_STR_REF(@30030) STR_VAR resource=~MEPR554~ END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) duration_high=((i + 7) * 3) END
+//		LPF ALTER_EFFECT INT_VAR header=i match_opcode=eeexsetextendedstat match_special=640 parameter1=(i + 21) END
+		numheaders = numheaders + 1
+	END
+	SAY NAME1 @31554
+	SAY UNIDENTIFIED_DESC @32554
+
+OUTER_SET shaman_level_five = 1
+COPY_EXISTING ~mxsplshm.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 5 numcolumns num_spells_level_five
+		PATCH_IF num_spells_level_five > 0 BEGIN
+			READ_2DA_ENTRY i 0 numcolumns shaman_level_five
+			i = numrows
+		END
+	END
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classshaman BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_PR554   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 shaman_level_five 1 ~GA_MEPR554~
+					IF_EXISTS
+					UNLESS ~GA_MEPR554~
+			END
+		END
+	END
+
+COPY_EXISTING ~clabsh01.2da~ ~override~
+	COUNT_2DA_ROWS 1 numrows
+	INSERT_2DA_ROW numrows 1 ~ME_PR554   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+	LPF GET_2DA_ROW INT_VAR numcolumns=1 match_column=0 STR_VAR match=~ME_PR554~ RET therow=matched END
+	SET_2DA_ENTRY numrows shaman_level_five 1 ~GA_MEPR554~
+	IF_EXISTS
+	UNLESS ~GA_MEPR554~
+
+END
+
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR6~ RET mepr652=filename END
 COPY_EXISTING ~mepr652.spl~ ~override/%mepr652%.spl~
 	SAY NAME1 @31652
@@ -499,6 +746,33 @@ COPY_EXISTING ~mepr653.spl~ ~override/%mepr653%.spl~
 	SAY UNIDENTIFIED_DESC @32653
 
 END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR6~ RET mepr654=filename END
+COPY_EXISTING ~mepr654.spl~ ~override/%mepr654%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mepr654~ resource= EVAL ~%mepr654%~ END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) match_opcode=333 parameter1=(i + 1) parameter2=(i + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) duration_high=((i + 1) * 6) END
+		numheaders = numheaders + 1
+	END
+	SAY NAME1 @31654
+	SAY UNIDENTIFIED_DESC @32654
+
+COPY_EXISTING ~mepr654d.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=melivlig END
+
+COPY_EXISTING ~mepr654e.spl~ ~override~
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) match_opcode=damage dicenumber=((i + 1) / 2) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) duration_high=((i + 1) * 6) END
+		numheaders = numheaders + 1
+	END
 
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR7~ RET mepr751=filename END
 COPY_EXISTING ~mepr751.spl~ ~override/%mepr751%.spl~
@@ -607,6 +881,118 @@ COPY_EXISTING ~kitlist.2da~ ~override~
 								LPF ADD_HLA STR_VAR ability=~GA_MEPR756~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
 								IF_EXISTS
 								UNLESS ~GA_MEPR756~
+						END
+					END
+					BUT_ONLY_IF_IT_CHANGES
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR7~ RET mepr757=filename END
+COPY_EXISTING ~mepr757.spl~ ~override/%mepr757%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mepr757~ resource= EVAL ~%mepr757%~ END
+	SAY NAME1 @31757
+	SAY UNIDENTIFIED_DESC @32757
+
+END
+
+COPY_EXISTING ~meha150.spl~ ~override~
+	SAY NAME1 @30045
+	SAY UNIDENTIFIED_DESC @30046
+
+COPY_EXISTING ~lupa0.2da~ ~override~
+	LPF ADD_HLA STR_VAR ability=~GA_MEHA150~ min_lev=~1~ max_lev=~99~ num_allowed=~20~ END
+	IF_EXISTS
+	UNLESS ~GA_MEHA150~
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 numcolumns theclass
+		PATCH_IF (~%theclass%~ STRING_EQUAL_CASE ~6~) BEGIN
+			READ_2DA_ENTRY i 1 numcolumns theclassname
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~luabbr.2da~ ~override~
+					LPF GET_2DA_ROW INT_VAR found_it=1 STR_VAR match= EVAL ~%theclassname%~ RET numcolumns2=numcols row=matched END
+					PATCH_IF row > ~-1~ BEGIN
+						READ_2DA_ENTRY row 1 numcolumns2 thehlatable
+						INNER_ACTION BEGIN
+							COPY_EXISTING ~lu%thehlatable%.2da~ ~override~
+								LPF ADD_HLA STR_VAR ability=~GA_MEHA150~ min_lev=~1~ max_lev=~99~ num_allowed=~20~ END
+								IF_EXISTS
+								UNLESS ~GA_MEHA150~
+						END
+					END
+					BUT_ONLY_IF_IT_CHANGES
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~mehl043.spl~ ~override~
+	SAY NAME1 @30047
+	SAY UNIDENTIFIED_DESC @30048
+
+COPY_EXISTING ~luba0.2da~ ~override~ ~luct0.2da~ ~override~ ~lufmt.2da~ ~override~ ~luft0.2da~ ~override~ ~lumt0.2da~ ~override~
+	LPF ADD_HLA STR_VAR ability=~AP_MEHL043~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
+	IF_EXISTS
+	UNLESS ~AP_MEHL043~
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 numcolumns theclass
+		PATCH_IF (~%theclass%~ STRING_EQUAL_CASE ~5~) OR (~%theclass%~ STRING_EQUAL_CASE ~9~) OR (~%theclass%~ STRING_EQUAL_CASE ~10~) OR (~%theclass%~ STRING_EQUAL_CASE ~13~) OR (~%theclass%~ STRING_EQUAL_CASE ~15~) BEGIN
+			READ_2DA_ENTRY i 1 numcolumns theclassname
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~luabbr.2da~ ~override~
+					LPF GET_2DA_ROW INT_VAR found_it=1 STR_VAR match= EVAL ~%theclassname%~ RET numcolumns2=numcols row=matched END
+					PATCH_IF row > ~-1~ BEGIN
+						READ_2DA_ENTRY row 1 numcolumns2 thehlatable
+						INNER_ACTION BEGIN
+							COPY_EXISTING ~lu%thehlatable%.2da~ ~override~
+								LPF ADD_HLA STR_VAR ability=~AP_MEHL043~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
+								IF_EXISTS
+								UNLESS ~AP_MEHL043~
+						END
+					END
+					BUT_ONLY_IF_IT_CHANGES
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~mehl044.spl~ ~override~
+	SAY NAME1 @30049
+	SAY UNIDENTIFIED_DESC @30050
+
+COPY_EXISTING ~luba0.2da~ ~override~ ~lucm0.2da~ ~override~ ~lufm0.2da~ ~override~ ~lufmc.2da~ ~override~ ~lufmt.2da~ ~override~ ~lumt0.2da~ ~override~
+	LPF ADD_HLA STR_VAR ability=~AP_MEHL044~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
+	IF_EXISTS
+	UNLESS ~AP_MEHL044~
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 numcolumns theclass
+		PATCH_IF (~%theclass%~ STRING_EQUAL_CASE ~5~) OR (~%theclass%~ STRING_EQUAL_CASE ~7~) OR (~%theclass%~ STRING_EQUAL_CASE ~10~) OR (~%theclass%~ STRING_EQUAL_CASE ~13~) OR (~%theclass%~ STRING_EQUAL_CASE ~14~) OR (~%theclass%~ STRING_EQUAL_CASE ~17~) BEGIN
+			READ_2DA_ENTRY i 1 numcolumns theclassname
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~luabbr.2da~ ~override~
+					LPF GET_2DA_ROW INT_VAR found_it=1 STR_VAR match= EVAL ~%theclassname%~ RET numcolumns2=numcols row=matched END
+					PATCH_IF row > ~-1~ BEGIN
+						READ_2DA_ENTRY row 1 numcolumns2 thehlatable
+						INNER_ACTION BEGIN
+							COPY_EXISTING ~lu%thehlatable%.2da~ ~override~
+								LPF ADD_HLA STR_VAR ability=~AP_MEHL044~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
+								IF_EXISTS
+								UNLESS ~AP_MEHL044~
 						END
 					END
 					BUT_ONLY_IF_IT_CHANGES
@@ -3635,6 +4021,47 @@ COPY_EXISTING ~ar8006.are~ ~override~
 
 END
 
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI7~ RET mewi757=filename END
+COPY_EXISTING ~mewi757.spl~ ~override/%mewi757%.spl~
+	SAY NAME1 @33757
+	SAY UNIDENTIFIED_DESC @34757
+
+COPY_EXISTING_REGEXP ~.*\.cre~ ~override~
+	LPF ADD_CRE_EFFECT INT_VAR opcode=castspelloncondition target=1 timing=9 parameter2=15 special=0x800 STR_VAR resource=~MEDEADID~ END
+	UNLESS ~MEDEADID~
+
+COPY_EXISTING ~mewi757x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi757~ resource= EVAL ~%mewi757%~ END
+	SAY NAME2 @33757
+	SAY IDENTIFIED_DESC @34757
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0802.are~ ~override~ //Graveyard District, optional crypt
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi757x~ END
+
+COPY_EXISTING ~uddrow25.sto~ ~override~ //Ust Natha scroll store
+	ADD_STORE_ITEM ~mewi757x~ BEFORE ~scrl8g~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi757x~ BEFORE ~scrl8g~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar6006.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=10 STR_VAR item_to_add=~mewi757x~ END
+
+COPY_EXISTING ~edion.sto~ ~override~
+	ADD_STORE_ITEM ~mewi757x~ AFTER ~scrla4~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+END
+
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi851=filename END
 COPY_EXISTING ~mewi851.spl~ ~override/%mewi851%.spl~
 	SAY NAME1 @33851
@@ -3965,9 +4392,6 @@ COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
 
 END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
-
-COPY_EXISTING ~ar6006.are~ ~override~
-	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=10 STR_VAR item_to_add=~mewi859x~ END
 
 COPY_EXISTING ~edion.sto~ ~override~
 	ADD_STORE_ITEM ~mewi859x~ AFTER ~scrl8y~ #1 #0 #0 ~IDENTIFIED~ #1

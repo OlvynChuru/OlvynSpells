@@ -5568,3 +5568,253 @@ function MECURSCN(effectData, creatureData)
 })
 --]]
 end
+
+-- Returns the actor's current area resref as a string.
+-- If the game was just loaded, sometimes the actor doesn't know what
+--  area they're in yet, so it'll return "" in that case.
+function EEex_GetActorAreaRes(actorID)
+	local share = EEex_GetActorShare(actorID)
+	if share > 0 and EEex_ReadDword(EEex_GetActorShare(actorID) + 0x14) > 0 then
+		return EEex_ReadLString(EEex_ReadDword(EEex_GetActorShare(actorID) + 0x14), 0x8)
+	else
+		return ""
+	end
+end
+
+-- Returns true if the actor is a creature.
+-- Returns false if the actor is BALDUR.BCS, an area script, a door, a container, or a region.
+-- For example, if you get the sourceID of an effect of a fireball from a trap, and you
+--  do EEex_IsSprite(sourceID), it will return false.
+-- If the source had been a mage casting a fireball, it would've returned true.
+function EEex_IsSprite(actorID, allowDead)
+	-- EEex uses 0x0 as an "invalid" actorID return value, but it actually
+	-- points to a valid object - (not a sprite, though, so return false).
+	if actorID ~= 0x0 and actorID ~= -0x1 then
+		local share = EEex_GetActorShare(actorID)
+		if share > 0x0 and EEex_ReadByte(share + 0x4, 0) == 0x31 then
+			return allowDead or bit32.band(EEex_ReadDword(share + 0x434), 0xFC0) == 0x0
+		end
+	end
+	return false
+end
+
+dead_id_list = {}
+function MEDEADID(effectData, creatureData)
+	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	if sourceID ~= 1 and bit32.band(EEex_ReadDword(creatureData + 0x424), 0x2) == 0 then
+		EEex_IterateActorEffects(targetID, function(eData)
+			local the_opcode = EEex_ReadDword(eData + 0x10)
+			local the_resource = EEex_ReadLString(eData + 0x30, 8)
+			if the_opcode == 402 and the_resource == "MEDEADID" then
+				EEex_WriteDword(eData + 0x110, 1)
+			end
+		end)
+		dead_id_list["" .. targetID] = targetID
+	end
+end
+nonliving_race = {["108"] = 1, ["115"] = 1, ["121"] = 1, ["125"] = 1, ["126"] = 1, ["128"] = 1, ["132"] = 1, ["133"] = 1, ["134"] = 1, ["136"] = 1, ["139"] = 1, ["141"] = 1, ["144"] = 1, ["145"] = 1, ["147"] = 1, ["148"] = 1, ["149"] = 1, ["150"] = 1, ["155"] = 1, ["156"] = 1, ["157"] = 1, ["158"] = 1, ["159"] = 1, ["173"] = 1, ["175"] = 1, ["180"] = 1, ["181"] = 1, ["201"] = 1, ["202"] = 1, ["203"] = 1, ["204"] = 1, ["205"] = 1, ["206"] = 1, ["207"] = 1, ["208"] = 1, ["209"] = 1, ["210"] = 1, ["211"] = 1, ["212"] = 1, ["213"] = 1, ["214"] = 1, ["215"] = 1, ["255"] = 1}
+function MEREANIM(effectData, creatureData)
+--	EEex_WriteDword(effectData + 0x110, 0x1)
+	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	if not EEex_IsSprite(sourceID, false) then return end
+--	local duration = EEex_ReadDword(effectData + 0x44)
+	local parent_resource = EEex_ReadLString(effectData + 0x90, 8)
+--[[
+	if parent_resource ~= "" then
+		local spellType = EEex_ReadWord(EEex_GetSpellData(parent_resource) + 0x1C, 0x0)
+		if spellType == 1 then
+			duration = math.floor(duration * EEex_GetActorStat(sourceID, 53) / 100)
+		elseif spellType == 2 then
+			duration = math.floor(duration * EEex_GetActorStat(sourceID, 54) / 100)
+		end
+	end
+--]]
+	local spellRES = EEex_ReadLString(effectData + 0x18, 8)
+	local savingthrow = EEex_ReadDword(effectData + 0x3C)
+	local getHighestLevel = (bit32.band(savingthrow, 0x100000) > 0)
+	local ignoreHigherLevel = (bit32.band(savingthrow, 0x200000) > 0)
+	local includeNonliving = (bit32.band(savingthrow, 0x800000) > 0)
+	local maxDistance = EEex_ReadDword(effectData + 0x44)
+	local casterlvl = EEex_ReadDword(effectData + 0xC4)
+	local targetX = EEex_ReadDword(effectData + 0x84)
+	local targetY = EEex_ReadDword(effectData + 0x88)
+	local areaActorIDList = dead_id_list
+	local actorX = 0
+	local actorY = 0
+	local currentShare = 0
+	local currentStates = 0
+	local currentDistance = 0
+	local shortestDistance = 32767
+	local currentLevel = 0
+	local highestLevel = 0
+	local chosenID = 0
+	for k, v in pairs(areaActorIDList) do
+		if EEex_IsSprite(v, true) then
+			currentShare = EEex_GetActorShare(v)
+			actorX = EEex_ReadDword(currentShare + 0x8)
+			actorY = EEex_ReadDword(currentShare + 0xC)
+			currentStates = EEex_ReadDword(currentShare + 0x434)
+			if bit32.band(currentStates, 0xE00) > 0 and bit32.band(currentStates, 0xC0) == 0 and (bit32.band(currentStates, 0x100) == 0 or EEex_ReadDword(currentShare + 0x43C) > 1000) and (includeNonliving or (EEex_GetActorGeneral(v) ~= 4 and nonliving_race["" .. EEex_GetActorRace(v)] == nil)) then
+				currentDistance = EEex_GetDistance(targetX, targetY, actorX, actorY)
+				currentLevel = EEex_ReadByte(currentShare + 0x648, 0x0)
+				if EEex_GetActorAreaRes(sourceID) == EEex_GetActorAreaRes(v) and (maxDistance <= 0 or currentDistance <= maxDistance) and (currentDistance < shortestDistance or (getHighestLevel and currentLevel > highestLevel)) and (ignoreHigherLevel == false or currentLevel <= casterlvl) and (getHighestLevel == false or highestLevel <= currentLevel) then
+					shortestDistance = currentDistance
+					highestLevel = currentLevel
+					chosenID = v
+				end
+			end
+		end
+	end
+	if chosenID > 0 then
+		currentShare = EEex_GetActorShare(chosenID)
+		currentStates = EEex_ReadDword(currentShare + 0x434)
+		EEex_WriteDword(currentShare + 0x434, bit32.band(currentStates, 0xFFFFFEFF)) 
+		EEex_WriteDword(currentShare + 0xB30, bit32.band(EEex_ReadDword(currentShare + 0xB30), 0xFFFFFEFF)) 
+		EEex_WriteWord(currentShare + 0x438, 0)
+		EEex_ApplyEffectToActor(chosenID, {
+["opcode"] = 32,
+["target"] = 2,
+["parameter2"] = 0,
+["timing"] = 1,
+["parent_resource"] = parent_resource,
+["source_target"] = chosenID,
+["source_id"] = sourceID
+})
+		EEex_ApplyEffectToActor(chosenID, {
+["opcode"] = 17,
+["target"] = 2,
+["parameter1"] = 100,
+["parameter2"] = 2,
+["timing"] = 1,
+["parent_resource"] = parent_resource,
+["source_target"] = chosenID,
+["source_id"] = sourceID
+})
+		EEex_ApplyEffectToActor(chosenID, {
+["opcode"] = 72,
+["target"] = 2,
+["parameter1"] = 4,
+["parameter2"] = 1,
+["timing"] = 1,
+["parent_resource"] = parent_resource,
+["source_target"] = chosenID,
+["source_id"] = sourceID
+})
+		EEex_ApplyEffectToActor(chosenID, {
+["opcode"] = 72,
+["target"] = 2,
+["parameter1"] = 4,
+["parameter2"] = 1,
+["timing"] = 1,
+["parent_resource"] = parent_resource,
+["source_target"] = chosenID,
+["source_id"] = sourceID
+})
+		EEex_ApplyEffectToActor(chosenID, {
+["opcode"] = 82,
+["target"] = 2,
+["parameter2"] = 0,
+["timing"] = 1,
+["resource"] = "MENOBCS",
+["parent_resource"] = parent_resource,
+["source_target"] = chosenID,
+["source_id"] = sourceID
+})
+		EEex_ApplyEffectToActor(chosenID, {
+["opcode"] = 82,
+["target"] = 2,
+["parameter2"] = 1,
+["timing"] = 1,
+["resource"] = "MENOBCS",
+["parent_resource"] = parent_resource,
+["source_target"] = chosenID,
+["source_id"] = sourceID
+})
+		EEex_ApplyEffectToActor(chosenID, {
+["opcode"] = 82,
+["target"] = 2,
+["parameter2"] = 2,
+["timing"] = 1,
+["resource"] = "MENOBCS",
+["parent_resource"] = parent_resource,
+["source_target"] = chosenID,
+["source_id"] = sourceID
+})
+		EEex_ApplyEffectToActor(chosenID, {
+["opcode"] = 82,
+["target"] = 2,
+["parameter2"] = 4,
+["timing"] = 1,
+["resource"] = "MENOBCS",
+["parent_resource"] = parent_resource,
+["source_target"] = chosenID,
+["source_id"] = sourceID
+})
+		EEex_ApplyEffectToActor(chosenID, {
+["opcode"] = 82,
+["target"] = 2,
+["parameter2"] = 5,
+["timing"] = 1,
+["resource"] = "MENOBCS",
+["parent_resource"] = parent_resource,
+["source_target"] = chosenID,
+["source_id"] = sourceID
+})
+		EEex_ApplyEffectToActor(chosenID, {
+["opcode"] = 82,
+["target"] = 2,
+["parameter2"] = 6,
+["timing"] = 1,
+["resource"] = "MENOBCS",
+["parent_resource"] = parent_resource,
+["source_target"] = chosenID,
+["source_id"] = sourceID
+})
+		EEex_ApplyEffectToActor(chosenID, {
+["opcode"] = 82,
+["target"] = 2,
+["parameter2"] = 7,
+["timing"] = 1,
+["resource"] = "MENOBCS",
+["parent_resource"] = parent_resource,
+["source_target"] = chosenID,
+["source_id"] = sourceID
+})
+		EEex_ApplyEffectToActor(chosenID, {
+["opcode"] = 321,
+["target"] = 2,
+["timing"] = 9,
+["resource"] = "MEREANEA",
+["source_target"] = chosenID,
+["source_id"] = sourceID
+})
+		local reanimatedEA = 5
+		local sourceEA = EEex_GetActorAllegiance(sourceID)
+		if sourceEA >= 28 then
+			reanimatedEA = sourceEA
+		end
+		EEex_ApplyEffectToActor(chosenID, {
+["opcode"] = 72,
+["target"] = 2,
+["parameter1"] = reanimatedEA,
+["parameter2"] = 0,
+["timing"] = 9,
+["parent_resource"] = "MEREANEA",
+["source_target"] = chosenID,
+["source_id"] = sourceID
+})
+		if spellRES ~= "" then
+			EEex_ApplyEffectToActor(chosenID, {
+["opcode"] = 146,
+["target"] = 2,
+["timing"] = 9,
+["parameter1"] = casterlvl,
+["parameter2"] = 2,
+["resource"] = spellRES,
+["source_target"] = chosenID,
+["source_id"] = sourceID
+})
+		end
+	end
+end

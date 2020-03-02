@@ -69,6 +69,18 @@
 @3416=~(Invocation)~
 @3418=~(Transmutation)~
 
+@3501=~Level: 1~
+@3502=~Level: 2~
+@3503=~Level: 3~
+@3504=~Level: 4~
+@3505=~Level: 5~
+@3506=~Level: 6~
+@3507=~Level: 7~
+@3508=~Level: 8~
+@3509=~Level: 9~
+@3510=~Level: 10~
+@3511=~Level: Quest~
+
 //Part of the description of the spell Otiluke's Resilient Sphere
 @3900=~creature if it fails.*\. T~
 //The string above will be replaced with the string below in the spell's description
@@ -428,32 +440,51 @@ The creature jumps to the target point, which must be within range.~
 @30041=~You do not own the familiar.~
 @30042=~The spell <ME_FAMSES> will be released whenever your familiar hits a creature with an attack.~
 @30043=~Add a spell for your familiar to cast~
+@30044=~Level: 5
+Sphere: Protection~
+@30045=~Temporal Duel~
+@30046=~Temporal Duel
+This ability allows the Paladin to "duel" a creature of <PRO_HISHER> choice. For 1 turn, time is stopped for all creatures except the Paladin and the target creature. All other creatures are untargetable for the duration. The effect ends early if either the Paladin or the target creature dies. This ability cannot be used on allies.~
+@30047=~Armored Thieving~
+@30048=~Armored Thieving
+You have mastered the art of wearing armor while using your skills. This ability lets you use thieving skills while wearing any armor.~
+@30049=~Armored Casting~
+@30050=~Armored Casting
+You have mastered the art of wearing armor while casting spells. This ability lets you cast wizard spells while wearing any armor.~
 
 @31151=~Snake's Swiftness~
 @31152=~Hex~
 @31153=~Hunter's Mark~
+@31154=~Turning Weapon~
 @31251=~Beast Sense~
 @31252=~Fiery Link~
 @31253=~Null Healing~
 @31254=~Critical Boon~
+@31255=~Ghostwalk~
 @31351=~Call Water Weirds~
 @31352=~Shortening~
 @31353=~Fire Curse~
 @31354=~Healing Curse~
 @31355=~Guardian Magic~
+@31356=~Wind Shots~
+@31357=~Fly~
 @31451=~Disarm~
 @31452=~Forest's Blessing~
 @31453=~Turn Creature~
 @31454=~Wall of Fire~
 @31551=~Prolongment~
 @31552=~Wall of Force~
+@31553=~Protection from the Elements~
+@31554=~Ethereal Jaunt~
 @31652=~Drown~
 @31653=~Antiharm Shell~
+@31654=~Living Lightning~
 @31751=~Power Word, Heal~
 @31753=~Nonrandom Zone~
 @31754=~Colossal Growth~
 @31755=~Enhance Attribute~
 @31756=~Contingent Resurrection~
+@31757=~Reanimate~
 
 @32151=~Snake's Swiftness
 (Alteration)
@@ -491,6 +522,18 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 By casting Hunter's Mark, the ranger magically marks a non-allied creature to be hunted. For the duration, the ranger's attacks against the marked target deal an additional 1d6 damage, plus another 1d6 for every 10 levels of the ranger. In addition, when the target is out of sight, the spell greatly enhances the ranger's ability to track the target, sufficient for the ranger to know the target's exact location and direction. Hunter's Mark can be cast on any creature the party sees, even if the ranger does not see them.~
+@32154=~Turning Weapon
+(Enchantment)
+
+Level: 1
+Sphere: Combat
+Range: 0
+Duration: 2 turns
+Casting Time: 3
+Area of Effect: The caster
+Saving Throw: None
+
+Turning Weapon imbues the paladin's weapons with the power to turn undead. For the duration, whenever the paladin hits an undead creature with a melee or ranged attack, the undead is turned as if the paladin had used Turn Undead on it.~
 @32251=~Beast Sense
 (Divination)
 
@@ -539,6 +582,18 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 Critical Boon empowers an ally, allowing them to get a guaranteed critical hit on their next attack. If the target attacks a creature that is immune to critical hits, the spell won't trigger, saving the effect for when the target attacks a creature that isn't immune.~
+@32255=~Ghostwalk
+(Alteration)
+
+Level: 2
+Sphere: Travelers
+Range: Touch
+Duration: Special
+Casting Time: 1
+Area of Effect: 1 creature
+Saving Throw: None
+
+This spell allows a creature to float a short distance through a wall or across a gap. After the spell is cast on a creature, the next time that creature moves in a direction, it will instead ghostwalk in that direction. For 3 seconds, that creature will float in a straight line in that direction, passing through normally impassable obstacles. After 3 seconds, the effect ends; if the creature is in an impassable area at that time, it will instantly jump to the nearest inhabitable space.~
 @32351=~Call Water Weirds
 (Conjuration/Summoning)
 
@@ -599,6 +654,30 @@ Area of Effect: Special
 Saving Throw: None
 
 This spell grants magical protection to any creature the paladin guards with the Guard action. For the duration, as long as the paladin is guarding another creature within 5 feet, that creature gains a +6 Armor Class bonus and +30% Magic Resistance.~
+@32356=~Wind Shots
+(Alteration)
+
+Level: 3
+Sphere: Elemental Air
+Range: 0
+Duration: 1 turn
+Casting Time: 2
+Area of Effect: Special
+Saving Throw: None
+
+This spell imbues the caster's ranged weapons with the power of wind. Whenever the ranger hits a creature with a missile attack, that creature must Save vs. Breath at -2 or be blown back for several seconds.~
+@32357=~Fly
+(Alteration)
+
+Level: 3
+Sphere: Travelers
+Range: Touch
+Duration: 1 turn + 1 round/level
+Casting Time: 3
+Area of Effect: 1 creature
+Saving Throw: None
+
+This wondrous spell gives a creature the power to fly. For the duration, the creature can fly over normally impassable objects such as houses, walls, and rivers, but only as long as the creature is outdoors. The higher level the caster, the faster the creature's flying speed. The creature is also unaffected by ground-based spells such as Grease, Web, Entangle, and Earthquake.~
 @32451=~Disarm
 (Enchantment)
 
@@ -671,6 +750,18 @@ Area of Effect: 8 ft. long, 2 ft. wide wall
 Saving Throw: None
 
 This spell creates a wall of magical force, which stays for 5 rounds. Creatures cannot pass through the wall, though they can still fly over it, teleport past it, or float past it while ethereal. The wall cannot be dispelled.~
+@32554=~Ethereal Jaunt
+(Alteration)
+
+Level: 5
+Sphere: Travelers
+Range: 0
+Duration: 3 rounds + 1 round/2 levels
+Casting Time: 1
+Area of Effect: The caster
+Saving Throw: None
+
+This spell turns the caster partially ethereal for a short period of time. While partially ethereal, the caster is immune to non-magical weapons, but is still tangible enough to be able to attack and cast spells. The caster can also move through walls while partially ethereal (unlike the Fly spell, this also works indoors). Simply click on a point to move to, and the caster will float to that point, bypassing normally impassable obstacles in the way.~
 @32652=~Drown
 (Alteration)
 
@@ -695,6 +786,18 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 This spell functions like an antimagic shell, except it blocks damage instead of magic. For the duration, the recipient is immune to damage but cannot deal any damage. The recipient can still move, attack, and cast spells, but any damage those attacks or spells would deal is prevented.~
+@32654=~Living Lightning
+(Evocation)
+
+Level: 6
+Sphere: Elemental Air
+Range: 0
+Duration: 1 round/level
+Casting Time: 9
+Area of Effect: 15-ft. radius
+Saving Throw: 1/2
+
+Living Lightning surrounds the caster in a aura of lightning that periodically shoots lightning bolts at enemies. Each round for the duration, the caster automatically releases a lightning bolt at a random enemy within 15 feet. Creatures in the bolt's path take 1d6 damage per 2 caster levels, with a Save vs. Spell for half.~
 @32751=~Power Word, Heal
 (Necromancy)
 	
@@ -755,7 +858,18 @@ Area of Effect: 1 creature
 Saving Throw: None 
 
 This spell stores a Resurrection spell in the target, to be released when the creature dies. The slain creature is automatically brought back to life and immediately restored to full health. Contingent Resurrection then ends, and cannot be applied to the same creature again for 7 days.~
+@32757=~Reanimate
+(Necromancy)
 
+Level: 7
+Sphere: Necromantic
+Range: Visual range of the caster
+Duration: Permanent
+Casting Time: 9
+Area of Effect: Nearest corpse in 3-ft. radius
+Saving Throw: None
+
+This spell "resurrects" the target as an undead creature under the caster's control. Reanimate cannot target a dead creature directly; it should be cast targeting the location of a corpse. The nearest dead creature to the target point, excluding undead, constructs, most extraplanar creatures, and creatures higher level than the caster, will be reanimated. The reanimated creature becomes undead, but can still use its abilities and spells. It is controlled by the caster until destroyed. Reanimate cannot be cast by good characters.~
 
 @33151=~Disruptive Surge~
 @33152=~Inertia~
@@ -814,6 +928,7 @@ This spell stores a Resurrection spell in the target, to be released when the cr
 @33754=~Stygian Ice Storm~
 @33755=~Death Trigger~
 @33756=~Critical Sequencer~
+@33757=~Reanimate~
 @33851=~Enhance Attribute~
 @33852=~Globe of Invisibility~
 @33853=~Otto's Irresistible Spin~
@@ -1025,7 +1140,7 @@ Casting Time: 3
 Area of Effect: 1 creature
 Saving Throw: None
 
-This wondrous spell gives a creature the power to fly. For the duration, the creature can fly over normally impassable objects such as houses, walls, and rivers, but only as long as the creature is outdoors. The higher level the caster, the faster the creature's flying speed. The creature is also unaffected by ground-based spells such as Grease, Web, Entangle, Spike Growth, Spike Stones, and Earthquake.~
+This wondrous spell gives a creature the power to fly. For the duration, the creature can fly over normally impassable objects such as houses, walls, and rivers, but only as long as the creature is outdoors. The higher level the caster, the faster the creature's flying speed. The creature is also unaffected by ground-based spells such as Grease, Web, Entangle, and Earthquake.~
 @34353=~Displacement
 (Illusion/Phantasm)
 
@@ -1483,7 +1598,17 @@ Area of Effect: The caster
 Saving Throw: None
 
 Critical Sequencer lets the caster cast spells through critical hits. The caster is prompted to store two spells of 3rd-level or lower, and the caster's weapons are temporarily imbued with those spells. The next time the caster gets a critical hit on a creature, <PRO_HESHE> instantly casts both spells on the creature. Furthermore, since the attack was a critical hit, each spell is cast twice on the creature. This will not happen if the critical hit is averted.~
-@34851=~Enhance Attribute
+@34757=~Reanimate
+(Necromancy)
+
+Level: 7
+Range: Visual range of the caster
+Duration: Permanent
+Casting Time: 9
+Area of Effect: Nearest corpse in 3-ft. radius
+Saving Throw: None
+
+This spell "resurrects" the target as an undead creature under the caster's control. Reanimate cannot target a dead creature directly; it should be cast targeting the location of a corpse. The nearest dead creature to the target point, excluding undead, constructs, most extraplanar creatures, and creatures higher level than the caster, will be reanimated. The reanimated creature becomes undead, but can still use its abilities and spells. It is controlled by the caster until destroyed.~@34851=~Enhance Attribute
 (Alteration)
 
 Level: 8

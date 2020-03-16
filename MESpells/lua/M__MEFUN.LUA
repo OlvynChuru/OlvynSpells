@@ -2113,6 +2113,7 @@ function MEMODDUR(effectData, creatureData)
 	end)
 end
 
+ex_transferScripts = false
 function MEIMGSCR(effectData, creatureData)
 --	EEex_WriteDword(effectData + 0x110, 0x1)
 	local targetID = EEex_ReadDword(creatureData + 0x34)
@@ -2143,6 +2144,7 @@ function MEIMGSCR(effectData, creatureData)
 ["source_id"] = targetID
 })
 	end
+	local transferScripts = ex_transferScripts
 	if EEex_GetActorStat(targetID, 663) > 0 then
 		EEex_IterateActorEffects(targetID, function(eData)
 			local the_opcode = EEex_ReadDword(eData + 0x10)
@@ -2150,6 +2152,12 @@ function MEIMGSCR(effectData, creatureData)
 			local the_special = EEex_ReadDword(eData + 0x48)
 			if the_opcode == 401 and the_special == 663 and (the_parameter1 == special or the_parameter1 == 4) then
 				local the_resource = EEex_ReadLString(eData + 0x30, 8)
+				if bit32.band(EEex_ReadDword(eData + 0x40), 0x40000) > 0 then
+					transferScripts = true
+				end
+				if bit32.band(EEex_ReadDword(eData + 0x40), 0x80000) > 0 then
+					transferScripts = false
+				end
 				if bit32.band(EEex_ReadDword(eData + 0x40), 0x100000) > 0 then
 					EEex_ApplyEffectToActor(masterID, {
 ["opcode"] = 146,
@@ -2178,6 +2186,7 @@ function MEIMGSCR(effectData, creatureData)
 			end
 		end)
 	end
+	if not transferScripts then return end
 	local masterData = EEex_GetActorShare(masterID)
 	local overrideScript = EEex_ReadLString(masterData + 0x65C, 8)
 	local classScript = EEex_ReadLString(masterData + 0x664, 8)
@@ -2338,6 +2347,69 @@ function MECRTSEQ(effectData, creatureData)
 	end)
 end
 
+function MECRTSPL(effectData, creatureData)
+--	EEex_WriteDword(effectData + 0x110, 0x1)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	local newTargetID = targetID
+	if not EEex_IsSprite(sourceID, false) then return end
+	local contingencyRes = EEex_ReadLString(effectData + 0x18, 8)
+	EEex_IterateActorEffects(sourceID, function(eData)
+		local the_opcode = EEex_ReadDword(eData + 0x10)
+		local the_special = EEex_ReadDword(eData + 0x48)
+		local the_parent_resource = EEex_ReadLString(eData + 0x94, 8)
+		if the_opcode == 401 and the_special == 666 and the_parent_resource == contingencyRes then
+			local the_parameter3 = EEex_ReadDword(eData + 0x60)
+			if the_parameter3 == 0 then
+				newTargetID = sourceID
+			end
+			local the_casterlvl = EEex_ReadDword(eData + 0xC8)
+			local the_resource = EEex_ReadLString(eData + 0x30, 8)
+			local the_resource2 = EEex_ReadLString(eData + 0x70, 8)
+			local the_resource3 = EEex_ReadLString(eData + 0x78, 8)
+			if the_resource ~= "" then
+				EEex_ApplyEffectToActor(newTargetID, {
+["opcode"] = 146,
+["target"] = 2,
+["parameter1"] = the_casterlvl,
+["parameter2"] = 1,
+["casterlvl"] = the_casterlvl,
+["resource"] = the_resource,
+["timing"] = 9,
+["source_target"] = newTargetID,
+["source_id"] = sourceID
+})
+			end
+			if the_resource2 ~= "" then
+				EEex_ApplyEffectToActor(newTargetID, {
+["opcode"] = 146,
+["target"] = 2,
+["parameter1"] = the_casterlvl,
+["parameter2"] = 1,
+["casterlvl"] = the_casterlvl,
+["resource"] = the_resource2,
+["timing"] = 9,
+["source_target"] = newTargetID,
+["source_id"] = sourceID
+})
+			end
+			if the_resource3 ~= "" then
+				EEex_ApplyEffectToActor(newTargetID, {
+["opcode"] = 146,
+["target"] = 2,
+["parameter1"] = the_casterlvl,
+["parameter2"] = 1,
+["casterlvl"] = the_casterlvl,
+["resource"] = the_resource3,
+["timing"] = 9,
+["source_target"] = newTargetID,
+["source_id"] = sourceID
+})
+			end
+		end
+	end)
+end
+
 function MEPRTOPC(effectData, creatureData)
 --	EEex_WriteDword(effectData + 0x110, 0x1)
 	local targetID = EEex_ReadDword(creatureData + 0x34)
@@ -2437,6 +2509,33 @@ function MEPRTSLV(effectData, creatureData)
 	if targetID == 0x0 or sourceID == 0x0 then return end
 	local level = EEex_ReadDword(effectData + 0x1C)
 	if EEex_IsImmuneToSpellLevel(targetID, level, false) then
+		local spellRes = EEex_ReadLString(effectData + 0x90, 8)
+		local immunityString = EEex_ReadDword(effectData + 0x44)
+		local immunityOpcode = 318
+		if immunityString ~= -1 then
+			immunityOpcode = 324
+		end
+		EEex_ApplyEffectToActor(targetID, {
+["opcode"] = immunityOpcode,
+["target"] = 2,
+["timing"] = 0,
+["duration"] = 0,
+["resource"] = spellRes,
+["special"] = immunityString,
+["parent_resource"] = spellRes,
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+	end
+end
+
+function MEPRTACT(effectData, creatureData)
+--	EEex_WriteDword(effectData + 0x110, 0x1)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	if targetID == 0x0 or sourceID == 0x0 then return end
+	local actionID = EEex_ReadWord(effectData + 0x2F8, 0x0)
+	if actionID == 3 or actionID == 105 or actionID == 134 or actionID == 31 or actionID == 95 or actionID == 113 or actionID == 114 or actionID == 191 or actionID == 192 then
 		local spellRes = EEex_ReadLString(effectData + 0x90, 8)
 		local immunityString = EEex_ReadDword(effectData + 0x44)
 		local immunityOpcode = 318
@@ -2851,18 +2950,33 @@ function MEPRINTE(originatingEffectData, effectData, creatureData)
 	local targetID = EEex_ReadDword(creatureData + 0x34)
 	local opcode = EEex_ReadDword(effectData + 0xC)
 	Infinity_DisplayString("Opcode " .. opcode .. " on " .. EEex_GetActorName(targetID))
-	if opcode == 7 then
-		Infinity_DisplayString("target: " .. EEex_ReadDword(effectData + 0x20))
+	if opcode == 20 then
+		Infinity_DisplayString("power: " .. EEex_ReadDword(effectData + 0x14))
+		Infinity_DisplayString("target: " .. EEex_ReadDword(effectData + 0x10))
+		Infinity_DisplayString("parameter1: " .. EEex_ReadDword(effectData + 0x18))
+		Infinity_DisplayString("parameter2: " .. EEex_ReadDword(effectData + 0x1C))
+		Infinity_DisplayString("parameter3: " .. EEex_ReadDword(effectData + 0x5C))
+		Infinity_DisplayString("parameter4: " .. EEex_ReadDword(effectData + 0x60))
+		Infinity_DisplayString("timing: " .. EEex_ReadDword(effectData + 0x20))
+		Infinity_DisplayString("duration: " .. EEex_ReadDword(effectData + 0x24))
+		Infinity_DisplayString("time_applied: " .. EEex_ReadDword(effectData + 0x68))
+		Infinity_DisplayString("probability1: " .. EEex_ReadWord(effectData + 0x28, 0x0))
+		Infinity_DisplayString("probability2: " .. EEex_ReadWord(effectData + 0x2A, 0x0))
 		Infinity_DisplayString("savingthrow: " .. EEex_ReadDword(effectData + 0x3C))
 		Infinity_DisplayString("special: " .. EEex_ReadDword(effectData + 0x44))
 		Infinity_DisplayString("school: " .. EEex_ReadDword(effectData + 0x48))
 		Infinity_DisplayString("resist_dispel: " .. EEex_ReadDword(effectData + 0x58))
+		Infinity_DisplayString("used_internally: " .. EEex_ReadDword(effectData + 0x4C))
+		Infinity_DisplayString("resource: " .. EEex_ReadLString(effectData + 0x2C, 8))
+		Infinity_DisplayString("resource2: " .. EEex_ReadLString(effectData + 0x6C, 8))
+		Infinity_DisplayString("resource3: " .. EEex_ReadLString(effectData + 0x74, 8))
 		Infinity_DisplayString("restype: " .. EEex_ReadDword(effectData + 0x8C))
 		Infinity_DisplayString("parent_resource: " .. EEex_ReadLString(effectData + 0x90, 8))
 		Infinity_DisplayString("resource_flags: " .. EEex_ReadDword(effectData + 0x98))
 		Infinity_DisplayString("sourceslot: " .. EEex_ReadDword(effectData + 0xA0))
 		Infinity_DisplayString("internal_flags: " .. EEex_ReadDword(effectData + 0xC8))
 		Infinity_DisplayString("sectype: " .. EEex_ReadDword(effectData + 0xCC))
+		Infinity_DisplayString("casterlvl: " .. EEex_ReadDword(effectData + 0xC4))
 --		EEex_WriteDword(effectData + 0x1C, 131072)
 	end
 end
@@ -3361,6 +3475,105 @@ function MELINKEF(originatingEffectData, effectData, creatureData)
 })
 
 		return false
+	end
+end
+
+function MELINKVO(originatingEffectData, effectData, creatureData)
+	local internal_flags = EEex_ReadDword(effectData + 0xC8)
+	if bit32.band(internal_flags, 0x4000000) == 0 then
+		local targetID = EEex_ReadDword(creatureData + 0x34)
+		local sourceID = EEex_ReadDword(effectData + 0x10C)
+		local linkID = -1
+		EEex_IterateActorEffects(targetID, function(eData)
+			local the_opcode = EEex_ReadDword(eData + 0x10)
+			local the_resource = EEex_ReadLString(eData + 0x30, 8)
+			if the_opcode == 403 and the_resource == "MELINKVO" then
+				linkID = EEex_ReadDword(eData + 0x110)
+			end
+		end)
+		if not EEex_IsSprite(targetID) or not EEex_IsSprite(linkID) then return false end
+		local timing = EEex_ReadDword(effectData + 0x20)
+		local resist_dispel = EEex_ReadDword(effectData + 0x58)
+		local damage = EEex_ReadDword(effectData + 0x18)
+		local damage_method = EEex_ReadWord(effectData + 0x1C, 0x0)
+		local dicenumber = EEex_ReadDword(effectData + 0x34)
+		local dicesize = EEex_ReadDword(effectData + 0x38)
+		if (opcode == 12 or opcode == 17) and damage_method == 0 then
+			for i = 1, dicenumber, 1 do
+				damage = damage + damage
+			end
+			dicenumber = 0
+			dicesize = 0
+		end
+		if sourceID <= 0 and opcode ~= 12 then return false end
+		if timing == 2 or timing == 5 or timing == 8 then return false end
+		if me_unlinkable_opcodes[opcode] ~= nil then return false end
+--		if (timing == 1 or timing == 4 or timing == 7 or timing == 9) and me_permanent_linkable_opcodes[opcode] == nil then return false end
+		EEex_ApplyEffectToActor(linkID, {
+["opcode"] = EEex_ReadDword(effectData + 0xC),
+["target"] = EEex_ReadDword(effectData + 0x10),
+["power"] = EEex_ReadDword(effectData + 0x14),
+["parameter1"] = damage,
+["parameter2"] = EEex_ReadDword(effectData + 0x1C),
+["timing"] = EEex_ReadDword(effectData + 0x20),
+["duration"] = EEex_ReadDword(effectData + 0x24),
+["resource"] = EEex_ReadLString(effectData + 0x2C, 8),
+["dicenumber"] = dicenumber,
+["dicesize"] = dicesize,
+["savingthrow"] = EEex_ReadDword(effectData + 0x3C),
+["savebonus"] = EEex_ReadDword(effectData + 0x40),
+["special"] = EEex_ReadDword(effectData + 0x44),
+["school"] = EEex_ReadDword(effectData + 0x48),
+["resist_dispel"] = EEex_ReadDword(effectData + 0x58),
+["parameter3"] = EEex_ReadDword(effectData + 0x5C),
+["parameter4"] = EEex_ReadDword(effectData + 0x60),
+["parameter5"] = EEex_ReadDword(effectData + 0x64),
+["vvcresource"] = EEex_ReadLString(effectData + 0x6C, 8),
+["resource2"] = EEex_ReadLString(effectData + 0x74, 8),
+["source_x"] = EEex_ReadDword(effectData + 0x7C),
+["source_y"] = EEex_ReadDword(effectData + 0x80),
+["target_x"] = EEex_ReadDword(EEex_GetActorShare(linkID) + 0x8),
+["target_y"] = EEex_ReadDword(EEex_GetActorShare(linkID) + 0xC),
+["restype"] = EEex_ReadDword(effectData + 0x8C),
+["parent_resource"] = EEex_ReadLString(effectData + 0x90, 8),
+["resource_flags"] = EEex_ReadDword(effectData + 0x98),
+["impact_projectile"] = EEex_ReadDword(effectData + 0x9C),
+["sourceslot"] = EEex_ReadDword(effectData + 0xA0),
+["effvar"] = EEex_ReadLString(effectData + 0xA4, 32),
+["casterlvl"] = EEex_ReadDword(effectData + 0xC4),
+["internal_flags"] = bit32.bor(internal_flags, 0x4000000),
+["sectype"] = EEex_ReadDword(effectData + 0xCC),
+["source_target"] = linkID,
+["source_id"] = sourceID
+})
+
+		return false
+	end
+end
+
+function MEVOODRE(effectData, creatureData)
+	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local isMyCopy = false
+	if EEex_IsSprite(targetID, false) then
+		EEex_IterateActorEffects(targetID, function(eData)
+			local the_opcode = EEex_ReadDword(eData + 0x10)
+			local the_resource = EEex_ReadLString(eData + 0x30, 8)
+			local the_sourceID = EEex_ReadDword(eData + 0x110)
+			if the_opcode == 403 and the_resource == "MELINKVO" and the_sourceID == sourceID then
+				isMyCopy = true
+			end
+		end)
+	end
+	if isMyCopy then
+		EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 168,
+["target"] = 2,
+["timing"] = 9,
+["internal_flags"] = 0x4000000,
+["source_target"] = targetID,
+["source_id"] = targetID
+})
 	end
 end
 
@@ -3941,7 +4154,6 @@ function MEHGTMOD(effectData, creatureData)
 	if me_ceiling_height[areaRes] ~= nil then
 		roofHeight = me_ceiling_height[areaRes] * 2
 	end
-
 	if bit32.band(parameter4, 0x1) == 0 then
 		parameter4 = bit32.bor(parameter4, 0x1)
 		firstIteration = true
@@ -3964,6 +4176,14 @@ function MEHGTMOD(effectData, creatureData)
 ["target"] = 2,
 ["timing"] = 9,
 ["resource"] = "MEGOOVER",
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+	EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 321,
+["target"] = 2,
+["timing"] = 9,
+["resource"] = "MEOVERDS",
 ["source_target"] = targetID,
 ["source_id"] = sourceID
 })
@@ -3998,6 +4218,15 @@ function MEHGTMOD(effectData, creatureData)
 		theareatype = EEex_ReadWord(EEex_ReadDword(EEex_GetActorShare(targetID) + 0x14) + 0x40, 0x0)
 	end
 	if height >= 100 then
+		EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 406,
+["target"] = 2,
+["timing"] = 10,
+["duration"] = 15,
+["parent_resource"] = "MEOVERDS",
+["source_target"] = targetID,
+["source_id"] = targetID
+})
 		EEex_ApplyEffectToActor(targetID, {
 ["opcode"] = 284,
 ["target"] = 2,
@@ -4131,15 +4360,15 @@ function MEHGTMOD(effectData, creatureData)
 	if minHeight < 0 then
 		minHeight = 0
 	end
+	if maxHeight <= 0 or maxHeight > 10000 then
+		maxHeight = 10000
+	end
 	if maxHeight > (roofHeight - targetHeight) and not EEex_IsEthereal(targetID) then
 		if targetHeight >= roofHeight then
 			maxHeight = 1
 		else
 			maxHeight = (roofHeight - targetHeight)
 		end
-	end
-	if maxHeight <= 0 or maxHeight > 10000 then
-		maxHeight = 10000
 	end
 	if minHeight >= maxHeight then
 		minHeight = maxHeight - 1
@@ -4153,6 +4382,38 @@ function MEHGTMOD(effectData, creatureData)
 	elseif height >= maxHeight then
 		height = maxHeight - 1
 		if speed > 0 then
+			if speed >= 25 and bit32.band(special, 0x40) == 0x40 and maxHeight < 10000 then
+				EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 295,
+["target"] = 2,
+["timing"] = 10,
+["duration"] = 3,
+["parameter2"] = 1,
+["parent_resource"] = "MEFALDMG",
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+				EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 12,
+["target"] = 2,
+["timing"] = 9,
+["dicenumber"] = math.floor((speed - 30) / 3),
+["dicesize"] = 6,
+["savingthrow"] = 0x1000000,
+["parent_resource"] = "MEFALDMG",
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+				EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 206,
+["target"] = 2,
+["timing"] = 10,
+["duration"] = 3,
+["resource"] = "MEFALDMG",
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+			end
 			speed = 0
 		end
 	end
@@ -4169,15 +4430,71 @@ function MEHGTMOD(effectData, creatureData)
 
 	if height <= minHeight then
 		height = minHeight
+		
 		if speed < 0 then
+			if speed <= -33 and bit32.band(special, 0x40) == 0x40 and (minHeight <= 0 or bit32.band(special, 0x1) == 0x1) then
+				EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 12,
+["target"] = 2,
+["timing"] = 9,
+["dicenumber"] = math.floor(math.abs(speed + 30) / 3),
+["dicesize"] = 6,
+["savingthrow"] = 0x1000000,
+["parent_resource"] = "MEFALDMG",
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+				EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 206,
+["target"] = 2,
+["timing"] = 10,
+["duration"] = 3,
+["resource"] = "MEFALDMG",
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+			end
 			speed = 0
 		end
 	elseif height >= maxHeight then
 		height = maxHeight - 1
 		if speed > 0 then
+			if speed >= 33 and bit32.band(special, 0x40) == 0x40 and maxHeight < 10000 then
+				EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 295,
+["target"] = 2,
+["timing"] = 10,
+["duration"] = 3,
+["parameter2"] = 1,
+["parent_resource"] = "MEFALDMG",
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+				EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 12,
+["target"] = 2,
+["timing"] = 9,
+["dicenumber"] = math.floor((speed - 30) / 3),
+["dicesize"] = 6,
+["savingthrow"] = 0x1000000,
+["parent_resource"] = "MEFALDMG",
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+				EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 206,
+["target"] = 2,
+["timing"] = 10,
+["duration"] = 3,
+["resource"] = "MEFALDMG",
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+			end
 			speed = 0
 		end
 	end
+	if bit32.band(EEex_ReadDword(creatureData + 0x434), 0x2000) > 0 then return end
 	if bit32.band(special, 0x20) == 0x20 and math.floor(previousHeight / 100) ~= math.floor(height / 100) then
 		EEex_ApplyEffectToActor(targetID, {
 ["opcode"] = 321,
@@ -4210,6 +4527,7 @@ function MEHGTMOD(effectData, creatureData)
 ["source_id"] = sourceID
 })
 	end
+
 	EEex_WriteWord(creatureData + 0x618, height)
 	EEex_WriteWord(creatureData + 0x61A, speed)
 
@@ -4327,18 +4645,34 @@ function MEGRVGLB(effectData, creatureData)
 
 	local height = EEex_ReadSignedWord(creatureData + 0x618, 0x0) + EEex_GetActorStat(targetID, 641)
 --	Infinity_DisplayString(EEex_GetActorName(targetID) .. "-> globeHeight: " .. globeHeight .. "; globeBottom: " .. globeBottom .. "; fullHeight: " .. fullHeight)
-	if height <= globeHeight and height >= globeBottom then
-
+	if height >= globeBottom and (height <= globeHeight or horizontalDistance <= me_grvglb_radius * .6) then
+		EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 401,
+["target"] = 2,
+["timing"] = 10,
+["duration"] = 12,
+["parameter1"] = 1,
+["parameter2"] = 1,
+["special"] = 647,
+["parent_resource"] = "MEGRVGLA",
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+	else
 		EEex_ApplyEffectToActor(targetID, {
 ["opcode"] = 321,
 ["target"] = 2,
 ["timing"] = 9,
-["resource"] = "MEGRVGLB",
+["resource"] = "MEGRVGLA",
 ["parent_resource"] = parent_resource,
 ["source_target"] = targetID,
 ["source_id"] = sourceID
 })
+	end
+	if height <= globeHeight and height >= globeBottom then
+
 		if EEex_IsFlying(targetID) then return end
+
 		EEex_ApplyEffectToActor(targetID, {
 ["opcode"] = 401,
 ["target"] = 2,
@@ -4351,11 +4685,12 @@ function MEGRVGLB(effectData, creatureData)
 ["source_target"] = targetID,
 ["source_id"] = sourceID
 })
+--[[
 		EEex_ApplyEffectToActor(targetID, {
 ["opcode"] = 401,
 ["target"] = 2,
 ["timing"] = 10,
-["duration"] = 12,
+["duration"] = 16,
 ["parameter1"] = 1,
 ["parameter2"] = 1,
 ["special"] = 647,
@@ -4363,6 +4698,7 @@ function MEGRVGLB(effectData, creatureData)
 ["source_target"] = targetID,
 ["source_id"] = sourceID
 })
+--]]
 		EEex_ApplyEffectToActor(targetID, {
 ["opcode"] = 401,
 ["target"] = 2,
@@ -4375,51 +4711,6 @@ function MEGRVGLB(effectData, creatureData)
 ["source_target"] = targetID,
 ["source_id"] = sourceID
 })
---[[
-		if height >= 100 then
-			EEex_ApplyEffectToActor(targetID, {
-["opcode"] = 184,
-["target"] = 2,
-["timing"] = 10,
-["duration"] = 8,
-["parameter2"] = 1,
-["special"] = 649,
-["parent_resource"] = "MEGRVGLB",
-["source_target"] = targetID,
-["source_id"] = targetID
-})
-		end
---]]
---[[
-		EEex_ApplyEffectToActor(targetID, {
-["opcode"] = 407,
-["target"] = 2,
-["parameter1"] = casterlvl,
-["parameter2"] = 2,
-["timing"] = 10,
-["duration"] = 1,
-["resource"] = "MEGRVGLB",
-["casterlvl"] = casterlvl,
-["parent_resource"] = "MEGRVGLB",
-["source_target"] = targetID,
-["source_id"] = sourceID
-})
---]]
---[[
-		EEex_ApplyEffectToActor(targetID, {
-["opcode"] = 146,
-["target"] = 2,
-["parameter1"] = casterlvl,
-["parameter2"] = 2,
-["timing"] = 9,
-["duration"] = 1,
-["resource"] = "MEGRVGLB",
-["casterlvl"] = casterlvl,
-["parent_resource"] = "MEGRVGLA",
-["source_target"] = targetID,
-["source_id"] = targetID
-})
---]]
 		if EEex_GetActorStat(targetID, 636) == 0 then
 			EEex_ApplyEffectToActor(targetID, {
 ["opcode"] = 401,
@@ -4446,6 +4737,20 @@ function MEGRVGLB(effectData, creatureData)
 ["source_target"] = targetID,
 ["source_id"] = sourceID
 })
+
+			EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 402,
+["target"] = 2,
+["timing"] = 3,
+["parameter1"] = -3,
+["parameter2"] = 1,
+["special"] = 2,
+["resource"] = "MEHGTST",
+["parent_resource"] = "MEGRVGLC",
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+
 			EEex_ApplyEffectToActor(targetID, {
 ["opcode"] = 402,
 ["target"] = 2,
@@ -4453,7 +4758,7 @@ function MEGRVGLB(effectData, creatureData)
 --["duration"] = EEex_GetGameTick() + 1,
 ["parameter1"] = globeHeight,
 ["parameter2"] = 1,
-["special"] = 0x2,
+["special"] = 0x42,
 ["resource"] = "MEHGTMOD",
 ["parent_resource"] = "MEGRVGLC",
 ["source_target"] = targetID,
@@ -4472,6 +4777,16 @@ function MEGRVGLB(effectData, creatureData)
 ["source_id"] = targetID
 })
 --]]
+	else
+		EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 321,
+["target"] = 2,
+["timing"] = 9,
+["resource"] = "MEGRVGLB",
+["parent_resource"] = parent_resource,
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
 	end
 end
 
@@ -4952,176 +5267,6 @@ function EEex_GetActorIDCharacter(slot)
 	end
 end
 
-ex_wizard_classes = {1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0}
-ex_priest_classes = {0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1}
-function EXMODMEM(effectData, creatureData)
-	local targetID = EEex_ReadDword(creatureData + 0x34)
-	local parameter1 = EEex_ReadDword(effectData + 0x18)
-	local parameter2 = EEex_ReadDword(effectData + 0x1C)
-	local savingthrow = EEex_ReadDword(effectData + 0x3C)
-	local processWizardSpells = (bit32.band(savingthrow, 0x10000) == 0)
-	local processPriestSpells = (bit32.band(savingthrow, 0x20000) == 0)
---	local lowestLevelFirst = (bit32.band(savingthrow, 0x40000) > 0)
-	local subtractSpells = (bit32.band(savingthrow, 0x80000) > 0)
-	local onePerSchool = (bit32.band(savingthrow, 0x100000) > 0)
-	local matchSpecificSpell = (bit32.band(savingthrow, 0x200000) > 0)
-	local ignoreSpecificSpell = (bit32.band(savingthrow, 0x400000) > 0)
-	local printFeedback = (bit32.band(savingthrow, 0x800000) > 0)
-	local targetClass = EEex_GetActorClass(targetID)
-	if ex_wizard_classes[targetClass] ~= 1 then
-		processWizardSpells = false
-	end
-	if ex_priest_classes[targetClass] ~= 1 then
-		processPriestSpells = false
-	end
-	local parent_resource = EEex_ReadLString(effectData + 0x90, 8)
-	local matchSpell = EEex_ReadLString(effectData + 0x6C, 8)
-	if matchSpell == "" then
-		matchSpell = parent_resource
-	end
-	local ignoreSpell = EEex_ReadLString(effectData + 0x74, 8)
-	if ignoreSpell == "" then
-		ignoreSpell = parent_resource
-	end
-	local special = EEex_ReadDword(effectData + 0x44)
-	local parameter3 = EEex_ReadDword(effectData + 0x5C)
-	local schools_found = {false, false, false, false, false, false, false, false}
-	if parameter3 > 0 then 
-		for i = 1, 8, 1 do
-			if bit32.band(parameter3, 2 ^ i) > 0 then
-				schools_found[i] = true
-			end
-		end
-	end
-	local numFound = 0
-	if parameter2 < 0 then
-		parameter2 = 1
-	elseif parameter2 > 9 then
-		parameter2 = 9
-	end
-	if special < 0 then
-		special = 1
-	elseif special > parameter2 then
-		special = parameter2
-	end
-
-	local increment = -1
---[[
-	if lowestLevelFirst then
-		local temp = parameter2
-		parameter2 = special
-		special = temp
-		increment = 1
-	end
---]]
-	for i = parameter2, special, increment do
-		if processWizardSpells then 
-			EEex_ProcessWizardMemorization(targetID, function(level, resrefLocation)
-				if level == i then
-					local resref = EEex_ReadLString(resrefLocation, 8)
-					local flags = EEex_ReadWord(resrefLocation + 0x8, 0x0)
-					local spellMemorized = (bit32.band(flags, 0x1) > 0)
-					if parameter2 >= level and ((spellMemorized and subtractSpells) or (spellMemorized == false and subtractSpells == false)) and (matchSpecificSpell == false or matchSpell == resref) and (ignoreSpecificSpell == false or ignoreSpell ~= resref) then
-						local spellData = EEex_GetSpellData(resref)
-						if spellData ~= 0 then
-							local spellSchool = EEex_ReadByte(spellData + 0x25, 0x0)
-							if (parameter1 <= 0 or numFound < parameter1) and ((onePerSchool == false and parameter3 == 0) or (schools_found[spellSchool] ~= nil and schools_found[spellSchool] == false)) then
-								if onePerSchool then 
-									schools_found[spellSchool] = true
-								end
-								if subtractSpells then
-									EEex_WriteWord(resrefLocation + 0x8, bit32.band(flags, 0xFFFE))
---[[
-									if printFeedback then
-										Infinity_SetToken("EX_SPNAME", Infinity_FetchString(EEex_ReadDword(spellData + 0x8)))
-										EEex_ApplyEffectToActor(targetID, {
-["opcode"] = 139,
-["target"] = 2,
-["timing"] = 1,
-["parameter1"] = ex_modify_spell_memory_strref_2,
-["source_target"] = targetID,
-["source_id"] = targetID
-})
-									end
---]]
-								else
-									EEex_WriteWord(resrefLocation + 0x8, bit32.bor(flags, 0x1))
---[[
-									if printFeedback then
-										Infinity_SetToken("EX_SPNAME", Infinity_FetchString(EEex_ReadDword(spellData + 0x8)))
-										EEex_ApplyEffectToActor(targetID, {
-["opcode"] = 139,
-["target"] = 2,
-["timing"] = 1,
-["parameter1"] = ex_modify_spell_memory_strref_1,
-["source_target"] = targetID,
-["source_id"] = targetID
-})
-									end
---]]
-								end
-								numFound = numFound + 1
-							end
-						end
-					end
-				end
-			end)
-		end
-		if i <= 7 and processPriestSpells then 
-			EEex_ProcessPriestMemorization(targetID, function(level, resrefLocation)
-				if level == i then
-					local resref = EEex_ReadLString(resrefLocation, 8)
-					local flags = EEex_ReadWord(resrefLocation + 0x8, 0x0)
-					local spellMemorized = (bit32.band(flags, 0x1) > 0)
-					if parameter2 >= level and ((spellMemorized and subtractSpells) or (spellMemorized == false and subtractSpells == false)) and (matchSpecificSpell == false or matchSpell == resref) and (ignoreSpecificSpell == false or ignoreSpell ~= resref) then
-						local spellData = EEex_GetSpellData(resref)
-						if spellData ~= 0 then
-							local spellSchool = EEex_ReadByte(spellData + 0x25, 0x0)
-							if (parameter1 <= 0 or numFound < parameter1) and ((onePerSchool == false and parameter3 == 0) or (schools_found[spellSchool] ~= nil and schools_found[spellSchool] == false)) then
-								if onePerSchool then 
-									schools_found[spellSchool] = true
-								end
-								if subtractSpells then
-									EEex_WriteWord(resrefLocation + 0x8, bit32.band(flags, 0xFFFE))
---[[
-									if printFeedback then
-										Infinity_SetToken("EX_SPNAME", Infinity_FetchString(EEex_ReadDword(spellData + 0x8)))
-										EEex_ApplyEffectToActor(targetID, {
-["opcode"] = 139,
-["target"] = 2,
-["timing"] = 1,
-["parameter1"] = ex_modify_spell_memory_strref_2,
-["source_target"] = targetID,
-["source_id"] = targetID
-})
-									end
---]]
-								else
-									EEex_WriteWord(resrefLocation + 0x8, bit32.bor(flags, 0x1))
---[[
-									if printFeedback then
-										Infinity_SetToken("EX_SPNAME", Infinity_FetchString(EEex_ReadDword(spellData + 0x8)))
-										EEex_ApplyEffectToActor(targetID, {
-["opcode"] = 139,
-["target"] = 2,
-["timing"] = 1,
-["parameter1"] = ex_modify_spell_memory_strref_1,
-["source_target"] = targetID,
-["source_id"] = targetID
-})
-									end
---]]
-								end
-								numFound = numFound + 1
-							end
-						end
-					end
-				end
-			end)
-		end
-	end
-end
-
 function MEFAMSPL(effectData, creatureData)
 	local targetID = EEex_ReadDword(creatureData + 0x34)
 	local sourceID = EEex_ReadDword(effectData + 0x10C)
@@ -5180,9 +5325,13 @@ function MEFAMSPL(effectData, creatureData)
 ["timing"] = 0,
 ["duration"] = 3600000,
 ["parameter1"] = EEex_ReadDword(eData + 0x1C),
+["parameter2"] = 1,
+["parameter3"] = EEex_ReadDword(eData + 0x60),
+["parameter4"] = EEex_ReadDword(eData + 0x64),
 ["resource"] = EEex_ReadLString(eData + 0x30, 8),
 ["parent_resource"] = "MEFAMSE2",
 ["special"] = 661,
+["casterlvl"] = EEex_ReadDword(eData + 0xC8),
 ["source_target"] = targetID,
 ["source_id"] = sourceID
 })
@@ -5226,8 +5375,20 @@ function MEFAMSEQ(originatingEffectData, effectData, creatureData)
 	local opcode = EEex_ReadDword(effectData + 0xC)
 	local sourceID = EEex_ReadDword(effectData + 0x10C)
 	local parent_resource = EEex_ReadLString(originatingEffectData + 0x90, 8)
-	if opcode ~= 256 or parent_resource ~= EEex_ReadLString(effectData + 0x90, 8) then return false end
+	if (opcode ~= 232 and opcode ~= 256) or parent_resource ~= EEex_ReadLString(effectData + 0x90, 8) then return false end
 	local spellRES = EEex_ReadLString(originatingEffectData + 0x18, 8)
+	local parameter1 = EEex_ReadDword(effectData + 0x18)
+	local parameter2 = EEex_ReadDword(effectData + 0x1C)
+	local special = EEex_ReadDword(effectData + 0x44)
+	local sequencerType = 1
+	if opcode == 232 then
+		if special == 1 then
+			sequencerType = 2
+		else
+			sequencerType = 3
+		end
+	end
+	EEex_WriteDword(effectData + 0xC, 256)
 	local resource = EEex_ReadLString(effectData + 0x2C, 8)
 	local casterlvl = EEex_ReadDword(originatingEffectData + 0xC4)
 	EEex_ApplyEffectToActor(targetID, {
@@ -5235,10 +5396,14 @@ function MEFAMSEQ(originatingEffectData, effectData, creatureData)
 ["target"] = 2,
 ["timing"] = 0,
 ["duration"] = 3600000,
-["parameter1"] = casterlvl,
+["parameter1"] = sequencerType,
+["parameter2"] = 1,
+["parameter3"] = parameter1,
+["parameter4"] = parameter2,
 ["resource"] = resource,
 ["parent_resource"] = "MEFAMSEQ",
 ["special"] = 661,
+["casterlvl"] = casterlvl,
 ["source_target"] = targetID,
 ["source_id"] = targetID
 })
@@ -5248,6 +5413,7 @@ function MEFAMSEQ(originatingEffectData, effectData, creatureData)
 ["timing"] = 9,
 ["parameter1"] = casterlvl,
 ["parameter2"] = 2,
+["casterlvl"] = casterlvl,
 ["resource"] = spellRES,
 ["source_target"] = targetID,
 ["source_id"] = targetID
@@ -5258,27 +5424,67 @@ end
 function MEFAMSE2(effectData, creatureData)
 	local targetID = EEex_ReadDword(creatureData + 0x34)
 	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	local newTargetID = targetID
+	local newTargetX = EEex_ReadDword(creatureData + 0x8)
+	local newTargetY = EEex_ReadDword(creatureData + 0xC)
 	local sourceData = EEex_GetActorShare(sourceID)
 	if EEex_GetActorStat(sourceID, 661) > 0 then
 		EEex_IterateActorEffects(sourceID, function(eData)
 			local the_opcode = EEex_ReadDword(eData + 0x10)
 			local the_special = EEex_ReadDword(eData + 0x48)
 			if the_opcode == 401 and the_special == 661 then
-				local the_parameter1 = EEex_ReadDword(eData + 0x1C)
+				local the_parameter3 = EEex_ReadDword(eData + 0x60)
+				if the_parameter3 == 0 then
+					newTargetID = sourceID
+					newTargetX = EEex_ReadDword(sourceData + 0x8)
+					newTargetY = EEex_ReadDword(sourceData + 0xC)
+				end
+				local the_casterlvl = EEex_ReadDword(eData + 0xC8)
 				local the_resource = EEex_ReadLString(eData + 0x30, 8)
+				local the_resource2 = EEex_ReadLString(eData + 0x70, 8)
+				local the_resource3 = EEex_ReadLString(eData + 0x78, 8)
 				if the_resource ~= "" then
-					EEex_ApplyEffectToActor(targetID, {
+					EEex_ApplyEffectToActor(newTargetID, {
 ["opcode"] = 146,
 ["target"] = 2,
 ["timing"] = 9,
-["parameter1"] = the_parameter1,
-["parameter2"] = 2,
+["parameter1"] = the_casterlvl,
+["parameter2"] = 1,
+["casterlvl"] = the_casterlvl,
 ["resource"] = the_resource,
-["source_x"] = EEex_ReadDword(sourceData + 0x8),
-["source_y"] = EEex_ReadDword(sourceData + 0xC),
-["target_x"] = EEex_ReadDword(creatureData + 0x8),
-["target_y"] = EEex_ReadDword(creatureData + 0xC),
-["source_target"] = targetID,
+["target_x"] = newTargetX,
+["target_y"] = newTargetY,
+["source_target"] = newTargetID,
+["source_id"] = sourceID
+})
+				end
+				if the_resource2 ~= "" then
+					EEex_ApplyEffectToActor(newTargetID, {
+["opcode"] = 146,
+["target"] = 2,
+["timing"] = 9,
+["parameter1"] = the_casterlvl,
+["parameter2"] = 1,
+["casterlvl"] = the_casterlvl,
+["resource"] = the_resource2,
+["target_x"] = newTargetX,
+["target_y"] = newTargetY,
+["source_target"] = newTargetID,
+["source_id"] = sourceID
+})
+				end
+				if the_resource3 ~= "" then
+					EEex_ApplyEffectToActor(newTargetID, {
+["opcode"] = 146,
+["target"] = 2,
+["timing"] = 9,
+["parameter1"] = the_casterlvl,
+["parameter2"] = 1,
+["casterlvl"] = the_casterlvl,
+["resource"] = the_resource3,
+["target_x"] = newTargetX,
+["target_y"] = newTargetY,
+["source_target"] = newTargetID,
 ["source_id"] = sourceID
 })
 				end
@@ -5433,10 +5639,10 @@ function MESTOSEQ(originatingEffectData, effectData, creatureData)
 	local sourceID = EEex_ReadDword(effectData + 0x10C)
 	local parent_resource = EEex_ReadLString(originatingEffectData + 0x90, 8)
 	if (opcode ~= 232 and opcode ~= 256) or parent_resource ~= EEex_ReadLString(effectData + 0x90, 8) then return false end
-	local spellRES = EEex_ReadLString(originatingEffectData + 0x18, 8)
+--	local spellRES = EEex_ReadLString(originatingEffectData + 0x18, 8)
 	local parameter1 = EEex_ReadDword(effectData + 0x18)
 	local parameter2 = EEex_ReadDword(effectData + 0x1C)
-	local special = EEex_ReadDword(effectData + 0x18)
+	local special = EEex_ReadDword(effectData + 0x44)
 	local sequencerType = 1
 	if opcode == 232 then
 		if special == 1 then
@@ -5467,6 +5673,7 @@ function MESTOSEQ(originatingEffectData, effectData, creatureData)
 ["source_target"] = targetID,
 ["source_id"] = targetID
 })
+--[[
 	if spellRES ~= "" then
 		EEex_ApplyEffectToActor(targetID, {
 ["opcode"] = 146,
@@ -5479,7 +5686,12 @@ function MESTOSEQ(originatingEffectData, effectData, creatureData)
 ["source_id"] = targetID
 })
 	end
-	return true
+--]]
+	if opcode == 232 then
+		return true
+	else
+		return false
+	end
 end
 
 function MECURSCN(effectData, creatureData)
@@ -5815,6 +6027,1287 @@ function MEREANIM(effectData, creatureData)
 ["source_target"] = chosenID,
 ["source_id"] = sourceID
 })
+		end
+	end
+end
+
+function METURNSG(effectData, creatureData)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	if EEex_GetActorModalState(targetID) ~= 4 then return end
+	local turnUndeadLevel = 0
+	local class = EEex_GetActorClass(targetID)
+	if class == 3 or class == 14 or class == 15 or class == 18 then
+		turnUndeadLevel = EEex_GetActorStat(targetID, 34)
+	elseif class == 8 then
+		turnUndeadLevel = EEex_GetActorStat(targetID, 68)
+	elseif class == 17 then
+		turnUndeadLevel = EEex_GetActorStat(targetID, 69)
+	elseif class == 6 then
+		turnUndeadLevel = EEex_GetActorStat(targetID, 34) - 2
+	end
+	if turnUndeadLevel >= 2 then
+		EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 146,
+["target"] = 2,
+["timing"] = 9,
+["parameter1"] = math.floor(turnUndeadLevel / 2),
+["parameter2"] = 2,
+["resource"] = "METURNSG",
+["source_target"] = targetID,
+["source_id"] = targetID
+})
+	end
+
+end
+
+function MERECALL(effectData, creatureData)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	local sourceData = EEex_GetActorShare(sourceID)
+	local areaRES = EEex_GetActorAreaRes(sourceID)
+	if areaRES == "" then return end
+	local theareatype = 0
+	if EEex_ReadDword(EEex_GetActorShare(sourceID) + 0x14) > 0 then
+		theareatype = EEex_ReadWord(EEex_ReadDword(EEex_GetActorShare(sourceID) + 0x14) + 0x40, 0x0)
+	end
+	if bit32.band(theareatype, 0x800) > 0 then return end
+	EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 215,
+["target"] = 2,
+["timing"] = 1,
+["parameter1"] = 0,
+["parameter2"] = 0,
+["resource"] = "DDOORH",
+["source_x"] = EEex_ReadDword(sourceData + 0x8),
+["source_y"] = EEex_ReadDword(sourceData + 0xC),
+["target_x"] = EEex_ReadDword(creatureData + 0x8),
+["target_y"] = EEex_ReadDword(creatureData + 0xC),
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+	EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 186,
+["target"] = 2,
+["timing"] = 0,
+["parameter1"] = EEex_ReadDword(effectData + 0x44),
+["parameter2"] = 0,
+["resource"] = areaRES,
+["source_x"] = EEex_ReadDword(sourceData + 0x8),
+["source_y"] = EEex_ReadDword(sourceData + 0xC),
+["target_x"] = EEex_ReadDword(sourceData + 0x8),
+["target_y"] = EEex_ReadDword(sourceData + 0xC),
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+	EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 222,
+["target"] = 2,
+["timing"] = 6,
+["duration"] = EEex_GetGameTick() + 1,
+["parameter1"] = 0,
+["parameter2"] = 0,
+["source_x"] = EEex_ReadDword(sourceData + 0x8),
+["source_y"] = EEex_ReadDword(sourceData + 0xC),
+["target_x"] = EEex_ReadDword(sourceData + 0x8),
+["target_y"] = EEex_ReadDword(sourceData + 0xC),
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+	EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 215,
+["target"] = 2,
+["timing"] = 6,
+["duration"] = EEex_GetGameTick() + 1,
+["parameter1"] = 0,
+["parameter2"] = 0,
+["resource"] = "DDOORH",
+["source_x"] = EEex_ReadDword(sourceData + 0x8),
+["source_y"] = EEex_ReadDword(sourceData + 0xC),
+["target_x"] = EEex_ReadDword(creatureData + 0x8),
+["target_y"] = EEex_ReadDword(creatureData + 0xC),
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+end
+me_past_seconds = {}
+me_past_seconds_count = 60
+me_past_effects = {}
+function METIMELG(effectData, creatureData)
+	EEex_WriteDword(effectData + 0x110, 0x1)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local time_applied = EEex_ReadDword(effectData + 0x24)
+	local me_current_effects = {}
+	EEex_IterateActorEffects(targetID, function(eData)
+		local the_opcode = EEex_ReadDword(eData + 0x10)
+		local the_timing = EEex_ReadDword(eData + 0x24)
+		local the_duration = EEex_ReadDword(eData + 0x28)
+		local the_internal_flags = EEex_ReadDword(eData + 0xCC)
+--[[
+		if EEex_ReadLString(eData + 0x94, 8) == "SPPR406" then
+			Infinity_DisplayString("the_duration: " .. the_duration .. ", time_applied: " .. time_applied)
+		end
+--]]
+		if the_timing ~= 1 and the_timing ~= 2 and the_timing ~= 9 and the_opcode ~= 402 and ((the_duration - time_applied < 15 and bit32.band(the_internal_flags, 0x200000) == 0) or the_opcode == 159 or the_opcode == 218) then
+			EEex_WriteDword(eData + 0xCC, bit32.bor(the_internal_flags, 0x200000))
+			table.insert(me_current_effects, {
+["opcode"] = EEex_ReadDword(eData + 0x10),
+["target"] = EEex_ReadDword(eData + 0x14),
+["power"] = EEex_ReadDword(eData + 0x18),
+["parameter1"] = EEex_ReadDword(eData + 0x1C),
+["parameter2"] = EEex_ReadDword(eData + 0x20),
+["timing"] = EEex_ReadDword(eData + 0x24),
+["duration"] = EEex_ReadDword(eData + 0x28),
+["resource"] = EEex_ReadLString(eData + 0x30, 8),
+["dicenumber"] = EEex_ReadDword(eData + 0x38),
+["dicesize"] = EEex_ReadDword(eData + 0x3C),
+["savingthrow"] = EEex_ReadDword(eData + 0x40),
+["savebonus"] = EEex_ReadDword(eData + 0x44),
+["special"] = EEex_ReadDword(eData + 0x48),
+["school"] = EEex_ReadDword(eData + 0x4C),
+["parameter3"] = EEex_ReadDword(eData + 0x60),
+["parameter4"] = EEex_ReadDword(eData + 0x64),
+["parameter5"] = EEex_ReadDword(eData + 0x68),
+["time_applied"] = EEex_ReadDword(eData + 0x6C),
+["vvcresource"] = EEex_ReadLString(eData + 0x70, 8),
+["resource2"] = EEex_ReadLString(eData + 0x78, 8),
+["source_x"] = EEex_ReadDword(eData + 0x80),
+["source_y"] = EEex_ReadDword(eData + 0x84),
+["target_x"] = EEex_ReadDword(eData + 0x88),
+["target_y"] = EEex_ReadDword(eData + 0x8C),
+["restype"] = EEex_ReadDword(eData + 0x90),
+["parent_resource"] = EEex_ReadLString(eData + 0x94, 8),
+["resource_flags"] = bit32.band(EEex_ReadDword(eData + 0x9C), 0xFFFFF9FF),
+["impact_projectile"] = EEex_ReadDword(eData + 0xA0),
+["sourceslot"] = EEex_ReadDword(eData + 0xA4),
+["effvar"] = EEex_ReadLString(eData + 0xA8, 32),
+["casterlvl"] = EEex_ReadDword(eData + 0xC8),
+["internal_flags"] = the_internal_flags,
+["sectype"] = EEex_ReadDword(eData + 0xD0),
+["source_id"] = EEex_ReadDword(eData + 0x110),
+})
+		end
+	end)
+	if me_past_seconds["" .. targetID] == nil or (me_past_seconds["" .. targetID][1][6] ~= nil and me_past_seconds["" .. targetID][1][6] > time_applied) then
+		me_past_seconds["" .. targetID] = {{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}}
+		
+	end
+	for i = me_past_seconds_count, 2, -1 do
+		me_past_seconds["" .. targetID][i] = me_past_seconds["" .. targetID][i - 1]
+	end
+--[[
+	Infinity_DisplayString(#me_current_effects)
+	if #me_current_effects > 0 then
+		Infinity_DisplayString(me_current_effects[1]["parent_resource"])
+	end
+--]]
+	me_past_seconds["" .. targetID][1] = {EEex_ReadSignedWord(creatureData + 0x438, 0x0), EEex_ReadDword(creatureData + 0x8), EEex_ReadDword(creatureData + 0xC), EEex_GetActorAreaRes(targetID), me_current_effects, time_applied}
+end
+
+function METIMETR(effectData, creatureData)
+	EEex_WriteDword(effectData + 0x110, 0x1)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local parameter1 = EEex_ReadDword(effectData + 0x18)
+	local time_applied = EEex_ReadDword(effectData + 0x24)
+	local parent_resource = EEex_ReadLString(effectData + 0x90, 8)
+	local previous_second = {}
+	local game_tick = EEex_GetGameTick()
+	if parameter1 <= 0 then return end
+	if parameter1 > me_past_seconds_count then
+		parameter1 = me_past_seconds_count
+	end
+--	local current_past_seconds = me_past_seconds
+	if me_past_seconds["" .. targetID] == nil then
+		me_past_seconds["" .. targetID] = {{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}}
+	end
+--	me_past_effects["" .. targetID] = {}
+	local theareares = EEex_GetActorAreaRes(targetID)
+	local theareatype = 0x800
+	if EEex_ReadDword(EEex_GetActorShare(targetID) + 0x14) > 0 then
+		theareatype = EEex_ReadWord(EEex_ReadDword(EEex_GetActorShare(targetID) + 0x14) + 0x40, 0x0)
+	end
+	local currentHP = EEex_ReadSignedWord(creatureData + 0x434, 0x0)
+	local currentX = EEex_ReadDword(creatureData + 0x8)
+	local currentY = EEex_ReadDword(creatureData + 0xC)
+	local seconds_ago = 0
+	local the_effect = {}
+	local effect_opcode = 0
+	local effect_duration = 0
+	local effect_timing = 0
+	for i = 1, parameter1, 1 do
+		if #me_past_seconds["" .. targetID][i] > 0 then
+			seconds_ago = seconds_ago + 1
+		end
+	end
+	for i = 1, parameter1, 1 do
+		previous_second = me_past_seconds["" .. targetID][1]
+		for j = 1, me_past_seconds_count - 1, 1 do
+			me_past_seconds["" .. targetID][j] = me_past_seconds["" .. targetID][j + 1]
+		end
+		me_past_seconds["" .. targetID][me_past_seconds_count] = {}
+--		me_past_effects["" .. targetID]["" .. i] = previous_second[5]
+		if #previous_second > 0 then
+--			Infinity_DisplayString(i .. " second(s) before: " .. previous_second[1] .. " HP, [" .. previous_second[2] .. "." .. previous_second[3] .. "], " .. previous_second[4]) 
+			EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 17,
+["target"] = 2,
+["timing"] = 6,
+["duration"] = game_tick + i,
+["parameter1"] = previous_second[1],
+["parameter2"] = 1,
+["parent_resource"] = parent_resource,
+["internal_flags"] = 0x600000,
+["source_target"] = targetID,
+["source_id"] = targetID
+})
+			currentHP = previous_second[1]
+			if bit32.band(theareatype, 0x800) == 0 and theareares ~= "" and theareares == previous_second[4] then
+				EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 148,
+["target"] = 2,
+["timing"] = 6,
+["duration"] = game_tick + i,
+["parameter1"] = 1,
+["parameter2"] = 2,
+["resource"] = "MEINTELE",
+["parent_resource"] = parent_resource,
+["source_x"] = currentX,
+["source_y"] = currentY,
+["target_x"] = previous_second[2],
+["target_y"] = previous_second[3],
+["internal_flags"] = 0x600000,
+["source_target"] = targetID,
+["source_id"] = targetID
+})
+--				currentX = previous_second[2]
+--				currentY = previous_second[3]
+			end
+			for j = 1, #previous_second[5], 1 do
+				the_effect = previous_second[5][j]
+				effect_opcode = the_effect["opcode"]
+				effect_timing = the_effect["timing"]
+				effect_duration = the_effect["duration"]
+				if the_effect["time_applied"] + seconds_ago * 15 < time_applied and (effect_duration < time_applied or (effect_opcode == 218 and the_effect["parameter1"] > 0 and EEex_GetActorStat(targetID, 88) == 0) or (effect_opcode == 159 and the_effect["parameter1"] > 0 and bit32.band(EEex_ReadDword(creatureData + 0x434), 0x40000000) == 0 and bit32.band(EEex_ReadDword(creatureData + 0xB30), 0x40000000) == 0)) then
+					
+					if effect_timing == 4096 then
+						effect_timing = 10
+						effect_duration = the_effect["duration"] - time_applied + (seconds_ago * 15)
+					else
+						effect_duration = game_tick + the_effect["duration"] - time_applied + (seconds_ago * 15)
+					end		
+					EEex_ApplyEffectToActor(targetID, {
+["opcode"] = the_effect["opcode"],
+["target"] = the_effect["target"],
+["power"] = the_effect["power"],
+["parameter1"] = the_effect["parameter1"],
+["parameter2"] = the_effect["parameter2"],
+["timing"] = effect_timing,
+["duration"] = effect_duration,
+["resource"] = the_effect["resource"],
+["dicenumber"] = the_effect["dicenumber"],
+["dicesize"] = the_effect["dicesize"],
+["savingthrow"] = the_effect["savingthrow"],
+["savebonus"] = the_effect["savebonus"],
+["special"] = the_effect["special"],
+["school"] = the_effect["school"],
+["parameter3"] = the_effect["parameter3"],
+["parameter4"] = the_effect["parameter4"],
+["parameter5"] = the_effect["parameter5"],
+["vvcresource"] = the_effect["vvcresource"],
+["resource2"] = the_effect["resource2"],
+["source_x"] = the_effect["source_x"],
+["source_y"] = the_effect["source_y"],
+["target_x"] = the_effect["target_x"],
+["target_y"] = the_effect["target_y"],
+["restype"] = the_effect["restype"],
+["parent_resource"] = the_effect["parent_resource"],
+["resource_flags"] = the_effect["resource_flags"],
+["impact_projectile"] = the_effect["impact_projectile"],
+["sourceslot"] = the_effect["sourceslot"],
+["effvar"] = the_effect["effvar"],
+["casterlvl"] = the_effect["casterlvl"],
+["internal_flags"] = bit32.bor(the_effect["internal_flags"], 0x600000),
+["sectype"] = the_effect["sectype"],
+["source_id"] = the_effect["source_id"],
+})
+
+				elseif (effect_opcode == 218 or effect_opcode == 159) and the_effect["parameter1"] > 0 then
+					EEex_IterateActorEffects(targetID, function(eData)
+						local the_opcode = EEex_ReadDword(eData + 0x10)
+						if the_opcode == effect_opcode then
+							EEex_WriteDword(eData + 0x1C, the_effect["parameter1"])
+						end
+					end)
+				end
+
+			end
+--[[
+			EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 402,
+["target"] = 2,
+["timing"] = 6,
+["duration"] = game_tick + i,
+["parameter1"] = i,
+["parameter2"] = time_applied,
+["special"] = game_tick,
+["resource"] = "METIMEEF",
+["parent_resource"] = parent_resource,
+["source_target"] = targetID,
+["source_id"] = targetID
+})
+--]]
+		end
+	end
+
+	if seconds_ago > 0 then
+
+		EEex_IterateActorEffects(targetID, function(eData)
+			local the_opcode = EEex_ReadDword(eData + 0x10)
+			local the_timing = EEex_ReadDword(eData + 0x24)
+			local the_parent_resource = EEex_ReadLString(eData + 0x94, 8)
+			local the_internal_flags = EEex_ReadDword(eData + 0xCC)
+			local the_time_applied = EEex_ReadDword(eData + 0x6C)
+			if the_time_applied < time_applied and the_timing ~= 1 and the_timing ~= 2 and the_timing ~= 9 and the_parent_resource ~= parent_resource and the_opcode ~= 402 and bit32.band(the_internal_flags, 0x400000) == 0 then
+				local the_duration = EEex_ReadDword(eData + 0x28)
+				the_duration = the_duration + (seconds_ago * 15)
+				the_time_applied = the_time_applied + (seconds_ago * 15)
+				EEex_WriteDword(eData + 0x28, the_duration)
+				EEex_WriteDword(eData + 0x6C, the_time_applied)
+				if the_time_applied >= time_applied then
+					EEex_WriteDword(eData + 0x28, 0)
+					EEex_WriteDword(eData + 0x114, 1)
+				end
+			end
+		end)
+
+	end
+end
+
+function MESTEALS(effectData, creatureData)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	local parameter1 = EEex_ReadDword(effectData + 0x18)
+	if parameter1 > 0 then
+		parameter1 = parameter1 + math.floor(EEex_GetActorStat(sourceID, 29) / 50)
+	end
+	local parameter2 = EEex_ReadDword(effectData + 0x1C)
+	local savingthrow = EEex_ReadDword(effectData + 0x3C)
+	local processWizardSpells = (bit32.band(savingthrow, 0x10000) == 0)
+	local processPriestSpells = (bit32.band(savingthrow, 0x20000) == 0)
+--	local lowestLevelFirst = (bit32.band(savingthrow, 0x40000) > 0)
+	local subtractSpells = (bit32.band(savingthrow, 0x80000) > 0)
+	local onePerSchool = (bit32.band(savingthrow, 0x100000) > 0)
+	local matchSpecificSpell = (bit32.band(savingthrow, 0x200000) > 0)
+	local ignoreSpecificSpell = (bit32.band(savingthrow, 0x400000) > 0)
+	local printFeedback = (bit32.band(savingthrow, 0x800000) > 0)
+	local targetClass = EEex_GetActorClass(targetID)
+	local isSorcererClass = (targetClass == 19 or targetClass == 21)
+	if ex_wizard_classes[targetClass] ~= 1 then
+		processWizardSpells = false
+	end
+	if ex_priest_classes[targetClass] ~= 1 then
+		processPriestSpells = false
+	end
+	local parent_resource = EEex_ReadLString(effectData + 0x90, 8)
+	local matchSpell = EEex_ReadLString(effectData + 0x6C, 8)
+	if matchSpell == "" then
+		matchSpell = parent_resource
+	end
+	local ignoreSpell = EEex_ReadLString(effectData + 0x74, 8)
+	if ignoreSpell == "" then
+		ignoreSpell = parent_resource
+	end
+	local special = EEex_ReadDword(effectData + 0x44)
+	local parameter3 = EEex_ReadDword(effectData + 0x5C)
+	local schools_found = {false, false, false, false, false, false, false, false}
+	if parameter3 > 0 then 
+		for i = 1, 8, 1 do
+			if bit32.band(parameter3, 2 ^ i) > 0 then
+				schools_found[i] = true
+			end
+		end
+	end
+	local numFound = 0
+	local numLeft = 0
+	if parameter2 < 0 then
+		parameter2 = 1
+	elseif parameter2 > 9 then
+		parameter2 = 9
+	end
+	if special < 0 then
+		special = 1
+	elseif special > parameter2 then
+		special = parameter2
+	end
+
+	local increment = -1
+--[[
+	if lowestLevelFirst then
+		local temp = parameter2
+		parameter2 = special
+		special = temp
+		increment = 1
+	end
+--]]
+	local levelsFound = {0, 0, 0, 0, 0, 0, 0, 0, 0}
+	local sorcererSpellsFound = {}
+	local sorcererSpellMax = 0
+	for i = parameter2, special, increment do
+		sorcererSpellsFound = {}
+		numLeft = parameter1 - numFound
+		sorcererSpellMax = 0
+		if processWizardSpells then 
+			EEex_ProcessWizardMemorization(targetID, function(level, resrefLocation)
+				if level == i then
+					local resref = EEex_ReadLString(resrefLocation, 8)
+					if sorcererSpellsFound[resref] == nil then	
+						sorcererSpellsFound[resref] = 1
+					else
+						sorcererSpellsFound[resref] = sorcererSpellsFound[resref] + 1
+					end
+					local flags = EEex_ReadWord(resrefLocation + 0x8, 0x0)
+					local spellMemorized = (bit32.band(flags, 0x1) > 0)
+					if parameter2 >= level and ((spellMemorized and subtractSpells) or (spellMemorized == false and subtractSpells == false)) and (matchSpecificSpell == false or matchSpell == resref or isSorcererClass) and (ignoreSpecificSpell == false or ignoreSpell ~= resref or isSorcererClass) then
+						local spellData = EEex_GetSpellData(resref)
+						if spellData ~= 0 then
+							local spellSchool = EEex_ReadByte(spellData + 0x25, 0x0)
+							if (parameter1 <= 0 or ((isSorcererClass == false or sorcererSpellsFound[resref] <= numLeft) and (isSorcererClass or numFound < parameter1))) and ((onePerSchool == false and parameter3 == 0) or (schools_found[spellSchool] ~= nil and schools_found[spellSchool] == false)) then
+								if onePerSchool then 
+									schools_found[spellSchool] = true
+								end
+								if subtractSpells then
+									EEex_WriteWord(resrefLocation + 0x8, bit32.band(flags, 0xFFFE))
+								else
+									EEex_WriteWord(resrefLocation + 0x8, bit32.bor(flags, 0x1))
+								end
+								if isSorcererClass then
+									if sorcererSpellsFound[resref] > sorcererSpellMax then
+										sorcererSpellMax = sorcererSpellsFound[resref]
+										levelsFound[i] = sorcererSpellsFound[resref]
+									end
+								else
+									numFound = numFound + 1
+									levelsFound[i] = levelsFound[i] + 1
+								end
+							end
+						end
+					end
+				end
+			end)
+		end
+		numFound = numFound + sorcererSpellMax
+		sorcererSpellsFound = {}
+		numLeft = parameter1 - numFound
+		sorcererSpellMax = 0
+		if i <= 7 and processPriestSpells then 
+			EEex_ProcessClericMemorization(targetID, function(level, resrefLocation)
+				if level == i then
+					local resref = EEex_ReadLString(resrefLocation, 8)
+					if sorcererSpellsFound[resref] == nil then	
+						sorcererSpellsFound[resref] = 1
+					else
+						sorcererSpellsFound[resref] = sorcererSpellsFound[resref] + 1
+					end
+					local flags = EEex_ReadWord(resrefLocation + 0x8, 0x0)
+					local spellMemorized = (bit32.band(flags, 0x1) > 0)
+					if parameter2 >= level and ((spellMemorized and subtractSpells) or (spellMemorized == false and subtractSpells == false)) and (matchSpecificSpell == false or matchSpell == resref or isSorcererClass) and (ignoreSpecificSpell == false or ignoreSpell ~= resref or isSorcererClass) then
+						local spellData = EEex_GetSpellData(resref)
+						if spellData ~= 0 then
+							local spellSchool = EEex_ReadByte(spellData + 0x25, 0x0)
+							if (parameter1 <= 0 or ((isSorcererClass == false or sorcererSpellsFound[resref] <= numLeft) and (isSorcererClass or numFound < parameter1))) and ((onePerSchool == false and parameter3 == 0) or (schools_found[spellSchool] ~= nil and schools_found[spellSchool] == false)) then
+								if onePerSchool then 
+									schools_found[spellSchool] = true
+								end
+								if subtractSpells then
+									EEex_WriteWord(resrefLocation + 0x8, bit32.band(flags, 0xFFFE))
+								else
+									EEex_WriteWord(resrefLocation + 0x8, bit32.bor(flags, 0x1))
+								end
+								if isSorcererClass then
+									if sorcererSpellsFound[resref] > sorcererSpellMax then
+										sorcererSpellMax = sorcererSpellsFound[resref]
+										levelsFound[i] = sorcererSpellsFound[resref]
+									end
+								else
+									numFound = numFound + 1
+									levelsFound[i] = levelsFound[i] + 1
+								end
+							end
+						end
+					end
+				end
+			end)
+		end
+		numFound = numFound + sorcererSpellMax
+	end
+	EEex_WriteDword(effectData + 0x110, 1)
+	for j = 1, 9, 1 do
+		if levelsFound[j] > 0 then
+			EEex_ApplyEffectToActor(sourceID, {
+["opcode"] = 402,
+["target"] = 2,
+["timing"] = 0,
+["parameter1"] = levelsFound[j],
+["parameter2"] = j,
+["savingthrow"] = 0x400000,
+["special"] = 1,
+["resource"] = "EXMODMEM",
+["parent_resource"] = parent_resource,
+["source_target"] = sourceID,
+["source_id"] = sourceID
+})
+		end
+	end
+--[[
+	for i = parameter2, special, increment do
+		sorcererSpellsFound = {}
+		numFound = 0
+		for j = 9, i, -1 do
+		end
+		numLeft = parameter1 - numFound
+		sorcererSpellMax = 0
+		if processWizardSpells then 
+			EEex_ProcessWizardMemorization(sourceID, function(level, resrefLocation)
+				if level == i then
+					local resref = EEex_ReadLString(resrefLocation, 8)
+					if sorcererSpellsFound[resref] == nil then	
+						sorcererSpellsFound[resref] = 1
+					else
+						sorcererSpellsFound[resref] = sorcererSpellsFound[resref] + 1
+					end
+					local flags = EEex_ReadWord(resrefLocation + 0x8, 0x0)
+					local spellMemorized = (bit32.band(flags, 0x1) > 0)
+					if parameter2 >= level and ((spellMemorized and subtractSpells) or (spellMemorized == false and subtractSpells == false)) and (matchSpecificSpell == false or matchSpell == resref or isSorcererClass) and (ignoreSpecificSpell == false or ignoreSpell ~= resref or isSorcererClass) then
+						local spellData = EEex_GetSpellData(resref)
+						if spellData ~= 0 then
+							local spellSchool = EEex_ReadByte(spellData + 0x25, 0x0)
+							if (parameter1 <= 0 or ((isSorcererClass == false or sorcererSpellsFound[resref] <= numLeft) and (isSorcererClass or numFound < parameter1))) and ((onePerSchool == false and parameter3 == 0) or (schools_found[spellSchool] ~= nil and schools_found[spellSchool] == false)) then
+								if onePerSchool then 
+									schools_found[spellSchool] = true
+								end
+								if subtractSpells then
+									EEex_WriteWord(resrefLocation + 0x8, bit32.band(flags, 0xFFFE))
+								else
+									EEex_WriteWord(resrefLocation + 0x8, bit32.bor(flags, 0x1))
+								end
+								if isSorcererClass then
+									if sorcererSpellsFound[resref] > sorcererSpellMax then
+										sorcererSpellMax = sorcererSpellsFound[resref]
+										levelsFound[i] = sorcererSpellsFound[resref]
+									end
+								else
+									numFound = numFound + 1
+									levelsFound[i] = levelsFound[i] + 1
+								end
+							end
+						end
+					end
+				end
+			end)
+		end
+		numFound = numFound + sorcererSpellMax
+		sorcererSpellsFound = {}
+		numLeft = parameter1 - numFound
+		sorcererSpellMax = 0
+		if i <= 7 and processPriestSpells then 
+			EEex_ProcessClericMemorization(sourceID, function(level, resrefLocation)
+				if level == i then
+					local resref = EEex_ReadLString(resrefLocation, 8)
+					if sorcererSpellsFound[resref] == nil then	
+						sorcererSpellsFound[resref] = 1
+					else
+						sorcererSpellsFound[resref] = sorcererSpellsFound[resref] + 1
+					end
+					local flags = EEex_ReadWord(resrefLocation + 0x8, 0x0)
+					local spellMemorized = (bit32.band(flags, 0x1) > 0)
+					if parameter2 >= level and ((spellMemorized and subtractSpells) or (spellMemorized == false and subtractSpells == false)) and (matchSpecificSpell == false or matchSpell == resref) and (ignoreSpecificSpell == false or ignoreSpell ~= resref) then
+						local spellData = EEex_GetSpellData(resref)
+						if spellData ~= 0 then
+							local spellSchool = EEex_ReadByte(spellData + 0x25, 0x0)
+							if (parameter1 <= 0 or ((isSorcererClass == false or sorcererSpellsFound[resref] <= numLeft) and (isSorcererClass or numFound < parameter1))) and ((onePerSchool == false and parameter3 == 0) or (schools_found[spellSchool] ~= nil and schools_found[spellSchool] == false)) then
+								if onePerSchool then 
+									schools_found[spellSchool] = true
+								end
+								if subtractSpells then
+									EEex_WriteWord(resrefLocation + 0x8, bit32.band(flags, 0xFFFE))
+								else
+									EEex_WriteWord(resrefLocation + 0x8, bit32.bor(flags, 0x1))
+								end
+								if isSorcererClass then
+									if sorcererSpellsFound[resref] > sorcererSpellMax then
+										sorcererSpellMax = sorcererSpellsFound[resref]
+										levelsFound[i] = sorcererSpellsFound[resref]
+									end
+								else
+									numFound = numFound + 1
+									levelsFound[i] = levelsFound[i] + 1
+								end
+							end
+						end
+					end
+				end
+			end)
+		end
+		numFound = numFound + sorcererSpellMax
+	end
+--]]
+end
+
+function EEex_CompareActorAllegiances(actorID1, actorID2)
+	local ea1 = EEex_GetActorAllegiance(actorID1)
+	local ea2 = EEex_GetActorAllegiance(actorID2)
+	local eaGroup1 = 2
+	local eaGroup2 = 2
+	if ea1 >= 2 and ea1 <= 30 then
+		eaGroup1 = 1
+	elseif ea1 >= 200 then
+		eaGroup1 = 3
+	end
+	if ea2 >= 2 and ea2 <= 30 then
+		eaGroup2 = 1
+	elseif ea1 >= 200 then
+		eaGroup2 = 3
+	end
+	return math.abs(eaGroup1 - eaGroup2)
+end
+
+function EEex_GetActorCasterLevel(actorID, spellType)
+	local casterLevel = 1
+	local class = EEex_GetActorClass(actorID)
+	local level1 = EEex_GetActorStat(actorID, 34)
+	local level2 = EEex_GetActorStat(actorID, 68)
+	local level3 = EEex_GetActorStat(actorID, 69)
+	if spellType == 1 then
+		if class == 1 or class == 5 or class == 13 or class == 19 or class > 21 then
+			casterLevel = level1 + EEex_GetActorStat(actorID, 79)
+		elseif class == 7 or class == 10 or class == 14 or class == 17 then
+			casterLevel = level2 + EEex_GetActorStat(actorID, 79)
+		end
+	elseif spellType == 2 then
+		if class == 3 or class == 6 or class == 11 or class == 12 or class == 14 or class == 15 or class == 18 or class == 21 or class > 21 then
+			casterLevel = level1 + EEex_GetActorStat(actorID, 80)
+		elseif class == 8 or class == 16 then
+			casterLevel = level2 + EEex_GetActorStat(actorID, 80)
+		elseif class == 17 then
+			casterLevel = level3 + EEex_GetActorStat(actorID, 80)
+		end
+	else
+		if level1 > casterLevel then
+			casterLevel = level1
+		end
+		if level2 > casterLevel then
+			casterLevel = level2
+		end
+		if level3 > casterLevel then
+			casterLevel = level3
+		end
+	end
+	return casterLevel
+end
+
+EEex_AddActionHookOpcode("MECONVIS", function(originatingEffectData, actionData, creatureData)
+	local actionID = EEex_GetActionID(actionData)
+	if actionID == 3 or actionID == 98 or actionID == 105 or actionID == 134 or actionID == 31 or actionID == 113 or actionID == 191 or actionID == 318 then
+		local targetID = EEex_ReadDword(actionData + 0x20)
+		if EEex_GetActorStat(targetID, 659) > 0 then
+			EEex_SetActionID(actionData, 36)
+		end
+	end
+end)
+
+EEex_AddActionHookOpcode("MEFORCSP", function(originatingEffectData, actionData, creatureData)
+	local actionID = EEex_GetActionID(actionData)
+	local sourceID = EEex_ReadDword(creatureData + 0x34)
+	if actionID == 31 then
+		local spellRES = EEex_GetActorSpellRES(sourceID)
+		local targetID = EEex_ReadDword(actionData + 0x20)
+		local targetX = EEex_ReadDword(EEex_GetActorShare(targetID) + 0x8)
+		local targetY = EEex_ReadDword(EEex_GetActorShare(targetID) + 0xC)
+		local casterLevel = EEex_GetActorCasterLevel(sourceID, EEex_ReadWord(EEex_GetSpellData(spellRES) + 0x1C, 0x0))
+		EEex_SetActionID(actionData, 147)
+		EEex_WriteDword(actionData + 0x20, EEex_ReadWord(actionData + 0x40, 0x0))
+		EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 146,
+["target"] = 2,
+["timing"] = 1,
+["parameter1"] = casterLevel,
+["parameter2"] = 0,
+["casterlvl"] = casterLevel,
+["resource"] = spellRES,
+["source_x"] = EEex_ReadDword(creatureData + 0x8),
+["source_y"] = EEex_ReadDword(creatureData + 0xC),
+["target_x"] = targetX,
+["target_y"] = targetY,
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+	elseif actionID == 95 then
+		local spellRES = EEex_GetActorSpellRES(sourceID)
+		local targetID = EEex_ReadDword(actionData + 0x20)
+		local targetX = EEex_GetActionPointX(actionData)
+		local targetY = EEex_GetActionPointY(actionData)
+		local casterLevel = EEex_GetActorCasterLevel(sourceID, EEex_ReadWord(EEex_GetSpellData(spellRES) + 0x1C, 0x0))
+		EEex_SetActionID(actionData, 147)
+		EEex_WriteDword(actionData + 0x20, EEex_ReadWord(actionData + 0x40, 0x0))
+		EEex_ApplyEffectToActor(sourceID, {
+["opcode"] = 148,
+["target"] = 2,
+["timing"] = 1,
+["parameter1"] = casterLevel,
+["parameter2"] = 0,
+["casterlvl"] = casterLevel,
+["resource"] = spellRES,
+["source_x"] = EEex_ReadDword(creatureData + 0x8),
+["source_y"] = EEex_ReadDword(creatureData + 0xC),
+["target_x"] = targetX,
+["target_y"] = targetY,
+["source_target"] = sourceID,
+["source_id"] = sourceID
+})
+	end
+--[[
+	if actionID == 31 or actionID == 95 then
+		EEex_ApplyEffectToActor(sourceID, {
+["opcode"] = 342,
+["target"] = 2,
+["timing"] = 10,
+["duration"] = 1,
+["parameter1"] = 0,
+["parameter2"] = 4,
+["source_target"] = sourceID,
+["source_id"] = sourceID
+})
+	end
+--]]
+end)
+
+EEex_AddActionHookOpcode("MEAPPLSP", function(originatingEffectData, actionData, creatureData)
+	local actionID = EEex_GetActionID(actionData)
+	local sourceID = EEex_ReadDword(creatureData + 0x34)
+	if actionID == 31 then
+		local spellRES = EEex_GetActorSpellRES(sourceID)
+		local spellData = EEex_GetSpellData(spellRES)
+		if bit32.band(EEex_ReadDword(spellData + 0x18), 0x10000000) > 0 then
+			local targetID = EEex_ReadDword(actionData + 0x20)
+			local targetX = EEex_ReadDword(EEex_GetActorShare(targetID) + 0x8)
+			local targetY = EEex_ReadDword(EEex_GetActorShare(targetID) + 0xC)
+			local casterLevel = EEex_GetActorCasterLevel(sourceID, EEex_ReadWord(spellData + 0x1C, 0x0))
+			EEex_SetActionID(actionData, 147)
+			EEex_WriteDword(actionData + 0x20, EEex_ReadWord(actionData + 0x40, 0x0))
+			EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 146,
+["target"] = 2,
+["timing"] = 1,
+["parameter1"] = casterLevel,
+["parameter2"] = 1,
+["casterlvl"] = casterLevel,
+["resource"] = spellRES,
+["source_x"] = EEex_ReadDword(creatureData + 0x8),
+["source_y"] = EEex_ReadDword(creatureData + 0xC),
+["target_x"] = targetX,
+["target_y"] = targetY,
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+		end
+	elseif actionID == 95 then
+		local spellRES = EEex_GetActorSpellRES(sourceID)
+		local spellData = EEex_GetSpellData(spellRES)
+		if bit32.band(EEex_ReadDword(spellData + 0x18), 0x10000000) > 0 then
+			local targetID = EEex_ReadDword(actionData + 0x20)
+			local targetX = EEex_GetActionPointX(actionData)
+			local targetY = EEex_GetActionPointY(actionData)
+			local casterLevel = EEex_GetActorCasterLevel(sourceID, EEex_ReadWord(spellData + 0x1C, 0x0))
+			EEex_SetActionID(actionData, 147)
+			EEex_WriteDword(actionData + 0x20, EEex_ReadWord(actionData + 0x40, 0x0))
+			EEex_ApplyEffectToActor(sourceID, {
+["opcode"] = 148,
+["target"] = 2,
+["timing"] = 1,
+["parameter1"] = casterLevel,
+["parameter2"] = 1,
+["casterlvl"] = casterLevel,
+["resource"] = spellRES,
+["source_x"] = EEex_ReadDword(creatureData + 0x8),
+["source_y"] = EEex_ReadDword(creatureData + 0xC),
+["target_x"] = targetX,
+["target_y"] = targetY,
+["source_target"] = sourceID,
+["source_id"] = sourceID
+})
+		end
+	end
+end)
+
+EEex_AddActionHookOpcode("EXBERSER", function(originatingEffectData, actionData, creatureData)
+	local actionID = EEex_GetActionID(actionData)
+	local sourceID = EEex_ReadDword(creatureData + 0x34)
+	local targetID = EEex_ReadDword(actionData + 0x20)
+	if actionID == 3 and EEex_CompareActorAllegiances(sourceID, targetID) == 0 and (bit32.band(EEex_ReadDword(creatureData + 0x434), 0x2) > 0 or bit32.band(EEex_ReadDword(creatureData + 0xB30), 0x2) > 0) then
+		local enemyID = EEex_EvalObjectStringAsActor("NearestEnemyOf(Myself)", sourceID)
+		if enemyID > 0 then
+			targetID = enemyID
+			EEex_WriteDword(actionData + 0x20, targetID)
+		else
+			EEex_SetActionID(actionData, 0)
+		end
+	end
+end)
+
+EEex_AddActionHookOpcode("EXFEAR", function(originatingEffectData, actionData, creatureData)
+	local actionID = EEex_GetActionID(actionData)
+	local sourceID = EEex_ReadDword(creatureData + 0x34)
+	local targetID = EEex_ReadDword(actionData + 0x20)
+	if actionID == 200 and (bit32.band(EEex_ReadDword(creatureData + 0x434), 0x4) > 0 or bit32.band(EEex_ReadDword(creatureData + 0xB30), 0x4) > 0) then
+		local enemyID = EEex_EvalObjectStringAsActor("NearestEnemyOf(Myself)", sourceID)
+		if enemyID > 0 then
+			targetID = enemyID
+			EEex_SetActionID(actionData, 355)
+			EEex_WriteDword(actionData + 0x20, targetID)
+			EEex_WriteDword(actionData + 0x40, 100)
+		end
+	end
+end)
+
+EEex_AddActionHookOpcode("MEACTMOD", function(originatingEffectData, actionData, creatureData)
+	local actionID = EEex_GetActionID(actionData)
+	local sourceID = EEex_ReadDword(creatureData + 0x34)
+	local targetID = EEex_ReadDword(actionData + 0x20)
+	if actionID == 200 and (bit32.band(EEex_ReadDword(creatureData + 0x434), 0x4) > 0 or bit32.band(EEex_ReadDword(creatureData + 0xB30), 0x4) > 0) then
+		local enemyID = EEex_EvalObjectStringAsActor("NearestEnemyOf(Myself)", sourceID)
+		if enemyID > 0 then
+			targetID = enemyID
+			EEex_SetActionID(actionData, 355)
+			EEex_WriteDword(actionData + 0x20, targetID)
+			EEex_WriteDword(actionData + 0x40, 100)
+		end
+	elseif actionID == 31 or actionID == 191 then
+		local spellRES = EEex_GetActorSpellRES(sourceID)
+		local spellData = EEex_GetSpellData(spellRES)
+		if bit32.band(EEex_ReadDword(spellData + 0x18), 0x10000000) > 0 then
+			local targetX = EEex_ReadDword(EEex_GetActorShare(targetID) + 0x8)
+			local targetY = EEex_ReadDword(EEex_GetActorShare(targetID) + 0xC)
+			local casterLevel = EEex_GetActorCasterLevel(sourceID, EEex_ReadWord(spellData + 0x1C, 0x0))
+			EEex_SetActionID(actionData, 147)
+			EEex_WriteDword(actionData + 0x20, EEex_ReadWord(actionData + 0x40, 0x0))
+			EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 146,
+["target"] = 2,
+["timing"] = 1,
+["parameter1"] = casterLevel,
+["parameter2"] = 1,
+["casterlvl"] = casterLevel,
+["resource"] = spellRES,
+["source_x"] = EEex_ReadDword(creatureData + 0x8),
+["source_y"] = EEex_ReadDword(creatureData + 0xC),
+["target_x"] = targetX,
+["target_y"] = targetY,
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+		end
+	elseif actionID == 95 or actionID == 192 then
+		local spellRES = EEex_GetActorSpellRES(sourceID)
+		local spellData = EEex_GetSpellData(spellRES)
+		if bit32.band(EEex_ReadDword(spellData + 0x18), 0x10000000) > 0 then
+			local targetID = EEex_ReadDword(actionData + 0x20)
+			local targetX = EEex_GetActionPointX(actionData)
+			local targetY = EEex_GetActionPointY(actionData)
+			local casterLevel = EEex_GetActorCasterLevel(sourceID, EEex_ReadWord(spellData + 0x1C, 0x0))
+			EEex_SetActionID(actionData, 147)
+			EEex_WriteDword(actionData + 0x20, EEex_ReadWord(actionData + 0x40, 0x0))
+			EEex_ApplyEffectToActor(sourceID, {
+["opcode"] = 148,
+["target"] = 2,
+["timing"] = 1,
+["parameter1"] = casterLevel,
+["parameter2"] = 1,
+["casterlvl"] = casterLevel,
+["resource"] = spellRES,
+["source_x"] = EEex_ReadDword(creatureData + 0x8),
+["source_y"] = EEex_ReadDword(creatureData + 0xC),
+["target_x"] = targetX,
+["target_y"] = targetY,
+["source_target"] = sourceID,
+["source_id"] = sourceID
+})
+		end
+	end
+--[[
+	if actionID == 31 or actionID == 95 then
+		EEex_ApplyEffectToActor(sourceID, {
+["opcode"] = 342,
+["target"] = 2,
+["timing"] = 10,
+["duration"] = 1,
+["parameter1"] = 0,
+["parameter2"] = 4,
+["source_target"] = sourceID,
+["source_id"] = sourceID
+})
+	end
+--]]
+end)
+
+--[[
+To use the EXSPLDEF function, create an opcode 403 effect in a spell, set the resource to EXSPLDEF (all capitals), and choose parameters.
+
+The EXSPLDEF function works like Spell Deflection, Spell Turning or Spell Trap, except it works against area of effect spells.
+
+parameter1 - Determines the lowest spell level that can be deflected (0 - 9).
+
+parameter2 - Determines the highest spell level that can be deflected (0 - 9).
+
+special - Determines the number of spell levels that can be deflected. If set to -1, there is no limit.
+
+savingthrow - This function uses several extra bits on this parameter:
+Bit 17: If set, once the last spell level is deflected, another spell is cast on the creature whose spell
+ was deflected. The spell resref is specified by resource2 (in an EFF file). If you aren't using this from an
+ EFF file, then the spell resref is set to the resref of the source spell, with an E added at the end.
+Bit 18: If set, whenever a spell is deflected, another spell is cast on the creature whose spell
+ was deflected. The spell resref is specified by resource3 (in an EFF file). If you aren't using this from an
+ EFF file, then the spell resref is set to the resref of the source spell, with an F added at the end.
+Bit 19: If set, up to special spells (rather than spell levels) are deflected.
+Bit 20: If NOT set, the function will remove all effects of the spell that called EXSPLDEF once the last spell level is deflected.
+Bit 21: If set, only spells with the hostile flag, or that deal damage, will be deflected.
+Bit 22: If set, the function will reflect rather than deflect the spell.
+Bit 23: If set, the function will absorb the spell as with Spell Trap, restoring one of the character's previously-used spells.
+
+
+--]]
+previous_spells_turned = {}
+function EXSPLDEF(originatingEffectData, effectData, creatureData)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local opcode = EEex_ReadDword(effectData + 0xC)
+	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	local parent_resource = EEex_ReadLString(originatingEffectData + 0x90, 8)
+	local internal_flags = EEex_ReadDword(effectData + 0xC8)
+	if bit32.band(internal_flags, 0x4000000) > 0 or targetID <= 0 or sourceID <= 0 or targetID == sourceID then return false end
+	local savingthrow = EEex_ReadDword(originatingEffectData + 0x3C)
+	local parameter1 = EEex_ReadDword(originatingEffectData + 0x18)
+	local parameter2 = EEex_ReadDword(originatingEffectData + 0x1C)
+	local match_spellRES = EEex_ReadLString(originatingEffectData + 0x18, 8)
+	local spellRES = EEex_ReadLString(effectData + 0x90, 8)
+	local theopcode = EEex_ReadDword(effectData + 0xC)
+	local spellLevel = EEex_ReadDword(effectData + 0x14)
+	local endSpellRES = EEex_ReadLString(effectData + 0x6C, 8)
+	local repeatSpellRES = EEex_ReadLString(effectData + 0x74, 8)
+	if endSpellRES == "" then
+		endSpellRES = parent_resource .. "E"
+	end
+	if repeatSpellRES == "" then
+		repeatSpellRES = parent_resource .. "F"
+	end
+--[[
+	local spellData = 0
+
+	if spellRES ~= "" and EEex_ReadDword(effectData + 0x8C) == 1 then
+		spellData = EEex_GetSpellData(spellRES)
+	end
+	if spellData > 0 then
+		spellLevel = EEex_ReadDword(spellData + 0x34)
+		if EEex_ReadWord(spellData + 0x1C, 0x0) > 2 then
+			spellLevel = 0
+		end
+	end
+	if spellLevel == 0 and bit32.band(savingthrow, 0x10000) == 0 then return false end
+--]]
+	if spellLevel < parameter1 or spellLevel > parameter2 then return false end
+	if bit32.band(savingthrow, 0x200000) > 0 and theopcode ~= 12 and theopcode ~= 25 and theopcode ~= 78 and bit32.band(EEex_ReadDword(effectData + 0x98), 0x400) == 0 then return false end
+	local special = EEex_ReadDword(originatingEffectData + 0x44)
+	local time_applied = EEex_ReadDword(effectData + 0x68)
+	if previous_spells_turned["" .. targetID] == nil then
+		previous_spells_turned["" .. targetID] = {}
+	end
+	if previous_spells_turned["" .. targetID][spellRES] == nil or math.abs(previous_spells_turned["" .. targetID][spellRES] - time_applied) > 1 then
+		if special == 0 then
+			return false
+		elseif special ~= -1 then
+			if bit32.band(savingthrow, 0x80000) == 0 and spellLevel > 0 then
+				special = special - spellLevel
+				if special < 0 then
+					special = 0
+				end
+			else
+				special = special - 1
+			end
+			EEex_WriteDword(originatingEffectData + 0x44, special)
+		end
+		if bit32.band(savingthrow, 0x400000) == 0 then
+			EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 206,
+["target"] = 2,
+["timing"] = 10,
+["duration"] = 1,
+["resource"] = spellRES,
+["internal_flags"] = 0x4000000,
+["source_target"] = targetID,
+["source_id"] = targetID
+})		
+		else
+			EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 207,
+["target"] = 2,
+["timing"] = 10,
+["duration"] = 1,
+["resource"] = spellRES,
+["internal_flags"] = 0x4000000,
+["source_target"] = targetID,
+["source_id"] = targetID
+})
+		end
+		if bit32.band(savingthrow, 0x800000) > 0 then
+			EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 261,
+["target"] = 2,
+["timing"] = 1,
+["parameter1"] = spellLevel,
+["parameter2"] = 0,
+["internal_flags"] = 0x4000000,
+["source_target"] = targetID,
+["source_id"] = targetID
+})		
+		end
+		if bit32.band(savingthrow, 0x40000) > 0 then
+			EEex_ApplyEffectToActor(sourceID, {
+["opcode"] = 146,
+["target"] = 2,
+["timing"] = 1,
+["parameter1"] = EEex_ReadDword(originatingEffectData + 0xC4),
+["parameter2"] = 2,
+["resource"] = repeatSpellRES,
+["internal_flags"] = 0x4000000,
+["source_target"] = sourceID,
+["source_id"] = targetID
+})
+		end
+		if special == 0 then
+			if bit32.band(savingthrow, 0x20000) > 0 then
+				EEex_ApplyEffectToActor(sourceID, {
+["opcode"] = 146,
+["target"] = 2,
+["timing"] = 1,
+["parameter1"] = EEex_ReadDword(originatingEffectData + 0xC4),
+["parameter2"] = 2,
+["resource"] = endSpellRES,
+["internal_flags"] = 0x4000000,
+["source_target"] = sourceID,
+["source_id"] = targetID
+})
+			end
+			if bit32.band(savingthrow, 0x100000) == 0 then
+			EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 321,
+["target"] = 2,
+["timing"] = 6,
+["duration"] = EEex_GetGameTick() + 1,
+["resource"] = parent_resource,
+["internal_flags"] = 0x4000000,
+["source_target"] = targetID,
+["source_id"] = targetID
+})
+			EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 146,
+["target"] = 2,
+["timing"] = 6,
+["duration"] = EEex_GetGameTick() + 2,
+["parameter1"] = 1,
+["parameter2"] = 2,
+["resource"] = "MEBASEEF",
+["internal_flags"] = 0x4000000,
+["source_target"] = targetID,
+["source_id"] = targetID
+})
+			end
+		end
+	end
+	previous_spells_turned["" .. targetID][spellRES] = time_applied
+
+--[[
+	EEex_ApplyEffectToActor(sourceID, {
+["opcode"] = EEex_ReadDword(effectData + 0xC),
+["target"] = EEex_ReadDword(effectData + 0x10),
+["power"] = EEex_ReadDword(effectData + 0x14),
+["parameter1"] = EEex_ReadDword(effectData + 0x18),
+["parameter2"] = EEex_ReadDword(effectData + 0x1C),
+["timing"] = EEex_ReadDword(effectData + 0x20),
+["duration"] = EEex_ReadDword(effectData + 0x24),
+["resource"] = EEex_ReadLString(effectData + 0x2C, 8),
+["dicenumber"] = EEex_ReadDword(effectData + 0x34),
+["dicesize"] = EEex_ReadDword(effectData + 0x38),
+["savingthrow"] = EEex_ReadDword(effectData + 0x3C),
+["savebonus"] = EEex_ReadDword(effectData + 0x40),
+["special"] = EEex_ReadDword(effectData + 0x44),
+["school"] = EEex_ReadDword(effectData + 0x48),
+["resist_dispel"] = EEex_ReadDword(effectData + 0x58),
+["parameter3"] = EEex_ReadDword(effectData + 0x5C),
+["parameter4"] = EEex_ReadDword(effectData + 0x60),
+["parameter5"] = EEex_ReadDword(effectData + 0x64),
+["vvcresource"] = EEex_ReadLString(effectData + 0x6C, 8),
+["resource2"] = EEex_ReadLString(effectData + 0x74, 8),
+["source_x"] = EEex_ReadDword(creatureData + 0x8),
+["source_y"] = EEex_ReadDword(creatureData + 0xC),
+["target_x"] = EEex_ReadDword(EEex_GetActorShare(sourceID) + 0x8),
+["target_y"] = EEex_ReadDword(EEex_GetActorShare(sourceID) + 0xC),
+["restype"] = EEex_ReadDword(effectData + 0x8C),
+["parent_resource"] = EEex_ReadLString(effectData + 0x90, 8),
+["resource_flags"] = EEex_ReadDword(effectData + 0x98),
+["impact_projectile"] = EEex_ReadDword(effectData + 0x9C),
+["sourceslot"] = EEex_ReadDword(effectData + 0xA0),
+["effvar"] = EEex_ReadLString(effectData + 0xA4, 32),
+["casterlvl"] = EEex_ReadDword(effectData + 0xC4),
+["internal_flags"] = bit32.bor(internal_flags, 0x4000000),
+["sectype"] = EEex_ReadDword(effectData + 0xCC),
+["source_target"] = sourceID,
+["source_id"] = targetID
+})
+	return true
+--]]
+	return false
+end
+
+function MEBRDSEQ(effectData, creatureData)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	local newSourceID = sourceID
+	local spellTarget = 0
+	local targetX = EEex_ReadDword(creatureData + 0x8)
+	local targetY = EEex_ReadDword(creatureData + 0xC)
+	local casterlvl = EEex_ReadDword(effectData + 0xC4)
+	local contingencyRES = EEex_ReadLString(effectData + 0x18, 8)
+--	if math.random(100) > casterlvl * 2 then return end
+	if EEex_GetActorStat(sourceID, 666) > 0 and EEex_GetActorStat(sourceID, 668) > 0 then
+		EEex_IterateActorEffects(sourceID, function(eData)
+			local the_opcode = EEex_ReadDword(eData + 0x10)
+			local the_special = EEex_ReadDword(eData + 0x48)
+			local the_parent_resource = EEex_ReadLString(eData + 0x94, 8)
+			if the_opcode == 401 and the_special == 666 and the_parent_resource == contingencyRES then
+				local the_resource = EEex_ReadLString(eData + 0x30, 8)
+				local the_resource2 = EEex_ReadLString(eData + 0x70, 8)
+				local the_resource3 = EEex_ReadLString(eData + 0x78, 8)
+				if the_resource ~= "" then
+					spellTarget = EEex_ReadByte(EEex_GetSpellData(the_resource) + 0x7e, 0x0)
+					if spellTarget == 5 or spellTarget == 7 then
+						newSourceID = targetID
+					else
+						newSourceID = sourceID
+					end
+					EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 146,
+["target"] = 2,
+["timing"] = 9,
+["parameter1"] = casterlvl,
+["parameter2"] = 1,
+["casterlvl"] = casterlvl,
+["resource"] = the_resource,
+["target_x"] = targetX,
+["target_y"] = targetY,
+["source_target"] = targetID,
+["source_id"] = newSourceID
+})
+				end
+				if the_resource2 ~= "" then
+					spellTarget = EEex_ReadByte(EEex_GetSpellData(the_resource2) + 0x7e, 0x0)
+					if spellTarget == 5 or spellTarget == 7 then
+						newSourceID = targetID
+					else
+						newSourceID = sourceID
+					end
+					EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 146,
+["target"] = 2,
+["timing"] = 9,
+["parameter1"] = casterlvl,
+["parameter2"] = 1,
+["casterlvl"] = casterlvl,
+["resource"] = the_resource2,
+["target_x"] = targetX,
+["target_y"] = targetY,
+["source_target"] = targetID,
+["source_id"] = newSourceID
+})
+				end
+				if the_resource3 ~= "" then
+					spellTarget = EEex_ReadByte(EEex_GetSpellData(the_resource3) + 0x7e, 0x0)
+					if spellTarget == 5 or spellTarget == 7 then
+						newSourceID = targetID
+					else
+						newSourceID = sourceID
+					end
+					EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 146,
+["target"] = 2,
+["timing"] = 9,
+["parameter1"] = casterlvl,
+["parameter2"] = 1,
+["casterlvl"] = casterlvl,
+["resource"] = the_resource3,
+["target_x"] = targetX,
+["target_y"] = targetY,
+["source_target"] = targetID,
+["source_id"] = newSourceID
+})
+				end
+			end
+		end)
+	end
+end
+
+function MEMODBMP(effectData, creatureData)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local range = EEex_ReadDword(effectData + 0x18)
+	local newColor = EEex_ReadDword(effectData + 0x1C)
+	local matchingColors = EEex_ReadWord(effectData + 0x3E, 0x0)
+	local targetX = EEex_ReadDword(effectData + 0x84)
+	local targetY = EEex_ReadDword(effectData + 0x88)
+	local areaRes = EEex_GetActorAreaRes(targetID)
+	if areaRes == "" then return end
+	local areaX, areaY = EEex_GetActorAreaSize(targetID)
+	local bitmapData = EEex_DemandResData(areaRes .. "SR", "BMP")
+	local fileSize = EEex_ReadDword(bitmapData + 0x2)
+	local dataOffset = EEex_ReadDword(bitmapData + 0xA)
+	local bitmapX = EEex_ReadDword(bitmapData + 0x12)
+	local bitmapY = EEex_ReadDword(bitmapData + 0x16)
+	local pixelSizeX = 16
+	local pixelSizeY = 12
+	local current = 0
+	local currentA = 0
+	local currentB = 0
+	local currentX = 0
+	local currentY = 0
+	if range == -1 then
+		for i = dataOffset, fileSize - 1, 1 do
+			current = EEex_ReadByte(bitmapData + i, 0)
+			currentA = math.floor(current / 16)
+			currentB = current % 16
+			if bit32.band(matchingColors, 2 ^ currentA) > 0 then
+				currentA = newColor
+			end
+			if bit32.band(matchingColors, 2 ^ currentB) > 0 then
+				currentB = newColor
+			end
+			EEex_WriteByte(bitmapData + i, currentA * 16 + currentB)
+		end
+	else
+		local i = dataOffset
+		for y = bitmapY - 1, 0, -1 do
+			for x = 0, bitmapX - 1, 2 do
+				current = EEex_ReadByte(bitmapData + i, 0)
+				currentX = math.floor((x + .5) * pixelSizeX)
+				currentY = math.floor((y + .5) * pixelSizeY)
+				currentA = math.floor(current / 16)
+				if EEex_GetDistance(currentX, currentY, targetX, targetY) < range and bit32.band(matchingColors, 2 ^ currentA) > 0 then
+					currentA = newColor
+				end
+				if x < bitmapX - 1 then
+					currentX = math.floor((x + 1.5) * pixelSizeX)
+					currentB = current % 16
+					if EEex_GetDistance(currentX, currentY, targetX, targetY) < range and bit32.band(matchingColors, 2 ^ currentB) > 0 then
+						currentB = newColor
+					end
+				end
+				EEex_WriteByte(bitmapData + i, currentA * 16 + currentB)
+				i = i + 1
+			end
 		end
 	end
 end

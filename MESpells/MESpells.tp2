@@ -16,6 +16,11 @@ END
 OUTER_SPRINT stringcastingtime @3000
 OUTER_SPRINT stringduration @3001
 OUTER_SPRINT stringsavingthrow @3002
+OUTER_SPRINT stringschool @3003
+OUTER_SPRINT stringlevel @3004
+OUTER_SPRINT stringrange @3005
+OUTER_SPRINT stringarea @3006
+OUTER_SPRINT stringareanum @3026
 OUTER_SPRINT stringcastingtime1 @3101
 OUTER_SPRINT stringcastingtime2 @3102
 OUTER_SPRINT stringcastingtime3 @3103
@@ -32,6 +37,51 @@ OUTER_SPRINT stringduration18 @3203
 OUTER_SPRINT stringduration24 @3204
 OUTER_SPRINT stringduration30 @3205
 OUTER_SPRINT stringsavingthrownone @3300
+OUTER_SPRINT stringsavingthrowspellnegates @3351
+OUTER_SPRINT stringsavingthrowdeathnegates @3352
+OUTER_SPRINT stringsavingthrowbreathnegates @3353
+OUTER_SPRINT stringsavingthrowpolymorphnegates @3354
+OUTER_SPRINT stringsavingthrowwandsnegates @3355
+OUTER_SPRINT stringsavingthrowspellhalf @3361
+OUTER_SPRINT stringsavingthrowdeathhalf @3362
+OUTER_SPRINT stringsavingthrowbreathhalf @3363
+OUTER_SPRINT stringsavingthrowpolymorphhalf @3364
+OUTER_SPRINT stringsavingthrowwandshalf @3365
+OUTER_SPRINT stringsavingthrowspellpartial @3371
+OUTER_SPRINT stringsavingthrowdeathpartial @3372
+OUTER_SPRINT stringsavingthrowbreathpartial @3373
+OUTER_SPRINT stringsavingthrowpolymorphpartial @3374
+OUTER_SPRINT stringsavingthrowwandsnegates @3375
+OUTER_SPRINT stringschoolanyschool @3400
+OUTER_SPRINT stringschoolabjuration @3401
+OUTER_SPRINT stringschoolconjuration @3402
+OUTER_SPRINT stringschooldivination @3403
+OUTER_SPRINT stringschoolenchantment @3404
+OUTER_SPRINT stringschoolillusion @3405
+OUTER_SPRINT stringschoolevocation @3406
+OUTER_SPRINT stringschoolnecromancy @3407
+OUTER_SPRINT stringschoolalteration @3408
+OUTER_SPRINT stringschoolwildmagic @3409
+OUTER_SPRINT stringschoolall @3410
+OUTER_SPRINT stringschoolconjurationsummoning @3412
+OUTER_SPRINT stringschoolenchantmentcharm @3414
+OUTER_SPRINT stringschoolillusionphantasm @3415
+OUTER_SPRINT stringschoolinvocation @3416
+OUTER_SPRINT stringschooltransmutation @3418
+OUTER_SPRINT stringschoolalterationevocation @3441
+OUTER_SPRINT stringschooluniversal @3450
+OUTER_SPRINT stringschoolsr @3499
+OUTER_SPRINT stringlevel10 @3510
+OUTER_SPRINT stringlevelepic @3560
+OUTER_SPRINT stringrange0 @3601
+OUTER_SPRINT stringrangevisualrange @3605
+OUTER_SPRINT stringrangepersonal @3651
+OUTER_SPRINT stringrangeshort @3653
+OUTER_SPRINT stringrangemedium @3654
+OUTER_SPRINT stringrangelong @3655
+OUTER_SPRINT stringareathecaster @3701
+OUTER_SPRINT stringareacaster @3751
+OUTER_SPRINT stringareanumsr @3755
 
 OUTER_PATCH alltheconstants BEGIN
 	none=0
@@ -954,6 +1004,67 @@ OUTER_PATCH alltheconstants BEGIN
 	stringblinded=31786
 END
 
+//Patch function that replaces set or all occurrences of the given regexp pattern in the file with the given string.
+//Use EVAL to perform variable substitution on the string and/or the regexp pattern.
+//Unlike REPLACE_TEXTUALLY the pattern can be multi-line text, even without using regexp.
+//Just like REPLACE_BCS_BLOCK the function ignores pattern whitespace.
+//The function can be also used as a COUNT_REGEXP_INSTANCES alternative with the above mentioned features.
+//Optional PATCH_WARN message is printed if the task could not be performed (pattern not found or different amount of pattern matches than expected).
+
+DEFINE_PATCH_FUNCTION REPLACE_MULTILINE //By K4thos
+	INT_VAR
+		num = "-1"     //amount of times the pattern should be replaced with string (-1 by default which is at least 1 but without max limit)
+		strict = 0     //set to 1 to enable strict checking (auto escapes $^.*+?[]\ special characters)
+		verbose = 1    //set to 0 to skip printing patching message
+		warn = 1       //set to 0 to skip printing warning message if the function can't do what you ask it to do
+		only_count = 0 //set to to 1 to skip pattern replacing and just return num_matches (COUNT_REGEXP_INSTANCES alternative)
+	STR_VAR
+		pattern = ""   //pattern that you want to replace
+		string = ""    //string that the pattern will be replaced with
+	RET
+		num_matches    //amount of times the pattern has been found
+	BEGIN
+	TEXT_SPRINT percent ~%~
+	INNER_PATCH_SAVE textToReplace ~%pattern%~ BEGIN
+		PATCH_IF strict = 1 BEGIN
+			REPLACE_TEXTUALLY ~\\~ ~\\\\~
+			REPLACE_TEXTUALLY ~\[~ ~\[~
+			REPLACE_TEXTUALLY ~\]~ ~\]~
+			REPLACE_EVALUATE ~\([\$\^\.\*\+\?]\)~ BEGIN END ~\%MATCH1%~
+		END
+		REPLACE_TEXTUALLY ~[%WNL%%LNL%%MNL%%TAB% ]+~ ~[%WNL%%LNL%%MNL%%TAB% ]+~
+	END
+	SET num_matches = 0
+	PATCH_IF only_count = 0 BEGIN
+		REPLACE_EVALUATE CASE_INSENSITIVE ~%textToReplace%~ BEGIN
+			SET num_matches = num_matches + 1
+			INNER_PATCH_SAVE string ~%string%~ BEGIN
+				REPLACE_TEXTUALLY ~%percent%MATCH\([0-9]+\)%percent%~ ~%MATCH\1%~
+			END
+		END ~%string%~
+		SET warned = 0
+		PATCH_IF num_matches != num BEGIN
+			PATCH_IF num_matches = 0 BEGIN
+				PATCH_IF warn = 1 BEGIN
+					PATCH_WARN ~WARNING %SOURCE_FILESPEC% - pattern not found:%LNL%%pattern%~
+				END
+				SET warned = 1
+			END ELSE PATCH_IF num >= 0 AND (num_matches > num OR num_matches < num) BEGIN
+				PATCH_IF warn = 1 BEGIN
+					PATCH_WARN ~WARNING %SOURCE_FILESPEC% - pattern replaced %num_matches% time(s) instead of %num%:%LNL%%pattern%~
+				END
+				SET warned = 1
+			END
+		END
+		PATCH_IF verbose = 1 AND warned = 0 BEGIN
+//			PATCH_PRINT ~Patching %SOURCE_FILESPEC% - pattern replaced %num_matches% time(s):%LNL%%pattern% => %string%~
+			PATCH_PRINT ~Patching %SOURCE_FILESPEC% - pattern replaced %num_matches% time(s):%LNL%%pattern%~
+		END
+	END ELSE BEGIN
+		COUNT_REGEXP_INSTANCES ~%textToReplace%~ num_matches
+	END
+END
+
 /**
  * Patch function. Converts any decimal number into a hexadecimal number.
  * INT_VAR value      The decimal number to convert.
@@ -1503,28 +1614,35 @@ DEFINE_ACTION_FUNCTION ~SPELL_EXISTS_AND_HAS_NAME~
 		resource=~DEFA~
 		match_name=~DEFA~
 		match_nameor=~DEFA~
-
 	RET
-		spell_found
+		spell_res
 BEGIN
-		OUTER_SET spell_found = 0
-		COPY_EXISTING ~%resource%.spl~ ~override~
-			PATCH_IF !(~%match_name%~ STRING_EQUAL_CASE ~DEFA~) BEGIN
-				READ_LONG NAME1 description_ref
-				GET_STRREF description_ref description_old
-				PATCH_IF !(~%description_old%~ STRING_CONTAINS_REGEXP ~%match_name%~) BEGIN
-					spell_found = 1
-				END		
+		OUTER_TEXT_SPRINT spell_res ~~
+		SILENT
+		OUTER_FOR (i = 0; i < 10; ++i) BEGIN
+			OUTER_FOR (j = 0; j < 10; ++j) BEGIN
+				COPY_EXISTING ~%resource%%i%%j%.spl~ ~override~
+					PATCH_IF (~%spell_res%~ STRING_EQUAL_CASE ~~) BEGIN
+						PATCH_IF !(~%match_name%~ STRING_EQUAL_CASE ~DEFA~) BEGIN
+							READ_LONG NAME1 description_ref
+							GET_STRREF description_ref description_old
+							PATCH_IF !(~%description_old%~ STRING_CONTAINS_REGEXP ~%match_name%~) BEGIN
+								TEXT_SPRINT spell_res ~%resource%%i%%j%~
+							END
+						END
+						PATCH_IF !(~%match_nameor%~ STRING_EQUAL_CASE ~DEFA~) BEGIN
+							READ_LONG NAME1 description_ref
+							GET_STRREF description_ref description_old
+							PATCH_IF !(~%description_old%~ STRING_CONTAINS_REGEXP ~%match_nameor%~) BEGIN
+								TEXT_SPRINT spell_res ~%resource%%i%%j%~
+							END		
+						END
+					END
+					IF_EXISTS
+					BUT_ONLY_IF_IT_CHANGES
 			END
-			PATCH_IF !(~%match_nameor%~ STRING_EQUAL_CASE ~DEFA~) BEGIN
-				READ_LONG NAME1 description_ref
-				GET_STRREF description_ref description_old
-				PATCH_IF !(~%description_old%~ STRING_CONTAINS_REGEXP ~%match_nameor%~) BEGIN
-					spell_found = 1
-				END		
-			END
-			IF_EXISTS
-			BUT_ONLY_IF_IT_CHANGES
+		END
+		VERBOSE
 END
 
 DEFINE_ACTION_FUNCTION ~ADD_PERMANENT_SPELL~
@@ -1642,6 +1760,7 @@ DEFINE_PATCH_FUNCTION ~REPLACE_IN_SPELL_DESCRIPTION~
 		match=~DEFA~
 		replace_with=~~
 BEGIN
+
 	READ_LONG UNIDENTIFIED_DESC description_ref
 	GET_STRREF description_ref description_old
 	INNER_PATCH_SAVE description_new ~%description_old%~ BEGIN
@@ -1659,6 +1778,87 @@ BEGIN
 	END
 	ELSE BEGIN
 		SAY_EVALUATED UNIDENTIFIED_DESC ~%description_new%~
+	END
+END
+
+DEFINE_PATCH_FUNCTION ~MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT~
+	INT_VAR
+		new_string=0
+	STR_VAR
+		match_school=~DEFA~
+		new_school=~~
+		match_level=~DEFA~
+		new_level=~~
+		match_range=~DEFA~
+		new_range=~~
+		match_area=~DEFA~
+		new_area=~~
+		match_savingthrow=~DEFA~
+		new_savingthrow=~~
+BEGIN
+	PATCH_IF MOD_IS_INSTALLED ~setup-spell_rev.tp2~ ~0~ BEGIN
+		PATCH_IF (~%match_school%~ STRING_EQUAL_CASE ~DEFA~) BEGIN
+			TEXT_SPRINT match_school ~%stringschool%~
+		END
+		PATCH_IF (~%match_level%~ STRING_EQUAL_CASE ~DEFA~) BEGIN
+			TEXT_SPRINT match_level ~%stringlevel%~
+		END
+		PATCH_IF (~%match_range%~ STRING_EQUAL_CASE ~DEFA~) BEGIN
+			TEXT_SPRINT match_range ~%stringrange%~
+		END
+		PATCH_IF (~%match_area%~ STRING_EQUAL_CASE ~DEFA~) BEGIN
+			TEXT_SPRINT match_area ~%stringarea%~
+		END
+		PATCH_IF (~%match_savingthrow%~ STRING_EQUAL_CASE ~DEFA~) BEGIN
+			TEXT_SPRINT match_savingthrow ~%stringsavingthrow%~
+		END
+		PATCH_IF (~%SOURCE_EXT%~ STRING_EQUAL_CASE ~spl~) BEGIN
+			READ_LONG UNIDENTIFIED_DESC description_ref
+		END ELSE BEGIN
+			READ_LONG IDENTIFIED_DESC description_ref
+		END
+		GET_STRREF description_ref description_old
+		INNER_PATCH_SAVE description_new ~%description_old%~ BEGIN
+			REPLACE_TEXTUALLY CASE_SENSITIVE ~(\([^)]+\))[^a-zA-Z]*\(%stringlevel%\)~ ~\2
+%stringschoolsr%\1~
+			REPLACE_TEXTUALLY CASE_SENSITIVE ~%stringlevel10%~ ~%stringlevelepic%~
+			REPLACE_TEXTUALLY CASE_SENSITIVE ~%stringrange0%~ ~%stringrangepersonal%~
+			REPLACE_TEXTUALLY CASE_INSENSITIVE ~%stringrangevisualrange%~ ~%stringrangelong%~
+			REPLACE_TEXTUALLY CASE_INSENSITIVE ~%stringareathecaster%~ ~%stringareacaster%~
+			REPLACE_TEXTUALLY CASE_INSENSITIVE ~%stringareanum%~ ~%stringareanumsr%~
+			REPLACE_TEXTUALLY CASE_SENSITIVE ~%stringschoolsr%%stringschoolconjurationsummoning%~ ~%stringschoolsr%%stringschoolconjuration%~
+			REPLACE_TEXTUALLY CASE_SENSITIVE ~%stringschoolsr%%stringschoolenchantmentcharm%~ ~%stringschoolsr%%stringschoolenchantment%~
+			REPLACE_TEXTUALLY CASE_SENSITIVE ~%stringschoolsr%%stringschoolillusionphantasm%~ ~%stringschoolsr%%stringschoolillusion%~
+			REPLACE_TEXTUALLY CASE_SENSITIVE ~%stringschoolsr%%stringschoolinvocation%~ ~%stringschoolsr%%stringschoolevocation%~
+			REPLACE_TEXTUALLY CASE_SENSITIVE ~%stringschoolsr%%stringschoolall%~ ~%stringschoolsr%%stringschooluniversal%~
+			PATCH_IF !(~%new_school%~ STRING_EQUAL_CASE ~~) BEGIN
+				REPLACE_TEXTUALLY CASE_SENSITIVE ~%match_school%~ ~%stringschoolsr%%new_school%~
+			END
+			PATCH_IF !(~%new_level%~ STRING_EQUAL_CASE ~~) BEGIN
+				REPLACE_TEXTUALLY CASE_SENSITIVE ~%match_level%~ ~%new_level%~
+			END
+			PATCH_IF !(~%new_range%~ STRING_EQUAL_CASE ~~) BEGIN
+				REPLACE_TEXTUALLY CASE_SENSITIVE ~%match_range%~ ~%new_range%~
+			END
+			PATCH_IF !(~%new_area%~ STRING_EQUAL_CASE ~~) BEGIN
+				REPLACE_TEXTUALLY CASE_SENSITIVE ~%match_area%~ ~%new_area%~
+			END
+			PATCH_IF !(~%new_savingthrow%~ STRING_EQUAL_CASE ~~) BEGIN
+				REPLACE_TEXTUALLY CASE_SENSITIVE ~%match_savingthrow%~ ~%new_savingthrow%~
+			END
+		END
+		PATCH_IF new_string = 0 BEGIN
+			INNER_ACTION BEGIN
+				STRING_SET_EVALUATE description_ref ~%description_new%~
+			END
+		END
+		ELSE BEGIN
+			PATCH_IF (~%SOURCE_EXT%~ STRING_EQUAL_CASE ~spl~) BEGIN
+				SAY_EVALUATED UNIDENTIFIED_DESC ~%description_new%~
+			END ELSE BEGIN
+				SAY_EVALUATED IDENTIFIED_DESC ~%description_new%~
+			END
+		END
 	END
 END
 
@@ -1786,6 +1986,37 @@ COPY_EXISTING ~bgee.lua~ ~override~
 	%resource% = {tip = %description%, title = '%title%', action = "%action%"},~
 END
 
+DEFINE_ACTION_FUNCTION ~EXCLUDE_SPELL_FROM_CONTINGENCY~
+	INT_VAR
+		level=~-1~
+	STR_VAR
+		resource=~~
+BEGIN
+	COPY_EXISTING ~%resource%.spl~ ~override~
+		PATCH_IF level = ~-1~ BEGIN
+			READ_LONG spelllevel level
+		END
+		IF_EXISTS
+
+	COPY_EXISTING ~contingx.2da~ ~override~
+		COUNT_2DA_COLS numcolumns
+		COUNT_2DA_ROWS numcolumns numrows
+		found_it = 0
+		FOR (i = 0; i < numrows; ++i) BEGIN
+			READ_2DA_ENTRY i level numcolumns empty_slot
+			PATCH_IF found_it = 0 AND (~%empty_slot%~ STRING_EQUAL_CASE ~****~) BEGIN
+				found_it = 1
+				SET_2DA_ENTRY i level numcolumns ~%resource%~
+			END
+		END
+		newrow = numrows + 1
+		PATCH_IF found_it = 0 BEGIN
+			INSERT_2DA_ROW numrows numcolumns ~%newrow%          ****       ****       ****       ****       ****       ****       ****       ****       ****       ~
+			SET_2DA_ENTRY numrows level numcolumns ~%resource%~
+		END
+		IF_EXISTS
+END
+
 DEFINE_PATCH_FUNCTION ADD_HLA
 	STR_VAR
 		ability=~*~
@@ -1833,6 +2064,78 @@ BEGIN
 
 END
 
+DEFINE_ACTION_FUNCTION ~ADD_ICON~
+	INT_VAR
+		strref=0
+	STR_VAR
+		icon=~*~
+	RET
+		icon_index
+BEGIN
+	COPY_EXISTING ~statdesc.2da~ ~override~
+		COUNT_2DA_ROWS 3 numrows
+		icon_index = numrows + 1
+		INSERT_2DA_ROW numrows 3 ~%icon_index% %strref% %icon%~
+		IF_EXISTS
+
+END
+
+DEFINE_ACTION_FUNCTION ADD_CLASS_SPELL
+	INT_VAR
+		level=~-1~ //Level of the spell.
+		type=~-1~ //1 = wizard spell, 2 = priest spell.
+		name=~-1~ //Strref of the spell's name.
+		description=~-1~ //Strref of the spell's description.
+	STR_VAR
+		resref=~~ //Resref of the spell.
+		scroll=~~ //Resref of the scroll for the spell (optional, if you want to restrict who can learn the spell from the scroll
+		icon=~~
+		groundicon=~~
+		class_include=~{}~ //A character with one of these classes (from CLASS.IDS) can learn the spell.
+		kit_include=~{}~ //A character with one of these kits can learn the spell, even if their class is not in the "class_include" list.
+		kit_exclude=~{}~ //A character with one of these kits cannot learn the spell, even if their class is in the "class_include" list.
+BEGIN
+	COPY_EXISTING ~%resref%.spl~ ~override~
+		PATCH_IF level = ~-1~ BEGIN
+			READ_LONG spelllevel level
+		END
+		PATCH_IF type = ~-1~ BEGIN
+			READ_SHORT spelltype type
+		END
+		PATCH_IF name = ~-1~ BEGIN
+			READ_LONG NAME1 name
+		END
+		PATCH_IF description = ~-1~ BEGIN
+			READ_LONG UNIDENTIFIED_DESC description
+		END
+		PATCH_IF (~%icon%~ STRING_EQUAL_CASE ~~) BEGIN
+			READ_ASCII 0x3A icon
+		END
+		PATCH_IF (~%groundicon%~ STRING_EQUAL_CASE ~~) BEGIN
+			READ_ASCII 0x76 groundicon
+		END
+		IF_EXISTS
+		BUT_ONLY_IF_IT_CHANGES
+
+	COPY_EXISTING ~m_meexsp.lua~ ~override~
+		REPLACE_TEXTUALLY CASE_SENSITIVE ~me_addSpellChoice = {~ ~me_addSpellChoice = {
+	{
+		["resref"] = "%resref%",
+		["scroll"] = "%scroll%",
+		["icon"] = "%icon%",
+		["groundicon"] = "%groundicon%",
+		["level"] = %level%,
+		["type"] = %type%,
+		["name"] = %name%,
+		["description"] = %description%,
+		["class_include"] = %class_include%,
+		["kit_include"] = %kit_include%,
+		["kit_exclude"] = %kit_exclude%,
+		                                               
+	},~
+		IF_EXISTS
+END
+
 END
 
 LANGUAGE
@@ -1869,10 +2172,10 @@ COPY_EXISTING ~sppr101.spl~ ~override~
 ~ replace_with= EVAL ~%stringduration60%
 ~ END
 
-LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr112~ match_name= EVAL ~%stringcursename%~ match_nameor= EVAL ~%stringbanename%~ RET spell_found_curse=spell_found END
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr1~ match_name= EVAL ~%stringcursename%~ match_nameor= EVAL ~%stringbanename%~ RET spell_found_curse=spell_res END
 
-ACTION_IF spell_found_curse = 1 BEGIN
-	COPY_EXISTING ~sppr112.spl~ ~override~
+ACTION_IF !(~%spell_found_curse%~ STRING_EQUAL_CASE ~~) BEGIN
+	COPY_EXISTING ~%spell_found_curse%.spl~ ~override~
 		LPF ALTER_SPELL_EFFECT INT_VAR duration_high=60 END
 		LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringduration%
 ~ replace_with= EVAL ~%stringduration60%
@@ -1891,10 +2194,10 @@ COPY_EXISTING ~sppr101.spl~ ~override~
 ~ replace_with= EVAL ~%stringcastingtime1%
 ~ END
 
-LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr112~ match_name= EVAL ~%stringcursename%~ match_nameor= EVAL ~%stringbanename%~ RET spell_found_curse=spell_found END
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr1~ match_name= EVAL ~%stringcursename%~ match_nameor= EVAL ~%stringbanename%~ RET spell_found_curse=spell_res END
 
-ACTION_IF spell_found_curse = 1 BEGIN
-	COPY_EXISTING ~sppr112.spl~ ~override~
+ACTION_IF !(~%spell_found_curse%~ STRING_EQUAL_CASE ~~) BEGIN
+	COPY_EXISTING ~%spell_found_curse%.spl~ ~override~
 		LPF ALTER_SPELL_HEADER INT_VAR speed=1 END
 		LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringcastingtime%
 ~ replace_with= EVAL ~%stringcastingtime1%
@@ -1917,10 +2220,10 @@ COPY_EXISTING ~sppr101.spl~ ~override~
 ~ replace_with= EVAL ~%stringcastingtime1%
 ~ END
 
-LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr112~ match_name= EVAL ~%stringcursename%~ match_nameor= EVAL ~%stringbanename%~ RET spell_found_curse=spell_found END
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr1~ match_name= EVAL ~%stringcursename%~ match_nameor= EVAL ~%stringbanename%~ RET spell_found_curse=spell_res END
 
-ACTION_IF spell_found_curse = 1 BEGIN
-	COPY_EXISTING ~sppr112.spl~ ~override~
+ACTION_IF !(~%spell_found_curse%~ STRING_EQUAL_CASE ~~) BEGIN
+	COPY_EXISTING ~%spell_found_curse%.spl~ ~override~
 		LPF ALTER_SPELL_EFFECT INT_VAR duration_high=60 END
 		LPF ALTER_SPELL_HEADER INT_VAR speed=1 END
 		LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringduration%
@@ -1941,15 +2244,17 @@ COPY_EXISTING ~sppr102.spl~ ~override~
 	LPF ALTER_EFFECT INT_VAR match_opcode=sleep opcode=charm2 parameter1=0 parameter2=1004 END
 	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=displayportraiticon END
 	SAY UNIDENTIFIED_DESC @11021
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_range= EVAL ~%stringrangefar%~ new_savingthrow= EVAL ~%stringsavingthrowspellnegates%~ END
 
 COPY_EXISTING ~sppr512.spl~ ~override~
 	READ_LONG splflags ulgiash
 	ulgiash&=0xFFFFFBFF
 	WRITE_LONG splflags ulgiash
-	LPF ALTER_SPELL_EFFECT INT_VAR duration_high=18 savebonus=(0 - 4) END
+	LPF ALTER_SPELL_EFFECT INT_VAR duration_high=24 savebonus=(0 - 4) END
 	LPF ALTER_EFFECT INT_VAR match_opcode=sleep opcode=charm2 parameter1=0 parameter2=1004 END
 	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=displayportraiticon END
 	SAY UNIDENTIFIED_DESC @15121
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowspellnegates%~ END
 
 
 BEGIN @7 REQUIRE_PREDICATE !(GAME_IS ~iwdee~) ~~ FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 DESIGNATED 11051
@@ -1997,6 +2302,7 @@ COPY_EXISTING ~sppr209.spl~ ~override~
 	LPF ADD_SPELL_EFFECT INT_VAR power=2 opcode=402 target=2 timing=0 resist_dispel=1 STR_VAR resource=~MESTATPR~ END
 	SAY NAME1 @4027
 	SAY UNIDENTIFIED_DESC @12091
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 
 COPY_EXISTING ~spwi208.spl~ ~override~
 	LPF ALTER_SPELL_HEADER INT_VAR speed=1 END
@@ -2007,9 +2313,13 @@ COPY_EXISTING ~spwi208.spl~ ~override~
 	SAY NAME1 @4027
 	SAY UNIDENTIFIED_DESC @22081
 
+
 COPY_EXISTING ~scrl92.itm~ ~override~
 	SAY NAME2 @4027
 	SAY IDENTIFIED_DESC @22081
+
+COPY_EXISTING ~spwi208.spl~ ~override~
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 
 BEGIN @11 FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 DESIGNATED 14021
 
@@ -2073,7 +2383,7 @@ COPY_EXISTING ~scrl2g.itm~ ~override~
 
 COPY ~MESpells/Restore_Animate_Dead~ ~override~
 
-BEGIN @13 DESIGNATED 25011
+BEGIN @13 FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 DESIGNATED 25011
 SUBCOMPONENT @12
 
 COPY ~MESpells/Restore_Animate_Dead~ ~override~
@@ -2097,6 +2407,74 @@ COPY_EXISTING ~mewi501.spl~ ~override/spwi501.spl~
 
 COPY_EXISTING ~scrl2d.itm~ ~override~
 	SAY IDENTIFIED_DESC @25011
+
+COPY_EXISTING ~spwi501.spl~ ~override~
+
+BEGIN @27 FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 REQUIRE_PREDICATE (FILE_EXISTS_IN_GAME ~SPPR726.SPL~ OR FILE_EXISTS_IN_GAME ~SPPR727.SPL~ OR FILE_EXISTS_IN_GAME ~SPCL923.SPL~ OR FILE_EXISTS_IN_GAME ~SPCL935.SPL~) @1003 DESIGNATED 17261
+
+COPY_EXISTING ~devaevil.cre~ ~override~
+	WRITE_SHORT currenthp 92
+	WRITE_SHORT maxhp 92
+	WRITE_SHORT naturalac 65535 //-1
+	WRITE_SHORT effectiveac 65535 //-1
+	WRITE_BYTE magicresistance 50
+	WRITE_BYTE thac0 9
+	WRITE_BYTE gender 4
+	WRITE_BYTE class classfightercleric
+	WRITE_BYTE levelfirstclass 12
+	WRITE_BYTE levelsecondclass 12
+	REMOVE_MEMORIZED_SPELLS
+	ADD_MEMORIZED_SPELL ~sppr102~ #0 ~priest~ (3)
+	ADD_MEMORIZED_SPELL ~sppr113~ #0 ~priest~ (4)
+	ADD_MEMORIZED_SPELL ~sppr203~ #1 ~priest~ (1)
+	ADD_MEMORIZED_SPELL ~sppr208~ #1 ~priest~ (2)
+	ADD_MEMORIZED_SPELL ~sppr214~ #1 ~priest~ (2)
+	ADD_MEMORIZED_SPELL ~sppr301~ #2 ~priest~ (3)
+	ADD_MEMORIZED_SPELL ~sppr307~ #2 ~priest~ (1)
+	ADD_MEMORIZED_SPELL ~sppr308~ #2 ~priest~ (1)
+	ADD_MEMORIZED_SPELL ~sppr314~ #2 ~priest~ (3)
+	ADD_MEMORIZED_SPELL ~sppr405~ #3 ~priest~ (2)
+	ADD_MEMORIZED_SPELL ~sppr411~ #3 ~priest~ (2)
+	ADD_MEMORIZED_SPELL ~sppr413~ #3 ~priest~ (1)
+	ADD_MEMORIZED_SPELL ~sppr503~ #4 ~priest~ (2)
+	ADD_MEMORIZED_SPELL ~sppr511~ #4 ~priest~ (1)
+	ADD_MEMORIZED_SPELL ~sppr512~ #4 ~priest~ (2)
+	ADD_MEMORIZED_SPELL ~sppr608~ #5 ~priest~ (2)
+	IF_EXISTS
+
+COPY_EXISTING ~devagood.cre~ ~override~
+	WRITE_SHORT currenthp 92
+	WRITE_SHORT maxhp 92
+	WRITE_SHORT naturalac 65535 //-1
+	WRITE_SHORT effectiveac 65535 //-1
+	WRITE_BYTE magicresistance 50
+	WRITE_BYTE thac0 9
+	WRITE_BYTE gender 4
+	WRITE_BYTE class classfightercleric
+	WRITE_BYTE levelfirstclass 12
+	WRITE_BYTE levelsecondclass 12
+	REMOVE_MEMORIZED_SPELLS
+	ADD_MEMORIZED_SPELL ~sppr101~ #0 ~priest~ (3)
+	ADD_MEMORIZED_SPELL ~sppr102~ #0 ~priest~ (3)
+	ADD_MEMORIZED_SPELL ~sppr103~ #0 ~priest~ (4)
+	ADD_MEMORIZED_SPELL ~sppr201~ #1 ~priest~ (2)
+	ADD_MEMORIZED_SPELL ~sppr212~ #1 ~priest~ (3)
+	ADD_MEMORIZED_SPELL ~sppr214~ #1 ~priest~ (2)
+	ADD_MEMORIZED_SPELL ~sppr307~ #2 ~priest~ (2)
+	ADD_MEMORIZED_SPELL ~sppr308~ #2 ~priest~ (1)
+	ADD_MEMORIZED_SPELL ~sppr313~ #2 ~priest~ (3)
+	ADD_MEMORIZED_SPELL ~sppr315~ #2 ~priest~ (3)
+	ADD_MEMORIZED_SPELL ~sppr317~ #2 ~priest~ (2)
+	ADD_MEMORIZED_SPELL ~sppr401~ #3 ~priest~ (3)
+	ADD_MEMORIZED_SPELL ~sppr404~ #3 ~priest~ (1)
+	ADD_MEMORIZED_SPELL ~sppr408~ #3 ~priest~ (1)
+	ADD_MEMORIZED_SPELL ~sppr417~ #3 ~priest~ (2)
+	ADD_MEMORIZED_SPELL ~sppr502~ #4 ~priest~ (2)
+	ADD_MEMORIZED_SPELL ~sppr503~ #4 ~priest~ (1)
+	ADD_MEMORIZED_SPELL ~sppr504~ #4 ~priest~ (1)
+	ADD_MEMORIZED_SPELL ~sppr512~ #4 ~priest~ (1)
+	ADD_MEMORIZED_SPELL ~sppr607~ #5 ~priest~ (2)
+	IF_EXISTS
 
 BEGIN @15 DESIGNATED 24131
 
@@ -2218,6 +2596,9 @@ COPY_EXISTING ~spwi615.spl~ ~override/spdr601.spl~
 	WRITE_SHORT spelltype 2
 	WRITE_LONG spellunusability 0
 
+COPY_EXISTING ~spwi615.spl~ ~override~
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowspellhalf%~ END
+
 BEGIN @24 DESIGNATED 29111
 
 ACTION_IF !(FILE_EXISTS_IN_GAME ~M__MEFUN.LUA~) BEGIN
@@ -2284,6 +2665,49 @@ COPY_EXISTING ~scrl9t.itm~ ~override~ ~mescrl9t.itm~ ~override~
 	SAY IDENTIFIED_DESC @29111
 	IF_EXISTS
 
+COPY_EXISTING ~spwi911.spl~ ~override~
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowbreathhalf%~ END
+
+BEGIN @28 DESIGNATED 29221
+
+COPY ~MESpells/New_Comet_Breath~ ~override~
+
+OUTER_SET innate_hla = 0
+
+COPY_EXISTING ~spwi920.spl~ ~override~
+	READ_SHORT spelltype thespelltype
+	PATCH_IF thespelltype = 4 BEGIN
+		innate_hla = 1
+	END
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~spwi922.spl~ ~override~
+	PATCH_IF innate_hla = 1 BEGIN
+		WRITE_SHORT spelltype 4
+		WRITE_LONG spelllevel 1
+		LPF ALTER_SPELL_HEADER INT_VAR location=4 END
+	END
+	SAY NAME1 @4030
+	SAY UNIDENTIFIED_DESC @29221
+	PATCH_IF MOD_IS_INSTALLED ~setup-spell_rev.tp2~ ~0~ BEGIN
+		WRITE_BYTE school evocation
+		LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_school= EVAL ~%stringschoolevocation%~ new_savingthrow= EVAL ~%stringsavingthrowbreathhalf%~ END
+	END
+
+COPY_EXISTING ~spwi925.spl~ ~override~
+	PATCH_IF innate_hla = 1 BEGIN
+		WRITE_SHORT spelltype 4
+		WRITE_LONG spelllevel 1
+		LPF ALTER_SPELL_HEADER INT_VAR location=4 END
+	END
+	SAY NAME1 @4029
+	SAY UNIDENTIFIED_DESC @29251
+	PATCH_IF MOD_IS_INSTALLED ~setup-spell_rev.tp2~ ~0~ BEGIN
+		WRITE_BYTE school conjuration
+		LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_school= EVAL ~%stringschoolconjuration%~ END
+	END
+
 BEGIN @17 DESIGNATED 26171
 
 COPY_EXISTING ~spwi617.spl~ ~override~ ~spwi908.spl~ ~override~
@@ -2292,7 +2716,6 @@ COPY_EXISTING ~spwi617.spl~ ~override~ ~spwi908.spl~ ~override~
 ~ replace_with= EVAL ~%stringcastingtimeinstant%
 ~ END
 
-
 BEGIN @18 DESIGNATED 14151
 
 COPY_EXISTING ~sppr415.spl~ ~override~ ~spwi424.spl~ ~override~
@@ -2300,6 +2723,18 @@ COPY_EXISTING ~sppr415.spl~ ~override~ ~spwi424.spl~ ~override~
 	LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringcastingtime%
 ~ replace_with= EVAL ~%stringcastingtimeinstant%
 ~ END
+
+BEGIN @29 FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 DESIGNATED 23011
+
+COPY_EXISTING ~spwi301.spl~ ~override~
+	READ_LONG spellflags ulgiash
+	ulgiash&=0xFFFFDFFF
+	WRITE_LONG spellflags ulgiash
+	BUT_ONLY_IF_IT_CHANGES
+
+BEGIN @30 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~768~ @1005 DESIGNATED 980
+
+COPY ~MESpells/Ranger_Paladin_Spells~ ~override~
 
 BEGIN @20 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1001 DESIGNATED 1000
 SUBCOMPONENT @19

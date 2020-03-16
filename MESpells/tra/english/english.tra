@@ -24,17 +24,160 @@
 @24=~Make Meteor Swarm bombard the area randomly with small meteors rather than a single area of effect~
 @25=~Improve Chain Lightning~
 @26=~Make it so Protection from Magical Weapons only lasts 3 rounds but Absolute Immunity lasts 5 rounds~
+@27=~Weaken devas but allow more than one to be summoned at once~
+@28=~Revise Comet and Dragon's Breath~
+@29=~Let Clairvoyance be cast indoors~
+@30=~Let Rangers and Paladins gain spells quicker and up to 6th-level spells~
 
 @1000=~Unnecessary as Spell Revisions is already installed~
 @1001=~The new spells are already added by High Power Baldur's Gate~
 @1002=~This component requires EEex to be installed~
+@1003=~This game has no spells that summon devas~
+@1004=~High Power Baldur's Gate already does this~
+@1005=~Improved Heart of Fury Mode already does this~
 
+@1500=~This mod adds a new 1st-level druid spell called Camouflage. However, B_Spells already adds a spell called Camouflage.
+
+What would you like to do?
+ 1] Read the descriptions of both spells, then choose again
+ 2] Keep the B_Spells version of Camouflage
+ 3] Replace it with the OlvynSpells version of Camouflage
+ 4] Install both versions of Camouflage~
+@1501=~B_Spells version:
+
+-----------------------
+Camouflage
+(Illusion)
+
+Level: 1
+Sphere: Elemental Earth
+Range: Personal
+Duration: Instant: 2 turns
+Casting Time: 0
+Saving Throw: None  
+
+This spell changes the coloration of the caster to match the surrounding environment, making <PRO_HIMHER> very difficult to see.
+
+When this spell is cast, the caster gains a +50% bonus to hide and move silently, and <PRO_HESHE> naturally blends in to the surrounding environment, allowing <PRO_HIMHER> to hide as a thief or ranger for the duration.
+
+This bonus increases by +5% at 2nd level, and +5% per 2 levels after that, to a maximum of +75% at 10th level.
+-----------------------
+
+OlvynSpells version:
+
+-----------------------
+Camouflage
+(Illusion)
+
+Level: 1
+Sphere: Animal
+Range: Touch
+Duration: 1 hour
+Casting Time: 1
+Area of Effect: 1 creature
+Saving Throw: None
+
+This spell gives the recipient the ability to blend into the environment with camouflage. Whenever the creature stands still for 2 seconds, they become effectively invisible through camouflage.
+-----------------------
+
+What would you like to do?
+ 1] Read the descriptions of both spells, then choose again
+ 2] Keep the B_Spells version of Camouflage
+ 3] Replace it with the OlvynSpells version of Camouflage
+ 4] Install both versions of Camouflage~
+@1502=~Please enter 1, 2, 3, or 4.~
+@1510=~This mod adds a new 2nd-level druid spell called Beast Sense. However, B_Spells adds a very similar spell called Animal Eyes.
+
+What would you like to do?
+ 1] Read the descriptions of both spells, then choose again
+ 2] Keep Animal Eyes and don't install Beast Sense
+ 3] Install Beast Sense and remove Animal Eyes
+ 4] Install Beast Sense in addition to Animal Eyes~
+@1511=~Animal Eyes
+(Divination)
+
+Level: 1
+Sphere: Animal
+Range: Touch
+Duration: 1 Turn
+Casting Time: 6
+Area of Effect: The caster
+
+When the caster completes this spell and touches an allied animal, <PRO_HESHE> gains the ability to see through that animal's eyes allowing <PRO_HIMHER> to see everything that that animal sees.  Additionally, <PRO_HESHE> has greater influence over the creature, urging it to be more aggressive in its attacks, granting it a +1 critical threat rolls.
+
+While this spell is in effect, the caster's body is helpless, as <PRO_HESHE> is helpless, and blind.
+-----------------------
+Beast Sense
+(Divination)
+
+Level: 2
+Sphere: Animal, Divination
+Range: Visual range of the caster
+Duration: 1 hour
+Casting Time: 2
+Area of Effect: 1 creature
+Saving Throw: None
+
+The Beast Sense spell allows the druid to see through the eyes of an animal and sense what it senses. For the duration of the spell or until dispelled, the party can see any creature or object that the animal can see. Beast Sense does not by itself allow the druid to control the animal, though it could be cast on a charmed animal for use as a scout. The spell has no effect on a creature that isn't an animal.
+-----------------------
+
+What would you like to do?
+ 1] Read the descriptions of both spells, then choose again
+ 2] Keep Animal Eyes and don't install Beast Sense
+ 3] Install Beast Sense and remove Animal Eyes
+ 4] Install Beast Sense in addition to Animal Eyes~
+@1520=~This mod adds a new 8th-level wizard spell called Extend Vision. However, B_Spells adds a very similar spell called Farseer.
+
+What would you like to do?
+ 1] Read the descriptions of both spells, then choose again
+ 2] Keep Farseer and don't install Extend Vision
+ 3] Install Extend Vision in addition to Farseer~
+@1521=~Farseer
+(Divination)
+
+Level: 1
+Range: Touch
+Duration: 1 hour
+Casting Time: 2
+Area of Effect: 1 creature
+Saving Throw: None
+
+The recipient of this spell gains extraordinary vision, able to see twice as far as before with clarity.  Additionally, they gain a +2 bonus to THAC0 with ranged weapons.
+-----------------------
+Extend Vision
+(Divination)
+
+Level: 8
+Range: Visual range of the caster
+Duration: 8 hours
+Casting Time: 2
+Area of Effect: 1 creature
+Saving Throw: None
+
+The spell Extend Vision allows the recipient to see much farther than <PRO_HESHE> could see before. The recipient will be able to see creatures that are too far away to return the gaze. More importantly, the recipient can target those creatures with spells and ranged attacks from far away. Extend Vision also makes the recipient immune to blindness. It lasts for 8 hours or until dispelled.
+-----------------------
+
+What would you like to do?
+ 1] Read the descriptions of both spells, then choose again
+ 2] Keep Farseer and don't install Extend Vision
+ 3] Install Extend Vision in addition to Farseer~
+@1522=~Please enter 1, 2, or 3.~
+
+@2400=~Fighter~
+@2401=~Mage~
 //This regexp should match the Casting Time: line in a spell description
 @3000=~Casting Time:.*~
 //This regexp should match the Duration: line in a spell description
 @3001=~Duration:.*~
 //This regexp should match the Saving Throw: line in a spell description
 @3002=~Saving Throw:.*~
+@3003=~School:.*~
+@3004=~Level:.*~
+@3005=~Range:.*~
+@3006=~Area of Effect:.*~
+@3026=~Area of Effect: \([0-9]+\) ?\-.*~
+@3007=~Sphere:.*~
+
 @3100=~Casting Time: 0~
 @3101=~Casting Time: 1~
 @3102=~Casting Time: 2~
@@ -46,6 +189,7 @@
 @3108=~Casting Time: 8~
 @3109=~Casting Time: 9~
 @3110=~Casting Time: 10~
+@3198=~Casting Time: 1 round~
 @3199=~Casting Time: Instant~
 
 @3200=~Duration: 1 turn~
@@ -54,20 +198,41 @@
 @3205=~Duration: 5 rounds~
 
 @3300=~Saving Throw: None~
+@3351=~Saving Throw: Spell negates~
+@3352=~Saving Throw: Death negates~
+@3353=~Saving Throw: Breath negates~
+@3354=~Saving Throw: Polymorph negates~
+@3355=~Saving Throw: Wands negates~
+@3361=~Saving Throw: Spell half~
+@3362=~Saving Throw: Death half~
+@3363=~Saving Throw: Breath half~
+@3364=~Saving Throw: Polymorph half~
+@3365=~Saving Throw: Wands half~
+@3371=~Saving Throw: Spell partial~
+@3372=~Saving Throw: Death partial~
+@3373=~Saving Throw: Breath partial~
+@3374=~Saving Throw: Polymorph partial~
+@3375=~Saving Throw: Wands partial~
 
-@3401=~(Abjuration)~
-@3402=~(Conjuration)~
-@3403=~(Divination)~
-@3404=~(Enchantment)~
-@3405=~(Illusion)~
-@3406=~(Evocation)~
-@3407=~(Necromancy)~
-@3408=~(Alteration)~
-@3412=~(Conjuration/Summoning)~
-@3414=~(Enchantment/Charm)~
-@3415=~(Illusion/Phantasm)~
-@3416=~(Invocation)~
-@3418=~(Transmutation)~
+@3400=~Any School~
+@3401=~Abjuration~
+@3402=~Conjuration~
+@3403=~Divination~
+@3404=~Enchantment~
+@3405=~Illusion~
+@3406=~Evocation~
+@3407=~Necromancy~
+@3408=~Alteration~
+@3409=~Wild Magic~
+@3410=~All~
+@3412=~Conjuration/Summoning~
+@3414=~Enchantment/Charm~
+@3415=~Illusion/Phantasm~
+@3416=~Invocation~
+@3418=~Transmutation~
+@3441=~Alteration, Evocation~
+@3450=~Universal~
+@3499=~School: ~
 
 @3501=~Level: 1~
 @3502=~Level: 2~
@@ -80,6 +245,22 @@
 @3509=~Level: 9~
 @3510=~Level: 10~
 @3511=~Level: Quest~
+@3560=~Level: Epic~
+
+@3600=~Range: Special~
+@3601=~Range: 0~
+@3602=~Range: Touch~
+@3605=~Range: Visual range of the caster~
+@3609=~Range: Special~
+@3651=~Range: Personal~
+@3652=~Range: Touch~
+@3653=~Range: Short~
+@3654=~Range: Medium~
+@3655=~Range: Long~
+
+@3701=~Area of Effect: The caster~
+@3751=~Area of Effect: Caster~
+@3755=~Area of Effect: \1' radius~
 
 //Part of the description of the spell Otiluke's Resilient Sphere
 @3900=~creature if it fails.*\. T~
@@ -205,6 +386,10 @@ Permanent Druid Spell IV allows the druid to cast a spell with an extremely long
 @4026=~Dragon Fear~
 @4027=~Identify Creature~
 @4028=~Chain Lightning~
+@4029=~Comet~
+@4030=~Dragon's Breath~
+@4031=~Animal Eyes~
+@4032=~Farseer~
 
 @11021=~Command
 (Enchantment/Charm)
@@ -265,7 +450,7 @@ Casting Time: 9
 Area of Effect: Special
 Saving Throw: None
 
-This spell creates the lowest of the undead monsters, skeletons, usually from the bones of dead humans, demihumans, or humanoids. The spell causes these remains to become animated and obey the simple verbal commands of the caster, regardless of how they communicated in life. The undead remain animated until they are destroyed in combat, 8 hours pass, or are turned; the magic cannot be dispelled. The priest can animate one skeleton for each experience level <HESHE> has attained~
+This spell creates the lowest of the undead monsters, skeletons, usually from the bones of dead humans, demihumans, or humanoids. The spell causes these remains to become animated and obey the simple verbal commands of the caster, regardless of how they communicated in life. The undead remain animated until they are destroyed in combat, 8 hours pass, or are turned; the magic cannot be dispelled. The priest can animate one skeleton for each experience level <HESHE> has attained.~
 @14021=~Animal Summoning I
 (Conjuration/Summoning)
 
@@ -294,9 +479,9 @@ By means of this spell, the caster calls a multitude of animals, each of which a
 (Enchantment/Charm)
 
 Level: 5
-Sphere: Charm 
+Sphere: Charm
 Range: Visual range of the caster 
-Duration: 3 rounds
+Duration: 4 rounds
 Casting Time: 1
 Area of Effect: 15-ft. radius
 Saving Throw: Neg.
@@ -325,6 +510,17 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 An Identify Creature spell enables the caster to learn useful information about a creature. The information will include the creature's level, class, Hit Points, Armor Class, base THAC0 (excluding THAC0 bonuses), attacks per round, attributes, resistances, saving throws, and various other effects. Some specific creatures will also display additional information.~
+@23011=~Clairvoyance
+(Divination)
+
+Level: 3
+Range: Special
+Duration: Instant
+Casting Time: 3
+Area of Effect: Current area
+Saving Throw: None
+
+The Clairvoyance spell empowers the wizard to see in <PRO_HISHER> mind the geographical features and buildings of the region <PRO_HESHE> is currently exploring. It extends to a great range, but cannot reveal creatures or their movements. This spell can be used both indoors and outdoors.~
 @23091=~Monster Summoning I
 (Conjuration/Summoning)
 
@@ -388,10 +584,33 @@ Range: 270 ft.
 Duration: 1 round
 Casting Time: 9
 Area of Effect: 15-ft. radius
-Saving Throw: None
+Saving Throw: 1/2
 
 When the caster utters the words to this powerful spell, <PRO_HESHE> calls upon powerful forces indeed. These forces pull down meteors from above, hurling them randomly at anyone in the area of effect. For every level of the caster, one meteor falls upon a random location within 15 feet of the target. All creatures within 8 feet of the meteor take 2d10 fire damage and 2d10 crushing damage, with a Save vs. Breath at -5 for half damage. Only a fraction of the meteors are likely to strike a specific creature.~
+@29221=~Dragon's Breath
+(Any School)
 
+Level: 10
+Range: 320 ft.
+Duration: Instant
+Casting Time: 3
+Area of Effect: 15-ft. radius
+Saving Throw: 1/2
+
+This spell causes a disembodied head of a red dragon to appear and breathe fire with the strength of an adult red dragon. The dragon's breath deals 20d10 damage. The victim can save vs. Breath Weapon to take half damage.
+
+This spell will not harm party members.~
+@29251=~Comet
+(Any School)
+
+Level: 10
+Range: 270 ft.
+Duration: Instant
+Casting Time: 8
+Area of Effect: 15-ft. radius
+Saving Throw: Special
+
+This spell is a more specialized version of Meteor Swarm. A huge meteor or comet strikes the earth, damaging all creatures in its path and sending out a powerful shockwave that knocks away all foes in the area of effect. Those knocked down must save vs. Paralysis or be stunned for 2 rounds. The comet itself does 10d12 fire damage and 10d12 crushing damage with no save. The caster is protected from the comet, but <PRO_HISHER> allies are not.~
 
 
 @30000=~Disarmed~
@@ -440,8 +659,7 @@ The creature jumps to the target point, which must be within range.~
 @30041=~You do not own the familiar.~
 @30042=~The spell <ME_FAMSES> will be released whenever your familiar hits a creature with an attack.~
 @30043=~Add a spell for your familiar to cast~
-@30044=~Level: 5
-Sphere: Protection~
+@30044=~Sphere: Protection~
 @30045=~Temporal Duel~
 @30046=~Temporal Duel
 This ability allows the Paladin to "duel" a creature of <PRO_HISHER> choice. For 1 turn, time is stopped for all creatures except the Paladin and the target creature. All other creatures are untargetable for the duration. The effect ends early if either the Paladin or the target creature dies. This ability cannot be used on allies.~
@@ -451,11 +669,63 @@ You have mastered the art of wearing armor while using your skills. This ability
 @30049=~Armored Casting~
 @30050=~Armored Casting
 You have mastered the art of wearing armor while casting spells. This ability lets you cast wizard spells while wearing any armor.~
+@30051=~Sphere: Divination~
+@30052=~wizard~
+@30053=~priest~
+@30054=~Levitating~
+@30055=~Flying~
+@30056=~Ethereal~
+@30057=~Increased Visual Range~
+@30058=~Strength~
+@30059=~Dexterity~
+@30060=~Constitution~
+@30061=~Intelligence~
+@30062=~Wisdom~
+@30063=~Charisma~
+@30064=~Perfection~
+@30065=~Spellshaping~
+@30066=~Healing Ineffective~
+@30067=~Prevented from Healing~
+@30068=~Critical Hit~
+@30069=~When caster makes a successful critical hit upon a creature.~
+@30070=~Myself~
+@30071=~The spell targets the caster.~
+@30072=~Hit Target~
+@30073=~The spell targets the recipient of the critical hit.~
+@30074=~Death~
+@30075=~When the creature dies.~
+@30076=~Add a spell to be released on a critical hit~
+@30077=~Each Hit~
+@30078=~Whenever familiar hits a creature with an attack.~
+@30079=~Familiar~
+@30080=~The spell targets the familiar.~
+@30081=~Hit Target~
+@30082=~The spell targets the recipient of the hit.~
+@30083=~Great Strength~
+@30084=~Great Strength
+The character's Strength score permanently increases by 1, to a maximum of 25. This ability can be taken multiple times.~
+@30085=~Great Dexterity~
+@30086=~Great Dexterity
+The character's Dexterity score permanently increases by 1, to a maximum of 25. This ability can be taken multiple times.~
+@30087=~Great Constitution~
+@30088=~Great Constitution
+The character's Constitution score permanently increases by 1, to a maximum of 25. This ability can be taken multiple times.~
+@30089=~Great Intelligence~
+@30090=~Great Intelligence
+The character's Intelligence score permanently increases by 1, to a maximum of 25. This ability can be taken multiple times.~
+@30091=~Great Wisdom~
+@30092=~Great Wisdom
+The character's Wisdom score permanently increases by 1, to a maximum of 25. This ability can be taken multiple times.~
+@30093=~Great Charisma~
+@30094=~Great Charisma
+The character's Charisma score permanently increases by 1, to a maximum of 25. This ability can be taken multiple times.~
 
 @31151=~Snake's Swiftness~
 @31152=~Hex~
 @31153=~Hunter's Mark~
 @31154=~Turning Weapon~
+@31155=~Repulse~
+@31156=~Camouflage~
 @31251=~Beast Sense~
 @31252=~Fiery Link~
 @31253=~Null Healing~
@@ -468,6 +738,8 @@ You have mastered the art of wearing armor while casting spells. This ability le
 @31355=~Guardian Magic~
 @31356=~Wind Shots~
 @31357=~Fly~
+@31358=~Familiar Spell~
+@31360=~Recall Party~
 @31451=~Disarm~
 @31452=~Forest's Blessing~
 @31453=~Turn Creature~
@@ -476,15 +748,20 @@ You have mastered the art of wearing armor while casting spells. This ability le
 @31552=~Wall of Force~
 @31553=~Protection from the Elements~
 @31554=~Ethereal Jaunt~
+@31555=~Critical Spell~
 @31652=~Drown~
 @31653=~Antiharm Shell~
 @31654=~Living Lightning~
+@31655=~Linked Spirit~
 @31751=~Power Word, Heal~
 @31753=~Nonrandom Zone~
 @31754=~Colossal Growth~
 @31755=~Enhance Attribute~
 @31756=~Contingent Resurrection~
 @31757=~Reanimate~
+@31758=~Mass Heal~
+@31759=~Omnipresence~
+@31760=~True Dispel~
 
 @32151=~Snake's Swiftness
 (Alteration)
@@ -534,6 +811,32 @@ Area of Effect: The caster
 Saving Throw: None
 
 Turning Weapon imbues the paladin's weapons with the power to turn undead. For the duration, whenever the paladin hits an undead creature with a melee or ranged attack, the undead is turned as if the paladin had used Turn Undead on it.~
+@32155=~Repulse
+(Abjuration)
+
+Level: 1
+Sphere: Guardian
+Range: 0
+Duration: Instant
+Casting Time: Instant
+Area of Effect: 15-ft. radius
+Saving Throw: None
+
+This simple spell releases a wave of force that blows back creatures. All non-allied creatures within 15 feet of the caster are knocked back for 1 second. There is no Saving Throw.
+
+Repulse has no casting time, can be cast immediately after another spell or ability, and can be cast while the game is paused.~
+@32156=~Camouflage
+(Illusion)
+
+Level: 1
+Sphere: Animal
+Range: Touch
+Duration: 1 hour
+Casting Time: 1
+Area of Effect: 1 creature
+Saving Throw: None
+
+This spell gives the recipient the ability to blend into the environment with camouflage. Whenever the creature stands still for 2 seconds, they become effectively invisible through camouflage.~
 @32251=~Beast Sense
 (Divination)
 
@@ -639,7 +942,7 @@ Range: Visual range of the caster
 Duration: 5 rounds
 Casting Time: 3
 Area of Effect: 1 creature
-Saving Throw: Neg. if enemy
+Saving Throw: Special
 
 Healing Curse causes a creature's attacks to heal rather than harm. If the recipient is an ally, there is no Saving Throw necessary; otherwise, the recipient may make a Save vs. Polymorph at -2 to avoid the effects. While affected by Healing Curse, any damage the creature would deal through attacks, spells or abilities is negated, and the creature that would have been damaged is instead healed by the amount of damage they would have taken.~
 @32355=~Guardian Magic
@@ -663,7 +966,7 @@ Range: 0
 Duration: 1 turn
 Casting Time: 2
 Area of Effect: Special
-Saving Throw: None
+Saving Throw: Special
 
 This spell imbues the caster's ranged weapons with the power of wind. Whenever the ranger hits a creature with a missile attack, that creature must Save vs. Breath at -2 or be blown back for several seconds.~
 @32357=~Fly
@@ -678,6 +981,30 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 This wondrous spell gives a creature the power to fly. For the duration, the creature can fly over normally impassable objects such as houses, walls, and rivers, but only as long as the creature is outdoors. The higher level the caster, the faster the creature's flying speed. The creature is also unaffected by ground-based spells such as Grease, Web, Entangle, and Earthquake.~
+@32358=~Familiar Spell
+(Conjuration)
+
+Level: 3
+Sphere: Combat, Summoning
+Range: Familiar must be in the same area
+Duration: 8 hours
+Casting Time: 8
+Area of Effect: The caster's familiar
+Saving Throw: None
+
+Familiar Spell imbues the Beastmaster's familiar with a spell. The caster chooses one of their 1st-level spells, consuming one use of that spell. For the next 8 hours, each time their familiar hits a creature with an attack, it instantly casts a copy of the chosen spell on the target. The spell is cast at the level of the familiar's owner, not at the level of the familiar. The familiar must be owned by the caster, and it must be in the same area as the caster when Familiar Spell is cast (and not in the caster's inventory).~
+@32360=~Recall Party
+(Conjuration/Summoning)
+
+Level: 3
+Sphere: Summoning
+Range: Infinite
+Duration: Instant
+Casting Time: 3
+Area of Effect: All party members
+Saving Throw: None
+
+Recall Party teleports all party members to the caster's side. The range is unlimited, and party members can be drawn from a different area, so long as they are on the same plane as the caster.~
 @32451=~Disarm
 (Enchantment)
 
@@ -762,6 +1089,18 @@ Area of Effect: The caster
 Saving Throw: None
 
 This spell turns the caster partially ethereal for a short period of time. While partially ethereal, the caster is immune to non-magical weapons, but is still tangible enough to be able to attack and cast spells. The caster can also move through walls while partially ethereal (unlike the Fly spell, this also works indoors). Simply click on a point to move to, and the caster will float to that point, bypassing normally impassable obstacles in the way.~
+@32555=~Critical Spell
+(Enchantment)
+
+Level: 5
+Sphere: Combat
+Range: 0
+Duration: 2 hours
+Casting Time: 5
+Area of Effect: The caster
+Saving Throw: None
+
+Critical Spell lets the caster repeatedly cast a spell through critical hits. The caster is prompted to store a single 1st-level spell, and the caster's weapons are temporarily imbued with that spell. For the duration, whenever the caster gets a critical hit on a creature, <PRO_HESHE> instantly casts a copy of the stored spell. This will not happen if the critical hit is averted. The caster can also store a 2nd-level spell if they are level 20 or higher, and an additional spell level higher for every ten levels after 20.~
 @32652=~Drown
 (Alteration)
 
@@ -798,6 +1137,18 @@ Area of Effect: 15-ft. radius
 Saving Throw: 1/2
 
 Living Lightning surrounds the caster in a aura of lightning that periodically shoots lightning bolts at enemies. Each round for the duration, the caster automatically releases a lightning bolt at a random enemy within 15 feet. Creatures in the bolt's path take 1d6 damage per 2 caster levels, with a Save vs. Spell for half.~
+@32655=~Linked Spirit
+(Necromancy)
+
+Level: 6
+Sphere: Necromantic
+Range: Touch
+Duration: 1 round/level
+Casting Time: 9
+Area of Effect: 1 creature
+Saving Throw: None
+
+Linked Spirit creates a spirit resembling the target creature. The spirit is linked to the target such that almost any spell or effect, including damage from weapons, that would be applied to the spirit is also applied to the target. The spirit itself is harmless.~
 @32751=~Power Word, Heal
 (Necromancy)
 	
@@ -870,6 +1221,41 @@ Area of Effect: Nearest corpse in 3-ft. radius
 Saving Throw: None
 
 This spell "resurrects" the target as an undead creature under the caster's control. Reanimate cannot target a dead creature directly; it should be cast targeting the location of a corpse. The nearest dead creature to the target point, excluding undead, constructs, most extraplanar creatures, and creatures higher level than the caster, will be reanimated. The reanimated creature becomes undead, but can still use its abilities and spells. It is controlled by the caster until destroyed. Reanimate cannot be cast by good characters.~
+@32758=~Mass Heal
+(Necromancy)
+
+Level: Quest
+Sphere: Healing
+Range: Visual range of the caster
+Duration: Permanent
+Casting Time: 15
+Area of Effect: 15-ft. radius
+Saving Throw: None
+
+Mass Heal applies the effects of Heal to all allies in the area of effect. Creatures affected regain all hit points, and are cured of disease, blindness, deafness, and feeblemindedness.~
+@32759=~Omnipresence
+(Alteration)
+
+Level: 7
+Range: Touch
+Duration: 12 rounds
+Casting Time: 4
+Area of Effect: 1 creature
+Saving Throw: None
+
+The spell Omnipresence spreads the essence of the target creature throughout the area, allowing the creature to do actions at longer range than normal. For the duration or until dispelled, the creature can attack any creature in sight with any weapon, even with melee weapons. The creature can also target other creatures with touch spells at long range, and can cast spells at a target outside their visual range. However, these effects also go the other way. An omnipresent creature can be attacked with melee weapons and targeted by touch spells at long range. Since Omnipresence makes the creature's form less solid, the creature can move through other creatures while under the effects of the spell.~
+@32760=~True Dispel
+(Abjuration)
+
+Level: 7
+Sphere: Protection
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 6 
+Area of Effect: 15-ft. radius
+Saving Throw: None
+
+A more powerful version of Dispel Magic, True Dispel removes all dispellable effects from creatures in the area of effect. Unlike Dispel Magic, True Dispel has a 100% chance of succeeding, regardless of level.~
 
 @33151=~Disruptive Surge~
 @33152=~Inertia~
@@ -885,7 +1271,8 @@ This spell "resurrects" the target as an undead creature under the caster's cont
 @33255=~Null Healing~
 @33256=~Specific Spell Immunity~
 @33257=~Levitate~
-@33351=~Bounce Spell~
+@33258=~Bounce Spell~
+@33351=~Absorb Spell~
 @33352=~Fly~
 @33353=~Displacement~
 @33354=~Terror~
@@ -893,6 +1280,7 @@ This spell "resurrects" the target as an undead creature under the caster's cont
 @33356=~Legend Lore~
 @33357=~Glyph of Spell Storing~
 @33358=~Familiar Spell~
+@33359=~Throw~
 @33451=~Wall of Fire~
 @33452=~Phantasmal Killer~
 @33453=~Ghoulish Feast~
@@ -901,8 +1289,9 @@ This spell "resurrects" the target as an undead creature under the caster's cont
 @33456=~Copy Spell~
 @33457=~Linked Portals~
 @33458=~Vampiric Link~
+@33459=~Recall Party~
 @33551=~Life Transfer~
-@33552=~Absorb Spell~
+@33552=~Steal Spells~
 @33554=~Ball Lightning~
 @33555=~Major Mirror Image~
 @33556=~Skeleton Horde~
@@ -911,7 +1300,7 @@ This spell "resurrects" the target as an undead creature under the caster's cont
 @33559=~Ethereal Jaunt~
 @33560=~Slime Drop~
 @33561=~Baleful Teleport~
-//@33562=~Critical Sequencer~
+@33562=~Critical Spell~
 @33563=~Warrior Simulacrum~
 @33564=~Wall of Force~
 @33651=~Isaac's Greater Missile Storm~
@@ -922,6 +1311,7 @@ This spell "resurrects" the target as an undead creature under the caster's cont
 @33656=~Mass Charm~
 @33657=~Mind Fog~
 @33658=~Empower Familiar~
+@33659=~Bardic Sequencer~
 @33751=~Mass Cast~
 @33752=~Far Sequencer~
 @33753=~Protection from Time Stop~
@@ -929,6 +1319,8 @@ This spell "resurrects" the target as an undead creature under the caster's cont
 @33755=~Death Trigger~
 @33756=~Critical Sequencer~
 @33757=~Reanimate~
+@33758=~Rewind Time~
+@33759=~Extraordinary Luck~
 @33851=~Enhance Attribute~
 @33852=~Globe of Invisibility~
 @33853=~Otto's Irresistible Spin~
@@ -952,6 +1344,9 @@ This spell "resurrects" the target as an undead creature under the caster's cont
 @33959=~Damage Turning~
 @33960=~Eclectic Recall~
 @33961=~Teleport Step~
+@33962=~Necropotence~
+@33963=~Mental Agility~
+@33964=~Freezing Wave~
 
 @34151=~Disruptive Surge
 (Wild Magic)
@@ -1117,7 +1512,7 @@ Area of Effect: 1 creature
 Saving Throw: Neg.
 
 This spell suspends a creature in midair. For the duration, the target is stuck in midair and cannot move unless it can fly. While levitating, it is almost impossible for the target to hit or be hit by other creatures with melee weapons. The target is also unaffected by ground-based spells such as Grease, Entangle, Web and Earthquake. If the target is an ally, there is no Saving Throw necessary; otherwise, the target may make a Save vs. Polymorph at -3 to avoid the effects.~
-@34351=~Bounce Spell
+@34258=~Bounce Spell
 (Abjuration)
 
 Level: 3
@@ -1127,9 +1522,18 @@ Casting Time: 1
 Area of Effect: The caster
 Saving Throw: None
 
-This simple abjuration should be cast when the wizard sees another spellcaster in the midst of casting a spell at <PRO_HIMHER>. If the wizard would be hit by a spell within 2 rounds of casting, <PRO_HESHE> will be unaffected, and the incoming spell will be reflected back at its caster. Bounce Spell expires if it reflects a spell, or after 2 rounds have passed. Bounce Spell will not protect the caster from a Dispel Magic. However, it will not be affected by a Dispel Magic, either.
+This simple abjuration should be cast when the wizard sees another spellcaster in the midst of casting a spell at <PRO_HIMHER>. If the wizard would be hit by a spell within 2 rounds of casting, <PRO_HESHE> will be unaffected, and the incoming spell will be reflected back at its caster. Bounce Spell expires if it reflects a spell, or after 2 rounds have passed. Bounce Spell will not protect the caster from a Dispel Magic. However, it will not be affected by a Dispel Magic, either.~
+@34351=~Absorb Spell
+(Abjuration)
 
-This spell absorbs spells cast from scrolls and innate spell-like abilities, but will not protect against area effect spells that are not centered directly upon the wizard (such as Fireball), or stationary area effect spells (such as Cloudkill and Stinking Cloud).~
+Level: 5
+Range: 0
+Duration: 2 rounds
+Casting Time: 1
+Area of Effect: The caster
+Saving Throw: None
+
+This simple but powerful spell should be cast when the wizard sees another spellcaster in the midst of casting a spell at <PRO_HIMHER>. It blocks the first spell (of any level) that hits the caster within the next 2 rounds. If a spell is blocked this way, the wizard absorbs its power, regaining a previously cast spell whose level is less than or equal to the level of the spell absorbed. For example, if the wizard is hit by a Finger of Death (7th-level spell), <PRO_HESHE> gets seven spell levels back-<PRO_HESHE> will regain one spell up to 7th level in power.~
 @34352=~Fly
 (Alteration)
 
@@ -1162,7 +1566,7 @@ Casting Time: 3
 Area of Effect: 15-ft. radius
 Saving Throw: Neg.
 
-This is the necromantic version of the second-level spell Horror. All creatures in the area of effect, friend or foe, must save vs wands at -4 or run away in fear for 1 turn. Unlike the spell Horror, Terror actually physically harms targets' minds. Although this spell affects allies, this does not bother the necromancer, for <PRO_HISHER> allies are undead.~
+This is the necromantic version of the second-level spell Horror. All creatures in the area of effect, friend or foe, must save vs. wands at -4 or run away in fear for 1 turn. Unlike the spell Horror, Terror actually physically harms targets' minds. Although this spell affects allies, this does not bother the necromancer, for <PRO_HISHER> allies are undead.~
 @34355=~Control Slime
 (Enchantment/Charm)
 
@@ -1195,7 +1599,7 @@ Casting Time: 5
 Area of Effect: 12-ft. radius
 Saving Throw: None
 
-A Glyph of Spell Storing is a ward which stores a spell and releases it upon each hostile creature that enters the warded area. When this spell is cast, the caster stores a single 1st-level spell in the glyph, which is placed on a circular, 9-ft. radius area of the caster's choice. When a hostile creature passes within 9 feet of the glyph, it explodes, releasing a copy of the stored spell on each hostile creature within 12 feet.~
+A Glyph of Spell Storing is a ward which stores a spell and releases it upon each hostile creature that enters the warded area. When this spell is cast, the caster stores a single 1st-level spell in the glyph, which is placed on a circular, 9-ft. radius area of the caster's choice. When a hostile creature passes within 9 feet of the glyph, it explodes, releasing a copy of the stored spell on each hostile creature within 12 feet. A caster who is level 10 or higher may also store 2nd-level spells in the glyph.~
 @34358=~Familiar Spell
 (Conjuration)
 
@@ -1207,6 +1611,17 @@ Area of Effect: The caster's familiar
 Saving Throw: None
 
 Familiar Spell imbues the caster's familiar with a spell. The caster chooses one of their 1st-level spells, consuming one use of that spell. For the next 8 hours, each time their familiar hits a creature with an attack, it instantly casts a copy of the chosen spell on the target. The spell is cast at the level of the familiar's owner, not at the level of the familiar. The familiar must be owned by the caster, and it must be in the same area as the caster when Familiar Spell is cast (and not in the caster's inventory).~
+@34359=~Throw
+(Alteration)
+
+Level: 3
+Range: Touch
+Duration: Instant
+Casting Time: 2
+Area of Effect: 1 creature
+Saving Throw: 1/2
+
+This spell throws the target into the air with incredible force. The target is knocked back as it is sent hurtling through the air. When it lands or hits the ceiling, it takes crushing damage based on how fast it was moving right before the collision, up to 1d6 per caster level. If the target succeeds on a Save vs. Polymorph at -2, it is thrown with less force and will only take about half damage.~
 @34451=~Wall of Fire
 (Evocation)
 
@@ -1277,7 +1692,7 @@ This spell allows the wizard to cast a copy of a spell another creature is casti
 (Conjuration)
 
 Level: 4
-Range: Visual range of the caster
+Range: 10000 ft.
 Duration: 1 turn
 Casting Time: 4
 Area of Effect: 5-ft. radius for each portal
@@ -1295,6 +1710,17 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 Vampiric Link lets the caster absorb any life energy the target loses. For the duration, whenever the target creature takes damage, the caster regains that many Hit Points. The caster can cast Vampiric Link on allies or enemies, but not on <PRO_HIMHER>self. A single caster can establish Vampiric Links on multiple creatures, but no one creature can be affected by more than one Vampiric Link at once. Undead and constructs cannot be the target of this spell, but they can still cast it on other creatures.~
+@34459=~Recall Party
+(Conjuration/Summoning)
+
+Level: 3
+Range: Infinite
+Duration: Instant
+Casting Time: 3
+Area of Effect: All party members
+Saving Throw: None
+
+Recall Party teleports all party members to the caster's side. The range is unlimited, and party members can be drawn from a different area, so long as they are on the same plane as the caster.~
 @34551=~Life Transfer
 (Necromancy)
 
@@ -1306,17 +1732,19 @@ Area of Effect: 1 creature
 Saving Throw: Neg.
 
 A Life Transfer allows the caster to exchange <PRO_HISHER> life force with that of another creature, even if that creature is unwilling. If the target fails a Save vs. Polymorph at -4, its current HP is swapped with the caster's current HP. This exchange will not bring the caster above <PRO_HISHER> maximum HP total.~
-@34552=~Absorb Spell
-(Abjuration)
+@34552=~Steal Spells
+(Alteration)
 
 Level: 5
-Range: 0
-Duration: 2 rounds
-Casting Time: 1
-Area of Effect: The caster
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 4
+Area of Effect: 1 creature
 Saving Throw: None
 
-This simple but powerful spell should be cast when the wizard sees another spellcaster in the midst of casting a spell at <PRO_HIMHER>. It blocks the first spell (of any level) that hits the caster within the next 2 rounds. If a spell is blocked this way, the wizard absorbs its power, regaining a previously cast spell whose level is less than or equal to the level of the spell absorbed. For example, if the wizard is hit by a Finger of Death (7th-level spell), <PRO_HESHE> gets seven spell levels back-<PRO_HESHE> will regain one spell up to 7th level in power.~
+This spell steals memorized spells from the target and grants their spell slots to the caster. For every 3 caster levels, the target loses one memorized spell of the highest level possible. For each spell drained this way, the caster regains a previously-cast spell of a level less than or equal to the level of the stolen spell (though Steal Spells itself cannot be regained this way). There is no Saving Throw, though Magic Resistance may prevent the theft.
+
+If the caster has a Pick Pockets skill, they may steal an additional spell for every 50 Pick Pockets they have.~
 @34554=~Ball Lightning
 (Evocation)
 
@@ -1405,19 +1833,17 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 This spell teleports a creature to another area against its will. When cast, the target is pulled through a portal and whisked to a random area. There is no Saving Throw against this spell, though it does not count as defeating the creature and will not give experience to the party. The creature is thereafter immune to Baleful Teleport for 1 year. Baleful Teleport has no effect on party members.~
-/*
-@34562=~Critical Sequencer
+@34562=~Critical Spell
 (Enchantment)
 
 Level: 5
 Range: 0
-Duration: 1 turn
+Duration: 2 hours
 Casting Time: 5
 Area of Effect: The caster
 Saving Throw: None
 
-Critical Sequencer lets the caster repeatedly cast a spell through critical hits. The caster is prompted to store a single 1st-level spell, and the caster's weapons are temporarily imbued with that spell. For the duration, whenever the caster gets a critical hit on a creature, <PRO_HESHE> instantly casts a copy of the stored spell on that creature. This will not happen if the critical hit is averted.~
-*/
+Critical Spell lets the caster repeatedly cast a spell through critical hits. The caster is prompted to store a single 1st-level spell, and the caster's weapons are temporarily imbued with that spell. For the duration, whenever the caster gets a critical hit on a creature, <PRO_HESHE> instantly casts a copy of the stored spell. This will not happen if the critical hit is averted. The caster can also store a 2nd-level spell if they are level 20 or higher, and an additional spell level higher for every ten levels after 20.~
 @34563=~Warrior Simulacrum
 (Illusion/Phantasm)
 
@@ -1528,6 +1954,17 @@ Area of Effect: The caster's familiar
 Saving Throw: None
 
 This spell greatly strengthens the caster's familiar. For the duration, the familiar gains +1 to hit and damage per 2 caster levels, and an additional attack per round. In addition, the familiar's physical damage resistances are set to 75% (replacing their normal values). The familiar must be owned by the caster, and it must be in the same area as the caster (and not in the caster's inventory).~
+@34659=~Bardic Sequencer
+(Enchantment)
+
+Level: 6
+Range: 0
+Duration: 4 hours
+Casting Time: 8
+Area of Effect: Special
+Saving Throw: None
+
+Bardic Sequencer lets the bard imbue their music with a spell. In casting Bardic Sequencer, the bard stores a spell of 2nd-level or lower. Each round thereafter that the bard sings their bard song, there is a chance to cast the stored spell on each creature affected by the song. The chance is equal to 2% per level.~
 @34751=~Mass Cast
 (Alteration)
 
@@ -1608,7 +2045,32 @@ Casting Time: 9
 Area of Effect: Nearest corpse in 3-ft. radius
 Saving Throw: None
 
-This spell "resurrects" the target as an undead creature under the caster's control. Reanimate cannot target a dead creature directly; it should be cast targeting the location of a corpse. The nearest dead creature to the target point, excluding undead, constructs, most extraplanar creatures, and creatures higher level than the caster, will be reanimated. The reanimated creature becomes undead, but can still use its abilities and spells. It is controlled by the caster until destroyed.~@34851=~Enhance Attribute
+This spell "resurrects" the target as an undead creature under the caster's control. Reanimate cannot target a dead creature directly; it should be cast targeting the location of a corpse. The nearest dead creature to the target point, excluding undead, constructs, most extraplanar creatures, and creatures higher level than the caster, will be reanimated. The reanimated creature becomes undead, but can still use its abilities and spells. It is controlled by the caster until destroyed.~
+@34758=~Rewind Time
+(Alteration)
+
+Level: 7
+Range: 0
+Duration: -2 rounds
+Casting Time: 1
+Area of Effect: The caster
+Saving Throw: None
+
+This spell allows the caster to go back two rounds in time. The caster's HP is restored to what it was two rounds ago, as is their location in the area. The caster also regains the magical effects <PRO_HESHE> had two rounds ago, while losing effects gained in the past two rounds (including harmful status effects). Rewind Time does not restore memorized spells expended in the last two rounds.~
+@34759=~Extraordinary Luck
+(Enchantment)
+
+Level: 7
+Range: Visual range of the caster
+Duration: 7 rounds
+Casting Time: 7
+Area of Effect: 1 creature
+Saving Throw: None
+
+"Extraordinary" is definitely an understatement of the sheer amount of good fortune this spell gives the recipient. It is almost possible to *see* the way reality is warped as it accommodates the newfound luck of the individual.
+
+For 7 rounds, the target gains 1 point of luck, a +1 bonus to all saving throws, and a +5% bonus to all thieving skills for every level of the caster.~
+@34851=~Enhance Attribute
 (Alteration)
 
 Level: 8
@@ -1725,7 +2187,7 @@ Level: 8
 Range: 30 ft.
 Duration: 1 round
 Casting Time: 5
-Area of Effect: 2-ft. by 30-ft. jet
+Area of Effect: 2 ft. by 30 ft. jet
 Saving Throw: None
 
 Upon casting Polar Ray, the caster emits a powerful beam of frost at the target. The target and all creatures between the caster and the target take 12d6 cold damage. The polar ray deals the same damage again half a round later to the target and anyone who is still in the ray's path.~
@@ -1874,6 +2336,39 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 Among the greatest teleportation spells, Teleport Step lets the recipient teleport anywhere in the area any number of times. The recipient must simply start moving toward a destination, and they will instantly find themself at that destination.~
+@34962=~Necropotence
+(Necromancy)
+
+Level: 10
+Range: 0
+Duration: 8 hours
+Casting Time: 9
+Area of Effect: The caster
+Saving Throw: None
+
+Necropotence allows the wizard to draw the power for their spells through their own life force. For the duration, whenever the character would cast a spell, they immediately regain the cast spell but also take 3 damage per level of the spell. This damage cannot be prevented by any resistances, but it will not interrupt the spell.~
+@34963=~Mental Agility
+(Enchantment)
+
+Level: 10
+Range: 0
+Duration: 1 round/3 levels
+Casting Time: 0
+Area of Effect: The caster
+Saving Throw: None
+
+Mental Agility drastically shortens the time necessary to cast spells. The wizard's casting time is reduced by 1 per 3 caster levels for the duration. Mental Agility cannot be combined with Improved Alacrity.~
+@34964=~Freezing Wave
+(Evocation)
+
+Level: 10
+Range: 0
+Duration: Instant
+Casting Time: 15
+Area of Effect: 60-ft. radius
+Saving Throw: 1/2
+
+When cast, this spell creates an enormous wave of frost emanating from the caster in all directions. Creatures within 60 feet take 1d10 cold damage per level (Save vs. Breath at -4 for half). The caster is unaffected.~
 
 @35327=~I am the channel through which your wish shall be fulfilled. You may ask for a wish I can repeat, or you may ask for a wish that will happen once only. Decide.~
 @35328=~Choose wisely then, as I can perform each of these tasks once and once only.~

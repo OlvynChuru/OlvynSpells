@@ -786,7 +786,7 @@ Casting Time: 6
 Area of Effect: 1 creature
 Saving Throw: Neg.
 
-This spell curses the target to take more magical and elemental damage. The target must make a Save vs. Polymorph. On a failure, the target is cursed for 6 rounds. During that time, whenever the target would be dealt fire, cold, electricity, acid, or magic damage, it takes an additional 6 damage of that type. Hex is especially effective when combined with spells that deal damage multiple times, such as Magic Missile or Melf's Acid Arrow. Hex can only be cast by evil-aligned characters.~
+This spell curses the target to take more magical and elemental damage. The target must make a Save vs. Polymorph. On a failure, the target is cursed for 6 rounds. During that time, whenever the target would be dealt fire, cold, electricity, acid, or magic damage, it takes an additional 6 damage of that type. Hex is especially effective when combined with spells that deal damage multiple times, such as Writhing Fog. Hex can only be cast by evil-aligned characters.~
 @32153=~Hunter's Mark
 (Divination)
 
@@ -1515,7 +1515,7 @@ This spell suspends a creature in midair. For the duration, the target is stuck 
 @34258=~Bounce Spell
 (Abjuration)
 
-Level: 3
+Level: 2
 Range: 0
 Duration: 2 rounds
 Casting Time: 1
@@ -1526,7 +1526,7 @@ This simple abjuration should be cast when the wizard sees another spellcaster i
 @34351=~Absorb Spell
 (Abjuration)
 
-Level: 5
+Level: 3
 Range: 0
 Duration: 2 rounds
 Casting Time: 1

@@ -352,14 +352,15 @@ LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@33962) STR_VAR icon=~MEWI962D~ RET 
 LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@33963) STR_VAR icon=~MEWI963D~ RET icon_index_mewi963=icon_index END
 
 ACTION_IF !(FILE_EXISTS_IN_GAME ~7eyes.2da~) BEGIN
-	COPY_EXISTING ~MESpells/no_overwrite/me7eyes.2da~ ~override/7eyes.2da~
-		REPLACE 99999 @30066
+	COPY_EXISTING ~HighPower/no_overwrite/me7eyes.2da~ ~override/7eyes.2da~
+//		REPLACE 99999 @30066
 END ELSE BEGIN
 	COPY_EXISTING ~7eyes.2da~ ~override~
 		COUNT_2DA_COLS numcolumns
 		COUNT_2DA_ROWS numcolumns numrows
 		INSERT_2DA_ROW numrows numcolumns ~MENULLHEAL   214        99999      17*0x0      17*0x1      17*0x2      98           *            *          *          *          *~
-		REPLACE 99999 @30066
+//		REPLACE 99999 @30066
+		UNLESS ~MENULLHEAL~
 END
 
 LAF ADD_ANIMATION INT_VAR minSlot=0xD000 STR_VAR directory=~MESpells/animations~ ini=~meanibnu~ RET slotbirdnullcreaturedecimal=slotDecimal END
@@ -2436,8 +2437,8 @@ COPY_EXISTING ~mewi258.spl~ ~override/%mewi258%.spl~
 	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 opcode=403 parameter1=1 parameter2=9 savingthrow=0x6C0000 special=1 STR_VAR match_resource=~mewi258b~ resource=~EXSPLDEF~ END
 	LPF CLONE_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=403 opcode=198 parameter1=0 parameter2=121 savingthrow=0 special=0 END
 	LPF DELETE_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=spellturning END
-	SAY NAME1 @33351
-	SAY UNIDENTIFIED_DESC @34351
+	SAY NAME1 @33258
+	SAY UNIDENTIFIED_DESC @34258
 
 COPY_EXISTING ~mewi258b.spl~ ~override/%mewi258%f.spl~
 	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi258~ resource= EVAL ~%mewi258%~ END

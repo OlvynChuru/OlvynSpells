@@ -3492,6 +3492,7 @@ function MELINKVO(originatingEffectData, effectData, creatureData)
 			end
 		end)
 		if not EEex_IsSprite(targetID) or not EEex_IsSprite(linkID) then return false end
+		local opcode = EEex_ReadDword(effectData + 0xC)
 		local timing = EEex_ReadDword(effectData + 0x20)
 		local resist_dispel = EEex_ReadDword(effectData + 0x58)
 		local damage = EEex_ReadDword(effectData + 0x18)
@@ -3500,7 +3501,7 @@ function MELINKVO(originatingEffectData, effectData, creatureData)
 		local dicesize = EEex_ReadDword(effectData + 0x38)
 		if (opcode == 12 or opcode == 17) and damage_method == 0 then
 			for i = 1, dicenumber, 1 do
-				damage = damage + damage
+				damage = damage + math.random(dicesize)
 			end
 			dicenumber = 0
 			dicesize = 0

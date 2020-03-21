@@ -100,6 +100,7 @@ END
 COPY_EXISTING ~ui.menu~ ~override~
 	REPLACE_TEXTUALLY CASE_INSENSITIVE ~--reload language~ ~--reload language
 function me_canLearnSpell()
+	if id <= 0 then return end
 	%get_class_from_inventory%
 	local foundSpell = false
 	local canLearnSpell = false
@@ -173,9 +174,11 @@ COPY_EXISTING ~ui.menu~ ~override~
 		end
 		%get_class_from_record%
 		local doAddSpell = false
+		local me_isAlreadyAvailable = false
 		local me_isKnown = false
 		for k, v in ipairs(me_addSpellChoice) do
 			doAddSpell = false
+			me_isAlreadyAvailable = false
 			if v.level == chargen.currentSpellLevelChoice and v.type == me_spellChoiceType and v.resref ~= '' then
 				for k2, v2 in ipairs(v.class_include) do
 					if v2 == me_realClass then
@@ -190,6 +193,13 @@ COPY_EXISTING ~ui.menu~ ~override~
 				for k2, v2 in ipairs(v.kit_exclude) do
 					if v2 == me_realKit then
 						doAddSpell = false
+					end
+				end
+				if not doAddSpell then
+					for k2, v2 in ipairs(chargen.choose_spell) do
+						if v2.key == v.resref then
+							table.remove(chargen.choose_spell, k2)
+						end
 					end
 				end
 			end
@@ -213,7 +223,14 @@ COPY_EXISTING ~ui.menu~ ~override~
 				elseif me_isKnown then
 					spellBook[v.level][v.resref].known = true
 				end
-				table.insert(chargen.choose_spell, {['known'] = me_isKnown, ['enabled'] = false, ['key'] = v.resref})
+				for k2, v2 in ipairs(chargen.choose_spell) do
+					if v2.key == v.resref then
+						me_isAlreadyAvailable = true
+					end
+				end
+				if not me_isAlreadyAvailable then
+					table.insert(chargen.choose_spell, {['known'] = me_isKnown, ['enabled'] = false, ['key'] = v.resref})
+				end
 			end
 		end
 
@@ -3693,6 +3710,8 @@ COPY_EXISTING ~mewi552.spl~ ~override/%mewi552%.spl~
 		LPF ALTER_EFFECT INT_VAR header=i match_opcode=402 parameter1=((i + 1) / 3) STR_VAR match_resource=~MESTEALS~ END
 		numheaders = numheaders + 1
 	END
+	LPF ALTER_EFFECT INT_VAR header=0 match_opcode=402 parameter1=1 STR_VAR match_resource=~MESTEALS~ END
+	LPF ALTER_EFFECT INT_VAR header=1 match_opcode=402 parameter1=1 STR_VAR match_resource=~MESTEALS~ END
 	SAY NAME1 @33552
 	SAY UNIDENTIFIED_DESC @34552
 
@@ -5128,7 +5147,7 @@ COPY_EXISTING ~mewi758.spl~ ~override/%mewi758%.spl~
 
 COPY_EXISTING_REGEXP ~clab[a-zA-Z][a-zA-Z]0[0-9]\.2da~ ~override~
 	COUNT_2DA_ROWS 1 numrows_2
-	INSERT_2DA_ROW numrows_2 1 ~ME_TIMELG   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        AP_METIMELG ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+	INSERT_2DA_ROW numrows_2 1 ~ME_TIMELG   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        AP_METIMELG ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****       ~
 	IF_EXISTS
 	UNLESS ~ME_TIMELG~
 
@@ -5139,7 +5158,7 @@ COPY_EXISTING ~kitlist.2da~ ~override~
 		INNER_ACTION BEGIN
 			COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
 				COUNT_2DA_ROWS 1 numrows_2
-				INSERT_2DA_ROW numrows_2 1 ~ME_TIMELG   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        AP_METIMELG ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+				INSERT_2DA_ROW numrows_2 1 ~ME_TIMELG   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        AP_METIMELG ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****       ~
 				IF_EXISTS
 				UNLESS ~ME_TIMELG~
 		END

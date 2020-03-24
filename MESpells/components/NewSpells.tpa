@@ -6660,7 +6660,7 @@ COPY_EXISTING ~mehl006.spl~ ~override~
 COPY_EXISTING ~luabbr.2da~ ~override~
 	COUNT_2DA_ROWS 2 numrows
 	FOR (i = 1; i < numrows; ++i) BEGIN
-		READ_2DA_ENTRY row 1 2 thehlatable
+		READ_2DA_ENTRY i 1 2 thehlatable
 		INNER_ACTION BEGIN
 			COPY_EXISTING ~lu%thehlatable%.2da~ ~override~
 				LPF ADD_HLA STR_VAR ability=~AP_MEHL001~ min_lev=~1~ max_lev=~99~ num_allowed=~20~ END
@@ -6694,13 +6694,13 @@ COPY_EXISTING_REGEXP ~.*\.cre~ ~override~
 	BUT_ONLY_IF_IT_CHANGES
 
 // Turning regeneration into a repeated heal effect so that a regeneration effect can be temporarily turned off.
-
+/*
 COPY_EXISTING_REGEXP ~.*\.cre~ ~override~ ~.*\.itm~ ~override~
 	LPF ALTER_EFFECT INT_VAR silent=1 multi_match=60 match_opcode=regeneration opcode=applyrepeatingeff STR_VAR resource=~meregen1~ END
 	IF ~b~
 	BUT_ONLY_IF_IT_CHANGES
 
-/*
+
 COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
 	PATCH_IF !(~%SOURCE_RES%~ STRING_EQUAL_CASE ~SPWI202~) BEGIN
 		LPF ALTER_SPELL_EFFECT INT_VAR match_opcode=regeneration new_opcode=applyrepeatingeff STR_VAR resource=~meregen1~ END

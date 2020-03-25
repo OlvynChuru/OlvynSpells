@@ -369,7 +369,7 @@ LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@33962) STR_VAR icon=~MEWI962D~ RET 
 LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@33963) STR_VAR icon=~MEWI963D~ RET icon_index_mewi963=icon_index END
 
 ACTION_IF !(FILE_EXISTS_IN_GAME ~7eyes.2da~) BEGIN
-	COPY_EXISTING ~HighPower/no_overwrite/me7eyes.2da~ ~override/7eyes.2da~
+	COPY_EXISTING ~MESpells/no_overwrite/me7eyes.2da~ ~override/7eyes.2da~
 //		REPLACE 99999 @30066
 END ELSE BEGIN
 	COPY_EXISTING ~7eyes.2da~ ~override~

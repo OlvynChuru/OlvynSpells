@@ -2190,23 +2190,6 @@ LANGUAGE
 ENGLISH
  ~MESpells/tra/english/english.tra~
 
-BEGIN ~Deprecated Component 1~ DESIGNATED 100 DEPRECATED ~~
-BEGIN ~Deprecated Component 2~ DESIGNATED 101 DEPRECATED ~~
-BEGIN ~Deprecated Component 3~ DESIGNATED 102 DEPRECATED ~~
-BEGIN ~Deprecated Component 4~ DESIGNATED 150 DEPRECATED ~~
-BEGIN ~Deprecated Component 5~ DESIGNATED 200 DEPRECATED ~~
-BEGIN ~Deprecated Component 6~ DESIGNATED 201 DEPRECATED ~~
-BEGIN ~Deprecated Component 7~ DESIGNATED 202 DEPRECATED ~~
-BEGIN ~Deprecated Component 8~ DESIGNATED 375 DEPRECATED ~~
-BEGIN ~Deprecated Component 9~ DESIGNATED 400 DEPRECATED ~~
-BEGIN ~Deprecated Component 10~ DESIGNATED 800 DEPRECATED ~~
-BEGIN ~Deprecated Component 11~ DESIGNATED 801 DEPRECATED ~~
-BEGIN ~Deprecated Component 12~ DESIGNATED 850 DEPRECATED ~~
-BEGIN ~Deprecated Component 13~ DESIGNATED 900 DEPRECATED ~~
-BEGIN ~Deprecated Component 14~ DESIGNATED 925 DEPRECATED ~~
-BEGIN ~Deprecated Component 15~ DESIGNATED 950 DEPRECATED ~~
-BEGIN ~Deprecated Component 16~ DESIGNATED 975 DEPRECATED ~~
-
 BEGIN @2 DESIGNATED 11011
 SUBCOMPONENT @1
 
@@ -2282,7 +2265,7 @@ ACTION_IF !(~%spell_found_curse%~ STRING_EQUAL_CASE ~~) BEGIN
 END
 
 
-BEGIN @5 DESIGNATED 11021
+BEGIN @5 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 DESIGNATED 11021
 
 COPY_EXISTING ~sppr102.spl~ ~override~
 	READ_LONG splflags ulgiash
@@ -2333,7 +2316,7 @@ COPY_EXISTING ~sppr105.spl~ ~override~
 
 BEGIN @10 DESIGNATED 350 DEPRECATED ~~
 
-BEGIN @23 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 DESIGNATED 12091
+BEGIN @23 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 12091
 
 ACTION_IF !(FILE_EXISTS_IN_GAME ~M__MEFUN.LUA~) BEGIN
 	COPY ~MESpells/lua~ ~override~
@@ -2368,16 +2351,25 @@ COPY_EXISTING ~scrl92.itm~ ~override~
 COPY_EXISTING ~spwi208.spl~ ~override~
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 
-BEGIN @11 FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 DESIGNATED 14021
+BEGIN @11 REQUIRE_PREDICATE !(GAME_IS ~iwdee~) ~~ FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 DESIGNATED 14021
 
 COPY ~MESpells/Restore_Summon_Monsters~ ~override~
 
 COPY_EXISTING ~bearbl.cre~ ~override/mesubrbl.cre~ ~bearbr.cre~ ~override/mesubrbr.cre~ ~bearca.cre~ ~override/mesubrca.cre~ ~bearpo.cre~ ~override/mesubrpo.cre~ ~dogwa.cre~ ~override/mesudgwa.cre~ ~dogwi.cre~ ~override/mesudgwi.cre~ ~wolf.cre~ ~override/mesuwolf.cre~ ~wolfdi.cre~ ~override/mesuwodi.cre~ ~wolfdr.cre~ ~override/mesuwodr.cre~ ~wolfwi.cre~ ~override/mesuwowi.cre~ ~worg.cre~ ~override/mesuworg.cre~ ~spidsm01.cre~ ~override/mesuspsm.cre~ ~spidhu.cre~ ~override/mesusphu.cre~ ~spidgi.cre~ ~override/mesuspgi.cre~ ~spidph.cre~ ~override/mesuspph.cre~ ~spidwr.cre~ ~override/mesuspwr.cre~ ~spidsw.cre~ ~override/mesuspsw.cre~ ~spidphas.cre~ ~override/mesuspas.cre~ ~kobold.cre~ ~override/mesukobo.cre~ ~kobolda.cre~ ~override/mesukoar.cre~ ~kobcomm.cre~ ~override/mesukoco.cre~ ~xvart.cre~ ~override/mesuxvar.cre~ ~gibber.cre~ ~override/mesugibb.cre~ ~hobgob.cre~ ~override/mesuhobg.cre~ ~hobgoba.cre~ ~override/mesuhoar.cre~ ~hobelite.cre~ ~override/mesuhoel.cre~ ~gnoll.cre~ ~override/mesugnol.cre~ ~ogregr.cre~ ~override/mesuogri.cre~ ~ogre.cre~ ~override/mesuogre.cre~ ~ogreberz.cre~ ~override/mesuogbe.cre~ ~ogrema.cre~ ~override/mesuogma.cre~ ~carrio.cre~ ~override/mesucarr.cre~ ~ankheg.cre~ ~override/mesuankh.cre~ ~sirine_a.cre~ ~override/mesusire.cre~ ~wyvern.cre~ ~override/mesuwyve.cre~ ~wyverba.cre~ ~override/mesuwyba.cre~
 	READ_LONG xp thepowerlevel
-	FOR (i = 1; i < 1000; ++i) BEGIN
-		PATCH_IF (i * i) >= thepowerlevel BEGIN
-			thepowerlevel = i
-			i = 1000
+	READ_LONG killxp thekillxp
+	PATCH_IF thepowerlevel < 1000 BEGIN
+		PATCH_IF thekillxp > 0 BEGIN
+			thepowerlevel = ((thekillxp + 19) / 20)
+		END ELSE PATCH_IF thepowerlevel = 0 BEGIN
+			READ_BYTE levelfirstclass thelevel
+			thepowerlevel = thelevel * 2
+		END
+		FOR (i = 1; i < 1000; ++i) BEGIN
+			PATCH_IF (i * i) >= thepowerlevel BEGIN
+				thepowerlevel = i
+				i = 1000
+			END
 		END
 	END
 	WRITE_LONG xp thepowerlevel
@@ -2537,7 +2529,108 @@ COPY_EXISTING ~devagood.cre~ ~override~
 	ADD_MEMORIZED_SPELL ~sppr607~ #5 ~priest~ (2)
 	IF_EXISTS
 
-BEGIN @15 DESIGNATED 24131
+BEGIN @32 FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 21111
+
+COPY ~MESpells/True_Strike~ ~override~
+
+LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@4034) STR_VAR icon=~MEWI111D~ RET icon_index_mewi111=icon_index END
+
+COPY_EXISTING ~spwi111.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR target=caster END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode=infravision new_opcode=modifythac0 parameter1=20 parameter2=0 END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=displayportraiticon parameter2=icon_index_mewi111 END
+	LPF ALTER_SPELL_EFFECT INT_VAR duration_high=9 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4035) END
+	SAY NAME1 @4034
+	SAY UNIDENTIFIED_DESC @21111
+
+COPY_EXISTING ~scrl76.itm~ ~override~
+	SAY NAME2 @4034
+	SAY IDENTIFIED_DESC @21111
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+	IF_EXISTS
+
+BEGIN @35 DESIGNATED 21161
+
+COPY_EXISTING ~spwi116.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_savingthrow=vsdeath savingthrow=vsspell savebonus=0 END
+	LPF ALTER_SPELL_EFFECT INT_VAR check_headers=1 check_globals=0 duration_high=30 dicenumber=0 dicesize=0 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode=sleep parameter2=0 END
+	SAY UNIDENTIFIED_DESC @21161
+
+COPY_EXISTING ~scrl81.itm~ ~override~
+	SAY IDENTIFIED_DESC @21161
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowspellnegates%~ END
+	IF_EXISTS
+
+BEGIN @36 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 22201
+
+COPY_EXISTING ~spwi220.spl~ ~override~
+	LPF ALTER_SPELL_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=powerwordsleep new_opcode=sleep timing=0 duration=18 parameter2=0 END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 savingthrow=0 savebonus=0 END
+	LPF ALTER_SPELL_EFFECT INT_VAR check_headers=1 check_globals=0 duration_high=18 dicenumber=0 dicesize=0 END
+	SAY UNIDENTIFIED_DESC @22201
+
+COPY_EXISTING ~scrl6e.itm~ ~override~
+	SAY IDENTIFIED_DESC @22201
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+	IF_EXISTS
+
+BEGIN @33  REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 DESIGNATED 22031
+
+COPY ~MESpells/New_Illusion_Detection~ ~override~
+
+LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@4037) STR_VAR icon=~MEWI203D~ RET icon_index_mewi203=icon_index END
+
+COPY_EXISTING ~sppr309.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR speed=3 END
+	LPF DELETE_EFFECT INT_VAR silent=1 match_opcode=protectionfromspell2 match_parameter2=143 END
+	LPF CLONE_EFFECT INT_VAR silent=1 match_opcode=116 opcode=protectionfromopcode timing=0 duration=24 parameter2=invisibility END
+	LPF CLONE_EFFECT INT_VAR silent=1 match_opcode=116 opcode=protectionfromspell timing=0 duration=24 parameter1=0 STR_VAR resource=~spwi607~ END
+	SAY UNIDENTIFIED_DESC @13091
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+COPY_EXISTING ~eeex_ini.lua~ ~override~
+	REPLACE_TEXTUALLY ~\[\"B3_Invis\"\] = false~ ~["B3_Invis"] = true~
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~spwi203.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR target=1 range=100 projectile=noprojectile END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=(0 - 1) END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=invisibilitydetection target=2 timing=0 duration=240 parameter2=1 resist_dispel=3 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=displayportraiticon target=2 timing=0 duration=240 parameter2=icon_index_mewi203 resist_dispel=3 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=playsound target=2 timing=9 resist_dispel=3 STR_VAR resource=~EFF_P63~ END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=playsound target=2 timing=4 duration=240 resist_dispel=3 STR_VAR resource=~EFF_P31~ END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=visualeffectbg2 target=2 timing=0 duration=2 parameter2=1 resist_dispel=3 STR_VAR resource=~SPTRUSEE~ END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=setcolorglowsolid target=2 timing=0 duration=240 parameter1=0x20202000 parameter2=255 resist_dispel=3 END
+	WRITE_BYTE secondarytype secondarynoncombat
+	SAY UNIDENTIFIED_DESC @22031
+
+COPY_EXISTING ~scrl87.itm~ ~override~
+	SAY IDENTIFIED_DESC @22031
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+	IF_EXISTS
+
+COPY_EXISTING ~spwi322.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR target=caster projectile=254 END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=removespellsbyschool END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode=removespellsbytype parameter1=9 END
+	LPF ALTER_SPELL_EFFECT INT_VAR resist_dispel=0 savingthrow=none END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=forcevisible target=2 timing=1 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=removeinvisibility1 target=2 timing=1 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=removeinvisibility2 target=2 timing=1 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=2 timing=0 parameter1=7 parameter2=7 STR_VAR resource=~DESTSELF~ END
+	SAY NAME1 @4036
+	SAY UNIDENTIFIED_DESC @23221
+
+COPY_EXISTING ~scrl6k.itm~ ~override~
+	SAY NAME2 @4036
+	SAY IDENTIFIED_DESC @23221
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+	IF_EXISTS
+
+BEGIN @15 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 24131
 
 OUTER_SPRINT stringotiluketextold1 @3900
 OUTER_SPRINT stringotiluketextnew1 @3901
@@ -2568,7 +2661,66 @@ COPY_EXISTING ~spwi503.spl~ ~override~
 		maxlength += 2
 	END
 
-BEGIN @26 DESIGNATED 26111
+BEGIN @31 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 DESIGNATED 25151
+
+COPY ~MESpells/New_Oracle~ ~override~
+
+ACTION_IF !(FILE_EXISTS_IN_GAME ~M_MESTR1.lua~) BEGIN
+	COPY ~MESpells/lua/M_MESTR1.lua~ ~override~
+END
+
+COPY_EXISTING ~M_MESTR1.lua~ ~override~
+	ex_oracle_feedback_strref = RESOLVE_STR_REF(~<ME_ORACL>~)
+	SPRINT ex_oracle_feedback_string_1 @30095
+	SPRINT ex_oracle_feedback_string_2 @30096
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~ex_oracle_feedback_strref *=.*~ ~ex_oracle_feedback_strref = %ex_oracle_feedback_strref%~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~ex_oracle_feedback_string_1 *=.*~ ~ex_oracle_feedback_string_1 = "%ex_oracle_feedback_string_1%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~ex_oracle_feedback_string_2 *=.*~ ~ex_oracle_feedback_string_2 = "%ex_oracle_feedback_string_2%"~
+
+
+LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@4033) STR_VAR icon=~MEWI515D~ RET icon_index_mewi515=icon_index END
+
+COPY_EXISTING ~spwi515.spl~ ~override~
+	WRITE_BYTE secondarytype 0
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=noprojectile END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=(0 - 1) END
+	LPF ADD_SPELL_EFFECT INT_VAR power=5 opcode=applyrepeatingeff target=1 timing=0 duration=1200 parameter1=1 parameter2=2 resist_dispel=3 STR_VAR resource=~mewi515e~ END
+	LPF ADD_SPELL_EFFECT INT_VAR power=5 opcode=visualeffectbg2 target=1 timing=0 duration=2 parameter2=1 resist_dispel=3 STR_VAR resource=~sptrusee~ END
+	LPF ADD_SPELL_EFFECT INT_VAR power=5 opcode=displayportraiticon target=1 timing=0 duration=1200 parameter2=icon_index_mewi515 resist_dispel=3 END
+	SAY UNIDENTIFIED_DESC @25151
+/*
+ACTION_IF !(MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+	ACTION_IF !(FILE_EXISTS_IN_GAME ~7eyes.2da~) BEGIN
+		COPY_EXISTING ~MESpells/no_overwrite/me7eyes.2da~ ~override/7eyes.2da~
+	END ELSE BEGIN
+		COPY_EXISTING ~7eyes.2da~ ~override~
+			COUNT_2DA_COLS numcolumns
+			COUNT_2DA_ROWS numcolumns numrows
+			INSERT_2DA_ROW numrows numcolumns ~MEORACLE     237        -1         101*0x14A   *           *           *            *            *          *          *          *~
+			UNLESS ~MEORACLE~
+	END
+
+	COPY_EXISTING ~mewi515e.spl~ ~override~
+		LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=401 match_special=999 opcode=setspellstate parameter1=0 parameter2=237 special=1 END
+
+	COPY_EXISTING_REGEXP ~.......\.spl~ ~override~
+		READ_LONG NAME1 thenameref
+		LPF ADD_SPELL_CFEFFECT INT_VAR insert_point=0 opcode=floattext target=1 timing=0 duration=0 parameter1=thenameref END
+		LPF ADD_SPELL_CFEFFECT INT_VAR insert_point=0 opcode=protectionfromopcode target=1 timing=0 duration=0 parameter2=floattext END
+END
+*/
+COPY_EXISTING ~scrl6w.itm~ ~override~
+	SAY UNIDENTIFIED_DESC @25151
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+	IF_EXISTS
+
+BEGIN @34 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 26071
+
+COPY_EXISTING ~mislead.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=removeopcode target=1 timing=9 parameter1=(0 - 1) parameter2=237 END
+
+BEGIN @26 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 26111
 
 COPY_EXISTING ~spwi611.spl~ ~override~
 	LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringduration%
@@ -2729,7 +2881,7 @@ COPY_EXISTING ~scrl9t.itm~ ~override~ ~mescrl9t.itm~ ~override~
 COPY_EXISTING ~spwi911.spl~ ~override~
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowbreathhalf%~ END
 
-BEGIN @28 DESIGNATED 29221
+BEGIN @28 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 29221
 
 COPY ~MESpells/New_Comet_Breath~ ~override~
 
@@ -2777,7 +2929,7 @@ COPY_EXISTING ~spwi617.spl~ ~override~ ~spwi908.spl~ ~override~
 ~ replace_with= EVAL ~%stringcastingtimeinstant%
 ~ END
 
-BEGIN @18 DESIGNATED 14151
+BEGIN @18 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 14151
 
 COPY_EXISTING ~sppr415.spl~ ~override~ ~spwi424.spl~ ~override~
 	LPF ALTER_SPELL_HEADER INT_VAR target=7 speed=0 END
@@ -2785,7 +2937,7 @@ COPY_EXISTING ~sppr415.spl~ ~override~ ~spwi424.spl~ ~override~
 ~ replace_with= EVAL ~%stringcastingtimeinstant%
 ~ END
 
-BEGIN @29 FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 DESIGNATED 23011
+BEGIN @29 FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 23011
 
 COPY_EXISTING ~spwi301.spl~ ~override~
 	READ_LONG spellflags ulgiash

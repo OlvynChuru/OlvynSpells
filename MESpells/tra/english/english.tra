@@ -28,6 +28,12 @@
 @28=~Revise Comet and Dragon's Breath~
 @29=~Let Clairvoyance be cast indoors~
 @30=~Let Rangers and Paladins gain spells quicker and up to 6th-level spells~
+@31=~Make it so the spell Oracle lets you foresee what spells enemies are going to cast (like Spellcraft in 3rd-edition games)~
+@32=~Turn Infravision into True Strike, which grants a large THAC0 bonus for a short duration~
+@33=~Improve low-level spells that detect illusions~
+@34=~Make it so Mislead's invisibility becomes partial invisibility when you attack or cast a spell, just like Improved Invisibility (regardless of whether the image is still alive)~
+@35=~Revise Sleep (no Hit Dice limit, but lasts shorter and creatures will wake up when damaged)~
+@36=~Revise Power Word, Sleep (no HP limit, but lasts shorter and the creature will wake up when damaged)~
 
 @1000=~Unnecessary as Spell Revisions is already installed~
 @1001=~The new spells are already added by High Power Baldur's Gate~
@@ -390,6 +396,11 @@ Permanent Druid Spell IV allows the druid to cast a spell with an extremely long
 @4030=~Dragon's Breath~
 @4031=~Animal Eyes~
 @4032=~Farseer~
+@4033=~Oracle~
+@4034=~True Strike~
+@4035=~THAC0 Modification~
+@4036=~Dispel Illusions~
+@4037=~Detect Invisibility~
 
 @11021=~Command
 (Enchantment/Charm)
@@ -451,6 +462,18 @@ Area of Effect: Special
 Saving Throw: None
 
 This spell creates the lowest of the undead monsters, skeletons, usually from the bones of dead humans, demihumans, or humanoids. The spell causes these remains to become animated and obey the simple verbal commands of the caster, regardless of how they communicated in life. The undead remain animated until they are destroyed in combat, 8 hours pass, or are turned; the magic cannot be dispelled. The priest can animate one skeleton for each experience level <HESHE> has attained.~
+@13091=~Invisibility Purge
+(Divination)
+
+Level: 3
+Sphere: Divination
+Range: 0
+Duration: Instant
+Casting Time: 3
+Area of Effect: 120-ft. radius
+Saving Throw: None
+
+Any enemy invisible creatures within the area of effect have their invisibility dispelled. This includes creatures under the effects of the spells Invisibility, Improved Invisibility, Shadow Door, Mislead, and so on. In addition, enemies within the area of effect are prevented from going invisible for the next 4 rounds.~
 @14021=~Animal Summoning I
 (Conjuration/Summoning)
 
@@ -499,6 +522,39 @@ Area of Effect: Special
 Saving Throw: None 
 
 By means of this spell, the caster calls a multitude of animals, each of which are worth between 650 and 975 experience points. The animals appearing are randomly determined and ignore the summoning limit. They will remain under the caster's control until slain or the spell duration expires. The animals summoned are worth a total of around 120 XP per caster level.~
+@21111=~True Strike
+(Divination)
+
+Level: 1
+Range: 0
+Duration: 9 seconds
+Casting Time: 1
+Area of Effect: The caster
+Saving Throw: None
+
+The True Strike spell gives the wizard incredible insights into <PRO_HISHER> enemies' weaknesses, but only for an extremely short duration. As long as the spell lasts, the wizard gains a +20 bonus to THAC0.~
+@21161=~Sleep
+(Enchantment/Charm)
+
+Level: 1
+Range: Visual range of the caster
+Duration: 5 rounds
+Casting Time: 1 
+Area of Effect: 15-ft. radius
+Saving Throw: Neg.
+
+When a wizard casts a Sleep spell, <PRO_HESHE> causes a comatose slumber to come upon one or more enemies (other than undead and certain other creatures specifically excluded from the spell's effects). All creatures to be affected by the Sleep spell must be within a 15-ft. radius. Creatures in the area of effect must make a Saving Throw vs. Spell or fall asleep. Attacks against sleeping opponents never miss, though they will wake upon taking damage.~
+@22031=~Detect Invisibility
+(Divination)
+
+Level: 2
+Range: Visual range of the caster
+Duration: 4 turns
+Casting Time: 2
+Area of Effect: 1 creature
+Saving Throw: None
+
+The target of the Detect Invisibility spell is able to see clearly any objects or beings that are invisible, as well as any that are astral, ethereal, or out of phase. In addition, this spell enables the recipient to detect hidden or concealed creatures (e.g., Thieves hiding in shadows, halflings in underbrush, and so on). The main function of this spell is to enable the recipient to target partially invisible creatures with spells. In addition, if the recipient is using AI, he or she will able to attack fully invisible creatures and target them with spells. The power to Detect Invisibility lasts for 4 turns or until dispelled.~
 @22081=~Identify Creature
 (Divination)
 
@@ -510,6 +566,17 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 An Identify Creature spell enables the caster to learn useful information about a creature. The information will include the creature's level, class, Hit Points, Armor Class, base THAC0 (excluding THAC0 bonuses), attacks per round, attributes, resistances, saving throws, and various other effects. Some specific creatures will also display additional information.~
+@22201=~Power Word, Sleep
+(Conjuration/Summoning)
+
+Level: 2
+Range: Visual range of the caster
+Duration: 3 rounds
+Casting Time: 1
+Area of Effect: 1 creature
+Saving Throw: None
+
+When a wizard calls upon a Power Word, Sleep spell, <PRO_HESHE> causes a comatose slumber to come upon 1 creature (other than undead and certain other creatures specifically excluded from the spell's effects). The creature gets no Saving Throw. Magically sleeping opponents can be attacked with substantial bonuses but will wake up when damaged. The Sleep effect will last for 3 rounds.~
 @23011=~Clairvoyance
 (Divination)
 
@@ -532,6 +599,17 @@ Area of Effect: Special
 Saving Throw: None 
 
 By means of this spell, the caster summons a horde of monsters, each of which are worth between 7 and 35 experience points. The monsters appearing are randomly determined and ignore the summoning limit. They will remain under the caster's control until slain or the spell duration expires. The monsters summoned are worth a total of around 20 XP per caster level.~
+@23221=~Dispel Illusions
+(Divination)
+
+Level: 3
+Range: 0
+Duration: Instant
+Casting Time: 3
+Area of Effect: 120-ft. radius
+Saving Throw: None
+
+When cast, this spell will cancel all illusionary protections on enemies in the area of effect. In addition it will dispel all forms of Invisibility and Mirror Image, even if originating from an innate ability instead of a spell. The area of effect is roughly a 120-ft. radius around the caster. The targets' Magic Resistance, if any, does not affect this spell.~
 @24071=~Monster Summoning II
 (Conjuration/Summoning)
 
@@ -565,6 +643,17 @@ Area of Effect: Special
 Saving Throw: None 
 
 By means of this spell, the caster summons a horde of monsters, each of which are worth between 175 and 450 experience points. The monsters appearing are randomly determined and ignore the summoning limit. They will remain under the caster's control until slain or the spell duration expires. The monsters summoned are worth a total of around 60 XP per caster level.~
+@25151=~Oracle
+(Divination)
+
+Level: 5
+Range: 0
+Duration: 4 hours
+Casting Time: 5
+Area of Effect: Entire area
+Saving Throw: None
+
+This spell allows the caster to predict enemies' spells. For the duration, whenever a non-allied creature in the current area begins casting a spell, the caster will immediately be informed of the name of the spell being cast.~
 @26151=~Chain Lightning
 (Evocation)
 
@@ -719,6 +808,22 @@ The character's Wisdom score permanently increases by 1, to a maximum of 25. Thi
 @30093=~Great Charisma~
 @30094=~Great Charisma
 The character's Charisma score permanently increases by 1, to a maximum of 25. This ability can be taken multiple times.~
+@30095=~Casting ~
+@30096=~ on ~
+@30097=~<ME_ORACL>~
+@30098=~Polar Ray
+(Evocation)
+
+Level: 8
+Range: 120 ft.
+Duration: 1 round
+Casting Time: 5
+Area of Effect: 4-ft. by 120-ft. jet
+Saving Throw: None
+
+Upon casting Polar Ray, the caster emits a powerful beam of frost in the direction of the target. All creatures in the path of the ray take 12d6 cold damage. The polar ray deals the same damage again half a round later to the target and anyone who is still in the ray's path.~
+@30099=~Protected from Non-Silver Weapons~
+
 
 @31151=~Snake's Swiftness~
 @31152=~Hex~
@@ -753,6 +858,7 @@ The character's Charisma score permanently increases by 1, to a maximum of 25. T
 @31653=~Antiharm Shell~
 @31654=~Living Lightning~
 @31655=~Linked Spirit~
+@31656=~Protection from Non-Silver Weapons~
 @31751=~Power Word, Heal~
 @31753=~Nonrandom Zone~
 @31754=~Colossal Growth~
@@ -1149,6 +1255,18 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 Linked Spirit creates a spirit resembling the target creature. The spirit is linked to the target such that almost any spell or effect, including damage from weapons, that would be applied to the spirit is also applied to the target. The spirit itself is harmless.~
+@32656=~Protection From Non-Silver Weapons
+(Abjuration)
+
+Level: 6
+Sphere: Protection, Sun
+Range: 0
+Duration: 4 rounds
+Casting Time: 1
+Area of Effect: The caster
+Saving Throw: None 
+
+When the spell is cast, it confers complete invulnerability to all non-silver weapons. Due to the nature of this spell, with the short casting time and duration, it is mainly used to buy the Shapeshifter a few rounds in the thick of combat.~
 @32751=~Power Word, Heal
 (Necromancy)
 	
@@ -1281,6 +1399,7 @@ A more powerful version of Dispel Magic, True Dispel removes all dispellable eff
 @33357=~Glyph of Spell Storing~
 @33358=~Familiar Spell~
 @33359=~Throw~
+@33360=~Heightening~
 @33451=~Wall of Fire~
 @33452=~Phantasmal Killer~
 @33453=~Ghoulish Feast~
@@ -1303,6 +1422,7 @@ A more powerful version of Dispel Magic, True Dispel removes all dispellable eff
 @33562=~Critical Spell~
 @33563=~Warrior Simulacrum~
 @33564=~Wall of Force~
+@33565=~Sacrificial Explosion~
 @33651=~Isaac's Greater Missile Storm~
 @33652=~Freeze Inanimates~
 @33653=~Greater Nightmare~
@@ -1356,9 +1476,9 @@ Range: Visual range of the caster
 Duration: 5 rounds
 Casting Time: 1
 Area of Effect: 1 creature
-Saving Throw: Neg.
+Saving Throw: None
 
-In using this spell, the Wild Mage deliberately employs wild magic to disrupt another creature's spell. The Wild Mage chooses a creature, which should be a spellcaster (arcane or divine). That creature must make a Save vs. Polymorph at -8. If it fails the save, the next spell it casts within 5 rounds will trigger a wild surge. This surge will often cause the spell to fail, though it could have other, unpredictable effects.~
+In using this spell, the Wild Mage deliberately employs wild magic to disrupt another creature's spell. The Wild Mage chooses a creature, which should be a spellcaster (arcane or divine). The next spell that creature casts within 5 rounds will trigger a wild surge. This surge will often cause the spell to fail, though it could have other, unpredictable effects.~
 @34152=~Inertia
 (Alteration)
 
@@ -1622,6 +1742,17 @@ Area of Effect: 1 creature
 Saving Throw: 1/2
 
 This spell throws the target into the air with incredible force. The target is knocked back as it is sent hurtling through the air. When it lands or hits the ceiling, it takes crushing damage based on how fast it was moving right before the collision, up to 1d6 per caster level. If the target succeeds on a Save vs. Polymorph at -2, it is thrown with less force and will only take about half damage.~
+@34360=~Heightening
+(Alteration)
+
+Level: 3
+Range: 0
+Duration: 1 hour
+Casting Time: 2
+Area of Effect: The caster
+Saving Throw: None
+
+This spell increases the level of the caster's other spells. For the duration, the caster's spells count as five spell levels higher for purposes of overcoming Globe of Invulnerability and other spell level immunities like those of a rakshasa or lich.~
 @34451=~Wall of Fire
 (Evocation)
 
@@ -1866,6 +1997,17 @@ Area of Effect: 8 ft. long, 2 ft. wide wall
 Saving Throw: None
 
 This spell creates a wall of magical force, which stays for 5 rounds. Creatures cannot pass through the wall, though they can still fly over it, teleport past it, or float past it while ethereal. The wall cannot be dispelled.~
+@34565=~Sacrificial Explosion
+(Necromancy)
+
+Level: 5
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 5
+Area of Effect: 15-ft. radius
+Saving Throw: 1/2
+
+By casting this spell, the caster sacrifices a minion to produce a damaging explosion. When the spell is cast on an allied summoned creature or animated undead, that creature explodes, dealing 1d8 poison damage per level (max 15d8) to all creatures within the area of effect. Creatures can Save vs. Death for half damage.~
 @34651=~Isaac's Greater Missile Storm
 (Evocation)
 

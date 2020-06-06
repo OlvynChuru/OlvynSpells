@@ -317,6 +317,8 @@ LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~0x106~ splprot_value=~-1~ splpro
 
 LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~0x106~ splprot_value=~-1~ splprot_relation=~9~ RET splprot_areaisnot=splprot_slot END
 
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~665~ splprot_value=~0~ splprot_relation=~3~ RET splprot_canhavemultiplesimulacra=splprot_slot END
+
 LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@31154) STR_VAR icon=~MEPR154D~ RET icon_index_mepr154=icon_index END
 
 LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@31156) STR_VAR icon=~MEPR156D~ RET icon_index_mepr156=icon_index END
@@ -782,6 +784,34 @@ COPY_EXISTING ~clabsh01.2da~ ~override~
 	IF_EXISTS
 	UNLESS ~GA_MEPR255~
 */
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR2~ RET mepr256=filename END
+COPY_EXISTING ~mepr256.spl~ ~override/%mepr256%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=displayportraiticon parameter2=icon_index_mewi259 END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mepr256~ resource= EVAL ~%mepr256%~ END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) duration_high=((i + 1) * 60) END
+		numheaders = numheaders + 1
+	END
+	SAY NAME1 @31256
+	SAY UNIDENTIFIED_DESC @32256
+
+COPY_EXISTING ~eeex_ini.lua~ ~override~
+	REPLACE_TEXTUALLY ~\[\"B3_EfMen\"\] = false~ ~["B3_EfMen"] = true~
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~B3_EfMen.lua~ ~override~
+	REPLACE_TEXTUALLY ~B3EffectMenu_Stat_Required = .*~ ~B3EffectMenu_Stat_Required = true~
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
+END
 
 ACTION_IF !(GAME_IS ~iwdee~) BEGIN
 
@@ -2553,6 +2583,77 @@ ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
 COPY_EXISTING ~kuork0.sto~ ~override~
 	ADD_STORE_ITEM ~mewi258x~ AFTER ~spwi223x~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI2~ RET mewi259=filename END
+COPY_EXISTING ~mewi259.spl~ ~override/%mewi259%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=displayportraiticon parameter2=icon_index_mewi259 END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi259~ resource= EVAL ~%mewi259%~ END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) duration_high=((i + 1) * 60) END
+		numheaders = numheaders + 1
+	END
+	SAY NAME1 @33259
+	SAY UNIDENTIFIED_DESC @34259
+
+COPY_EXISTING ~mewi259x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi259~ resource= EVAL ~%mewi259%~ END
+	SAY NAME2 @33259
+	SAY IDENTIFIED_DESC @34259
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~sto0703.sto~ ~override~
+	ADD_STORE_ITEM ~mewi259x~ AFTER ~scrl87~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~bdsorcsc.sto~ ~override~
+	ADD_STORE_ITEM ~mewi259x~ AFTER ~scrl87~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi259x~ AFTER ~scrl87~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar1513.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=5 STR_VAR item_to_add=~mewi259x~ END
+
+COPY_EXISTING ~scrolls.sto~ ~override~
+	ADD_STORE_ITEM ~mewi259x~ AFTER ~scrl87~ #1 #0 #0 ~IDENTIFIED~ #4
+	IF_EXISTS
+
+COPY_EXISTING ~shop08.sto~ ~override~
+	ADD_STORE_ITEM ~mewi259x~ AFTER ~scrl87~ #1 #0 #0 ~IDENTIFIED~ #4
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi259x~ AFTER ~scrl87~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi259x~ AFTER ~scrl87~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kuork0.sto~ ~override~
+	ADD_STORE_ITEM ~mewi259x~ AFTER ~scrl87~ #1 #0 #0 ~IDENTIFIED~ #1
+
+COPY_EXISTING ~kieran3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi259x~ AFTER ~scrl3g~ #0 #0 #0 ~IDENTIFIED~ #1
+
+END
 
 END
 
@@ -4341,7 +4442,9 @@ COPY_EXISTING ~mewi563.spl~ ~override/%mewi563%.spl~
 	SAY UNIDENTIFIED_DESC @34563
 
 COPY_EXISTING ~mewi563d.spl~ ~override~
+	LPF CLONE_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=protectionfromspell opcode=protectionfromspell2 parameter2=splprot_canhavemultiplesimulacra special=0 STR_VAR match_resource=~mewi563~ insert=~above~ END
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi563~ resource= EVAL ~%mewi563%~ END
+
 	READ_SHORT 0x68 numheaders
 	FOR (i = numheaders; i < 50; ++i) BEGIN
 		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
@@ -6485,6 +6588,18 @@ COPY_EXISTING ~kitlist.2da~ ~override~
 	END
 	BUT_ONLY_IF_IT_CHANGES
 
+ACTION_IF MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
+
+COPY_EXISTING_REGEXP ~spwi[1-9][0-9][0-9]\.spl~ ~override~ ~mewi[1-9][0-9][0-9]\.spl~ ~override~
+	LPF ADD_SPELL_CFEFFECT INT_VAR insert_point=0 opcode=402 target=1 timing=0 STR_VAR resource=~MENECROP~ END
+	TO_UPPER %SOURCE_RES%
+	READ_LONG 0x6A effectoffset
+	WRITE_ASCIIE (effectoffset + 0x4) ~%SOURCE_RES%~ #8
+	UNLESS ~MENECROP~
+	BUT_ONLY_IF_IT_CHANGES
+
+END ELSE BEGIN
+
 COPY_EXISTING_REGEXP ~spwi[1-9][0-9][0-9]\.spl~ ~override~ ~mewi[1-9][0-9][0-9]\.spl~ ~override~
 	READ_LONG spelllevel thespelllevel
 	PATCH_IF thespelllevel = 0 BEGIN
@@ -6501,6 +6616,8 @@ COPY_EXISTING_REGEXP ~spwi[1-9][0-9][0-9]\.spl~ ~override~ ~mewi[1-9][0-9][0-9]\
 	LPF ADD_SPELL_CFEFFECT INT_VAR opcode=applyeffectslist target=1 timing=9 parameter1=212 parameter2=110 STR_VAR resource= EVAL ~MENECRP%thespelllevel%~ END
 	UNLESS ~MENECRP~
 	BUT_ONLY_IF_IT_CHANGES
+
+END
 
 END
 

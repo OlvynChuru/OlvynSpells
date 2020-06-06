@@ -2407,27 +2407,33 @@ COPY_EXISTING ~mesuwyve.cre~ ~override~ ~mesuwyba.cre~ ~override~
 	IF_EXISTS
 
 COPY_EXISTING ~mepr402.spl~ ~override/sppr402.spl~
+	SAY NAME1 @4038
 	SAY UNIDENTIFIED_DESC @14021
 
 COPY_EXISTING ~mepr501.spl~ ~override/sppr501.spl~
+	SAY NAME1 @4039
 	SAY UNIDENTIFIED_DESC @15011
 
 COPY_EXISTING ~mepr602.spl~ ~override/sppr602.spl~
+	SAY NAME1 @4040
 	SAY UNIDENTIFIED_DESC @16021
 
 COPY_EXISTING ~mewi309.spl~ ~override/spwi309.spl~
+	SAY NAME1 @4041
 	SAY UNIDENTIFIED_DESC @23091
 
 COPY_EXISTING ~scrl1l.itm~ ~override~
 	SAY IDENTIFIED_DESC @23091
 
 COPY_EXISTING ~mewi407.spl~ ~override/spwi407.spl~
+	SAY NAME1 @4042
 	SAY UNIDENTIFIED_DESC @24071
 
 COPY_EXISTING ~scrl2a.itm~ ~override~
 	SAY IDENTIFIED_DESC @24071
 
 COPY_EXISTING ~mewi504.spl~ ~override/spwi504.spl~
+	SAY NAME1 @4043
 	SAY UNIDENTIFIED_DESC @25041
 
 COPY_EXISTING ~scrl2g.itm~ ~override~
@@ -2442,9 +2448,11 @@ SUBCOMPONENT @12
 COPY ~MESpells/Restore_Animate_Dead~ ~override~
 
 COPY_EXISTING ~mepr301.spl~ ~override/sppr301.spl~
+	SAY NAME1 @4044
 	SAY UNIDENTIFIED_DESC @13011
 
 COPY_EXISTING ~mewi501.spl~ ~override/spwi501.spl~
+	SAY NAME1 @4044
 	SAY UNIDENTIFIED_DESC @25011
 
 COPY_EXISTING ~scrl2d.itm~ ~override~

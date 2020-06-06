@@ -5,7 +5,7 @@
 @5=~Make it so that Command takes control of the target for 1 round instead of putting them to sleep~
 @6=~Improve Entangle~
 @7=~A: Original BG1-style Entangle~
-@8=~B: Remove the saving throw penalty from Entangle~
+@8=~B: Remove the saving throw bonus from Entangle~
 @9=~A and B~
 @10=~Improve Magical Stone~
 @11=~Original BG1-style Monster Summoning and Animal Summoning spells~
@@ -401,6 +401,13 @@ Permanent Druid Spell IV allows the druid to cast a spell with an extremely long
 @4035=~THAC0 Modification~
 @4036=~Dispel Illusions~
 @4037=~Detect Invisibility~
+@4038=~Animal Summoning I~
+@4039=~Animal Summoning II~
+@4040=~Animal Summoning III~
+@4041=~Monster Summoning I~
+@4042=~Monster Summoning II~
+@4043=~Monster Summoning III~
+@4044=~Animate Dead~
 
 @11021=~Command
 (Enchantment/Charm)

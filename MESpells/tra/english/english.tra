@@ -408,6 +408,7 @@ Permanent Druid Spell IV allows the druid to cast a spell with an extremely long
 @4042=~Monster Summoning II~
 @4043=~Monster Summoning III~
 @4044=~Animate Dead~
+@4045=~Dimension Jump~
 
 @11021=~Command
 (Enchantment/Charm)
@@ -867,6 +868,7 @@ Upon casting Polar Ray, the caster emits a powerful beam of frost in the directi
 @31654=~Living Lightning~
 @31655=~Linked Spirit~
 @31656=~Protection from Non-Silver Weapons~
+@31657=~Trial By Fire~
 @31751=~Power Word, Heal~
 @31753=~Nonrandom Zone~
 @31754=~Colossal Growth~
@@ -1004,13 +1006,13 @@ Critical Boon empowers an ally, allowing them to get a guaranteed critical hit o
 
 Level: 2
 Sphere: Travelers
-Range: Touch
-Duration: Special
+Range: 0
+Duration: 1 round
 Casting Time: 1
-Area of Effect: 1 creature
+Area of Effect: 15-ft. radius
 Saving Throw: None
 
-This spell allows a creature to float a short distance through a wall or across a gap. After the spell is cast on a creature, the next time that creature moves in a direction, it will instead ghostwalk in that direction. For 3 seconds, that creature will float in a straight line in that direction, passing through normally impassable obstacles. After 3 seconds, the effect ends; if the creature is in an impassable area at that time, it will instantly jump to the nearest inhabitable space.~
+This spell makes multiple allies partially ethereal for 1 round. While partially ethereal, creatures are immune to normal weapons and can move through walls. Ghostwalk could be used to move the party through a wall, eluding enemies. When the spell ends, if a character is inside a wall, they will be pushed to the nearest inhabitable space.~
 @32256=~Detect Magic
 (Divination)
 
@@ -1287,6 +1289,18 @@ Area of Effect: The caster
 Saving Throw: None 
 
 When the spell is cast, it confers complete invulnerability to all non-silver weapons. Due to the nature of this spell, with the short casting time and duration, it is mainly used to buy the Shapeshifter a few rounds in the thick of combat.~
+@32657=~Trial By Fire
+(Evocation)
+
+Level: 6
+Sphere: Sun
+Range: Visual range of the caster
+Duration: 1 turn
+Casting Time: 8
+Area of Effect: 8 ft. long, 2 ft. wide wall
+Saving Throw: None
+
+This spell creates a wall of holy fire, which does not burn the innocent. Any non-good creature that passes through the wall takes 15d4 magic fire damage with no Saving Throw. Good creatures can pass through the wall unharmed.~
 @32751=~Power Word, Heal
 (Necromancy)
 	
@@ -1537,13 +1551,13 @@ This spell summons a kobold with no special abilities. The kobold remains a fait
 (Alteration)
 
 Level: 1
-Range: Visual range of caster
+Range: Entire area
 Duration: Instant
 Casting Time: 0
 Area of Effect: The caster
 Saving Throw: None
 
-This spell transports the caster to any place within the visual range of the caster. When the spell is cast, a dimensional portal opens up in front of the caster, who immediately steps through it. Upon passing through the portal, the caster finds <PRO_HIMHER>self at <PRO_HISHER> chosen destination.~
+This spell transports the caster to any point within the current area. When the spell is cast, a dimensional portal opens up in front of the caster, who immediately steps through it. Upon passing through the portal, the caster finds <PRO_HIMHER>self at <PRO_HISHER> chosen destination. Dimension Door can be cast at a point too far away to see, as long as the party has seen it.~
 @34156=~Jump
 (Alteration)
 
@@ -1554,7 +1568,7 @@ Casting Time: 5
 Area of Effect: 1 creature
 Saving Throw: None
 
-This spell allows a creature to jump higher and farther. Until the duration ends, the creature gains an ability they can use at will, which lets the creature jump up to 10 feet away. The maximum jump distance is increased by 3 feet per 5 caster levels, to a maximum of 28 feet at level 30. The creature is able to jump over normally impassable obstacles like fences or walls, as long as they are narrow enough to jump over. At higher levels, the increased jump distance will allow the creature to jump over thicker obstacles. While in the air, the creature is unaffected by certain ground-based spells like Entangle, Web, and Earthquake.~
+This spell allows a creature to jump higher and farther. Until the duration ends, the creature gains an ability they can use at will, which lets the creature jump up to 26 feet away. The creature is able to jump over normally impassable obstacles like fences or walls, as long as they are narrow enough to jump over. While in the air, the creature is unaffected by certain ground-based spells like Entangle, Web, and Earthquake.~
 @34157=~Hex
 (Enchantment)
 
@@ -1581,13 +1595,13 @@ When the wizard speaks a Power Word of Pulling, <PRO_HESHE> magically pulls anot
 (Alteration)
 
 Level: 2
-Range: Touch
-Duration: Special
+Range: 0
+Duration: 1 round
 Casting Time: 1
-Area of Effect: 1 creature
+Area of Effect: 15-ft. radius
 Saving Throw: None
 
-This spell allows a creature to float a short distance through a wall or across a gap. After the spell is cast on a creature, the next time that creature moves in a direction, it will instead ghostwalk in that direction. For 3 seconds, that creature will float in a straight line in that direction, passing through normally impassable obstacles. After 3 seconds, the effect ends; if the creature is in an impassable area at that time, it will instantly jump to the nearest inhabitable space.~
+This spell makes multiple allies partially ethereal for 1 round. While partially ethereal, creatures are immune to normal weapons and can move through walls. Ghostwalk could be used to move the party through a wall, eluding enemies. When the spell ends, if a character is inside a wall, they will be pushed to the nearest inhabitable space.~
 @34253=~Power Word, Push
 (Abjuration)
 
@@ -2116,7 +2130,7 @@ Casting Time: 6
 Area of Effect: 15-ft. radius
 Saving Throw: None
 
-This spell creates a special, pinkish fog in the area of effect. All creatures within the mind fog have their willpower and concentration weakened, gaining a -5 penalty to saving throws against enchantment and illusion spells, as well as 30% spell failure. There is no Saving Throw. Undead, constructs, oozes, and mind flayers are unaffected.~
+This spell creates a special, pinkish fog in the area of effect. All creatures within the mind fog have their willpower and concentration weakened, gaining a -5 penalty to saving throws against enchantment and illusion spells. There is no Saving Throw. Undead, constructs, oozes, and mind flayers are unaffected.~
 @34658=~Empower Familiar
 (Conjuration)
 
@@ -2402,13 +2416,13 @@ The Mass Domination spell enables the caster to control the actions of a group o
 (Alteration)
 
 Level: 9
-Range: 0
-Duration: 1 turn
-Casting Time: 9
-Area of Effect: The caster
+Range: Touch
+Duration: 1 hour
+Casting Time: 3
+Area of Effect: 1 creature
 Saving Throw: None
 
-This spell temporarily makes the caster perfect in every way. For 1 turn, the caster's Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma are all set to 25.~
+This spell temporarily makes the target perfect in every way. For 1 hour, the target's Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma are all set to 25.~
 @34954=~Vampiric Feast
 (Necromancy)
 
@@ -2526,12 +2540,12 @@ Necropotence allows the wizard to draw the power for their spells through their 
 
 Level: 10
 Range: 0
-Duration: 1 round/3 levels
+Duration: 1 hour
 Casting Time: 0
 Area of Effect: The caster
 Saving Throw: None
 
-Mental Agility drastically shortens the time necessary to cast spells. The wizard's casting time is reduced by 1 per 3 caster levels for the duration. Mental Agility cannot be combined with Improved Alacrity.~
+Mental Agility drastically shortens the time necessary to cast spells. The wizard's casting time is reduced by 10 for the duration. Mental Agility cannot be combined with Improved Alacrity.~
 @34964=~Freezing Wave
 (Evocation)
 

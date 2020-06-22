@@ -2009,29 +2009,12 @@ function MESPLIM1(effectData, creatureData)
 ["source_id"] = sourceID,
 ["parent_resource"] = contingencyRes
 })
-		local otherSpells = me_spell_duplicate[me_spell_immunity["" .. sourceID][1]]
-		if otherSpells ~= nil then
-			for i, spell in ipairs(otherSpells) do
-				EEex_ApplyEffectToActor(targetID, {
-["opcode"] = 206,
-["target"] = 2,
-["parameter1"] = ex_spell_ineffective_strref,
-["parameter2"] = 16,
-["timing"] = 0,
-["duration"] = 2400,
-["resource"] = spell,
-["source_target"] = targetID,
-["source_id"] = sourceID,
-["parent_resource"] = contingencyRes
-})
-			end
-		end
 	end
 	if me_spell_immunity["" .. sourceID][2] ~= nil then
 		EEex_ApplyEffectToActor(targetID, {
 ["opcode"] = 206,
 ["target"] = 2,
-["parameter1"] = ex_spell_ineffective_strref,
+["parameter1"] = 24534,
 ["parameter2"] = 16,
 ["timing"] = 0,
 ["duration"] = 2400,
@@ -2040,29 +2023,12 @@ function MESPLIM1(effectData, creatureData)
 ["source_id"] = sourceID,
 ["parent_resource"] = contingencyRes
 })
-		local otherSpells = me_spell_duplicate[me_spell_immunity["" .. sourceID][2]]
-		if otherSpells ~= nil then
-			for i, spell in ipairs(otherSpells) do
-				EEex_ApplyEffectToActor(targetID, {
-["opcode"] = 206,
-["target"] = 2,
-["parameter1"] = ex_spell_ineffective_strref,
-["parameter2"] = 16,
-["timing"] = 0,
-["duration"] = 2400,
-["resource"] = spell,
-["source_target"] = targetID,
-["source_id"] = sourceID,
-["parent_resource"] = contingencyRes
-})
-			end
-		end
 	end
 	if me_spell_immunity["" .. sourceID][3] ~= nil then
 		EEex_ApplyEffectToActor(targetID, {
 ["opcode"] = 206,
 ["target"] = 2,
-["parameter1"] = ex_spell_ineffective_strref,
+["parameter1"] = 24534,
 ["parameter2"] = 16,
 ["timing"] = 0,
 ["duration"] = 2400,
@@ -2071,23 +2037,6 @@ function MESPLIM1(effectData, creatureData)
 ["source_id"] = sourceID,
 ["parent_resource"] = contingencyRes
 })
-		local otherSpells = me_spell_duplicate[me_spell_immunity["" .. sourceID][3]]
-		if otherSpells ~= nil then
-			for i, spell in ipairs(otherSpells) do
-				EEex_ApplyEffectToActor(targetID, {
-["opcode"] = 206,
-["target"] = 2,
-["parameter1"] = ex_spell_ineffective_strref,
-["parameter2"] = 16,
-["timing"] = 0,
-["duration"] = 2400,
-["resource"] = spell,
-["source_target"] = targetID,
-["source_id"] = sourceID,
-["parent_resource"] = contingencyRes
-})
-			end
-		end
 	end
 end
 

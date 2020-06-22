@@ -404,6 +404,7 @@ COPY_EXISTING ~m_mestr1.lua~ ~override~
 	REPLACE_TEXTUALLY CASE_INSENSITIVE ~ex_no_familiar_strref_1[ %TAB%=].*~ ~ex_no_familiar_strref_1 = %ex_no_familiar_strref_1%~
 	ex_familiar_spell_strref_1 = RESOLVE_STR_REF(@30042)
 	REPLACE_TEXTUALLY CASE_INSENSITIVE ~ex_familiar_spell_strref_1[ %TAB%=].*~ ~ex_familiar_spell_strref_1 = %ex_familiar_spell_strref_1%~
+	IF_EXISTS
 
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR1~ RET mepr151=filename END
 COPY_EXISTING ~mepr151.spl~ ~override/%mepr151%.spl~
@@ -739,7 +740,11 @@ COPY_EXISTING ~clabpa01.2da~ ~override~
 	IF_EXISTS
 	UNLESS ~GA_MEPR254~
 
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
 COPY_EXISTING ~mepr255.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=displayportraiticon parameter2=icon_index_mewi559 END
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=protectionfromspell2 match_parameter2=2500 parameter2=splprot_meinflight END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=immunitytospellandmessage target=2 timing=0 duration=1 parameter2=splprot_areaisanoteleportzone special=RESOLVE_STR_REF(@30030) STR_VAR resource=~MEPR255~ END
 	SAY NAME1 @31255
 	SAY UNIDENTIFIED_DESC @32255
@@ -786,6 +791,8 @@ COPY_EXISTING ~clabsh01.2da~ ~override~
 	IF_EXISTS
 	UNLESS ~GA_MEPR255~
 */
+
+END
 
 ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
 
@@ -1877,7 +1884,11 @@ ACTION_IF !(MOD_IS_INSTALLED ~setup-spell_rev.tp2~ ~0~) BEGIN
 
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI1~ RET mewi155=filename END
 COPY_EXISTING ~spwi402.spl~ ~override/%mewi155%.spl~
+	READ_LONG 0x18 thespellflags
+	thespellflags|=0x800
+	WRITE_LONG 0x18 thespellflags
 	WRITE_LONG spelllevel 1
+	LPF ALTER_SPELL_HEADER INT_VAR speed=0 END
 	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 match_power=4 power=1 END
 	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 match_timing=4 timing=1 END
 	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~spwi402~ resource= EVAL ~%mewi155%~ END
@@ -1964,7 +1975,7 @@ COPY_EXISTING ~mewi156.spl~ ~override/%mewi156%.spl~
 	SAY UNIDENTIFIED_DESC @34156
 
 COPY_EXISTING ~mejmps01.spl~ ~override~ ~mejmps05.spl~ ~override~ ~mejmps10.spl~ ~override~ ~mejmps15.spl~ ~override~ ~mejmps20.spl~ ~override~ ~mejmps25.spl~ ~override~ ~mejmps30.spl~ ~override~
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=immunitytospellandmessage target=1 timing=0 duration=1 parameter2=splprot_areaisanoteleportzone special=RESOLVE_STR_REF(@30030) STR_VAR resource = EVAL ~%SOURCE_RES%~ END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point=2 opcode=immunitytospellandmessage target=1 timing=0 duration=1 parameter2=splprot_areaisanoteleportzone special=RESOLVE_STR_REF(@30030) STR_VAR resource = EVAL ~%SOURCE_RES%~ END
 	SAY NAME1 @30025
 	SAY UNIDENTIFIED_DESC @30026
 
@@ -2140,9 +2151,13 @@ COPY_EXISTING ~kieran2.sto~ ~override~
 
 END
 
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI2~ RET mewi252=filename END
 COPY_EXISTING ~mewi252.spl~ ~override/%mewi252%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=displayportraiticon parameter2=icon_index_mewi559 END
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi252~ resource= EVAL ~%mewi252%~ END
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=protectionfromspell2 match_parameter2=2500 parameter2=splprot_meinflight END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=immunitytospellandmessage target=2 timing=0 duration=1 parameter2=splprot_areaisanoteleportzone special=RESOLVE_STR_REF(@30030) STR_VAR resource = EVAL ~%mewi252%~ END
 	SAY NAME1 @33252
 	SAY UNIDENTIFIED_DESC @34252
@@ -2202,6 +2217,8 @@ COPY_EXISTING ~ar3201.are~ ~override~
 
 COPY_EXISTING ~edion.sto~ ~override~
 	ADD_STORE_ITEM ~mewi252x~ AFTER ~scrl96~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
 
 END
 
@@ -2375,7 +2392,7 @@ COPY_EXISTING ~ar3601.are~ ~override~
 
 END
 
-ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND (me_power_spells = 1) BEGIN
 
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI2~ RET mewi256=filename END
 COPY_EXISTING ~mewi256.spl~ ~override/%mewi256%.spl~
@@ -5598,9 +5615,12 @@ ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
 
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi853=filename END
 COPY_EXISTING ~mewi853.spl~ ~override/%mewi853%.spl~
-	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi853~ resource= EVAL ~%mewi853%~ END
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=removeeffectsbyresource STR_VAR match_resource=~mewi853~ resource= EVAL ~%mewi853%~ END
 	SAY NAME1 @33853
 	SAY UNIDENTIFIED_DESC @34853
+
+COPY_EXISTING ~mewi853e.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi853~ resource= EVAL ~%mewi853%~ END
 
 COPY_EXISTING ~mewi853x.itm~ ~override~
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi853~ resource= EVAL ~%mewi853%~ END
@@ -6632,6 +6652,7 @@ COPY_EXISTING ~mewi963.spl~ ~override~
 		WRITE_LONG spelllevel 1
 		LPF ALTER_SPELL_HEADER INT_VAR location=4 END
 	END
+/*
 	READ_SHORT 0x68 numheaders
 	FOR (i = numheaders; i < 50; ++i) BEGIN
 		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
@@ -6642,6 +6663,7 @@ COPY_EXISTING ~mewi963.spl~ ~override~
 	FOR (i = 1; i <= 50; ++i) BEGIN
 		LPF ALTER_SPELL_EFFECT INT_VAR header=i duration=(i * 2) END
 	END
+*/
 	SAY NAME1 @33963
 	SAY UNIDENTIFIED_DESC @34963
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
@@ -7131,6 +7153,16 @@ END
 ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND !(FILE_EXISTS_IN_GAME ~M_MEFLYA.lua~) BEGIN
 	COPY ~MESpells/lua/M_MEFLYA.lua~ ~override~
 
+	COPY_EXISTING ~sppr105.spl~ ~override~ ~spdr201.spl~ ~override~ ~spwi215.spl~ ~override~
+		LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=eeexinvokelua target=2 parameter2=(0 - 30) STR_VAR resource=~MEPRTAIR~ END
+		IF_EXISTS
+		UNLESS ~MEPRTAIR~
+
+	COPY_EXISTING ~sppr720.spl~ ~override~ ~spwi101.spl~ ~override~
+		LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=eeexinvokelua target=2 STR_VAR resource=~MEPRTAIR~ END
+		IF_EXISTS
+		UNLESS ~MEPRTAIR~
+
 	OUTER_SPRINT stringspikegrowth @4018
 	OUTER_SPRINT stringspikestones @4019
 	COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
@@ -7140,10 +7172,9 @@ ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND !(FILE_EXISTS_IN_GAME ~M_MEFLYA.
 		PATCH_IF (theprojectile = 64) OR (theprojectile = 101) OR (theprojectile = 243) OR (~%thename%~ STRING_EQUAL_CASE ~%stringspikegrowth%~) OR (~%thename%~ STRING_EQUAL_CASE ~%stringspikestones%~) BEGIN
 			LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=eeexinvokelua target=2 parameter2=(0 - 30) STR_VAR resource=~MEPRTAIR~ END
 		END
+		UNLESS ~MEPRTAIR~
 		BUT_ONLY_IF_IT_CHANGES
 
-	COPY_EXISTING ~sppr720.spl~ ~override~
-		LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=eeexinvokelua target=2 STR_VAR resource=~MEPRTAIR~ END
-		IF_EXISTS
+
 
 END

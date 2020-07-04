@@ -34,6 +34,10 @@
 @34=~Make it so Mislead's invisibility becomes partial invisibility when you attack or cast a spell, just like Improved Invisibility (regardless of whether the image is still alive)~
 @35=~Revise Sleep (no Hit Dice limit, but lasts shorter and creatures will wake up when damaged)~
 @36=~Revise Power Word, Sleep (no HP limit, but lasts shorter and the creature will wake up when damaged)~
+@37=~Improve Energy Drain~
+@38=~Prevent Stoneskin from making characters grey (should be installed after AI mods like SCS)~
+@39=~Improve Larloch's Minor Drain and Vampiric Touch~
+@40=~Improve Shocking Grasp, Chill Touch and Ghoul Touch~
 
 @1000=~Unnecessary as Spell Revisions is already installed~
 @1001=~The new spells are already added by High Power Baldur's Gate~
@@ -409,6 +413,29 @@ Permanent Druid Spell IV allows the druid to cast a spell with an extremely long
 @4043=~Monster Summoning III~
 @4044=~Animate Dead~
 @4045=~Dimension Jump~
+@4046=~Energy Drain~
+@4047=~Larloch's Minor Drain~
+@4048=~Vampiric Touch~
+@4049=~Chill Touch~
+@4050=~Ghoul Touch~
+@4051=~One Level Drained~
+@4052=~Two Levels Drained~
+@4053=~Three Levels Drained~
+@4054=~Four Levels Drained~
+@4055=~Five Levels Drained~
+@4056=~Six Levels Drained~
+@4057=~Seven Levels Drained~
+@4058=~Eight Levels Drained~
+@4059=~Nine Levels Drained~
+@4060=~Ten Levels Drained~
+@4061=~Eleven Levels Drained~
+@4062=~Twelve Levels Drained~
+@4063=~Thirteen Levels Drained~
+@4064=~Fourteen Levels Drained~
+@4065=~Fifteen Levels Drained~
+@4066=~Sixteen Levels Drained~
+@4067=~Shocking Grasp~
+
 
 @11021=~Command
 (Enchantment/Charm)
@@ -530,6 +557,18 @@ Area of Effect: Special
 Saving Throw: None 
 
 By means of this spell, the caster calls a multitude of animals, each of which are worth between 650 and 975 experience points. The animals appearing are randomly determined and ignore the summoning limit. They will remain under the caster's control until slain or the spell duration expires. The animals summoned are worth a total of around 120 XP per caster level.~
+@17391=~Energy Drain
+(Necromancy)
+
+Level: 7
+Sphere: Necromantic
+Range: Touch
+Duration: Permanent
+Casting Time: 3
+Area of Effect: 1 creature
+Saving Throw: None
+
+Casting this spell opens a channel between the caster's plane and the Negative Energy Plane. The caster acts as a conduit between the two planes, sucking life from a victim and transferring it to the Negative Energy Plane, draining <PRO_HIMHER> of 1 level of experience per 3 caster levels. The target of this spell loses levels, Hit Dice, Hit Points, and abilities permanently. These levels can only be restored by a priest's Restoration spell. This spell has no effect on undead, constructs, or extraplanar creatures. It can only be cast by evil-aligned characters.~
 @21111=~True Strike
 (Divination)
 
@@ -541,6 +580,17 @@ Area of Effect: The caster
 Saving Throw: None
 
 The True Strike spell gives the wizard incredible insights into <PRO_HISHER> enemies' weaknesses, but only for an extremely short duration. As long as the spell lasts, the wizard gains a +20 bonus to THAC0.~
+@21151=~Shocking Grasp
+(Alteration)
+
+Level: 1
+Range: Touch
+Duration: Instant
+Casting Time: 1
+Area of Effect: 1 creature
+Saving Throw: None
+
+When the wizard touches a creature while this spell is in effect, an electrical charge will deal 1d8 + 1/level points of damage to the creature. For example, a 5th-level wizard will deal 1d8+5 points of electrical damage. The wizard only has one charge, and once an opponent has been touched, the spell's energies have been used. The spell always hits unless the wizard is disrupted.~
 @21161=~Sleep
 (Enchantment/Charm)
 
@@ -552,6 +602,30 @@ Area of Effect: 15-ft. radius
 Saving Throw: Neg.
 
 When a wizard casts a Sleep spell, <PRO_HESHE> causes a comatose slumber to come upon one or more enemies (other than undead and certain other creatures specifically excluded from the spell's effects). All creatures to be affected by the Sleep spell must be within a 15-ft. radius. Creatures in the area of effect must make a Saving Throw vs. Spell or fall asleep. Attacks against sleeping opponents never miss, though they will wake upon taking damage.~
+@21171=~Chill Touch
+(Necromancy)
+
+Level: 1
+Range: Touch
+Duration: Special
+Casting Time: 1
+Area of Effect: 1 creature
+Saving Throw: Neg.
+
+When the caster completes this spell, a blue glow encompasses <PRO_HISHER> hand, and <PRO_HESHE> uses this energy to attack the life force of an adjacent creature. No attack roll is needed. The touched creature takes 5d4 magic cold damage and must Save vs. Death or lose 3 points of Strength for 5 rounds. The Strength loss is cumulative; if the creature is reduced to 0 Strength, it dies instantly.
+
+An undead creature suffers no damage or Strength loss from Chill Touch, but will be affected by panic for 2 turns unless it successfully makes a Save vs. Spell.~
+@21191=~Larloch's Minor Drain
+(Necromancy)
+
+Level: 1
+Range: Visual range of the caster
+Duration: Special
+Casting Time: 1
+Area of Effect: 1 creature
+Saving Throw: None
+
+With this spell, the wizard drains the life force from a target and adds it to <PRO_HISHER> own. The target creature suffers 12 damage, while the Mage gains 12 Hit Points. If the Mage goes over <PRO_HISHER> maximum Hit Point total with this spell, <PRO_HESHE> loses any extra Hit Points after 1 hour.~
 @22031=~Detect Invisibility
 (Divination)
 
@@ -574,6 +648,17 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 An Identify Creature spell enables the caster to learn useful information about a creature. The information will include the creature's level, class, Hit Points, Armor Class, base THAC0 (excluding THAC0 bonuses), attacks per round, attributes, resistances, saving throws, and various other effects. Some specific creatures will also display additional information.~
+@22181=~Ghoul Touch
+(Necromancy)
+
+Level: 2
+Range: Touch
+Duration: 6 rounds
+Casting Time: 2
+Area of Effect: 1 creature
+Saving Throw: Neg.
+
+When the caster completes this spell, a green glow encompasses <PRO_HISHER> hand. The wizard then touches a creature (no attack roll required), and the creature must make a Save vs. Death at -2 or be paralyzed for 6 rounds. Elves and undead are immune to the ghoul touch.~
 @22201=~Power Word, Sleep
 (Conjuration/Summoning)
 
@@ -607,6 +692,17 @@ Area of Effect: Special
 Saving Throw: None 
 
 By means of this spell, the caster summons a horde of monsters, each of which are worth between 7 and 35 experience points. The monsters appearing are randomly determined and ignore the summoning limit. They will remain under the caster's control until slain or the spell duration expires. The monsters summoned are worth a total of around 20 XP per caster level.~
+@23141=~Vampiric Touch
+(Necromancy)
+
+Level: 3
+Range: Touch
+Duration: Instant
+Casting Time: 1
+Area of Effect: 1 creature
+Saving Throw: None
+
+When this spell is cast, the target loses 3 Hit Points per caster level, to a maximum drain of 30 for a 10th-level caster. These Hit Points are added to the caster's current Hit Points, with any Hit Points over the caster's normal maximum treated as temporary additional Hit Points. The temporary Hit Points last for 2 hours. Casting Vampiric Touch again will allow the caster to gain even more Hit Points.~
 @23221=~Dispel Illusions
 (Divination)
 
@@ -684,6 +780,17 @@ Area of Effect: 15-ft. radius
 Saving Throw: 1/2
 
 When the caster utters the words to this powerful spell, <PRO_HESHE> calls upon powerful forces indeed. These forces pull down meteors from above, hurling them randomly at anyone in the area of effect. For every level of the caster, one meteor falls upon a random location within 15 feet of the target. All creatures within 8 feet of the meteor take 2d10 fire damage and 2d10 crushing damage, with a Save vs. Breath at -5 for half damage. Only a fraction of the meteors are likely to strike a specific creature.~
+@29141=~Energy Drain
+(Necromancy)
+
+Level: 9
+Range: Visual range of the caster
+Duration: Permanent
+Casting Time: 3
+Area of Effect: 1 creature
+Saving Throw: None
+
+Casting this spell opens a channel between the caster's plane and the Negative Energy Plane. The caster acts as a conduit between the two planes, sucking life from a victim and transferring it to the Negative Energy Plane, draining <PRO_HIMHER> of 1 level of experience per 3 caster levels. The target of this spell loses levels, Hit Dice, Hit Points, and abilities permanently. These levels can only be restored by a priest's Restoration spell. This spell has no effect on undead, constructs, or extraplanar creatures.~
 @29221=~Dragon's Breath
 (Any School)
 
@@ -829,7 +936,7 @@ Casting Time: 5
 Area of Effect: 4-ft. by 120-ft. jet
 Saving Throw: None
 
-Upon casting Polar Ray, the caster emits a powerful beam of frost in the direction of the target. All creatures in the path of the ray take 12d6 cold damage. The polar ray deals the same damage again half a round later to the target and anyone who is still in the ray's path.~
+Upon casting Polar Ray, the caster emits a powerful beam of frost in the direction of the target. All creatures in the path of the ray take 24d6 cold damage.~
 @30099=~Protected from Non-Silver Weapons~
 
 
@@ -1416,6 +1523,7 @@ A more powerful version of Dispel Magic, True Dispel removes all dispellable eff
 @33155=~Dimension Door~
 @33156=~Jump~
 @33157=~Hex~
+@33158=~Reflect Attack~
 @33251=~Power Word, Pull~
 @33252=~Ghostwalk~
 @33253=~Power Word, Push~
@@ -1469,7 +1577,7 @@ A more powerful version of Dispel Magic, True Dispel removes all dispellable eff
 @33659=~Bardic Sequencer~
 @33751=~Mass Cast~
 @33752=~Far Sequencer~
-@33753=~Protection from Time Stop~
+@33753=~Forcecage~
 @33754=~Stygian Ice Storm~
 @33755=~Death Trigger~
 @33756=~Critical Sequencer~
@@ -1502,6 +1610,8 @@ A more powerful version of Dispel Magic, True Dispel removes all dispellable eff
 @33962=~Necropotence~
 @33963=~Mental Agility~
 @33964=~Freezing Wave~
+@33965=~Rampant Lightning~
+@33966=~Protection from Time Stop~
 
 @34151=~Disruptive Surge
 (Wild Magic)
@@ -1580,6 +1690,17 @@ Area of Effect: 1 creature
 Saving Throw: Neg.
 
 This spell curses the target to take more magical and elemental damage. The target must make a Save vs. Polymorph. On a failure, the target is cursed for 6 rounds. During that time, whenever the target would be dealt fire, cold, electricity, acid, or magic damage, it takes an additional 6 damage of that type. Hex is especially effective when combined with spells that deal damage multiple times, such as Magic Missile or Melf's Acid Arrow. Hex can also be cast by Invokers.~
+@34158=~Reflect Attack
+(Abjuration)
+
+Level: 1
+Range: 0
+Duration: 8 hours or until hit
+Casting Time: 0
+Area of Effect: The caster
+Saving Throw: None
+
+After this spell is cast, the next instance of physical damage the caster would receive is reflected back at the attacker, damaging them instead. If the physical damage came from a weapon, any on-hit effects of the weapon will also be reflected back at the attacker.~
 @34251=~Power Word, Pull
 (Conjuration/Summoning)
 
@@ -2177,17 +2298,17 @@ Area of Effect: Special
 Saving Throw: None
 
 Far Sequencer allows the wizard to cast a spell at a target beyond the wizard's visual range. When cast, this spell prompts the wizard to choose a single spell of any level. That spell is immediately released, targeting a creature or point up to 10000 feet away with the spell. The range of the spell will be extended to 10000 feet unless it normally has a range of touch, in which case it should not be used with Far Sequencer. The wizard can target a creature or point <PRO_HESHE> cannot see directly, as long as the target can be seen by an ally or by another divination spell.~
-@34753=~Protection From Time Stop
+@34753=~Forcecage
 (Abjuration)
 
 Level: 7
-Range: Touch
-Duration: 8 hours
-Casting Time: 7
-Area of Effect: 1 creature
+Range: Visual range of the caster
+Duration: 5 rounds
+Casting Time: 1
+Area of Effect: 10-ft cube
 Saving Throw: None
 
-The recipient of this spell gains the ability to move and do actions while time is stopped. Protection from Time Stop can either be used as a defense when an enemy casts Time Stop, or as a means of offense when another ally casts Time Stop. Unlike other abjuration spells, Protection from Time Stop can be learned by Transmuters.~
+This spell creates a cage of force - a cube with walls of force on each side. Creatures that were in the area of effect when the spell was cast are trapped in the forcecage for the duration. Creatures cannot enter or pass through the area of effect.~
 @34754=~Stygian Ice Storm
 (Conjuration)
 
@@ -2557,6 +2678,28 @@ Area of Effect: 60-ft. radius
 Saving Throw: 1/2
 
 When cast, this spell creates an enormous wave of frost emanating from the caster in all directions. Creatures within 60 feet take 1d10 cold damage per level (Save vs. Breath at -4 for half). The caster is unaffected.~
+@34965=~Rampant Lightning
+(Evocation)
+
+Level: 10
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 9
+Area of Effect: Special
+Saving Throw: 1/2
+
+Rampant Lightning causes a great electrical explosion, releasing lightning bolts in all directions. Two lightning bolts are released per caster level, each one dealing 1d6 electricity damage (Save vs. Breath at -4 for half). It would be wise to make the entire party immune to electricity before casting this spell.~
+@34966=~Protection From Time Stop
+(Abjuration)
+
+Level: 9
+Range: Touch
+Duration: 8 hours
+Casting Time: 7
+Area of Effect: 1 creature
+Saving Throw: None
+
+The recipient of this spell gains the ability to move and do actions while time is stopped. Protection from Time Stop can either be used as a defense when an enemy casts Time Stop, or as a means of offense when another ally casts Time Stop. Unlike other abjuration spells, Protection from Time Stop can be learned by Transmuters.~
 
 @35327=~I am the channel through which your wish shall be fulfilled. You may ask for a wish I can repeat, or you may ask for a wish that will happen once only. Decide.~
 @35328=~Choose wisely then, as I can perform each of these tasks once and once only.~

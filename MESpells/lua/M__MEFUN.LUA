@@ -1070,6 +1070,23 @@ function MECREFLG(effectData, creatureData)
 	EEex_WriteDword(creatureData + 0x424, me_cre_flags)
 end
 
+function MECTLTIP(effectData, creatureData)
+	local me_operand = EEex_ReadDword(effectData + 0x1c)
+	local me_cre_flags = EEex_ReadDword(creatureData + 0x424)
+	if me_operand == 0 then
+		me_cre_flags = 0x800000
+	elseif me_operand == 1 then
+		me_cre_flags = bit32.band(me_cre_flags, 0x800000)
+	elseif me_operand == 2 and EEex_ReadByte(creatureData + 0x24, 0x0) > 30 then
+		me_cre_flags = bit32.bor(me_cre_flags, 0x800000)
+	elseif me_operand == 3 then
+		me_cre_flags = bit32.bxor(me_cre_flags, 0x800000)
+	elseif me_operand == 4 then
+		me_cre_flags = bit32.band(me_cre_flags, bit32.bnot(0x800000))
+	end
+	EEex_WriteDword(creatureData + 0x424, me_cre_flags)
+end
+
 function ME_Set_Creature_Flags(actorID, me_modifier, me_operand)
 	local me_creatureData = EEex_GetActorShare(actorID)
 	local me_cre_flags = EEex_ReadDword(me_creatureData + 0x424)
@@ -2750,6 +2767,9 @@ end
 EEex_AddScreenEffectsGlobal("MESPLMOD", function(effectData, creatureData)
 	local targetID = EEex_ReadDword(creatureData + 0x34)
 	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	if EEex_ReadDword(effectData + 0x5C) == 14432 and EEex_ReadDword(effectData + 0x20) == 1024 then
+		EEex_WriteDword(effectData + 0x20, 0)
+	end
 	if not EEex_IsSprite(targetID) then return false end
 	local internal_flags = EEex_ReadDword(effectData + 0xC8)
 	if bit32.band(internal_flags, 0x2000000) > 0 then return end
@@ -3999,19 +4019,14 @@ function MEBIRDPU(effectData, creatureData)
 --	EEex_WriteDword(effectData + 0x110, 0x1)
 	local sourceID = EEex_ReadDword(effectData + 0x10C)
 	local birdName = EEex_GetActorScriptName(sourceID)
---	Infinity_DisplayString(birdName)
 	if birdName == nil or birdName == "None" then return end
+	local animation = EEex_ReadDword(creatureData + 0x43C)
+	if animation < 0xD000 or animation >= 0xE000 then return end
 	local area = EEex_ReadDword(creatureData + 0x14)
-	
 	if area <= 0 then return end
---	Infinity_DisplayString(area)
---	Infinity_DisplayString(EEex_ReadLString(area, 8))
-
 	EEex_IterateActorIDs(area, function(actorID)
-
 		local the_actorName = EEex_GetActorScriptName(actorID)
---		Infinity_DisplayString(the_actorName)
-		if the_actorName == birdName .. "CRE" then
+		if the_actorName == "MEBIRDCRE" .. string.sub(birdName, 7) then
 			EEex_ApplyEffectToActor(actorID, {
 ["opcode"] = 146,
 ["target"] = 2,
@@ -4031,38 +4046,7 @@ function MEBIRDPU(effectData, creatureData)
 
 	end)
 
---	EEex_EvalActionsStringAsActorResume("ApplySpellRES(\"MEBIRDPU\",\"" .. birdName .. "CRE\")", sourceID)
 end
-
---[[
-function MEBIRDPU(effectData, creatureData)
-	local sourceID = EEex_ReadDword(effectData + 0x10C)
-	if (sourceID == 0 or sourceID == -1) then
-		local targetID = EEex_ReadDword(creatureData + 0x34)
---		EEex_AlterActorEffect(targetID,{{"opcode",402},{"resource","MEBIRDPU"}}, {{"source_id",targetID}},1)
-		local birdName = EEex_GetActorScriptName(targetID)
-		Infinity_DisplayString(birdName)
-		if birdName == nil or birdName == "None" then return end
-		EEex_EvalActionsStringAsActorResume("ApplySpellRES(\"MEBIRDPU\",\"" .. birdName .. "CRE\")", targetID)
-	end
-
-end
---]]
---[[
-function MEBIRDPU(effectData, creatureData)
-	local sourceID = EEex_ReadDword(effectData + 0x10C)
-	if (sourceID == 0 or sourceID == -1) then
-		local targetID = EEex_ReadDword(creatureData + 0x34)
---		EEex_AlterActorEffect(targetID,{{"opcode",402},{"resource","MEBIRDPU"}}, {{"source_id",targetID}},1)
-		local birdCreatureName = EEex_GetActorScriptName(targetID)
-		Infinity_DisplayString(birdCreatureName)
-		if birdCreatureName == nil or birdCreatureName == "None" then return end
-		Infinity_DisplayString(string.sub(birdCreatureName, 1, #birdCreatureName - 3))
-		EEex_EvalActionsStringAsActorResume("ApplySpellRES(\"MEBIRDP2\",\"" .. string.sub(birdCreatureName, 1, #birdCreatureName - 3) .. "\")", targetID)
-	end
-
-end
---]]
 
 function MESHATTE(effectData, creatureData)
 --	EEex_WriteDword(effectData + 0x110, 0x1)
@@ -5674,6 +5658,125 @@ function MECHAINL(effectData, creatureData)
 
 end
 
+function EEex_IterateActorIDs(m_gameArea, func)
+	if m_gameArea <= 0x0 then return end
+	local areaList = EEex_ReadDword(m_gameArea + 0x8E4)
+	while areaList ~= 0x0 do
+		local areaListID = EEex_ReadDword(areaList + 0x8)
+		local share = EEex_GetActorShare(areaListID)
+		if share > 0 then
+			local objectType = EEex_ReadByte(share + 0x4, 0)
+			if objectType == 0x31 then
+				func(areaListID)
+			end
+		end
+		areaList = EEex_ReadDword(areaList)
+	end
+end
+
+me_chain_lightning_index = 1
+me_chain_lightning_list = {}
+function MECHAIN2(effectData, creatureData)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	local casterlvl = EEex_ReadDword(effectData + 0xC4)
+	if casterlvl <= 1 or not EEex_IsSprite(sourceID) then return end
+	local spellRES = EEex_ReadLString(effectData + 0x18, 8)
+	local vvcresource = EEex_ReadLString(effectData + 0x6C)
+	if #vvcresource <= 1 then
+		vvcresource = "MEWI615D"
+	end
+	local savingthrow = EEex_ReadDword(effectData + 0x3C)
+	local special = EEex_ReadDword(effectData + 0x44)
+	local parameter3 = EEex_ReadDword(effectData + 0x5C)
+	if parameter3 == 0 then
+		parameter3 = me_chain_lightning_index
+		me_chain_lightning_index = me_chain_lightning_index + 1
+		me_chain_lightning_list[parameter3] = {}
+	end
+	local chainSourceID = sourceID
+	local listSize = #me_chain_lightning_list[parameter3]
+	if listSize > 0 then
+		chainSourceID = me_chain_lightning_list[parameter3][listSize]
+	end
+	table.insert(me_chain_lightning_list[parameter3], targetID)
+	local targetX = EEex_ReadDword(creatureData + 0x8)
+	local targetY = EEex_ReadDword(creatureData + 0xC)
+	local ids = {}
+	if EEex_ReadDword(creatureData + 0x14) > 0 then
+		ids = EEex_GetActorIDArea(targetID)
+	end
+	local closestID = 0
+	local closestDistance = 0x7FFFFFFF
+	for k, currentID in ipairs(ids) do
+		local currentShare = EEex_GetActorShare(currentID)
+		if currentShare > 0 then
+			local currentX = EEex_ReadDword(currentShare + 0x8)
+			local currentY = EEex_ReadDword(currentShare + 0xC)
+			local currentDistance = EEex_GetDistance(targetX, targetY, currentX, currentY)
+			local states = EEex_ReadDword(currentShare + 0x434)
+			local animation = EEex_ReadDword(currentShare + 0x43C)
+			if currentDistance <= special and currentDistance < closestDistance and EEex_CompareActorAllegiances(sourceID, currentID) == 2 and animation >= 0x1000 and (animation < 0xD000 or animation >= 0xE000) and bit32.band(states, 0x800) == 0 then
+				local isNewTarget = true
+				for k2, oldID in ipairs(me_chain_lightning_list[parameter3]) do
+					if currentID == oldID then
+						isNewTarget = false
+					end
+				end
+				if isNewTarget then
+					closestID = currentID
+					closestDistance = currentDistance
+				end
+			end
+		end
+	end
+	local parent_resource = EEex_ReadLString(effectData + 0x90, 8)
+	local chainSourceData = EEex_GetActorShare(chainSourceID)
+	EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 326,
+["target"] = 2,
+["timing"] = 9,
+["parameter1"] = 0,
+["parameter2"] = 0,
+["resource"] = vvcresource,
+["source_x"] = EEex_ReadDword(chainSourceData + 0x8),
+["source_y"] = EEex_ReadDword(chainSourceData + 0xC),
+["target_x"] = targetX,
+["target_y"] = targetY,
+["source_target"] = targetID,
+["source_id"] = chainSourceID
+})
+	if closestID == 0 then return end
+	EEex_ApplyEffectToActor(closestID, {
+["opcode"] = 402,
+["target"] = 2,
+["timing"] = 0,
+["duration"] = 0,
+["parameter1"] = EEex_ReadDword(effectData + 0x18),
+["parameter2"] = EEex_ReadDword(effectData + 0x1C),
+["parameter3"] = parameter3,
+["resource"] = "MECHAIN2",
+["vvcresource"] = vvcresource,
+["parent_resource"] = parent_resource,
+["special"] = special,
+["casterlvl"] = casterlvl - 1,
+["source_target"] = closestID,
+["source_id"] = sourceID
+})
+	EEex_ApplyEffectToActor(closestID, {
+["opcode"] = 146,
+["target"] = 2,
+["timing"] = 9,
+["parameter1"] = casterlvl - 1,
+["parameter2"] = 2,
+["resource"] = spellRES,
+["casterlvl"] = casterlvl - 1,
+["source_target"] = closestID,
+["source_id"] = sourceID
+})
+
+end
+
 function MESUMMOD(originatingEffectData, effectData, creatureData)
 	local opcode = EEex_ReadDword(effectData + 0xC)
 	local power = EEex_ReadDword(effectData + 0x10)
@@ -6789,7 +6892,7 @@ function EEex_CompareActorAllegiances(actorID1, actorID2)
 	end
 	if ea2 >= 2 and ea2 <= 30 then
 		eaGroup2 = 1
-	elseif ea1 >= 200 then
+	elseif ea2 >= 200 then
 		eaGroup2 = 3
 	end
 	return math.abs(eaGroup1 - eaGroup2)
@@ -8415,4 +8518,67 @@ function METRAPST(effectData, creatureData)
 	local flags = EEex_ReadDword(creatureData + 0x43C)
 	flags = bit32.bor(flags, 0x42)
 	EEex_WriteDword(creatureData + 0x43C, flags)
+end
+
+function MERECRUI(effectData, creatureData)
+	EEex_WriteDword(effectData + 0x110, 1)
+	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	if EEex_GetGlobal("MERECRUI") < 6 and EEex_GetActorAllegiance(targetID) <= 3 or EEex_GetActorGender(targetID) >= 5 or EEex_ReadDword(creatureData + 0x130) ~= -1 or EEex_ReadDword(creatureData + 0x39F4) ~= -1 then return end
+	for i = 0, 5, 1 do
+		if targetID == EEex_GetActorIDPortrait(i) then return end
+	end
+	EEex_WriteDword(creatureData + 0x408, -1)
+	EEex_WriteDword(creatureData + 0x418, 0x7FFFFFFF)
+	local parent_resource = EEex_ReadLString(effectData + 0x90, 8)
+	local savingthrow = EEex_ReadDword(effectData + 0x3C)
+	local casterlvl = EEex_ReadDword(effectData + 0xC4)
+--[[
+	EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 337,
+["target"] = 2,
+["timing"] = 1,
+["parameter1"] = -1,
+["parameter2"] = 5,
+["parent_resource"] = parent_resource,
+["source_id"] = sourceID
+})
+	EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 337,
+["target"] = 2,
+["timing"] = 1,
+["parameter1"] = -1,
+["parameter2"] = 241,
+["parent_resource"] = parent_resource,
+["source_id"] = sourceID
+})
+--]]
+	EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 400,
+["target"] = 2,
+["timing"] = 0,
+["duration"] = 6,
+["resource"] = "MERECRUI",
+["parent_resource"] = parent_resource,
+["source_id"] = sourceID
+})
+	EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 101,
+["target"] = 2,
+["timing"] = 0,
+["duration"] = 6,
+["parameter2"] = 400,
+["parent_resource"] = parent_resource,
+["source_id"] = sourceID
+})
+	EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 232,
+["target"] = 2,
+["timing"] = 1,
+["parameter1"] = 0,
+["parameter2"] = 16,
+["resource"] = "MERECRUL",
+["parent_resource"] = "MERECRUD",
+["source_id"] = sourceID
+})
 end

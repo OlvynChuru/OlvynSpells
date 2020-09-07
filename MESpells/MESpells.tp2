@@ -976,6 +976,7 @@ OUTER_PATCH alltheconstants BEGIN
 	bonuspiercing=8
 	bonuscrushing=9
 	bonusmissile=10
+	staticcharge=333
 	removeeffect=337
 	removeopcode=337
 	removeeffectsbyopcode=337
@@ -2088,13 +2089,12 @@ DEFINE_ACTION_FUNCTION ADD_CLASS_SPELL
 		description=~-1~ //Strref of the spell's description.
 	STR_VAR
 		resref=~~ //Resref of the spell.
-		scroll=~~ //Resref of the scroll for the spell (optional, if you want to restrict who can learn the spell from the scroll
+		scroll=~~ //Resref of the scroll for the spell (optional, if you want to restrict who can learn the spell from the scroll).
 		icon=~~
 		groundicon=~~
 		class_include=~{}~ //A character with one of these classes (from CLASS.IDS) can learn the spell.
 		kit_include=~{}~ //A character with one of these kits can learn the spell, even if their class is not in the "class_include" list.
 		kit_exclude=~{}~ //A character with one of these kits cannot learn the spell, even if their class is in the "class_include" list.
-		remove_by_default=~false~
 BEGIN
 
 	OUTER_PATCH_SAVE class_include ~%class_include%~ BEGIN
@@ -2176,7 +2176,6 @@ END
 		["class_include"] = {%class_include%},
 		["kit_include"] = {%kit_include%},
 		["kit_exclude"] = {%kit_exclude%},
-		["remove_by_default"] = %remove_by_default%,
 	},~
 		END
 		IF_EXISTS
@@ -2774,6 +2773,31 @@ COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
 	END
 	BUT_ONLY_IF_IT_CHANGES
 
+COPY_EXISTING_REGEXP ~.*\.cre~ ~override~
+	READ_BYTE 0x33 theeffectversion
+	READ_LONG 0x2C4 effectoffset
+	READ_LONG 0x2C8 numeffects
+	offset = effectoffset
+	doesnotstack = 0
+	dicestoneskin = 0
+	PATCH_IF theeffectversion = 1 BEGIN
+		FOR (i = 0; i < numeffects; ++i) BEGIN
+			READ_SHORT offset theopcode ELSE 0
+			PATCH_IF theopcode = stoneskin BEGIN
+				READ_LONG (offset + 0x14) theparameter1 ELSE 0
+				READ_LONG (offset + 0x18) theparameter2 ELSE 0
+				READ_LONG (offset + 0x40) thespecial ELSE 0
+				PATCH_IF thespecial = 0 BEGIN
+					thespecial = 80
+				END
+				LPF CLONE_EFFECT INT_VAR silent=1 check_headers=0 check_globals=1 match_opcode=stoneskin opcode=displayportraiticon parameter2=thespecial dicenumber=0 dicesize=0 END
+				LPF CLONE_EFFECT INT_VAR silent=1 check_headers=0 check_globals=1 match_opcode=stoneskin opcode=401 parameter2=0 special=635 dicenumber=0 dicesize=0 END
+				LPF ALTER_EFFECT INT_VAR silent=1 check_headers=0 check_globals=1 match_opcode=stoneskin opcode=403 parameter2=0x4990 special=0 dicenumber=0 dicesize=0 STR_VAR resource=~MESTONES~ END
+			END
+			offset = offset + 0x108
+		END
+	END
+
 COPY_EXISTING_REGEXP ~.*\.bcs~ ~override~
 	DECOMPILE_AND_PATCH BEGIN
 		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\(CheckStat[LG]?T?([^,]+, *[0-9]+\), *STONESKINS)~ ~\1,635)~
@@ -2903,13 +2927,18 @@ COPY_EXISTING ~mechali2.pro~ ~override~
 
 COPY_EXISTING ~spwi615.spl~ ~override~
 //	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 power=0 opcode=setspellstate target=3 timing=0 duration=6 parameter2=251 special=1 END
-	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=applyeffectslist target=4 timing=1 duration=6 parameter2=52 STR_VAR resource=~MECHALIP~ END
 	LPF ALTER_SPELL_HEADER INT_VAR projectile=mechali1 END
 	SAY NAME1 @4028
 	SAY UNIDENTIFIED_DESC @26151
 
-COPY_EXISTING ~spwi615b.spl~ ~override~
-	LPF ALTER_SPELL_HEADER INT_VAR projectile=mechali2 END
+ACTION_IF NOT MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
+	COPY_EXISTING ~spwi615.spl~ ~override~
+		LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=applyeffectslist target=4 timing=1 duration=6 parameter2=52 STR_VAR resource=~MECHALIP~ END
+
+	COPY_EXISTING ~spwi615b.spl~ ~override~
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=mechali2 END
+
+END
 
 ACTION_IF MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
 
@@ -2927,23 +2956,17 @@ ACTION_IF MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
 	COPY_EXISTING ~mechali1.pro~ ~override~
 		WRITE_ASCII 0x104 ~~ #8
 
-	COPY_EXISTING ~spwi615.spl~ ~override/mewi615.spl~
-		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 STR_VAR match_resource=~spwi615~ resource=~mewi615~ END
-		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 STR_VAR match_resource=~spwi615b~ resource=~mewi615b~ END
-		LPF ALTER_SPELL_HEADER INT_VAR projectile=mechali4 END
-
-	COPY_EXISTING ~spwi615b.spl~ ~override/mewi615b.spl~
-		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 STR_VAR match_resource=~spwi615~ resource=~mewi615~ END
-		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 STR_VAR match_resource=~spwi615b~ resource=~mewi615b~ END
-		LPF ALTER_SPELL_HEADER INT_VAR projectile=mechali5 END
-
 	COPY_EXISTING ~spwi615.spl~ ~override~
-		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 match_opcode=setspellstate match_parameter2=251 duration=2 END
-		LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 power=6 opcode=402 target=2 timing=0 parameter1=0x4957454D parameter2=0x44353136 savingthrow=0x100000 special=1 STR_VAR resource=~MECHAINL~ END
+		LPF DELETE_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=setspellstate match_parameter2=251 END
+		LPF DELETE_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=staticcharge END
+		LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 power=6 opcode=402 target=2 timing=0 parameter1=0x49575053 parameter2=0x42353136 special=250 STR_VAR resource=~MECHAIN2~ END
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=1 END
 
 	COPY_EXISTING ~spwi615b.spl~ ~override~
-		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 match_opcode=setspellstate match_parameter2=251 duration=2 END
-		LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 power=6 opcode=402 target=2 timing=0 parameter1=0x4957454D parameter2=0x44353136 special=1 STR_VAR resource=~MECHAINL~ END
+		LPF DELETE_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=setspellstate match_parameter2=251 END
+		LPF DELETE_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=staticcharge END
+//		LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 power=6 opcode=402 target=2 timing=0 parameter1=0x4957454D parameter2=0x42353136 special=1 STR_VAR resource=~MECHAINL~ END
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=1 END
 
 	COPY_EXISTING ~mewi615d.spl~ ~override~
 		LPF ALTER_SPELL_HEADER INT_VAR projectile=mechali3 END
@@ -2977,7 +3000,7 @@ ADD_PROJECTILE ~override/mecomsml.pro~
 ACTION_IF MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
 
 	ADD_PROJECTILE ~override/memswarx.pro~
-	
+
 	COPY_EXISTING ~spwi911.spl~ ~override~
 		LPF ALTER_SPELL_HEADER INT_VAR target=4 projectile=memswarx END
 		LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=(0 - 1) END
@@ -3011,7 +3034,7 @@ END ELSE BEGIN
 		LPF ADD_SPELL_EFFECT INT_VAR opcode=applyeffectslist target=2 timing=1 STR_VAR resource=~MEMSWARD~ END
 		LPF ADD_SPELL_EFFECT INT_VAR opcode=castspellpoint target=1 timing=1 parameter2=1 STR_VAR resource=~MEMSWAR2~ END
 		SAY UNIDENTIFIED_DESC @29111
-	
+
 	COPY_EXISTING ~memswar2.spl~ ~override~
 		LPF ALTER_SPELL_HEADER INT_VAR projectile=memswar2 END
 	
@@ -3043,35 +3066,43 @@ LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr7~ match_name= EVAL ~%string
 ACTION_IF !(~%spell_found_energy_drain%~ STRING_EQUAL_CASE ~~) BEGIN
 	COPY_EXISTING ~mepr739.spl~ ~override/%spell_found_energy_drain%.spl~
 		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 STR_VAR match_resource=~SPPR739~ resource= EVAL ~%spell_found_energy_drain%~ END
-		LPF ALTER_SPELL_EFFECT INT_VAR header=1 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4054) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header=2 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4055) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header=3 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4056) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header=4 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4057) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header=5 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4058) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header=6 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4059) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header=7 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4060) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header=8 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4061) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header=9 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4062) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header=10 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4063) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header=11 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4064) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header=12 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4065) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header=13 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4066) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=1 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4051) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=2 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4052) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=3 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4053) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=4 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4054) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=5 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4055) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=6 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4056) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=7 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4057) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=8 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4058) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=9 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4059) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=10 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4060) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=11 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4061) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=12 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4062) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=13 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4063) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=14 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4064) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=15 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4065) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=16 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4066) END
 		SAY NAME1 @4046
 		SAY UNIDENTIFIED_DESC @17391
 END
 
 COPY_EXISTING ~mewi914.spl~ ~override/spwi914.spl~
-	LPF ALTER_SPELL_EFFECT INT_VAR header=1 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4056) END
-	LPF ALTER_SPELL_EFFECT INT_VAR header=2 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4057) END
-	LPF ALTER_SPELL_EFFECT INT_VAR header=3 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4058) END
-	LPF ALTER_SPELL_EFFECT INT_VAR header=4 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4059) END
-	LPF ALTER_SPELL_EFFECT INT_VAR header=5 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4060) END
-	LPF ALTER_SPELL_EFFECT INT_VAR header=6 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4061) END
-	LPF ALTER_SPELL_EFFECT INT_VAR header=7 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4062) END
-	LPF ALTER_SPELL_EFFECT INT_VAR header=8 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4063) END
-	LPF ALTER_SPELL_EFFECT INT_VAR header=9 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4064) END
-	LPF ALTER_SPELL_EFFECT INT_VAR header=10 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4065) END
-	LPF ALTER_SPELL_EFFECT INT_VAR header=11 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4066) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=1 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4051) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=2 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4052) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=3 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4053) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=4 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4054) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=5 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4055) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=6 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4056) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=7 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4057) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=8 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4058) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=9 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4059) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=10 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4060) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=11 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4061) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=12 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4062) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=13 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4063) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=14 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4064) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=15 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4065) END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=16 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@4066) END
 	SAY NAME1 @4046
 	SAY UNIDENTIFIED_DESC @29141
 

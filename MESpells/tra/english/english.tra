@@ -779,7 +779,7 @@ Casting Time: 9
 Area of Effect: 15-ft. radius
 Saving Throw: 1/2
 
-When the caster utters the words to this powerful spell, <PRO_HESHE> calls upon powerful forces indeed. These forces pull down meteors from above, hurling them randomly at anyone in the area of effect. For every level of the caster, one meteor falls upon a random location within 15 feet of the target. All creatures within 8 feet of the meteor take 2d10 fire damage and 2d10 crushing damage, with a Save vs. Breath at -5 for half damage. Only a fraction of the meteors are likely to strike a specific creature.~
+When the caster utters the words to this spell, <PRO_HESHE> calls upon powerful forces indeed. These forces pull down meteors from above, hurling them randomly at anyone in the area of effect. For every level of the caster, one meteor falls upon a random location within 15 feet of the target. All creatures within 8 feet of the meteor take 3d10 fire damage and 3d10 crushing damage, with a Save vs. Breath at -5 for half damage. Only a fraction of the meteors are likely to strike a specific creature.~
 @29141=~Energy Drain
 (Necromancy)
 
@@ -2305,7 +2305,7 @@ Level: 7
 Range: Visual range of the caster
 Duration: 5 rounds
 Casting Time: 1
-Area of Effect: 10-ft cube
+Area of Effect: 10-ft. cube
 Saving Throw: None
 
 This spell creates a cage of force - a cube with walls of force on each side. Creatures that were in the area of effect when the spell was cast are trapped in the forcecage for the duration. Creatures cannot enter or pass through the area of effect.~

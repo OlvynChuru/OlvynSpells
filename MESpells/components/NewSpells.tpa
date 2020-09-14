@@ -286,6 +286,7 @@ ADD_PROJECTILE ~override/melivlig.pro~ //Living Lightning
 ADD_PROJECTILE ~override/mewavefr.pro~ //Freezing Wave
 ADD_PROJECTILE ~override/merepuls.pro~ //Repulse
 ADD_PROJECTILE ~override/mesacrif.pro~ //Sacrificial Explosion
+ADD_PROJECTILE ~override/meconegr.pro~ //Cone of acid
 ADD_PROJECTILE ~override/mewofir2.pro~ //Holy Wall of Fire
 
 LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~0x106~ splprot_value=~1~ splprot_relation=~9~ RET splprot_areaisnotoutdoor=splprot_slot END
@@ -1544,7 +1545,11 @@ COPY_EXISTING ~mepr654.spl~ ~override/%mepr654%.spl~
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowspellnegates%~ END
 
 COPY_EXISTING ~mepr654d.spl~ ~override~
-	LPF ALTER_SPELL_HEADER INT_VAR projectile=melivlig END
+	PATCH_IF NOT MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=melivlig END
+	END ELSE BEGIN
+		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=castspell opcode=eeexinvokelua parameter1=0x5250454D parameter2=0x45343536 savingthrow=0x100000 special=240 STR_VAR match_resource=~mepr654e~ resource=~MERANDSP~ END
+	END
 
 COPY_EXISTING ~mepr654e.spl~ ~override~
 	READ_SHORT 0x68 numheaders
@@ -1605,6 +1610,7 @@ COPY_EXISTING ~clabdr03.2da~ ~override~
 
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR6~ RET mepr657=filename END
 COPY_EXISTING ~mepr657.spl~ ~override/%mepr657%.spl~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=mewofir2 END
 	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mepr657~ resource= EVAL ~%mepr657%~ END
 	SAY NAME1 @31657
 	SAY UNIDENTIFIED_DESC @32657
@@ -2021,7 +2027,7 @@ COPY_EXISTING ~shop08.sto~ ~override~ //Galoomp the Bookkeeper
 	IF_EXISTS
 
 COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
-	ADD_STORE_ITEM ~mewi154x~ AFTER ~scrl70~ #1 #0 #0 ~IDENTIFIED~ #2
+	ADD_STORE_ITEM ~mewi154x~ AFTER ~scrla6~ #1 #0 #0 ~IDENTIFIED~ #2
 	IF_EXISTS
 
 COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
@@ -2305,6 +2311,67 @@ ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
 COPY_EXISTING ~ar3101.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi158x~ END
+
+END
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI1~ RET mewi159=filename END
+COPY_EXISTING ~mewi159.spl~ ~override/%mewi159%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi159~ resource= EVAL ~%mewi159%~ END
+	SAY NAME1 @33159
+	SAY UNIDENTIFIED_DESC @34159
+
+COPY_EXISTING ~mewi159d.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi159~ resource= EVAL ~%mewi159%~ END
+
+COPY_EXISTING ~mewi159x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi159~ resource= EVAL ~%mewi159%~ END
+	SAY NAME2 @33159
+	SAY IDENTIFIED_DESC @34159
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowbreathnegates%~ END
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~inn3351.sto~ ~override~ //Feldepost's Inn
+	ADD_STORE_ITEM ~mewi159x~ AFTER ~mewi156x~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ar1900.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=7 STR_VAR item_to_add=~mewi159x~ END
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi159x~ AFTER ~mewi154x~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
+COPY_EXISTING ~bdbeleg3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi159x~ AFTER ~scrl6a~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0405.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=7 STR_VAR item_to_add=~mewi159x~ END
+
+COPY_EXISTING ~shop08.sto~ ~override~
+	ADD_STORE_ITEM ~mewi159x~ AFTER ~scrl81~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi159x~ AFTER ~mewi154x~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi159x~ AFTER ~mewi154x~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar3503.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=6 STR_VAR item_to_add=~mewi159x~ END
 
 END
 END
@@ -3563,6 +3630,66 @@ COPY_EXISTING ~bandoth.sto~ ~override~
 	ADD_STORE_ITEM ~mewi360x~ BEFORE ~sccfe~ #1 #0 #0 ~IDENTIFIED~ #1
 
 END
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI3~ RET mewi361=filename END
+COPY_EXISTING ~mewi361.spl~ ~override/%mewi361%.spl~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=meconegr END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi361~ resource= EVAL ~%mewi361%~ END
+	SAY NAME1 @33361
+	SAY UNIDENTIFIED_DESC @34361
+
+COPY_EXISTING ~mewi361x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi361~ resource= EVAL ~%mewi361%~ END
+	SAY NAME2 @33361
+	SAY IDENTIFIED_DESC @34361
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowbreathhalf%~ END
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~highhedg.sto~ ~override~
+	ADD_STORE_ITEM ~mewi361x~ AFTER ~mewi360x~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~sto0703.sto~ ~override~
+	ADD_STORE_ITEM ~mewi361x~ AFTER ~scrl1k~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~bdsorcsc.sto~ ~override~
+	ADD_STORE_ITEM ~mewi361x~ AFTER ~scrl1k~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi361x~ AFTER ~scrla5~ #1 #0 #0 ~IDENTIFIED~ #4
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0315.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi361x~ END
+
+COPY_EXISTING ~shop08.sto~ ~override~ //Galoomp the Bookkeeper
+	ADD_STORE_ITEM ~mewi361x~ AFTER ~scrl1k~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi361x~ AFTER ~scrla5~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi361x~ AFTER ~scrla5~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SPWI319X\",1,1)~ ~AddStoreItem("KUORK0","MEWI361X",1,1)
+AddStoreItem("KUORK0","SPWI319X",1,1)~
+	END
 
 END
 
@@ -4919,16 +5046,27 @@ END
 
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI6~ RET mewi651=filename END
 COPY_EXISTING ~mewi651.spl~ ~override/%mewi651%.spl~
-//	LPF ALTER_SPELL_HEADER INT_VAR projectile=memissto END
-	READ_SHORT 0x68 numheaders
-	FOR (i = numheaders; i < 50; ++i) BEGIN
-		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
-		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
-		numheaders = numheaders + 1
-		LPF ADD_SPELL_EFFECT INT_VAR header=(i + 1) opcode=castspell target=2 timing=1 parameter2=1 resist_dispel=2 STR_VAR resource=~MEWI651D~ END
+	PATCH_IF NOT MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
+		READ_SHORT 0x68 numheaders
+		FOR (i = numheaders; i < 50; ++i) BEGIN
+			LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+			LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+			numheaders = numheaders + 1
+			LPF ADD_SPELL_EFFECT INT_VAR header=(i + 1) opcode=castspell target=2 timing=1 parameter2=1 resist_dispel=2 STR_VAR resource=~MEWI651D~ END
+		END
+		SAY NAME1 @33651
+		SAY UNIDENTIFIED_DESC @34651
+	END ELSE BEGIN
+		READ_SHORT 0x68 numheaders
+		FOR (i = numheaders; i < 50; ++i) BEGIN
+			LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+			LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+			numheaders = numheaders + 1
+			LPF ADD_SPELL_EFFECT INT_VAR header=(i + 1) opcode=eeexinvokelua target=2 timing=1 parameter1=0x4957454D parameter2=0x44313536 savingthrow=0x100000 special=256 STR_VAR resource=~MERANDSP~ END
+		END
+		SAY NAME1 @33651
+		SAY UNIDENTIFIED_DESC @30100
 	END
-	SAY NAME1 @33651
-	SAY UNIDENTIFIED_DESC @34651
 
 COPY_EXISTING ~mewi651d.spl~ ~override~
 	LPF ALTER_SPELL_HEADER INT_VAR projectile=meranmis END
@@ -5736,6 +5874,43 @@ COPY_EXISTING ~25spell.sto~ ~override~
 
 COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
 	ADD_STORE_ITEM ~mewi759x~ AFTER ~scrl8n~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar7004.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=10 STR_VAR item_to_add=~mewi759x~ END
+
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI7~ RET mewi760=filename END
+COPY_EXISTING ~mewi760.spl~ ~override/%mewi760%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi760~ resource= EVAL ~%mewi760%~ END
+	SAY NAME1 @33760
+	SAY UNIDENTIFIED_DESC @34760
+
+COPY_EXISTING ~mewi760x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi760~ resource= EVAL ~%mewi760%~ END
+	SAY NAME2 @33760
+	SAY IDENTIFIED_DESC @34760
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowspellhalf%~ END
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~scrolls.sto~ ~override~
+	ADD_STORE_ITEM ~mewi760x~ BEFORE ~scrl8g~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~ar0413.are~ ~override~ //Planar Sphere, core
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi760x~ END
+
+COPY_EXISTING ~25spell.sto~ ~override~
+	ADD_STORE_ITEM ~mewi760x~ BEFORE ~scrl8r~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi760x~ BEFORE ~scrl8r~ #1 #0 #0 ~IDENTIFIED~ #6
 	IF_EXISTS
 
 END
@@ -7135,7 +7310,7 @@ COPY_EXISTING ~mewi966.spl~ ~override~
 LAF ADD_CLASS_SPELL STR_VAR resref=~MEWI966~ scroll=~MEWI966X~ class_include=~{1, 5, 7, 10, 13, 14, 17, 19}~ END
 
 COPY_EXISTING ~mewi966x.itm~ ~override~
-//	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi753~ resource= EVAL ~%mewi753%~ END
+//	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi966~ resource= EVAL ~%mewi966%~ END
 	SAY NAME2 @33966
 	SAY IDENTIFIED_DESC @34966
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
@@ -7156,6 +7331,61 @@ COPY_EXISTING ~ar9712.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=6 STR_VAR item_to_add=~mewi966x~ END
 
 END
+END
+
+ACTION_IF MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
+
+COPY_EXISTING ~mewi967.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@30101) END
+	SAY NAME1 @33967
+	SAY UNIDENTIFIED_DESC @34967
+
+COPY_EXISTING ~mecullth.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=eeexinvokelua special=RESOLVE_STR_REF(@30102) STR_VAR match_resource=~MECULLPR~ END
+	SAY NAME1 @33967
+	SAY UNIDENTIFIED_DESC @30103
+
+COPY_EXISTING ~luma0.2da~ ~override~ ~luso0.2da~ ~override~
+	LPF ADD_HLA STR_VAR ability=~GA_MEWI967~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
+	IF_EXISTS
+	UNLESS ~GA_MEWI967~
+
+COPY_EXISTING ~lucm0.2da~ ~override~ ~lufm0.2da~ ~override~ ~lumt0.2da~ ~override~
+	LPF ADD_HLA STR_VAR ability=~GA_MEWI967~ min_lev=~32~ max_lev=~99~ num_allowed=~1~ END
+	IF_EXISTS
+	UNLESS ~GA_MEWI967~
+
+COPY_EXISTING ~lufmc.2da~ ~override~ ~lufmt.2da~ ~override~
+	LPF ADD_HLA STR_VAR ability=~GA_MEWI967~ min_lev=~32~ max_lev=~99~ num_allowed=~1~ END
+	IF_EXISTS
+	IF ~GA_SPWI921~
+	UNLESS ~GA_MEWI967~
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 numcolumns theclass
+		PATCH_IF (~%theclass%~ STRING_EQUAL_CASE ~1~) OR (~%theclass%~ STRING_EQUAL_CASE ~19~) BEGIN
+			READ_2DA_ENTRY i 1 numcolumns theclassname
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~luabbr.2da~ ~override~
+					LPF GET_2DA_ROW INT_VAR found_it=1 STR_VAR match= EVAL ~%theclassname%~ RET numcolumns2=numcols row=matched END
+					PATCH_IF row > ~-1~ BEGIN
+						READ_2DA_ENTRY row 1 numcolumns2 thehlatable
+						INNER_ACTION BEGIN
+							COPY_EXISTING ~lu%thehlatable%.2da~ ~override~
+								LPF ADD_HLA STR_VAR ability=~GA_MEWI967~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
+								IF_EXISTS
+								UNLESS ~GA_MEWI967~
+						END
+					END
+					BUT_ONLY_IF_IT_CHANGES
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
 END
 /*
 COPY_EXISTING_REGEXP ~.*\.bcs~ ~override~

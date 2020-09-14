@@ -938,6 +938,22 @@ Saving Throw: None
 
 Upon casting Polar Ray, the caster emits a powerful beam of frost in the direction of the target. All creatures in the path of the ray take 24d6 cold damage.~
 @30099=~Protected from Non-Silver Weapons~
+@30100=~Isaac's Greater Missile Storm
+(Evocation)
+
+Level: 6
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 6
+Area of Effect: 15-ft. radius
+Saving Throw: None 
+
+This spell creates a large number of projectiles akin to those created by the Magic Missile spell, which hit random enemies within the area of effect. Each missile deals 1d4+1 magic damage with no Saving Throw. The spell fires one missile per level of the wizard. There is no cap on the number of missiles the spell can produce - it is only limited by the caster's level.~
+@30101=~Can now kill creatures with low current HP at will~
+@30102=~Too high current HP to be killed by Culling Thought~
+@30103=~Culling Thought
+
+If the target has fewer hit points remaining than the caster's level plus their Intelligence, the target dies. This ability is usable at will and as a free action.~
 
 
 @31151=~Snake's Swiftness~
@@ -1524,6 +1540,7 @@ A more powerful version of Dispel Magic, True Dispel removes all dispellable eff
 @33156=~Jump~
 @33157=~Hex~
 @33158=~Reflect Attack~
+@33159=~Taunt~
 @33251=~Power Word, Pull~
 @33252=~Ghostwalk~
 @33253=~Power Word, Push~
@@ -1543,6 +1560,7 @@ A more powerful version of Dispel Magic, True Dispel removes all dispellable eff
 @33358=~Familiar Spell~
 @33359=~Throw~
 @33360=~Heightening~
+@33361=~Mestil's Acid Breath~
 @33451=~Wall of Fire~
 @33452=~Phantasmal Killer~
 @33453=~Ghoulish Feast~
@@ -1584,6 +1602,7 @@ A more powerful version of Dispel Magic, True Dispel removes all dispellable eff
 @33757=~Reanimate~
 @33758=~Rewind Time~
 @33759=~Extraordinary Luck~
+@33760=~Lightning Stream~
 @33851=~Enhance Attribute~
 @33852=~Globe of Invisibility~
 @33853=~Otto's Irresistible Spin~
@@ -1612,6 +1631,7 @@ A more powerful version of Dispel Magic, True Dispel removes all dispellable eff
 @33964=~Freezing Wave~
 @33965=~Rampant Lightning~
 @33966=~Protection from Time Stop~
+@33967=~Culling Thought~
 
 @34151=~Disruptive Surge
 (Wild Magic)
@@ -1701,6 +1721,17 @@ Area of Effect: The caster
 Saving Throw: None
 
 After this spell is cast, the next instance of physical damage the caster would receive is reflected back at the attacker, damaging them instead. If the physical damage came from a weapon, any on-hit effects of the weapon will also be reflected back at the attacker.~
+@34159=~Taunt
+(Enchantment)
+
+Level: 1
+Range: Visual range of the caster
+Duration: 5 rounds
+Casting Time: 0
+Area of Effect: 1 creature
+Saving Throw: Neg.
+
+The Taunt spell provokes an enemy into attacking the caster. If the target fails a Save vs. Breath, it is driven berserk and will attack the caster if possible rather than do any other action. If the target is a warrior (a fighter, ranger, paladin, or monk, including multiclassed warriors), it makes the save at a -6 penalty. Creatures immune to charm effects are immune to Taunt. The effects of Taunt end early if the caster dies.~
 @34251=~Power Word, Pull
 (Conjuration/Summoning)
 
@@ -1920,6 +1951,17 @@ Area of Effect: The caster
 Saving Throw: None
 
 This spell increases the level of the caster's other spells. For the duration, the caster's spells count as five spell levels higher for purposes of overcoming Globe of Invulnerability and other spell level immunities like those of a rakshasa or lich.~
+@34361=~Mestil's Acid Breath
+(Conjuration)
+
+Level: 3
+Range: 0
+Duration: Instant
+Casting Time: 3
+Area of Effect: 22-ft. cone with 90-deg. arc
+Saving Throw: 1/2
+
+By casting this spell, the wizard spews acid in a cone. All creatures in the area of effect take 1d6 acid damage per level (max 10d6) with a Save vs. Breath for half.~
 @34451=~Wall of Fire
 (Evocation)
 
@@ -2379,6 +2421,17 @@ Saving Throw: None
 "Extraordinary" is definitely an understatement of the sheer amount of good fortune this spell gives the recipient. It is almost possible to *see* the way reality is warped as it accommodates the newfound luck of the individual.
 
 For 7 rounds, the target gains 1 point of luck, a +1 bonus to all saving throws, and a +5% bonus to all thieving skills for every level of the caster.~
+@34760=~Lightning Stream
+(Evocation)
+
+Level: 7
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 4
+Area of Effect: Special
+Saving Throw: None
+
+This spell releases a flurry of lightning bolts (one per level) at the target point. Each bolt deals 1d8 electricity damage, with a Save vs. Spell for half. The bolts travel in a line, bouncing off walls and potentially hitting the same creature more than once per bolt.~
 @34851=~Enhance Attribute
 (Alteration)
 
@@ -2506,7 +2559,7 @@ Upon casting Polar Ray, the caster emits a powerful beam of frost at the target.
 Level: 8
 Range: Visual range of the caster
 Duration: 16 rounds
-Casting Time: 9
+Casting Time: 3
 Area of Effect: 1 creature
 Saving Throw: None
 
@@ -2700,6 +2753,17 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 The recipient of this spell gains the ability to move and do actions while time is stopped. Protection from Time Stop can either be used as a defense when an enemy casts Time Stop, or as a means of offense when another ally casts Time Stop. Unlike other abjuration spells, Protection from Time Stop can be learned by Transmuters.~
+@34967=~Culling Thought
+(Necromancy, Enchantment)
+
+Level: 10
+Range: Special
+Duration: 8 hours
+Casting Time: 3
+Area of Effect: Special
+Saving Throw: None
+
+This spell enables the caster to slay weak creatures with a thought. For the duration, the caster gains the Culling Thought ability, which kills a creature with current HP less than the caster's level plus their Intelligence (so a 20th-level caster with 18 Intelligence could kill any creature with 38 HP or less). This ability can be used at will and as a free action, and can target any creature the party sees, even if the caster does not see it. If the target is not killed by Culling Thought, it remains unaware of the attempt and will not turn hostile.~
 
 @35327=~I am the channel through which your wish shall be fulfilled. You may ask for a wish I can repeat, or you may ask for a wish that will happen once only. Decide.~
 @35328=~Choose wisely then, as I can perform each of these tasks once and once only.~

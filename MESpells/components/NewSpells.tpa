@@ -2338,7 +2338,7 @@ COPY_EXISTING ~inn3351.sto~ ~override~ //Feldepost's Inn
 	ADD_STORE_ITEM ~mewi159x~ AFTER ~mewi156x~ #1 #0 #0 ~IDENTIFIED~ #1
 	IF_EXISTS
 
-COPY_EXISTING ~ar1900.are~ ~override~
+COPY_EXISTING ~%arbg%1900.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=7 STR_VAR item_to_add=~mewi159x~ END
 
 COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store

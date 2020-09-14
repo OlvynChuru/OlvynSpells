@@ -2350,6 +2350,54 @@ COPY_EXISTING ~scrl92.itm~ ~override~
 COPY_EXISTING ~spwi208.spl~ ~override~
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 
+BEGIN @41 DESIGNATED 15031
+
+COPY ~MESpells/3E_Flame_Strike~ ~override~
+
+ADD_PROJECTILE ~override/idpro67.pro~
+ADD_PROJECTILE ~override/idpro92.pro~
+
+COPY_EXISTING ~sppr503.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=idpro67 END
+	SAY NAME1 @4068
+	SAY UNIDENTIFIED_DESC @15031
+
+COPY_EXISTING ~scrl62.itm~ ~override~
+	LPF ALTER_ITEM_HEADER INT_VAR header=1 target=4 END
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=castspell opcode=castspellpoint target=1 STR_VAR match_resource=~sppr503~ END
+	SAY NAME2 @4068
+	SAY IDENTIFIED_DESC @15031
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowspellhalf%~ END
+
+COPY_EXISTING ~sppr705.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=idpro92 END
+	SAY NAME1 @4069
+	SAY UNIDENTIFIED_DESC @17051
+
+COPY_EXISTING ~wand11.itm~ ~override~
+	LPF ALTER_ITEM_HEADER INT_VAR projectile=idpro67 target=4 END
+	LPF DELETE_ITEM_EFFECT INT_VAR opcode_to_delete=(0 - 1) END
+	LPF ADD_SPELL_EFFECT INT_VAR power=5 opcode=damage target=2 timing=9 parameter1=0 parameter2=firedamage dicenumber=4 dicesize=6 resist_dispel=1 savingthrow=bypassmirrorimage END
+	LPF ADD_SPELL_EFFECT INT_VAR power=5 opcode=damage target=2 timing=9 parameter1=0 parameter2=magicfiredamage dicenumber=4 dicesize=6 resist_dispel=1 savingthrow=(vswand + bypassmirrorimage) END
+	SAY NAME2 @4070
+	SAY IDENTIFIED_DESC @4071
+
+BEGIN @42 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 17041
+
+COPY_EXISTING ~sppr704.spl~ ~override~
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=(0 - 1) END
+	LPF ALTER_ITEM_HEADER INT_VAR speed=3 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=playsound target=2 timing=1 power=7 resist_dispel=1 savingthrow=vsspell savebonus=(0 - 3) insert_point=0 STR_VAR resource=~EFF_P04~ END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=playsound target=2 timing=4 duration=72 power=7 resist_dispel=1 savingthrow=vsspell savebonus=(0 - 3) insert_point=0 STR_VAR resource=~EFF_E04~ END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=displayportraiticon target=2 timing=0 duration=72 parameter2=0 power=7 resist_dispel=1 savingthrow=vsspell savebonus=(0 - 3) insert_point=0 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=charm1 target=2 timing=0 duration=72 parameter2=1 power=7 resist_dispel=1 savingthrow=vsspell savebonus=(0 - 3) insert_point=0 END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=immunitytospellandmessage target=2 timing=0 duration=1 parameter2=15 probability1=90 power=7 insert_point=0 STR_VAR resource=~sppr704~ END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=immunitytospellandmessage target=2 timing=0 duration=1 parameter2=19 probability1=30 power=7 insert_point=0 STR_VAR resource=~sppr704~ END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=immunitytospellandmessage target=2 timing=0 duration=1 parameter2=23 power=7 insert_point=0 STR_VAR resource=~sppr704~ END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=immunitytospellandmessage target=2 timing=0 duration=1 parameter2=22 power=7 insert_point=0 STR_VAR resource=~sppr704~ END
+	SAY NAME1 @4072
+	SAY UNIDENTIFIED_DESC @17041
+
 BEGIN @11 REQUIRE_PREDICATE !(GAME_IS ~iwdee~) ~~ FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 DESIGNATED 14021
 
 COPY ~MESpells/Restore_Summon_Monsters~ ~override~

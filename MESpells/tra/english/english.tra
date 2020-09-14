@@ -38,6 +38,8 @@
 @38=~Prevent Stoneskin from making characters grey (should be installed after AI mods like SCS)~
 @39=~Improve Larloch's Minor Drain and Vampiric Touch~
 @40=~Improve Shocking Grasp, Chill Touch and Ghoul Touch~
+@41=~3E-like Flame Strike and Fire Storm~
+@42=~Make it so Nature's Beauty charms enemies rather than blinding or killing them~
 
 @1000=~Unnecessary as Spell Revisions is already installed~
 @1001=~The new spells are already added by High Power Baldur's Gate~
@@ -435,6 +437,24 @@ Permanent Druid Spell IV allows the druid to cast a spell with an extremely long
 @4065=~Fifteen Levels Drained~
 @4066=~Sixteen Levels Drained~
 @4067=~Shocking Grasp~
+@4068=~Flame Strike~
+@4069=~Fire Storm~
+@4070=~Wand of the Heavens~
+@4071=~This wand will cause a pillar of flame to shoot out of the sky and strike the target point. The flames will do 8d6 damage to all creatures in the area of effect, though they can make a Save vs. Wand for half damage. The wand only has a certain amount of charges and will be destroyed when they are used.
+
+STATISTICS:
+
+Charge abilities:
+– Flame Strike
+  Damage: 4d6 fire, 4d6 magic fire (Save vs. Wand for half)
+  Range: 120 ft.
+  Area of Effect: 5-ft. radius
+
+Requires:
+ 9 Intelligence
+
+Weight: 1~
+@4072=~Nature's Beauty~
 
 
 @11021=~Command
@@ -533,6 +553,18 @@ Area of Effect: Special
 Saving Throw: None
 
 By means of this spell, the caster calls a multitude of animals, each of which are worth between 125 and 420 experience points. The animals appearing are randomly determined and ignore the summoning limit. They will remain under the caster's control until slain or the spell duration expires. The animals summoned are worth a total of around 80 XP per caster level.~
+@15031=~Flame Strike
+(Evocation)
+
+Level: 5
+Sphere: Combat
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 8
+Area of Effect: 5-ft. radius
+Saving Throw: 1/2
+
+When the priest casts Flame Strike, a vertical column of fire roars downward onto a victim chosen by the caster. The spell deals 1d6 points of damage per level (to a maximum of 15d6) to the target and any nearby victims. Half of the damage, rounded down, is fire damage, and the other half is magic fire damage. The targets only take the regular fire damage on a successful Save vs. Spell.~
 @15121=~Greater Command
 (Enchantment/Charm)
 
@@ -557,6 +589,32 @@ Area of Effect: Special
 Saving Throw: None 
 
 By means of this spell, the caster calls a multitude of animals, each of which are worth between 650 and 975 experience points. The animals appearing are randomly determined and ignore the summoning limit. They will remain under the caster's control until slain or the spell duration expires. The animals summoned are worth a total of around 120 XP per caster level.~
+@17041=~Nature's Beauty
+(Illusion/Phantasm)
+
+Level: 7
+Sphere: Elemental Earth
+Range: 0
+Duration: 12 rounds
+Casting Time: 6
+Area of Effect: 15-ft. radius
+Saving Throw: Special
+
+When this spell is cast, the caster appears to undergo a remarkable transformation and becomes the very ideal of beauty: For a male, this is usually a nymph; for a female, it varies.
+
+As with a nymph, any humanoid or animal viewing the disguised caster must make a Save vs. Spell with a -3 penalty or be charmed by the caster for 12 rounds. Blind creatures are unaffected by this spell, as are non-humanoid, non-animal creatures. Elves and half-elves have a chance to resist the spell.~
+@17051=~Fire Storm
+(Evocation)
+
+Level: 7
+Sphere: Elemental Fire
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 9
+Area of Effect: 20-ft. radius
+Saving Throw: 1/2
+
+This spell causes the area of effect to be covered in roaring flames, dealing 1d6 fire damage per level (max 20d6). Creatures can Save vs. Spell with a -4 penalty for half damage.~
 @17391=~Energy Drain
 (Necromancy)
 

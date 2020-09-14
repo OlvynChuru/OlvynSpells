@@ -1616,6 +1616,25 @@ COPY_EXISTING ~mepr657.spl~ ~override/%mepr657%.spl~
 	SAY UNIDENTIFIED_DESC @32657
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 
+OUTER_SPRINT stringlevel6 @3506
+OUTER_SPRINT stringlevel7 @3507
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR6~ RET mepr658=filename END
+COPY_EXISTING ~sppr702.spl~ ~override/%mepr658%.spl~
+	WRITE_LONG spelllevel 6
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 match_power=7 power=6 END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~sppr702~ resource= EVAL ~%mepr658%~ END
+	LPF REPLACE_IN_SPELL_DESCRIPTION INT_VAR new_string=1 STR_VAR match= EVAL ~%stringlevel7%~ replace_with= EVAL ~%stringlevel6%~ END
+
+
+COPY_EXISTING ~hidespl.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	PATCH_IF numcolumns = 3 BEGIN
+		INSERT_2DA_ROW numrows numcolumns ~SPPR702    1          0~
+	END ELSE PATCH_IF numcolumns = 4 BEGIN
+		INSERT_2DA_ROW numrows numcolumns ~SPPR702    1          0          0~
+	END
+
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR7~ RET mepr751=filename END
 COPY_EXISTING ~mepr751.spl~ ~override/%mepr751%.spl~
 	SAY NAME1 @31751
@@ -3294,7 +3313,7 @@ COPY_EXISTING ~mewi355x.itm~ ~override~
 	SAY NAME2 @33355
 	SAY IDENTIFIED_DESC @34355
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
-
+/*
 ACTION_IF (GAME_IS ~bgee eet~) BEGIN
 
 COPY_EXISTING ~narcil.cre~ ~override~
@@ -3317,7 +3336,7 @@ COPY_EXISTING ~hobart.sto~ ~override~
 	ADD_STORE_ITEM ~mewi355x~ AFTER ~flamoil~ #1 #0 #0 ~IDENTIFIED~ #1
 
 END
-
+*/
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI3~ RET mewi356=filename END
 COPY_EXISTING ~mewi356.spl~ ~override/%mewi356%.spl~
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi356~ resource= EVAL ~%mewi356%~ END

@@ -8115,7 +8115,7 @@ COPY_EXISTING ~mewi968.spl~ ~override~
 		numheaders = numheaders + 1
 	END
 	FOR (i = 1; i <= numheaders; ++i) BEGIN
-		LPF ALTER_SPELL_EFFECT INT_VAR duration_high=(i * 3) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=i duration_high=(i * 3) END
 	END
 	SAY NAME1 @33968
 	SAY UNIDENTIFIED_DESC @34968

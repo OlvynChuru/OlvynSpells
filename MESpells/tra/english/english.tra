@@ -40,6 +40,29 @@
 @40=~Improve Shocking Grasp, Chill Touch and Ghoul Touch~
 @41=~3E-like Flame Strike and Fire Storm~
 @42=~Make it so Nature's Beauty charms enemies rather than blinding or killing them~
+@43=~Add 3E-like Metamagic abilities to the game~
+@44=~Make it so Champion's Strength sets the target's Strength to 25 (but it still prevents the caster from casting any more spells for the duration)~
+@45=~Allow familiars to deliver the wizard's touch spells~
+@46=~Improve Magical Stone~
+@47=~Improve low-level weapon-conjuring spells~
+@48=~Improve spells that merely weaken enemies rather than disable them (e.g. Deafness, Ray of Enfeeblement, Contagion)~
+@49=~Have Skull Trap cap at 10d6 damage~
+@50=~Make it so 5th-level scaling damage spells (e.g. Cone of Cold, Sunfire) deal a minimum of 12 dice of damage (so they'll be more damaging than Fireball even from a level 9 caster)~
+@51=~Improve Ice Storm~
+@52=~BG2-style improved Ice Storm: 2d10 damage per round for 4 rounds~
+@53=~IWD-style improved Ice Storm: 6d10 damage all at once~
+@54=~Have Holy Smite cap at 10d4 damage~
+@55=~Improve Cloak of Fear~
+@56=~Improve Cure Wounds and Cause Wounds spells~
+@57=~Improve Delayed Blast Fireball (1d6 per level, up to 20d6)~
+@58=~Improve Power Word, Kill (kills a single creature with up to 120 hit points)~
+@59=~Give permanent Improved Invisibility to all Invisible Stalkers~
+@60=~Improve Luck~
+@61=~Original BG1-style Detect Evil (affects all creatures in the area, so it lets you know what creatures there are before you see them)~
+@62=~Improve Goodberry~
+@63=~Increase the duration of Negative Plane Protection to 8 hours~
+@64=~Allow Greater Restoration to cure basically any status effect~
+@65=~Let Rangers and Paladins cast spells at their full caster level~
 
 @1000=~Unnecessary as Spell Revisions is already installed~
 @1001=~The new spells are already added by High Power Baldur's Gate~
@@ -208,6 +231,7 @@ What would you like to do?
 @3203=~Duration: 3 rounds~
 @3204=~Duration: 4 rounds~
 @3205=~Duration: 5 rounds~
+@3290=~Duration: 8 hours~
 
 @3300=~Saving Throw: None~
 @3351=~Saving Throw: Spell negates~
@@ -455,7 +479,30 @@ Requires:
 
 Weight: 1~
 @4072=~Nature's Beauty~
-
+@4073=~Mold Touch~
+@4074=~Circle of Bones~
+@4075=~Wall of Moonlight~
+@4076=~Cloud of Pestilence~
+@4077=~Smashing Wave~
+@4078=~Thorn Spray~
+@4079=~Spike Stones~
+@4080=~Whirlwind~
+@4081=~Spiritual Wrath~
+@4082=~Spike Growth~
+@4083=~Undead Ward~
+@4084=~Snilloc's Snowball Swarm~
+@4085=~Lance of Disruption~
+@4086=~Shout~
+@4087=~Vitriolic Sphere~
+@4088=~Shroud of Flame~
+@4089=~Malavon's Rage~
+@4090=~Acid Storm~
+@4091=~Suffocate~
+@4092=~Great Shout~
+@4093=~Ray of Enfeeblement~
+@4094=~Deafness~
+@4095=~Contagion~
+@4096=~Cloak of Fear~
 
 @11021=~Command
 (Enchantment/Charm)
@@ -493,6 +540,18 @@ Area of Effect: 15-ft. radius
 Saving Throw: Neg.
 
 By means of this spell, the caster is able to cause plants in the area of effect to entangle enemies within the area. The grasses, weeds, bushes, and even trees wrap, twist, and entwine about the creatures, holding them fast for the duration if they fail a Save vs. Spell. An entangled creature can still attack, but receives a -2 penalty to its Armor Class.~
+@11061=~Magical Stone
+(Enchantment)
+
+Level: 1
+Sphere: Combat
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 4
+Area of Effect: 1 creature
+Saving Throw: None
+
+By using this spell, the priest can temporarily enchant a small pebble, which is then hurled or slung at an opponent. The stone automatically hits and deals 3d4 points of magic damage to whomever it hits except undead creatures, who take 6d4 points of magic damage instead.~
 @12091=~Identify Creature
 (Divination)
 
@@ -541,6 +600,18 @@ Area of Effect: Special
 Saving Throw: None 
 
 By means of this spell, the caster calls a multitude of animals, each of which are worth between 35 and 65 experience points. The animals appearing are randomly determined and ignore the summoning limit. They will remain under the caster's control until slain or the spell duration expires. The animals summoned are worth a total of around 60 XP per caster level.~
+@14161=~Cloak of Fear
+(Conjuration/Summoning)
+
+Level: 4
+Sphere: Charm
+Range: 0
+Duration: 1 turn
+Casting Time: 6
+Area of Effect: The caster
+Saving Throw: Neg.
+
+Cloak of Fear bestows the caster with an aura of fear in a 5-ft. radius. All creatures that enter the cloak's area of effect must make a Save vs. Spell or flee in panic for 1 round. The aura does not affect undead creatures.~
 @15011=~Animal Summoning II
 (Conjuration/Summoning)
 
@@ -565,6 +636,20 @@ Area of Effect: 5-ft. radius
 Saving Throw: 1/2
 
 When the priest casts Flame Strike, a vertical column of fire roars downward onto a victim chosen by the caster. The spell deals 1d6 points of damage per level (to a maximum of 15d6) to the target and any nearby victims. Half of the damage, rounded down, is fire damage, and the other half is magic fire damage. The targets only take the regular fire damage on a successful Save vs. Spell.~
+@15071=~Champion's Strength
+(Alteration)
+
+Level: 5 
+Sphere: Law
+Range: Visual range of the caster
+Duration: 3 rounds/level
+Casting Time: 2
+Area of Effect: 1 creature
+Saving Throw: None 
+
+When this spells is cast, the priest effectively draws on the strength of <PRO_HISHER> god and lends it to the target creature, in effect creating a champion. The target gains a bonus to <PRO_HISHER> THAC0 at a rate of 1 for every 3 levels of the caster. So a 9th level priest would confer a THAC0 bonus of 3 to the target, and so on. Also the target's Strength is set to 25 for the duration of the spell and receives all the bonuses to hit and damage rolls that this Strength confers.
+
+The drawback to this is that the priest must concentrate on the connection between the target and <PRO_HISHER> god for the duration of the spell, hence losing the ability to cast any spells during this time. The effect lasts for 3 rounds for every level of the caster or until dispelled.~
 @15121=~Greater Command
 (Enchantment/Charm)
 
@@ -728,6 +813,32 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 When a wizard calls upon a Power Word, Sleep spell, <PRO_HESHE> causes a comatose slumber to come upon 1 creature (other than undead and certain other creatures specifically excluded from the spell's effects). The creature gets no Saving Throw. Magically sleeping opponents can be attacked with substantial bonuses but will wake up when damaged. The Sleep effect will last for 3 rounds.~
+@22211=~Ray of Enfeeblement
+(Necromancy)
+
+Level: 2
+Range: Visual range of the caster
+Duration: 1 round/level
+Casting Time: 2
+Area of Effect: 1 creature
+Saving Throw: Neg.
+
+By means of a Ray of Enfeeblement, a wizard weakens an opponent, reducing its Strength score and thereby the attacks that rely upon it. The victim is reduced to a Strength score of 5 for the duration of the spell, unless a Saving Throw vs. Spell is made with a -6 penalty. This spell does not affect combat bonuses due to magical items, and those conferring increased Strength function normally. However, the target receives all the penalties for a Strength score of 5 such as attack and damage penalties as well as lower weight allowance.
+
+Creatures lower level than the caster have no save against this spell.~
+@22231=~Deafness
+(Illusion/Phantasm)
+
+Level: 2
+Range: 180 ft.
+Duration: Special
+Casting Time: 2
+Area of Effect: 1 creature
+Saving Throw: Neg.
+
+The Deafness spell causes the recipient to become totally unable to hear any sounds. The victim is allowed a Saving Throw vs. Polymorph with a -5 penalty to negate the effect. Deafened spellcasters have a 50% chance to miscast any spells. This deafness can be done away with by means of a Dispel Magic spell or a Cure Disease spell.
+
+Creatures lower level than the caster have no save against this spell.~
 @23011=~Clairvoyance
 (Divination)
 
@@ -750,6 +861,17 @@ Area of Effect: Special
 Saving Throw: None 
 
 By means of this spell, the caster summons a horde of monsters, each of which are worth between 7 and 35 experience points. The monsters appearing are randomly determined and ignore the summoning limit. They will remain under the caster's control until slain or the spell duration expires. The monsters summoned are worth a total of around 20 XP per caster level.~
+@23131=~Skull Trap
+(Necromancy)
+
+Level: 3
+Range: Visual range of the caster
+Duration: Special
+Casting Time: 3
+Area of Effect: 15-ft. radius
+Saving Throw: 1/2
+
+When this spell is cast, a skull is thrown by the caster at the target area. The skull floats in the area until a creature comes within 10 ft. of it. When this happens, the skull is triggered and explodes damaging everyone within a 15-ft. radius. The damage inflicted is equal to 1d6 per level of the caster (to a maximum of 10d6), or half with a successful Saving Throw vs. Spell. When casting this spell, it is wise to set it far away from the party lest they set it off accidentally.~
 @23141=~Vampiric Touch
 (Necromancy)
 
@@ -772,6 +894,28 @@ Area of Effect: 120-ft. radius
 Saving Throw: None
 
 When cast, this spell will cancel all illusionary protections on enemies in the area of effect. In addition it will dispel all forms of Invisibility and Mirror Image, even if originating from an innate ability instead of a spell. The area of effect is roughly a 120-ft. radius around the caster. The targets' Magic Resistance, if any, does not affect this spell.~
+@24041=~Ice Storm
+(Evocation)
+
+Level: 4
+Range: Visual range of the caster
+Duration: 4 rounds
+Casting Time: 4 
+Area of Effect: 15-ft. radius
+Saving Throw: None 
+
+When this spell is cast, great hail stones pound down for four rounds in a 30-ft. diameter area and inflict 2d10 points of cold damage to any creatures within the area of effect. Also, anyone that remains within the area of effect takes 2d10 cold damage each round for 4 rounds.~
+@24042=~Ice Storm
+(Evocation)
+
+Level: 4
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 4
+Area of Effect: 15-ft. radius
+Saving Throw: None
+
+When this spell is cast, shards of ice smash down on all creatures in the area of effect, doing 6d10 points of cold damage.~
 @24071=~Monster Summoning II
 (Conjuration/Summoning)
 
@@ -783,6 +927,19 @@ Area of Effect: Special
 Saving Throw: None 
 
 By means of this spell, the caster summons a horde of monsters, each of which are worth between 35 and 95 experience points. The monsters appearing are randomly determined and ignore the summoning limit. They will remain under the caster's control until slain or the spell duration expires. The monsters summoned are worth a total of around 40 XP per caster level.~
+@24091=~Contagion
+(Necromancy)
+
+Level: 4
+Range: 90 ft.
+Duration: Permanent
+Casting Time: 4
+Area of Effect: 1 creature
+Saving Throw: Neg.
+
+This spell causes a major disease and weakness in a creature. The afflicted individual is immediately stricken with painful and distracting symptoms: boils, blotches, lesions, seeping abscesses, and so on. Strength, Dexterity, and Constitution scores are reduced by 6. The afflicted character is also slowed. The creature can negate these effects with a Save vs. Death at -8. These effects persist until the character receives a Cure Disease spell.
+
+Creatures lower level than the caster have no save against this spell.~
 @25011=~Animate Dead
 (Necromancy)
 
@@ -827,6 +984,17 @@ Area of Effect: Special
 Saving Throw: 1/2
 
 This spell releases a burst of electrical energy at a target; unlike the Lightning Bolt spell, however, once the bolt strikes the initial target, the electricity then jumps to the next nearest foe, losing a small amount of energy with each additional strike until it is expended. The bolt initially inflicts 1d6 Hit Points of electrical damage per level of the caster, to a maximum of 20d6 points of damage. Each jump the bolt makes reduces the damage by 1d6. Each creature that is hit is allowed a Save vs. Spell for half damage.~
+@27121=~Delayed Blast Fireball
+(Invocation/Evocation)
+
+Level: 7
+Range: 40 ft.
+Duration: Special
+Casting Time: 7
+Area of Effect: 12-ft. radius
+Saving Throw: 1/2
+
+This spell creates a fireball that hovers at a point determined by the caster. The fireball will stay in position until someone walks too close to it; at that point, it will explode, dealing 1d6 points of fire damage per level (max 20d6). Victims are allowed a Save vs. Spell for half damage.~
 @29111=~Meteor Swarm
 (Evocation)
 
@@ -1012,7 +1180,26 @@ This spell creates a large number of projectiles akin to those created by the Ma
 @30103=~Culling Thought
 
 If the target has fewer hit points remaining than the caster's level plus their Intelligence, the target dies. This ability is usable at will and as a free action.~
+@30104=~Critical Miss~
+@30105=~Miss~
+@30106=~Hit~
+@30107=~Critical Hit~
+@30108=~Attack Roll ~
+@30109=~(Off-hand)~
+@30110=~Backstab Septuple Damage~
+@30111=~Backstab Octuple Damage~
+@30112=~Backstab Nonuple Damage~
+@30113=~Stygian Ice Storm
+(Conjuration)
 
+Level: 7
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 7
+Area of Effect: 15-ft. radius
+Saving Throw: None
+
+The signiture spell of gelugons, Stygian Ice Storm calls a storm of hellish ice from Stygia. Each creature in the area of effect takes 9d10 magical cold damage with no Saving Throw. In addition, arcane spellcasters in the area of effect forget five memorized spells each round due to the amnesia caused by Stygian ice. This spell has no effect on undead, constructs, or fiends. The caster is immune to <PRO_HISHER> own spell, but <PRO_HISHER> allies are not.~
 
 @31151=~Snake's Swiftness~
 @31152=~Hex~
@@ -1020,6 +1207,7 @@ If the target has fewer hit points remaining than the caster's level plus their 
 @31154=~Turning Weapon~
 @31155=~Repulse~
 @31156=~Camouflage~
+@31157=~Searing Smite~
 @31251=~Beast Sense~
 @31252=~Fiery Link~
 @31253=~Null Healing~
@@ -1035,15 +1223,19 @@ If the target has fewer hit points remaining than the caster's level plus their 
 @31357=~Fly~
 @31358=~Familiar Spell~
 @31360=~Recall Party~
+@31361=~Steel Wind Strike~
 @31451=~Disarm~
 @31452=~Forest's Blessing~
 @31453=~Turn Creature~
 @31454=~Wall of Fire~
+@31455=~Piercing Shots~
+@31456=~Pebbles to Boulders~
 @31551=~Prolongment~
 @31552=~Wall of Force~
 @31553=~Protection from the Elements~
 @31554=~Ethereal Jaunt~
 @31555=~Critical Spell~
+@31556=~Barrage~
 @31652=~Drown~
 @31653=~Antiharm Shell~
 @31654=~Living Lightning~
@@ -1059,6 +1251,8 @@ If the target has fewer hit points remaining than the caster's level plus their 
 @31758=~Mass Heal~
 @31759=~Omnipresence~
 @31760=~True Dispel~
+@31761=~Volcanic Eruption~
+@31762=~Elysium's Tears~
 
 @32151=~Snake's Swiftness
 (Alteration)
@@ -1083,7 +1277,7 @@ Casting Time: 6
 Area of Effect: 1 creature
 Saving Throw: Neg.
 
-This spell curses the target to take more magical and elemental damage. The target must make a Save vs. Polymorph. On a failure, the target is cursed for 6 rounds. During that time, whenever the target would be dealt fire, cold, electricity, acid, or magic damage, it takes an additional 6 damage of that type. Hex is especially effective when combined with spells that deal damage multiple times, such as Writhing Fog. Hex can only be cast by evil-aligned characters.~
+This spell curses the target to take more magical and elemental damage. The target must make a Save vs. Polymorph. On a failure, the target is cursed for 6 rounds. During that time, whenever the target would be dealt fire, cold, electricity, acid, or magic damage, it takes an additional 6 damage of that type. Hex is especially effective when combined with spells that deal damage multiple times, such as Writhing Fog.~
 @32153=~Hunter's Mark
 (Divination)
 
@@ -1134,6 +1328,18 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 This spell gives the recipient the ability to blend into the environment with camouflage. Whenever the creature stands still for 2 seconds, they become effectively invisible through camouflage.~
+@32157=~Searing Smite
+(Invocation)
+
+Level: 1
+Sphere: Sun
+Range: Special
+Duration: 5 rounds or until triggered
+Casting Time: 1
+Area of Effect: The caster
+Saving Throw: None
+
+In casting Searing Smite, the paladin imbues their weapon with holy fire (or with hellfire in the case of Blackguards). The next successful melee attack made on a creature within 5 rounds deals an additional 2d6 magic fire damage, plus 1d6 per 3 levels.~
 @32251=~Beast Sense
 (Divination)
 
@@ -1314,6 +1520,18 @@ Area of Effect: All party members
 Saving Throw: None
 
 Recall Party teleports all party members to the caster's side. The range is unlimited, and party members can be drawn from a different area, so long as they are on the same plane as the caster.~
+@32361=~Steel Wind Strike
+(Alteration)
+
+Level: 3
+Sphere: Elemental Air
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 0
+Area of Effect: 15-ft. radius
+Saving Throw: None
+
+After casting Steel Wind Strike, the caster is enabled to zoom between each enemy in the area of effect, making attacks against each enemy with each equipped weapon. The caster must have one or more melee weapons equipped for this spell to function; ranged weapons won't work. Attacks made this way can critically hit and will apply any on-hit effects of the weapons.~
 @32451=~Disarm
 (Enchantment)
 
@@ -1327,7 +1545,7 @@ Saving Throw: Neg.
 
 The spell Disarm causes creatures' weapons to disappear. Each enemy in the area of effect must make a Save vs. Wands at -2. On a failure, that creature's weapon vanishes temporarily, and the creature is forced to fight with its fists. For the duration, the creature cannot equip another weapon - if it does so, that weapon vanishes as well. The creature's weapons reappear if it dies before the duration expires. Disarm has no effect if the target is using a natural weapon or does not have a weapon in any of its quickslots.~
 @32452=~Forest's Blessing
-(Conjuration/Summoning)
+(Conjuration)
 
 Level: 4
 Sphere: Plant
@@ -1362,6 +1580,30 @@ Area of Effect: 8 ft. long, 2 ft. wide wall
 Saving Throw: None
 
 This spell creates a wall of raging flames. Any creature who attempts to pass through the wall takes 1d4 fire damage per caster level, up to a maximum of 12d4 at level 12. There is no Saving Throw, since the flames cannot be dodged except by going around the wall. A creature that has passed through a Wall of Fire cannot take damage from passing through a Wall of Fire again for 1 round.~
+@32455=~Piercing Shots
+(Alteration)
+
+Level: 4
+Sphere: Combat
+Range: Special
+Duration: 1 round/level
+Casting Time: 2
+Area of Effect: Special
+Saving Throw: None
+
+This spell allows the ranger's missile attacks to pierce through creatures. For the duration, any arrow, bolt, bullet, dart, dagger, or axe launched or thrown by the ranger will pierce through creatures in a line, dealing the attack's damage (as well as any on-hit effects) to each creature.~
+@32456=~Pebbles to Boulders
+(Alteration)
+
+Level: 4
+Sphere: Elemental Earth
+Range: 0
+Duration: 1 round/level
+Casting Time: 4
+Area of Effect: The caster
+Saving Throw: None
+
+This spell turns the caster's sling bullets into boulders. While the spell is active, if the caster launches a bullet, it instantly turns into a large boulder that retains the speed of the original bullet. The boulder inflicts an additional 3d6+8 damage if it hits (on top of the former damage of the bullet). Pebbles to Boulders also synergizes with the Magic Stone spell, letting one launch a Magic Boulder. Only a limited number of bullets or Magic Stones can be turned into boulders before the spell ends: up to one per 3 levels.~
 @32551=~Prolongment
 (Alteration)
 
@@ -1410,6 +1652,18 @@ Area of Effect: The caster
 Saving Throw: None
 
 Critical Spell lets the caster repeatedly cast a spell through critical hits. The caster is prompted to store a single 1st-level spell, and the caster's weapons are temporarily imbued with that spell. For the duration, whenever the caster gets a critical hit on a creature, <PRO_HESHE> instantly casts a copy of the stored spell. This will not happen if the critical hit is averted. The caster can also store a 2nd-level spell if they are level 20 or higher, and an additional spell level higher for every ten levels after 20.~
+@32556=~Barrage
+(Alteration)
+
+Level: 5
+Sphere: Combat
+Range: Special
+Duration: 1 round/2 levels
+Casting Time: 3
+Area of Effect: Special
+Saving Throw: None
+
+This spell turns the ranger's missile attacks into cone area of effect attacks. For the duration, whenever the ranger attacks with an arrow, bolt, bullet, dart, throwing dagger, or throwing axe, a barrage of copies of the projectile will be launched, dealing the attack's damage (as well as any on-hit effects) to all creatures in a 30-foot cone. Barrage does not work well with missiles that already have an area of effect (like Arrows of Detonation): the missile's normal area of effect will simply be replaced with the cone.~
 @32652=~Drown
 (Alteration)
 
@@ -1513,11 +1767,11 @@ Level: Quest
 Sphere: Plant
 Range: 0
 Duration: 1 turn
-Casting Time: 15
+Casting Time: 6
 Area of Effect: 60-ft. radius
 Saving Throw: Neg.
 
-This spell causes enormous vines to burst forth from the ground throughout the area of effect. Creatures within 60 feet of the caster must Save vs. Paralysis at -6 each round or be immobilized, completely entangled by giant vines. Even large creatures such as giants and dragons can be entangled this way.~
+This spell causes enormous vines to burst forth from the ground throughout the area of effect. Enemies within 60 feet of the caster must Save vs. Paralysis at -6 each round or be immobilized, completely entangled by giant vines. Even large creatures such as giants and dragons can be entangled this way.~
 @32755=~Enhance Attribute
 (Alteration)
 
@@ -1589,6 +1843,30 @@ Area of Effect: 15-ft. radius
 Saving Throw: None
 
 A more powerful version of Dispel Magic, True Dispel removes all dispellable effects from creatures in the area of effect. Unlike Dispel Magic, True Dispel has a 100% chance of succeeding, regardless of level.~
+@32761=~Volcanic Eruption
+(Evocation)
+
+Level: Quest
+Sphere: Elemental Fire
+Range: Special
+Duration: Instant
+Casting Time: 12
+Area of Effect: Special
+Saving Throw: 1/2
+
+This spell triggers a small volcanic eruption centered on the caster. Multiple balls of lava (one per two caster levels) fly through the area in random directions and hit the ground in random spots. Each ball of lava deals 6d6 fire damage (Save vs. Breath for half) to all creatures within 15 feet of its landing point. The caster is completely unharmed by this spell, but <PRO_HISHER> allies are still in danger.~
+@32762=~Elysium's Tears
+(Conjuration)
+
+Level: 7
+Sphere: Sun
+Range: Visual range of the caster
+Duration: 1 round
+Casting Time: 7
+Area of Effect: 15-ft. radius
+Saving Throw: 1/2
+
+This spell calls a storm of heavenly meteors (one per caster level), which fall down upon the area of effect. Each meteor deals 1d10 magic fire damage (Save vs. Spell at -5 for half) to all creatures within 5 feet of its impact point. The meteors will seek out evil creatures to strike, landing directly on them. If there are no evil creatures to hit, the meteors will strike random spots in the area of effect. The caster is unaffected by the spell. Elysium's Tears may only be cast by good characters.~
 
 @33151=~Disruptive Surge~
 @33152=~Inertia~
@@ -1642,6 +1920,7 @@ A more powerful version of Dispel Magic, True Dispel removes all dispellable eff
 @33563=~Warrior Simulacrum~
 @33564=~Wall of Force~
 @33565=~Sacrificial Explosion~
+@33566=~Gedlee's Electric Barrier~
 @33651=~Isaac's Greater Missile Storm~
 @33652=~Freeze Inanimates~
 @33653=~Greater Nightmare~
@@ -1651,6 +1930,7 @@ A more powerful version of Dispel Magic, True Dispel removes all dispellable eff
 @33657=~Mind Fog~
 @33658=~Empower Familiar~
 @33659=~Bardic Sequencer~
+@33660=~Create Pit~
 @33751=~Mass Cast~
 @33752=~Far Sequencer~
 @33753=~Forcecage~
@@ -1673,6 +1953,7 @@ A more powerful version of Dispel Magic, True Dispel removes all dispellable eff
 @33860=~Enslave~
 @33861=~Polar Ray~
 @33862=~Clone Other~
+@33863=~Metafireball~
 @33951=~Perfect Invisibility~
 @33952=~Mass Domination~
 @33953=~Attain Perfection~
@@ -1690,6 +1971,7 @@ A more powerful version of Dispel Magic, True Dispel removes all dispellable eff
 @33965=~Rampant Lightning~
 @33966=~Protection from Time Stop~
 @33967=~Culling Thought~
+@33968=~Sphere of Annihilation~
 
 @34151=~Disruptive Surge
 (Wild Magic)
@@ -2074,7 +2356,7 @@ Casting Time: 0
 Area of Effect: 2 creatures
 Saving Throw: None
 
-Redirect Spell changes the target of a spell another creature is casting to a target of one's choice. In using this spell, the caster selects two creatures, one of whom must be casting a spell. That creature's spell is then altered to target the other selected creature. The redirected spell is cast instantly, preventing the creature from stopping the casting. If both creatures are casting spells, the second creature's spell will be altered to target the first creature. There is no Saving Throw.~
+Redirect Spell changes the target of a spell another creature is casting to a target of one's choice. In using this spell, the caster selects two creatures, the first of whom must be casting a spell. That creature's spell is then altered to target the second creature. The redirected spell is cast instantly, preventing the creature from stopping the casting. There is no Saving Throw.~
 @34456=~Copy Spell
 (Conjuration)
 
@@ -2085,7 +2367,7 @@ Casting Time: 0
 Area of Effect: 2 creatures
 Saving Throw: None
 
-This spell allows the wizard to cast a copy of a spell another creature is casting. In using this spell, the caster selects two creatures, one of whom must be casting a spell. That spell is then replicated by the wizard, who casts the spell instantly on the other selected creature. If both creatures are casting spells, the second creature's spell will be copied, and the copy will target the first creature. There is no Saving Throw. Copy Spell can be used either to double an ally's spell or to turn an enemy's spells against them.~
+This spell allows the wizard to cast a copy of a spell another creature is casting. In using this spell, the caster selects two creatures, the first of whom must be casting a spell. That spell is then replicated by the wizard, who casts the spell instantly on the second creature. There is no Saving Throw. Copy Spell can be used either to double an ally's spell or to turn an enemy's spells against them.~
 @34457=~Linked Portals
 (Conjuration)
 
@@ -2252,7 +2534,7 @@ Casting Time: 5
 Area of Effect: The caster
 Saving Throw: None
 
-This spell is similar to Simulacrum in that it creates an illusionary copy of the caster which is under the caster's control. The simulacrum cannot cast spells or use special abilities of items or innate abilities. It is 60% the level of the caster as has 60% of the caster's Hit Points. This spell is most useful for fighter/mages and other spellcasters with decent fighting skills.~
+This spell is similar to Simulacrum in that it creates an illusionary copy of the caster which is under the caster's control. The simulacrum cannot cast spells or use special abilities of items or innate abilities. It is 60% the level of the caster and has 60% of the caster's Hit Points. This spell is most useful for fighter/mages and other spellcasters with decent fighting skills.~
 @34564=~Wall of Force
 (Abjuration)
 
@@ -2275,6 +2557,17 @@ Area of Effect: 15-ft. radius
 Saving Throw: 1/2
 
 By casting this spell, the caster sacrifices a minion to produce a damaging explosion. When the spell is cast on an allied summoned creature or animated undead, that creature explodes, dealing 1d8 poison damage per level (max 15d8) to all creatures within the area of effect. Creatures can Save vs. Death for half damage.~
+@34566=~Gedlee's Electric Barrier
+(Evocation)
+
+Level: 5
+Range: 0
+Duration: 3 rounds + 1 round/level
+Casting Time: 5
+Area of Effect: The caster
+Saving Throw: None
+
+Similar to Fireshield spells, this spell protects the caster with a shield of electricity. The caster gains +50% Electricity Resistance, and creatures that hit the caster with an attack or spell in melee take 1d10+3 electricity damage and must Save vs. Polymorph or be stunned for 1 round.~
 @34651=~Isaac's Greater Missile Storm
 (Evocation)
 
@@ -2374,6 +2667,17 @@ Area of Effect: Special
 Saving Throw: None
 
 Bardic Sequencer lets the bard imbue their music with a spell. In casting Bardic Sequencer, the bard stores a spell of 2nd-level or lower. Each round thereafter that the bard sings their bard song, there is a chance to cast the stored spell on each creature affected by the song. The chance is equal to 2% per level.~
+@34660=~Create Pit
+(Conjuration)
+
+Level: 6
+Range: Visual range of the caster
+Duration: 1 turn
+Casting Time: 6
+Area of Effect: 7-ft. radius
+Saving Throw: None
+
+This spell creates a pit in the ground that opens up into an extradimensional space. Creatures that enter the area of effect fall into the pit unless they can fly, taking 6d6 crushing damage upon landing at the bottom. Those creatures are trapped in the pit for the remaining duration, unless they can jump or fly out.~
 @34751=~Mass Cast
 (Alteration)
 
@@ -2432,7 +2736,7 @@ Saving Throw: None
 
 Death Trigger lets the caster store a single spell inside multiple allied creatures, to be released when they die. The caster must first choose a single spell of 3rd-level or lower. That spell is then stored inside each ally within 15 feet of the target, including summoned creatures. Each of these creatures will instantly cast their copy of the spell when they die. Note that the spell is treated as cast by the dying creature and at that creature's caster level (1 by default). If Death Trigger were to be cast again, the new spell would replace the previous spell stored in each target.
 
-When selecting a spell, the caster can also choose whether the dying ally will release the spell on itself, on its previous attacker, or on the nearest enemy (there is also a prompt to choose a condition for releasing the spell, but no matter what is chosen, the condition will be on death).~
+When selecting a spell, the caster can also choose whether the dying ally will release the spell on itself, on its previous attacker, or on the nearest enemy.~
 @34756=~Critical Sequencer
 (Enchantment)
 
@@ -2622,6 +2926,17 @@ Area of Effect: 1 creature
 Saving Throw: None
 
 An offensive version of Simulacrum, Clone Other creates a simulacrum of another creature. The simulacrum is under the caster's control. The caster cannot clone <PRO_HIMHER>self, and the target's level must be less than or equal to the caster's. The simulacrum is at 60% of the target's level and has 60% of their Hit Points.~
+@34863=~Metafireball
+(Evocation)
+
+Level: 8
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 3
+Area of Effect: 15-ft. radius
+Saving Throw: None
+
+Also known as Fireballball, this spell launches a fireball that explodes into other fireballs. After the Metafireball explodes, each creature in the area of effect is hit by a separate fireball with its own area of effect. Each of the secondary fireballs deals 3d6 fire damage (Save vs. Spell for half). This spell is most effective when cast at a large group of creatures clumped together.~
 @34951=~Perfect Invisibility
 (Illusion/Phantasm)
 
@@ -2821,7 +3136,20 @@ Casting Time: 3
 Area of Effect: Special
 Saving Throw: None
 
-This spell enables the caster to slay weak creatures with a thought. For the duration, the caster gains the Culling Thought ability, which kills a creature with current HP less than the caster's level plus their Intelligence (so a 20th-level caster with 18 Intelligence could kill any creature with 38 HP or less). This ability can be used at will and as a free action, and can target any creature the party sees, even if the caster does not see it. If the target is not killed by Culling Thought, it remains unaware of the attempt and will not turn hostile.~
+This spell enables the caster to slay weak creatures with a thought. For the duration, the caster gains the Culling Thought ability, which kills a creature with current HP less than or equal to the caster's level plus their Intelligence (so a 20th-level caster with 18 Intelligence could kill any creature with 38 HP or less). This ability can be used at will and as a free action, and can target any creature the party sees, even if the caster does not see it. If the target is not killed by Culling Thought, it remains unaware of the attempt and will not turn hostile.~
+@34968=~Sphere of Annihilation
+(Conjuration/Summoning) 
+
+Level: 10
+Range: Visual range of the caster
+Duration: 1 round/2 levels
+Casting Time: 9
+Area of Effect: 5-ft. radius
+Saving Throw: Neg.
+
+This spell creates a sphere of annihilation, which appears as a black ball with a 5 foot radius. The sphere of annihilation is a hole in the fabric of the multiverse. Any matter that touches it is utterly destroyed. If a creature crosses the sphere's path, the creature must make a Save vs. Breath to dodge the sphere; otherwise, the creature is disintegrated.
+
+The sphere can be moved by the caster, but doing so requires enormous mental power. The higher the caster's Intelligence, the faster the sphere can be moved. The intense concentration used in controlling the sphere prevents the caster from casting any more spells while this spell is active.~
 
 @35327=~I am the channel through which your wish shall be fulfilled. You may ask for a wish I can repeat, or you may ask for a wish that will happen once only. Decide.~
 @35328=~Choose wisely then, as I can perform each of these tasks once and once only.~
@@ -2931,6 +3259,93 @@ This spell enables the caster to slay weak creatures with a thought. For the dur
 @35431=~Temporarily reduce the Dexterity of all party members to 3.~
 @35432=~Temporarily reduce the Intelligence of all party members to 3.~
 @35433=~Slow the entire party.~
+
+@36001=~Widen Spell~
+@36002=~Widen Spell
+(Metamagic)
+
+Spell Level Increase: +1
+
+Widen Spell increases the area of effect of the character's next spell by 100%. For example, a fireball will have a 30-foot radius rather than a 15-foot radius. Widen Spell does nothing to spells that do not have an area of effect.~
+@36003=~Maximize Spell~
+@36004=~Maximize Spell
+(Metamagic)
+
+Spell Level Increase: +3
+
+Maximize Spell causes the character's next spell to deal maximum damage or restore the maximum number of hit points.~
+@36005=~Extend Spell~
+@36006=~Extend Spell
+(Metamagic)
+
+Spell Level Increase: +1
+
+Extend Spell doubles the duration of the character's next spell. Extend Spell cannot extend spell effects with a base duration of less than 5 rounds.~
+@36007=~Safe Spell~
+@36008=~Safe Spell
+(Metamagic)
+
+Spell Level Increase: +1
+
+Safe Spell lets the character shape the area of their next spell to avoid harming allies. Their next spell will only harm enemies if it is an area of effect spell.~
+@36009=~Intensify Spell~
+@36010=~Intensify Spell
+(Metamagic)
+
+Spell Level Increase: +1 to +8
+
+Intensify Spell makes the character's next spell harder to resist. The character can choose how many spell levels to increase the spell by; for each level increase, any saving throw against the spell is made at an additional -1 penalty.~
+@36011=~Empower Spell~
+@36012=~Empower Spell
+(Metamagic)
+
+Spell Level Increase: +2
+
+Empower Spell increases most numerical characteristics of the character's next spell by 50%. Characteristics that can be increased this way include damage, healing, and stat bonuses.~
+@36013=~Quicken Spell~
+@36014=~Quicken Spell
+(Metamagic)
+
+Spell Level Increase: +2
+
+Quicken Spell lets the character cast their next spell instantly. Not only does the quickened spell have no casting time, it can be cast even if the character has already cast another spell in the same round. However, no more than one spell can be quickened per round.~
+@36015=~Persistent Spell~
+@36016=~Persistent Spell
+(Metamagic)
+
+Spell Level Increase: +4
+
+Persistent Spell sets the duration of the character's next spell to one day. This stacks with Extend Spell, which will extend the duration to two days if both are used. Persistent Spell cannot extend spell effects with a base duration of less than 5 rounds.~
+@36017=~Mass Spell~
+@36018=~Mass Spell
+(Metamagic)
+
+Spell Level Increase: +5
+
+Mass Spell lets the character cast their next spell in an area of effect. The spell will affect all creatures within 15 feet of the target. Mass Spell works with spells that are normally single-target, even if they normally only affect the caster, like Mirror Image. However, since Mass Spell replaces the spell's original area of effect, it will not work well with spells that already had an area of effect.~
+@36019=~Irresistible Spell~
+@36020=~Irresistible Spell
+(Metamagic)
+
+Spell Level Increase: +5
+
+Irresisitible Spell makes the character's next spell offer no Saving Throw. Irresistible Spell can only be used with spell effects that weaken or damage the target; it does not work with effects that kill or disable the target, including stun, paralysis, hold, charm, confusion, fear, feeblemind, blindness, petrification, polymorph, instant death, or disintegration.~
+@36152=~+1 Level, -1 Save Penalty~
+@36153=~+2 Level, -2 Save Penalty~
+@36154=~+3 Level, -3 Save Penalty~
+@36155=~+4 Level, -4 Save Penalty~
+@36156=~+5 Level, -5 Save Penalty~
+@36157=~+6 Level, -6 Save Penalty~
+@36158=~+7 Level, -7 Save Penalty~
+@36159=~+8 Level, -8 Save Penalty~
+@36252=~Intensify Spell: +1 Level, -1 Save Penalty~
+@36253=~Intensify Spell: +2 Level, -2 Save Penalty~
+@36254=~Intensify Spell: +3 Level, -3 Save Penalty~
+@36255=~Intensify Spell: +4 Level, -4 Save Penalty~
+@36256=~Intensify Spell: +5 Level, -5 Save Penalty~
+@36257=~Intensify Spell: +6 Level, -6 Save Penalty~
+@36258=~Intensify Spell: +7 Level, -7 Save Penalty~
+@36259=~Intensify Spell: +8 Level, -8 Save Penalty~
 
 @40000=~Outlined in a Silvery Radiance (AC penalty of 2)~
 @40001=~Discharge of static electricity~

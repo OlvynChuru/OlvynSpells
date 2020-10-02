@@ -288,6 +288,35 @@ ADD_PROJECTILE ~override/merepuls.pro~ //Repulse
 ADD_PROJECTILE ~override/mesacrif.pro~ //Sacrificial Explosion
 ADD_PROJECTILE ~override/meconegr.pro~ //Cone of acid
 ADD_PROJECTILE ~override/mewofir2.pro~ //Holy Wall of Fire
+ADD_PROJECTILE ~override/memetafb.pro~ //Metafireball that explodes into other fireballs
+ADD_PROJECTILE ~override/mehole.pro~ //Create Pit
+ADD_PROJECTILE ~override/meconr01.pro~ //Cone shot: Arrow
+ADD_PROJECTILE ~override/meconr02.pro~ //Cone shot: Bolt
+ADD_PROJECTILE ~override/meconr03.pro~ //Cone shot: Bullet
+ADD_PROJECTILE ~override/meconr04.pro~ //Cone shot: Dart
+ADD_PROJECTILE ~override/meconr05.pro~ //Cone shot: Dagger
+ADD_PROJECTILE ~override/meconr06.pro~ //Cone shot: Axe
+ADD_PROJECTILE ~override/meconr11.pro~ //Cone shot: Flame Arrow
+ADD_PROJECTILE ~override/meconr12.pro~ //Cone shot: Acid Arrow
+ADD_PROJECTILE ~override/meconr13.pro~ //Cone shot: Ice Arrow
+ADD_PROJECTILE ~override/meconr14.pro~ //Cone shot: Electricity Arrow
+ADD_PROJECTILE ~override/meconr31.pro~ //Cone shot: Boulder
+ADD_PROJECTILE ~override/melinr01.pro~ //Line shot: Arrow
+ADD_PROJECTILE ~override/melinr02.pro~ //Line shot: Bolt
+ADD_PROJECTILE ~override/melinr03.pro~ //Line shot: Bullet
+ADD_PROJECTILE ~override/melinr04.pro~ //Line shot: Dart
+ADD_PROJECTILE ~override/melinr05.pro~ //Line shot: Dagger
+ADD_PROJECTILE ~override/melinr06.pro~ //Line shot: Axe
+ADD_PROJECTILE ~override/melinr11.pro~ //Line shot: Flame Arrow
+ADD_PROJECTILE ~override/melinr12.pro~ //Line shot: Acid Arrow
+ADD_PROJECTILE ~override/melinr13.pro~ //Line shot: Ice Arrow
+ADD_PROJECTILE ~override/melinr14.pro~ //Line shot: Electricity Arrow
+ADD_PROJECTILE ~override/melinr31.pro~ //Line shot: Boulder
+ADD_PROJECTILE ~override/meelyst.pro~ //Elysium's Tears
+ADD_PROJECTILE ~override/mestwnst.pro~ //Steel Wind Strike
+ADD_PROJECTILE ~override/meintrv4.pro~ //Invisible traveling 4
+ADD_PROJECTILE ~override/meboulde.pro~ //Boulder
+ADD_PROJECTILE ~override/mesannih.pro~ //Sphere of Annihilation
 
 LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~0x106~ splprot_value=~1~ splprot_relation=~9~ RET splprot_areaisnotoutdoor=splprot_slot END
 
@@ -321,13 +350,25 @@ LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~0x106~ splprot_value=~-1~ splpro
 
 LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~665~ splprot_value=~0~ splprot_relation=~3~ RET splprot_canhavemultiplesimulacra=splprot_slot END
 
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~647~ splprot_value=~-1~ splprot_relation=~5~ RET splprot_minheightnotequalto=splprot_slot END
+
+LAF ADD_SPLPROT_CONDITION STR_VAR splprot_stat=~647~ splprot_value=~-1~ splprot_relation=~4~ RET splprot_minheightgreaterthanorequalto=splprot_slot END
+
 LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@31154) STR_VAR icon=~MEPR154D~ RET icon_index_mepr154=icon_index END
 
 LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@31156) STR_VAR icon=~MEPR156D~ RET icon_index_mepr156=icon_index END
 
+LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@31157) STR_VAR icon=~MEPR157D~ RET icon_index_mepr157=icon_index END
+
 LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@31354) STR_VAR icon=~MEPR354D~ RET icon_index_mepr354=icon_index END
 
 LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@31356) STR_VAR icon=~MEPR356D~ RET icon_index_mepr356=icon_index END
+
+LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@31455) STR_VAR icon=~MEPR455D~ RET icon_index_mepr455=icon_index END
+
+LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@31456) STR_VAR icon=~MEPR456D~ RET icon_index_mepr456=icon_index END
+
+LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@31556) STR_VAR icon=~MEPR556D~ RET icon_index_mepr556=icon_index END
 
 LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@31654) STR_VAR icon=~MEPR654D~ RET icon_index_mepr654=icon_index END
 
@@ -395,8 +436,13 @@ END
 
 LAF ADD_ANIMATION INT_VAR minSlot=0xD000 STR_VAR directory=~MESpells/animations~ ini=~meanibnu~ RET slotbirdnullcreaturedecimal=slotDecimal END
 
+LAF ADD_ANIMATION INT_VAR minSlot=0xD000 STR_VAR directory=~MESpells/animations~ ini=~meanieru~ RET sloteruptioncreaturedecimal=slotDecimal END
+
 COPY_EXISTING_REGEXP ~mefixwbu.cre~ ~override~ ~meportst.cre~ ~override~ ~meportl[0-9].cre~ ~override~ ~mesightm.cre~ ~override~
 	WRITE_SHORT animation slotbirdnullcreaturedecimal
+
+COPY_EXISTING ~meeruptc.cre~ ~override~
+	WRITE_SHORT animation sloteruptioncreaturedecimal
 
 COPY_EXISTING ~menofly.eff~ ~override~
 	WRITE_LONG effparameter2 splprot_areaisnotoutdoor
@@ -409,6 +455,117 @@ COPY_EXISTING ~m_mestr1.lua~ ~override~
 	ex_familiar_spell_strref_1 = RESOLVE_STR_REF(@30042)
 	REPLACE_TEXTUALLY CASE_INSENSITIVE ~ex_familiar_spell_strref_1[ %TAB%=].*~ ~ex_familiar_spell_strref_1 = %ex_familiar_spell_strref_1%~
 	IF_EXISTS
+
+COPY_EXISTING ~m_mestr1.lua~ ~override~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_line_shot = {~ ~me_line_shot = {[3] = %melinr11%, [4] = %melinr11%, [102] = %melinr12%, [103] = %melinr13%, ~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_cone_shot = {~ ~me_cone_shot = {[3] = %meconr11%, [4] = %meconr11%, [102] = %meconr12%, [103] = %meconr13%, ~
+	SPRINT ex_hit_string2 @30105
+	SPRINT ex_hit_string3 @30106
+	SPRINT ex_hit_string5 @30108
+	SPRINT ex_hit_string6 @30109
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~ex_hit_strings *=.*~ ~ex_hit_strings = {"%ex_hit_string2%", "%ex_hit_string2%", "%ex_hit_string3%", "%ex_hit_string3%", "%ex_hit_string5%", "%ex_hit_string6%"}~
+	ex_backstab_strref7 = RESOLVE_STR_REF(@30110)
+	ex_backstab_strref8 = RESOLVE_STR_REF(@30111)
+	ex_backstab_strref9 = RESOLVE_STR_REF(@30112)
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~ex_backstab_strrefs *=.*~ ~ex_backstab_strrefs = {0, 16471, 16472, 16473, 16474, 16475, %ex_backstab_strref7%, %ex_backstab_strref8%, %ex_backstab_strref9%}~
+	ex_exattack1 = RESOLVE_STR_REF(~<EXATTACKSTR1>~)
+	ex_exattack2 = RESOLVE_STR_REF(~<EXATTACKSTR2>~)
+	ex_exattack3 = RESOLVE_STR_REF(~<EXATTACKSTR3>~)
+	ex_exattack4 = RESOLVE_STR_REF(~<EXATTACKSTR4>~)
+	ex_exattack5 = RESOLVE_STR_REF(~<EXATTACKSTR5>~)
+	ex_exattack6 = RESOLVE_STR_REF(~<EXATTACKSTR6>~)
+	ex_exattack7 = RESOLVE_STR_REF(~<EXATTACKSTR7>~)
+	ex_exattack8 = RESOLVE_STR_REF(~<EXATTACKSTR8>~)
+	ex_exattack9 = RESOLVE_STR_REF(~<EXATTACKSTR9>~)
+	ex_exattack10 = RESOLVE_STR_REF(~<EXATTACKSTR10>~)
+	ex_exattack11 = RESOLVE_STR_REF(~<EXATTACKSTR11>~)
+	ex_exattack12 = RESOLVE_STR_REF(~<EXATTACKSTR12>~)
+	ex_exattack13 = RESOLVE_STR_REF(~<EXATTACKSTR13>~)
+	ex_exattack14 = RESOLVE_STR_REF(~<EXATTACKSTR14>~)
+	ex_exattack15 = RESOLVE_STR_REF(~<EXATTACKSTR15>~)
+	ex_exattack16 = RESOLVE_STR_REF(~<EXATTACKSTR16>~)
+	ex_exattack17 = RESOLVE_STR_REF(~<EXATTACKSTR17>~)
+	ex_exattack18 = RESOLVE_STR_REF(~<EXATTACKSTR18>~)
+	ex_exattack19 = RESOLVE_STR_REF(~<EXATTACKSTR19>~)
+	ex_exattack20 = RESOLVE_STR_REF(~<EXATTACKSTR20>~)
+	ex_exattack21 = RESOLVE_STR_REF(~<EXATTACKSTR21>~)
+	ex_exattack22 = RESOLVE_STR_REF(~<EXATTACKSTR22>~)
+	ex_exattack23 = RESOLVE_STR_REF(~<EXATTACKSTR23>~)
+	ex_exattack24 = RESOLVE_STR_REF(~<EXATTACKSTR24>~)
+	ex_exattack25 = RESOLVE_STR_REF(~<EXATTACKSTR25>~)
+	ex_exattack26 = RESOLVE_STR_REF(~<EXATTACKSTR26>~)
+	ex_exattack27 = RESOLVE_STR_REF(~<EXATTACKSTR27>~)
+	ex_exattack28 = RESOLVE_STR_REF(~<EXATTACKSTR28>~)
+	ex_exattack29 = RESOLVE_STR_REF(~<EXATTACKSTR29>~)
+	ex_exattack30 = RESOLVE_STR_REF(~<EXATTACKSTR30>~)
+	ex_exattack31 = RESOLVE_STR_REF(~<EXATTACKSTR31>~)
+	ex_exattack32 = RESOLVE_STR_REF(~<EXATTACKSTR32>~)
+	ex_exattack33 = RESOLVE_STR_REF(~<EXATTACKSTR33>~)
+	ex_exattack34 = RESOLVE_STR_REF(~<EXATTACKSTR34>~)
+	ex_exattack35 = RESOLVE_STR_REF(~<EXATTACKSTR35>~)
+	ex_exattack36 = RESOLVE_STR_REF(~<EXATTACKSTR36>~)
+	ex_exattack37 = RESOLVE_STR_REF(~<EXATTACKSTR37>~)
+	ex_exattack38 = RESOLVE_STR_REF(~<EXATTACKSTR38>~)
+	ex_exattack39 = RESOLVE_STR_REF(~<EXATTACKSTR39>~)
+	ex_exattack40 = RESOLVE_STR_REF(~<EXATTACKSTR40>~)
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~ex_exattack *=.*~ ~ex_exattack = {%ex_exattack1%,%ex_exattack2%,%ex_exattack3%,%ex_exattack4%,%ex_exattack5%,%ex_exattack6%,%ex_exattack7%,%ex_exattack8%,%ex_exattack9%,%ex_exattack10%,%ex_exattack11%,%ex_exattack12%,%ex_exattack13%,%ex_exattack14%,%ex_exattack15%,%ex_exattack16%,%ex_exattack17%,%ex_exattack18%,%ex_exattack19%,%ex_exattack20%,%ex_exattack21%,%ex_exattack22%,%ex_exattack23%,%ex_exattack24%,%ex_exattack25%,%ex_exattack26%,%ex_exattack27%,%ex_exattack28%,%ex_exattack29%,%ex_exattack30%,%ex_exattack31%,%ex_exattack32%,%ex_exattack33%,%ex_exattack34%,%ex_exattack35%,%ex_exattack36%,%ex_exattack37%,%ex_exattack38%,%ex_exattack39%,%ex_exattack40%}~
+
+COPY_EXISTING ~projectl.ids~ ~override~
+	COUNT_2DA_ROWS 2 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		line_projectile_id = 0
+		cone_projectile_id = 0
+		boulder_projectile_id = 0
+		READ_2DA_ENTRY i 1 2 theprojectileres
+		INNER_ACTION BEGIN
+			COPY_EXISTING ~%theprojectileres%.pro~ ~override~
+				READ_ASCII 0x104 theprojectileanimation ELSE ~~
+				PATCH_IF (~%theprojectileanimation%~ STRING_EQUAL_CASE ~ARARROW~) BEGIN
+					line_projectile_id = melinr01
+					cone_projectile_id = meconr01
+				END ELSE PATCH_IF (~%theprojectileanimation%~ STRING_EQUAL_CASE ~BOLT~) BEGIN
+					line_projectile_id = melinr02
+					cone_projectile_id = meconr02
+				END ELSE PATCH_IF (~%theprojectileanimation%~ STRING_EQUAL_CASE ~MAGICSTN~) BEGIN
+					line_projectile_id = melinr03
+					cone_projectile_id = meconr03
+					boulder_projectile_id = meboulde
+				END ELSE PATCH_IF (~%theprojectileanimation%~ STRING_EQUAL_CASE ~DART~) BEGIN
+					line_projectile_id = melinr04
+					cone_projectile_id = meconr04
+				END ELSE PATCH_IF (~%theprojectileanimation%~ STRING_EQUAL_CASE ~DAGGER~) BEGIN
+					line_projectile_id = melinr05
+					cone_projectile_id = meconr05
+				END ELSE PATCH_IF (~%theprojectileanimation%~ STRING_EQUAL_CASE ~AXE~) BEGIN
+					line_projectile_id = melinr06
+					cone_projectile_id = meconr06
+				END ELSE PATCH_IF (~%theprojectileanimation%~ STRING_EQUAL_CASE ~SPSPEART~) BEGIN
+					line_projectile_id = melinr14
+					cone_projectile_id = meconr14
+				END
+				IF_EXISTS
+				BUT_ONLY_IF_IT_CHANGES
+		END
+		PATCH_IF cone_projectile_id > 0 BEGIN
+			READ_2DA_ENTRY i 0 2 theprojectileid
+			theprojectileid += 1
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~m_mestr1.lua~ ~override~
+					REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_line_shot = {~ ~me_line_shot = {[%theprojectileid%] = %line_projectile_id%, ~
+					REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_cone_shot = {~ ~me_cone_shot = {[%theprojectileid%] = %cone_projectile_id%, ~
+					PATCH_IF boulder_projectile_id > 0 BEGIN
+						REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_boulder_shot = {~ ~me_boulder_shot = {[%theprojectileid%] = %boulder_projectile_id%, ~
+					END
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~m_mestr1.lua~ ~override~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_line_shot = {~ ~me_line_shot = {[%meboulde%] = %melinr31%, ~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_cone_shot = {~ ~me_cone_shot = {[%meboulde%] = %meconr31%, ~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_boulder_shot = {~ ~me_boulder_shot = {[%melinr03%] = %melinr31%, ~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_boulder_shot = {~ ~me_boulder_shot = {[%meconr03%] = %meconr31%, ~
 
 ACTION_IF GAME_IS ~iwdee~ BEGIN
 	COPY_EXISTING_REGEXP ~mewi[0-9][0-9][0-9]\.spl~ ~override~
@@ -731,6 +888,44 @@ ACTION_IF do_not_install_camouflage = 0 BEGIN
 	END
 
 END
+
+COPY_EXISTING ~mepr157.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=displayportraiticon parameter2=icon_index_mepr157 END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) duration_high=((i + 1) * 60) END
+		numheaders = numheaders + 1
+	END
+	SAY NAME1 @31157
+	SAY UNIDENTIFIED_DESC @32157
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classpaladin BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_PR157   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 paladin_level_one 1 ~GA_MEPR157~
+					IF_EXISTS
+					UNLESS ~GA_MEPR157~
+			END
+		END
+	END
+
+COPY_EXISTING ~clabpa01.2da~ ~override~
+	COUNT_2DA_ROWS 1 numrows
+	INSERT_2DA_ROW numrows 1 ~ME_PR157   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+	LPF GET_2DA_ROW INT_VAR numcolumns=1 match_column=0 STR_VAR match=~ME_PR157~ RET therow=matched END
+	SET_2DA_ENTRY numrows paladin_level_one 1 ~GA_MEPR157~
+	IF_EXISTS
+	UNLESS ~GA_MEPR157~
 
 OUTER_SET do_not_install_beast_sense = 0
 OUTER_SET animal_eyes_found = 0
@@ -1178,7 +1373,7 @@ OUTER_SPRINT me_30043 @30043
 OUTER_SPRINT me_31358 @31358
 LAF ADD_CONTINGENCY INT_VAR new_action=1 description=RESOLVE_STR_REF(@32358) STR_VAR resource= EVAL ~mepr358~ title=~ME_FAMILIAR_SPELL_TITLE~ title_name= EVAL ~%me_31358%~ action=~ME_ADD_SPELLS_FAMILIAR_LABEL~ action_name= EVAL ~%me_30043%~ END
 
-COPY_EXISTING ~MEPR358.spl~ ~override~
+COPY_EXISTING ~mepr358.spl~ ~override~
 	SAY NAME1 @31358
 	SAY UNIDENTIFIED_DESC @32358
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
@@ -1230,6 +1425,45 @@ COPY_EXISTING ~mepr360.spl~ ~override/%mepr360%.spl~
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 
 END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+COPY_EXISTING ~mepr361.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=mestwnst END
+	SAY NAME1 @31361
+	SAY UNIDENTIFIED_DESC @32361
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+COPY_EXISTING ~mestwnst.pro~ ~override~
+	WRITE_SHORT 0x21A meintrv4
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classranger BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_PR361   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 ranger_level_three 1 ~GA_MEPR361~
+					IF_EXISTS
+					UNLESS ~GA_MEPR361~
+			END
+		END
+	END
+
+COPY_EXISTING ~clabrn01.2da~ ~override~
+	COUNT_2DA_ROWS 1 numrows
+	INSERT_2DA_ROW numrows 1 ~ME_PR361   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+	SET_2DA_ENTRY numrows ranger_level_three 1 ~GA_MEPR361~
+	IF_EXISTS
+	UNLESS ~GA_MEPR361~
+
+END
+
+
 
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR4~ RET mepr451=filename END
 COPY_EXISTING ~mepr451.spl~ ~override/%mepr451%.spl~
@@ -1284,6 +1518,90 @@ COPY_EXISTING ~mepr454.spl~ ~override/%mepr454%.spl~
 	SAY NAME1 @31454
 	SAY UNIDENTIFIED_DESC @32454
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+COPY_EXISTING ~mepr455.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=displayportraiticon parameter2=icon_index_mepr455 END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		numheaders = numheaders + 1
+	END
+	FOR (i = 1; i <= numheaders; ++i) BEGIN
+		LPF ALTER_SPELL_EFFECT INT_VAR header=i duration_high=(i * 6) END
+	END
+	SAY NAME1 @31455
+	SAY UNIDENTIFIED_DESC @32455
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+OUTER_SET ranger_level_four = 1
+COPY_EXISTING ~mxsplran.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	PATCH_IF numcolumns > 4 BEGIN
+		FOR (i = 0; i < numrows; ++i) BEGIN
+			READ_2DA_ENTRY i 4 numcolumns num_spells_level_four
+			PATCH_IF num_spells_level_four > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns ranger_level_four
+				i = numrows
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+ACTION_IF ranger_level_four > 1 BEGIN
+
+	COPY_EXISTING ~kitlist.2da~ ~override~
+		COUNT_2DA_ROWS 10 numrows
+		FOR (i = 1; i < numrows; ++i) BEGIN
+			READ_2DA_ENTRY i 8 10 class_of_kit
+			PATCH_IF class_of_kit=classranger BEGIN
+				READ_2DA_ENTRY i 5 10 abilities_of_kit
+				INNER_ACTION BEGIN
+					COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+						COUNT_2DA_ROWS 1 numrows_2
+						INSERT_2DA_ROW numrows_2 1 ~ME_PR455   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 ranger_level_four 1 ~GA_MEPR455~
+						IF_EXISTS
+						UNLESS ~GA_MEPR455~
+				END
+			END
+		END
+	
+	COPY_EXISTING ~clabrn01.2da~ ~override~
+		COUNT_2DA_ROWS 1 numrows
+		INSERT_2DA_ROW numrows 1 ~ME_PR455   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+		SET_2DA_ENTRY numrows ranger_level_four 1 ~GA_MEPR455~
+		IF_EXISTS
+		UNLESS ~GA_MEPR455~
+
+END
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR4~ RET mepr456=filename END
+COPY_EXISTING ~mepr456.spl~ ~override/%mepr456%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=displayportraiticon parameter2=icon_index_mepr456 END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		numheaders = numheaders + 1
+	END
+	FOR (i = 1; i <= numheaders; ++i) BEGIN
+		LPF ALTER_SPELL_EFFECT INT_VAR header=i duration_high=(i * 6) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=i match_opcode=408 special=(i / 3) END
+	END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=1 match_opcode=408 special=1 END
+	LPF ALTER_SPELL_EFFECT INT_VAR header=2 match_opcode=408 special=1 END
+	SAY NAME1 @31456
+	SAY UNIDENTIFIED_DESC @32456
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+END
 
 ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND (me_power_spells = 1) BEGIN
 
@@ -1506,6 +1824,68 @@ COPY_EXISTING ~clabpa01.2da~ ~override~
 	SET_2DA_ENTRY numrows paladin_level_five 1 ~GA_MEPR555~
 	IF_EXISTS
 	UNLESS ~GA_MEPR555~
+
+END
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND (me_power_spells = 1) BEGIN
+
+COPY_EXISTING ~mepr556.spl~ ~override~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=displayportraiticon parameter2=icon_index_mepr556 END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		numheaders = numheaders + 1
+	END
+	FOR (i = 1; i <= numheaders; ++i) BEGIN
+		LPF ALTER_SPELL_EFFECT INT_VAR header=i duration_high=(i * 3) END
+	END
+	SAY NAME1 @31556
+	SAY UNIDENTIFIED_DESC @32556
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+OUTER_SET ranger_level_five = 1
+COPY_EXISTING ~mxsplran.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	PATCH_IF numcolumns > 5 BEGIN
+		FOR (i = 0; i < numrows; ++i) BEGIN
+			READ_2DA_ENTRY i 5 numcolumns num_spells_level_five
+			PATCH_IF num_spells_level_five > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns ranger_level_five
+				i = numrows
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+ACTION_IF ranger_level_five > 1 BEGIN
+
+	COPY_EXISTING ~kitlist.2da~ ~override~
+		COUNT_2DA_ROWS 10 numrows
+		FOR (i = 1; i < numrows; ++i) BEGIN
+			READ_2DA_ENTRY i 8 10 class_of_kit
+			PATCH_IF class_of_kit=classranger BEGIN
+				READ_2DA_ENTRY i 5 10 abilities_of_kit
+				INNER_ACTION BEGIN
+					COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+						COUNT_2DA_ROWS 1 numrows_2
+						INSERT_2DA_ROW numrows_2 1 ~ME_PR556   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 ranger_level_five 1 ~GA_MEPR556~
+						IF_EXISTS
+						UNLESS ~GA_MEPR556~
+				END
+			END
+		END
+	
+	COPY_EXISTING ~clabrn01.2da~ ~override~
+		COUNT_2DA_ROWS 1 numrows
+		INSERT_2DA_ROW numrows 1 ~ME_PR556   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+		SET_2DA_ENTRY numrows ranger_level_five 1 ~GA_MEPR556~
+		IF_EXISTS
+		UNLESS ~GA_MEPR556~
 
 END
 
@@ -1734,6 +2114,20 @@ COPY_EXISTING ~mepr756d.spl~ ~override~
 	SAY NAME1 @31756
 	SAY UNIDENTIFIED_DESC @32756
 
+COPY_EXISTING_REGEXP ~.*\.are~ ~override~
+	READ_LONG 0x14 theareaflags
+	theareaflags|=0x10
+	WRITE_LONG 0x14 theareaflags
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~baldur.bcs~ ~override~ ~baldur25.bcs~ ~override~ ~bdbaldur.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY ~!InParty(Player1)~ ~!InParty(Player1)
+!CheckSpellState(Player1,FAVORED_OF_THE_SPIRITS)~
+	END
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
 COPY_EXISTING ~lucl0.2da~ ~override~
 	LPF ADD_HLA STR_VAR ability=~GA_MEPR756~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
 	IF_EXISTS
@@ -1875,6 +2269,123 @@ COPY_EXISTING ~mepr760.spl~ ~override/%mepr760%.spl~
 	SAY NAME1 @31760
 	SAY UNIDENTIFIED_DESC @32760
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+COPY_EXISTING ~mepr761.spl~ ~override~
+	PATCH_IF innate_hla = 1 BEGIN
+		WRITE_SHORT spelltype 4
+		WRITE_LONG spelllevel 1
+		LPF ALTER_SPELL_HEADER INT_VAR location=4 END
+	END
+	SAY NAME1 @31761
+	SAY UNIDENTIFIED_DESC @32761
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowbreathhalf%~ END
+
+COPY_EXISTING ~ludr0.2da~ ~override~
+	LPF ADD_HLA STR_VAR ability=~GA_MEPR761~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
+	IF_EXISTS
+	UNLESS ~GA_MEPR761~
+
+COPY_EXISTING ~lufd0.2da~ ~override~
+	LPF ADD_HLA STR_VAR ability=~GA_MEPR761~ min_lev=~16~ max_lev=~99~ num_allowed=~1~ END
+	IF_EXISTS
+	UNLESS ~GA_MEPR761~
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 numcolumns theclass
+		PATCH_IF (~%theclass%~ STRING_EQUAL_CASE ~11~) BEGIN
+			READ_2DA_ENTRY i 1 numcolumns theclassname
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~luabbr.2da~ ~override~
+					LPF GET_2DA_ROW INT_VAR found_it=1 STR_VAR match= EVAL ~%theclassname%~ RET numcolumns2=numcols row=matched END
+					PATCH_IF row > ~-1~ BEGIN
+						READ_2DA_ENTRY row 1 numcolumns2 thehlatable
+						INNER_ACTION BEGIN
+							COPY_EXISTING ~lu%thehlatable%.2da~ ~override~
+								LPF ADD_HLA STR_VAR ability=~GA_MEPR761~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
+								IF_EXISTS
+								UNLESS ~GA_MEPR761~
+						END
+					END
+					BUT_ONLY_IF_IT_CHANGES
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+ACTION_IF NOT MOD_IS_INSTALLED ~MESpells.tp2~ ~29111~ BEGIN
+
+	COPY ~MESpells/New_Meteor_Swarm~ ~override~
+
+	COPY_EXISTING ~missile.ids~ ~override~
+		COUNT_2DA_ROWS 2 numrows
+		READ_2DA_ENTRY (numrows - 1) 0 2 newrow
+		newrow = newrow + 1
+		startrow = newrow
+		FOR (i = 1; i <= 50; ++i) BEGIN
+	 		INSERT_2DA_ROW numrows 2 ~%newrow% New Meteor Swarm %i%~
+			numrows = numrows + 1
+			newrow = newrow + 1
+		END
+	
+	COPY_EXISTING ~projectl.ids~ ~override~
+		COUNT_2DA_ROWS 2 numrows
+		READ_2DA_ENTRY (numrows - 1) 0 2 newrow
+		newrow = newrow + 1
+		FOR (i = 1; i <= 50; ++i) BEGIN
+			INSERT_2DA_ROW numrows 2 ~%newrow% memswa%i%~
+			numrows = numrows + 1
+			newrow = newrow + 1
+		END
+	
+	COPY_EXISTING ~memswarx.pro~ ~override~
+		READ_SHORT 0x200 theareaflags
+		theareaflags&=0xFEFF
+		WRITE_SHORT 0x200 theareaflags
+	
+	OUTER_FOR (i = 1; i <= 50; ++i) BEGIN
+		COPY_EXISTING ~memswarx.pro~ ~override/memswa%i%.pro~
+			WRITE_BYTE 0x216 i
+	END
+END ELSE BEGIN
+	COPY_EXISTING ~projectl.ids~ ~override~
+		COUNT_2DA_ROWS 2 numrows
+		FOR (i = 1; i < numrows; ++i) BEGIN
+			READ_2DA_ENTRY i 1 2 theprojectilename
+			PATCH_IF (~%theprojectilename%~ STRING_EQUAL_CASE ~memswa1~) BEGIN
+				READ_2DA_ENTRY (i + 1) 0 2 startrow
+			END
+		END
+END
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPPR7~ RET mepr762=filename END
+COPY_EXISTING ~mepr762.spl~ ~override/%mepr762%.spl~
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		numheaders = numheaders + 1
+	END
+	FOR (i = 1; i <= numheaders; ++i) BEGIN
+		LPF ALTER_SPELL_HEADER INT_VAR header=i projectile=startrow END
+		startrow = startrow + 1
+	END
+	SAY NAME1 @31762
+	SAY UNIDENTIFIED_DESC @32762
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowspellhalf%~ END
+
+COPY_EXISTING ~mepr762d.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=meelyst END
 
 END
 
@@ -5063,6 +5574,74 @@ COPY_EXISTING ~ar4003.are~ ~override~
 
 END
 
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI5~ RET mewi566=filename END
+COPY_EXISTING ~mewi566.spl~ ~override/%mewi566%.spl~
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi566~ resource= EVAL ~%mewi566%~ END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) duration_high=((i + 1) * 6) END
+		numheaders = numheaders + 1
+	END
+	FOR (i = 1; i <= numheaders; ++i) BEGIN
+		LPF ALTER_SPELL_HEADER INT_VAR header=i min_level=i END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=i duration_high=((i + 3) * 6) END
+	END
+	SAY NAME1 @33566
+	SAY UNIDENTIFIED_DESC @34566
+
+COPY_EXISTING ~mewi566x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi566~ resource= EVAL ~%mewi566%~ END
+	SAY NAME2 @33566
+	SAY IDENTIFIED_DESC @34566
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowpolymorphpartial%~ END
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%3901.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=7 STR_VAR item_to_add=~mewi566x~ END
+
+COPY_EXISTING ~sto0703.sto~ ~override~
+	ADD_STORE_ITEM ~mewi566x~ AFTER ~scrlal~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~bdsorcsc.sto~ ~override~
+	ADD_STORE_ITEM ~mewi566x~ AFTER ~scrl2g~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi566x~ AFTER ~scrl5q~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0407.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi566x~ END
+
+COPY_EXISTING ~scrolls.sto~ ~override~
+	ADD_STORE_ITEM ~mewi566x~ AFTER ~scrlal~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~
+	ADD_STORE_ITEM ~mewi566x~ AFTER ~scrl5q~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi566x~ AFTER ~scrl5q~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar2100.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~AddStoreItem(\"KUORK0\",\"SCRL6W\",1,1)~ ~AddStoreItem("KUORK0","SCRL6W",1,1)
+		AddStoreItem("KUORK0","MEWI566X",1,1)~
+	END
+
+END
+
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI6~ RET mewi651=filename END
 COPY_EXISTING ~mewi651.spl~ ~override/%mewi651%.spl~
 	PATCH_IF NOT MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
@@ -5494,6 +6073,50 @@ END
 
 ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND (me_power_spells = 1) BEGIN
 
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI6~ RET mewi660=filename END
+COPY_EXISTING ~mewi660.spl~ ~override/%mewi660%.spl~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=mehole END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi660~ resource= EVAL ~%mewi660%~ END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=protectionfromspell2 match_parameter2=216 parameter2=splprot_minheightnotequalto END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=protectionfromspell2 match_parameter2=217 parameter2=splprot_minheightgreaterthanorequalto END
+	SAY NAME1 @33660
+	SAY UNIDENTIFIED_DESC @34660
+
+COPY_EXISTING ~mewi660x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi660~ resource= EVAL ~%mewi660%~ END
+	SAY NAME2 @33660
+	SAY IDENTIFIED_DESC @34660
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~udduer01.sto~ ~override~
+	ADD_STORE_ITEM ~mewi660x~ AFTER ~scrl8c~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~udduer02.sto~ ~override~
+	ADD_STORE_ITEM ~mewi660x~ AFTER ~scrl7h~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi660x~ AFTER ~scrl7u~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi660x~ AFTER ~scrl7u~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~ar8010.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi660x~ END
+
+END
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND (me_power_spells = 1) BEGIN
+
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI7~ RET mewi751=filename END
 COPY_EXISTING ~mewi751.spl~ ~override/%mewi751%.spl~
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi751~ resource= EVAL ~%mewi751%~ END
@@ -5606,10 +6229,32 @@ END
 END
 
 LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI7~ RET mewi754=filename END
-COPY_EXISTING ~mewi754.spl~ ~override/%mewi754%.spl~
-	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi754~ resource= EVAL ~%mewi754%~ END
-	SAY NAME1 @33754
-	SAY UNIDENTIFIED_DESC @34754
+
+ACTION_IF NOT (MOD_IS_INSTALLED ~MESpells.tp2~ ~24042~ OR GAME_IS ~iwdee~) BEGIN
+
+	COPY_EXISTING ~mewi754.spl~ ~override/%mewi754%.spl~
+		LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi754~ resource= EVAL ~%mewi754%~ END
+		SAY NAME1 @33754
+		SAY UNIDENTIFIED_DESC @34754
+
+END ELSE BEGIN
+
+	OUTER_SET iwd_ice_storm_missile_id = 98
+	COPY_EXISTING ~missile.ids~ ~override~
+		LPF GET_2DA_ROW INT_VAR numcolumns=2 match_column=1 STR_VAR match=~idpro98~ RET row=matched END
+		PATCH_IF row != (0 - 1) BEGIN
+			READ_2DA_ENTRY row 0 2 iwd_ice_storm_missile_id
+		END
+
+	COPY_EXISTING ~mewi754.spl~ ~override/%mewi754%.spl~
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=iwd_ice_storm_missile_id END
+		LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi754~ resource= EVAL ~%mewi754%~ END
+		LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=damage dicenumber=9 dicesize=10 END
+		LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=drainwizardspells paramter1=5 END
+		SAY NAME1 @33754
+		SAY UNIDENTIFIED_DESC @30113
+
+END
 
 COPY_EXISTING ~mewi754.eff~ ~override~
 	SAY effparameter1 @30011
@@ -5761,11 +6406,11 @@ LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI7~ RET mewi757=filename END
 COPY_EXISTING ~mewi757.spl~ ~override/%mewi757%.spl~
 	SAY NAME1 @33757
 	SAY UNIDENTIFIED_DESC @34757
-
+/*
 COPY_EXISTING_REGEXP ~.*\.cre~ ~override~
 	LPF ADD_CRE_EFFECT INT_VAR opcode=castspelloncondition target=1 timing=9 parameter2=15 special=0x800 STR_VAR resource=~MEDEADID~ END
 	UNLESS ~MEDEADID~
-
+*/
 COPY_EXISTING ~mewi757x.itm~ ~override~
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi757~ resource= EVAL ~%mewi757%~ END
 	SAY NAME2 @33757
@@ -6552,6 +7197,43 @@ END
 
 END
 
+ACTION_IF (me_power_spells = 1) BEGIN
+
+LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI8~ RET mewi863=filename END
+COPY_EXISTING ~mewi863.spl~ ~override/%mewi863%.spl~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=memetafb END
+	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~mewi863~ resource= EVAL ~%mewi863%~ END
+	SAY NAME1 @33863
+	SAY UNIDENTIFIED_DESC @34863
+
+COPY_EXISTING ~mewi863x.itm~ ~override~
+	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 STR_VAR match_resource=~mewi863~ resource= EVAL ~%mewi863%~ END
+	SAY NAME2 @33863
+	SAY IDENTIFIED_DESC @34863
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowspellhalf%~ END
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar3017.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=11 STR_VAR item_to_add=~mewi863x~ END
+
+COPY_EXISTING ~susuneer.cre~ ~override~
+	ADD_CRE_ITEM ~mewi863x~ #0 #0 #0 ~NONE~ ~INV7~
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi863x~ AFTER ~scrl9h~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~adran.cre~ ~override~
+	ADD_CRE_ITEM ~mewi863x~ #0 #0 #0 ~NONE~ ~INV10~
+
+END
+
+END
+
 //LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi951=filename END
 COPY_EXISTING ~mewi951.spl~ ~override~
 	SAY NAME1 @33951
@@ -7249,6 +7931,11 @@ END
 
 //LAF GET_UNIQUE_SPELL_NAME STR_VAR prefix=~SPWI9~ RET mewi965=filename END
 COPY_EXISTING ~mewi965.spl~ ~override~
+	PATCH_IF innate_hla = 1 BEGIN
+		WRITE_SHORT spelltype 4
+		WRITE_LONG spelllevel 1
+		LPF ALTER_SPELL_HEADER INT_VAR location=4 END
+	END
 	READ_SHORT 0x68 numheaders
 	FOR (i = numheaders; i < 50; ++i) BEGIN
 		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
@@ -7355,9 +8042,15 @@ END
 ACTION_IF MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
 
 COPY_EXISTING ~mewi967.spl~ ~override~
+	PATCH_IF innate_hla = 1 BEGIN
+		WRITE_SHORT spelltype 4
+		WRITE_LONG spelllevel 1
+		LPF ALTER_SPELL_HEADER INT_VAR location=4 END
+	END
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=displaystring parameter1=RESOLVE_STR_REF(@30101) END
 	SAY NAME1 @33967
 	SAY UNIDENTIFIED_DESC @34967
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 
 COPY_EXISTING ~mecullth.spl~ ~override~
 	LPF ALTER_EFFECT INT_VAR check_headers=1 check_globals=0 match_opcode=eeexinvokelua special=RESOLVE_STR_REF(@30102) STR_VAR match_resource=~MECULLPR~ END
@@ -7397,6 +8090,77 @@ COPY_EXISTING ~kitlist.2da~ ~override~
 								LPF ADD_HLA STR_VAR ability=~GA_MEWI967~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
 								IF_EXISTS
 								UNLESS ~GA_MEWI967~
+						END
+					END
+					BUT_ONLY_IF_IT_CHANGES
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+END
+
+ACTION_IF (me_power_spells = 1) BEGIN
+
+COPY_EXISTING ~mewi968.spl~ ~override~
+	PATCH_IF innate_hla = 1 BEGIN
+		WRITE_SHORT spelltype 4
+		WRITE_LONG spelllevel 1
+		LPF ALTER_SPELL_HEADER INT_VAR location=4 END
+	END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 50; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+		numheaders = numheaders + 1
+	END
+	FOR (i = 1; i <= numheaders; ++i) BEGIN
+		LPF ALTER_SPELL_EFFECT INT_VAR duration_high=(i * 3) END
+	END
+	SAY NAME1 @33968
+	SAY UNIDENTIFIED_DESC @34968
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowbreathnegates%~ END
+
+COPY_EXISTING ~mesannih.cre~ ~override~
+	SAY NAME1 @33968
+	SAY NAME2 @33968
+
+COPY_EXISTING ~mesannih.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=mesannih END
+
+COPY_EXISTING ~luma0.2da~ ~override~ ~luso0.2da~ ~override~
+	LPF ADD_HLA STR_VAR ability=~GA_MEWI968~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
+	IF_EXISTS
+	UNLESS ~GA_MEWI968~
+
+COPY_EXISTING ~lucm0.2da~ ~override~ ~lufm0.2da~ ~override~ ~lumt0.2da~ ~override~
+	LPF ADD_HLA STR_VAR ability=~GA_MEWI968~ min_lev=~32~ max_lev=~99~ num_allowed=~1~ END
+	IF_EXISTS
+	UNLESS ~GA_MEWI968~
+
+COPY_EXISTING ~lufmc.2da~ ~override~ ~lufmt.2da~ ~override~
+	LPF ADD_HLA STR_VAR ability=~GA_MEWI968~ min_lev=~32~ max_lev=~99~ num_allowed=~1~ END
+	IF_EXISTS
+	IF ~GA_SPWI921~
+	UNLESS ~GA_MEWI968~
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 numcolumns theclass
+		PATCH_IF (~%theclass%~ STRING_EQUAL_CASE ~1~) OR (~%theclass%~ STRING_EQUAL_CASE ~19~) BEGIN
+			READ_2DA_ENTRY i 1 numcolumns theclassname
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~luabbr.2da~ ~override~
+					LPF GET_2DA_ROW INT_VAR found_it=1 STR_VAR match= EVAL ~%theclassname%~ RET numcolumns2=numcols row=matched END
+					PATCH_IF row > ~-1~ BEGIN
+						READ_2DA_ENTRY row 1 numcolumns2 thehlatable
+						INNER_ACTION BEGIN
+							COPY_EXISTING ~lu%thehlatable%.2da~ ~override~
+								LPF ADD_HLA STR_VAR ability=~GA_MEWI968~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
+								IF_EXISTS
+								UNLESS ~GA_MEWI968~
 						END
 					END
 					BUT_ONLY_IF_IT_CHANGES
@@ -7721,7 +8485,16 @@ COPY_EXISTING ~simulacr.spl~ ~override~
 //	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=castspell target=1 timing=1 STR_VAR resource=~MEIMGID3~ END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=eeexinvokelua target=1 timing=0 special=3 STR_VAR resource=~MEIMGSCR~ END
 
-
+COPY_EXISTING_REGEXP ~.*\.itm~ ~override~
+	READ_SHORT 0x68 thenumheaders
+	READ_SHORT 0x70 thenumglobaleffects
+	PATCH_IF thenumheaders > 0 AND thenumglobaleffects = 0 BEGIN
+		READ_BYTE 0x72 thefirstheadertype
+		PATCH_IF thefirstheadertype = 1 OR thefirstheadertype = 2 OR thefirstheadertype = 4 BEGIN
+			LPF ADD_ITEM_EQEFFECT INT_VAR opcode=modifyallsaves target=1 timing=2 END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
 
 COPY_EXISTING_REGEXP ~.*\.itm~ ~override~
 	READ_LONG 0x6A effectoffset
@@ -7769,11 +8542,29 @@ COPY_EXISTING ~%mepr454%.spl~ ~override~ ~%mewi451%.spl~ ~override~
 	IF_EXISTS
 	UNLESS ~MEPRTSLV~
 
-COPY_EXISTING ~sppr105.spl~ ~override~ ~sppr211.spl~ ~override~ ~sppr250.spl~ ~override~ ~sppr302.spl~ ~override~ ~sppr304.spl~ ~override~ ~sppr313.spl~ ~override~ ~sppr314.spl~ ~override~ ~sppr450.spl~ ~override~ ~sppr603d.spl~ ~override~ ~sppr705.spl~ ~override~ ~sppr706.spl~ ~override~ ~sppr718.spl~ ~override~ ~sppr719.spl~ ~override~ ~sppr720.spl~ ~override~ ~spwi101.spl~ ~override~ ~spwi213.spl~ ~override~ ~spwi215.spl~ ~override~ ~spdr201.spl~ ~override~ ~spwi304.spl~ ~override~ ~spwi308.spl~ ~override~ ~spdr301.spl~ ~override~ ~spwi313.spl~ ~override~ ~%mewi354%.spl~ ~override~ ~spwi404.spl~ ~override~ ~spwi502.spl~ ~override~ ~spwi503.spl~ ~override~ ~mewi560d.spl~ ~override~ ~mewi565d.spl~ ~override~ ~spwi614.spl~ ~override~ ~%mewi653%.spl~ ~override~ ~%mewi657%.spl~ ~override~ ~%mewi754%.spl~ ~override~ ~spwi712.spl~ ~override~ ~spwi810.spl~ ~override~ ~spwi811.spl~ ~override~ ~spwi816.spl~ ~override~ ~spwi817.spl~ ~override~ ~spwi911.spl~ ~override~
+COPY_EXISTING ~sppr105.spl~ ~override~ ~sppr211.spl~ ~override~ ~sppr250.spl~ ~override~ ~sppr302.spl~ ~override~ ~sppr304.spl~ ~override~ ~sppr313.spl~ ~override~ ~sppr314.spl~ ~override~ ~sppr450.spl~ ~override~ ~sppr603d.spl~ ~override~ ~sppr705.spl~ ~override~ ~sppr706.spl~ ~override~ ~sppr718.spl~ ~override~ ~sppr719.spl~ ~override~ ~sppr720.spl~ ~override~ ~spwi101.spl~ ~override~ ~spwi213.spl~ ~override~ ~spwi215.spl~ ~override~ ~spdr201.spl~ ~override~ ~spwi304.spl~ ~override~ ~spwi308.spl~ ~override~ ~spdr301.spl~ ~override~ ~spwi313.spl~ ~override~ ~%mewi354%.spl~ ~override~ ~spwi404.spl~ ~override~ ~spwi502.spl~ ~override~ ~spwi503.spl~ ~override~ ~mewi560d.spl~ ~override~ ~mewi565d.spl~ ~override~ ~spwi614.spl~ ~override~ ~%mewi653%.spl~ ~override~ ~%mewi657%.spl~ ~override~ ~%mewi754%.spl~ ~override~ ~spwi712.spl~ ~override~ ~spwi810.spl~ ~override~ ~spwi811.spl~ ~override~ ~spwi816.spl~ ~override~ ~spwi817.spl~ ~override~
 	READ_LONG 0x34 thespelllevel
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=402 target=2 timing=0 parameter2=thespelllevel savingthrow=0x100000 special=RESOLVE_STR_REF(@30037) STR_VAR resource=~MEPRTSLV~ END
 	IF_EXISTS
 	UNLESS ~MEPRTSLV~
+
+ACTION_IF MOD_IS_INSTALLED ~MESpells.tp2~ ~29111~ BEGIN
+
+COPY_EXISTING ~memsward.spl~ ~override~
+	READ_LONG 0x34 thespelllevel
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=402 target=2 timing=0 parameter2=thespelllevel savingthrow=0x100000 special=RESOLVE_STR_REF(@30037) STR_VAR resource=~MEPRTSLV~ END
+	IF_EXISTS
+	UNLESS ~MEPRTSLV~
+
+END ELSE BEGIN
+
+COPY_EXISTING ~spwi911.spl~ ~override~
+	READ_LONG 0x34 thespelllevel
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=402 target=2 timing=0 parameter2=thespelllevel savingthrow=0x100000 special=RESOLVE_STR_REF(@30037) STR_VAR resource=~MEPRTSLV~ END
+	IF_EXISTS
+	UNLESS ~MEPRTSLV~
+
+END
 
 ACTION_IF GAME_IS ~iwdee~ BEGIN
 

@@ -9,8 +9,8 @@ END ELSE BEGIN
 	OUTER_TEXT_SPRINT arbg ~ar~
 END
 
-ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
-	COPY ~MESpells/lua/M__MEFUN.lua~ ~override~
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND NOT FILE_EXISTS_IN_GAME ~M_MESTR1.lua~ BEGIN
+	COPY ~MESpells/lua~ ~override~
 END
 
 OUTER_SPRINT stringcastingtime @3000
@@ -36,6 +36,7 @@ OUTER_SPRINT stringduration60 @3200
 OUTER_SPRINT stringduration18 @3203
 OUTER_SPRINT stringduration24 @3204
 OUTER_SPRINT stringduration30 @3205
+OUTER_SPRINT stringduration2400 @3290
 OUTER_SPRINT stringsavingthrownone @3300
 OUTER_SPRINT stringsavingthrowspellnegates @3351
 OUTER_SPRINT stringsavingthrowdeathnegates @3352
@@ -2313,7 +2314,18 @@ COPY_EXISTING ~sppr105.spl~ ~override~
 	SAY UNIDENTIFIED_DESC @11053
 
 
-BEGIN @10 DESIGNATED 350 DEPRECATED ~~
+BEGIN @46 DESIGNATED 11061
+
+COPY_EXISTING ~sppr106.spl~ ~override~
+	READ_LONG 0x1E thespellunusability
+	thespellunusability&=0x3FFFFFFF
+	WRITE_LONG 0x1E thespellunusability
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=damage END
+	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=useefffile END
+	LPF ADD_SPELL_EFFECT INT_VAR power=1 opcode=damage target=2 timing=9 parameter1=0 parameter2=0x400000 dicenumber=3 dicesize=4 resist_dispel=1 END
+	LPF ADD_SPELL_EFFECT INT_VAR power=1 opcode=protectionfromspell2 target=2 timing=0 parameter1=0 parameter2=2 resist_dispel=1 STR_VAR resource=~sppr106~ END
+	LPF ADD_SPELL_EFFECT INT_VAR power=1 opcode=damage target=2 timing=9 parameter1=0 parameter2=0x400000 dicenumber=3 dicesize=4 resist_dispel=1 END
+	SAY UNIDENTIFIED_DESC @11061
 
 BEGIN @23 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 12091
 
@@ -2342,13 +2354,28 @@ COPY_EXISTING ~spwi208.spl~ ~override~
 	SAY NAME1 @4027
 	SAY UNIDENTIFIED_DESC @22081
 
-
 COPY_EXISTING ~scrl92.itm~ ~override~
 	SAY NAME2 @4027
 	SAY IDENTIFIED_DESC @22081
 
 COPY_EXISTING ~spwi208.spl~ ~override~
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+BEGIN @63 DESIGNATED 14131
+
+COPY_EXISTING ~sppr413.spl~ ~override~
+	LPF ALTER_SPELL_EFFECT INT_VAR duration_high=2400 END
+	LPF REPLACE_IN_SPELL_DESCRIPTION STR_VAR match= EVAL ~%stringduration%
+~ replace_with= EVAL ~%stringduration2400%
+~ END
+
+BEGIN @55 DESIGNATED 14161
+
+COPY ~MESpells/New_Cloak_Of_Fear~ ~override~
+
+COPY_EXISTING ~sppr416.spl~ ~override~
+	SAY NAME1 @4096
+	SAY UNIDENTIFIED_DESC @14161
 
 BEGIN @41 DESIGNATED 15031
 
@@ -2381,6 +2408,17 @@ COPY_EXISTING ~wand11.itm~ ~override~
 	LPF ADD_SPELL_EFFECT INT_VAR power=5 opcode=damage target=2 timing=9 parameter1=0 parameter2=magicfiredamage dicenumber=4 dicesize=6 resist_dispel=1 savingthrow=(vswand + bypassmirrorimage) END
 	SAY NAME2 @4070
 	SAY IDENTIFIED_DESC @4071
+
+BEGIN @44 FORBID_COMPONENT ~setup-spell_rev.tp2~ ~0~ @1000 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 15071
+
+COPY_EXISTING ~sppr507.spl~ ~override~
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode=modifystrength parameter1=25 parameter2=1 END
+	SAY UNIDENTIFIED_DESC @15071
+
+COPY_EXISTING ~scrl5e.itm~ ~override~
+	SAY IDENTIFIED_DESC @15071
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+	IF_EXISTS
 
 BEGIN @42 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 17041
 
@@ -2691,7 +2729,16 @@ COPY_EXISTING ~scrl1q.itm~ ~override~
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 	IF_EXISTS
 
-BEGIN @33 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 DESIGNATED 22031
+BEGIN @45 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 DESIGNATED 21231
+
+COPY_EXISTING ~spwi123.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=401 target=1 timing=9 parameter1=1 parameter2=1 special=999 STR_VAR resource=~MEFAMILT~ END
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=removeeffectsbyresource target=1 timing=9 STR_VAR resource=~SPWI123~ END
+
+COPY_EXISTING_REGEXP ~fam.*\.cre~ ~override~
+	LPF ADD_CRE_EFFECT INT_VAR opcode=401 target=1 timing=9 parameter1=65 parameter2=1 special=684 END
+
+BEGIN @33 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 DESIGNATED 22031
 
 COPY ~MESpells/New_Illusion_Detection~ ~override~
 
@@ -2705,27 +2752,31 @@ COPY_EXISTING ~sppr309.spl~ ~override~
 	SAY UNIDENTIFIED_DESC @13091
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 
-COPY_EXISTING ~eeex_ini.lua~ ~override~
-	REPLACE_TEXTUALLY ~\[\"B3_Invis\"\] = false~ ~["B3_Invis"] = true~
-	IF_EXISTS
-	BUT_ONLY_IF_IT_CHANGES
+ACTION_IF MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
 
-COPY_EXISTING ~spwi203.spl~ ~override~
-	LPF ALTER_SPELL_HEADER INT_VAR target=1 range=100 projectile=noprojectile END
-	LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=(0 - 1) END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode=invisibilitydetection target=2 timing=0 duration=240 parameter2=1 resist_dispel=3 END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode=displayportraiticon target=2 timing=0 duration=240 parameter2=icon_index_mewi203 resist_dispel=3 END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode=playsound target=2 timing=9 resist_dispel=3 STR_VAR resource=~EFF_P63~ END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode=playsound target=2 timing=4 duration=240 resist_dispel=3 STR_VAR resource=~EFF_P31~ END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode=visualeffectbg2 target=2 timing=0 duration=2 parameter2=1 resist_dispel=3 STR_VAR resource=~SPTRUSEE~ END
-	LPF ADD_SPELL_EFFECT INT_VAR opcode=setcolorglowsolid target=2 timing=0 duration=240 parameter1=0x20202000 parameter2=255 resist_dispel=3 END
-	WRITE_BYTE secondarytype secondarynoncombat
-	SAY UNIDENTIFIED_DESC @22031
+	COPY_EXISTING ~eeex_ini.lua~ ~override~
+		REPLACE_TEXTUALLY ~\[\"B3_Invis\"\] = false~ ~["B3_Invis"] = true~
+		IF_EXISTS
+		BUT_ONLY_IF_IT_CHANGES
+	
+	COPY_EXISTING ~spwi203.spl~ ~override~
+		LPF ALTER_SPELL_HEADER INT_VAR target=1 range=100 projectile=noprojectile END
+		LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=(0 - 1) END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=invisibilitydetection target=2 timing=0 duration=240 parameter2=1 resist_dispel=3 END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=displayportraiticon target=2 timing=0 duration=240 parameter2=icon_index_mewi203 resist_dispel=3 END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=playsound target=2 timing=9 resist_dispel=3 STR_VAR resource=~EFF_P63~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=playsound target=2 timing=4 duration=240 resist_dispel=3 STR_VAR resource=~EFF_P31~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=visualeffectbg2 target=2 timing=0 duration=2 parameter2=1 resist_dispel=3 STR_VAR resource=~SPTRUSEE~ END
+		LPF ADD_SPELL_EFFECT INT_VAR opcode=setcolorglowsolid target=2 timing=0 duration=240 parameter1=0x20202000 parameter2=255 resist_dispel=3 END
+		WRITE_BYTE secondarytype secondarynoncombat
+		SAY UNIDENTIFIED_DESC @22031
+	
+	COPY_EXISTING ~scrl87.itm~ ~override~
+		SAY IDENTIFIED_DESC @22031
+		LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+		IF_EXISTS
 
-COPY_EXISTING ~scrl87.itm~ ~override~
-	SAY IDENTIFIED_DESC @22031
-	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
-	IF_EXISTS
+END
 
 COPY_EXISTING ~spwi322.spl~ ~override~
 	LPF ALTER_SPELL_HEADER INT_VAR target=caster projectile=254 END
@@ -2745,7 +2796,99 @@ COPY_EXISTING ~scrl6k.itm~ ~override~
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 	IF_EXISTS
 
+BEGIN @48 DESIGNATED 22211
+
+COPY ~MESpells/New_Weakening_Spells~ ~override~
+
+COPY_EXISTING ~spwi313.spl~ ~override~
+	READ_LONG spellunusability thespellunusability
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~spwi221.spl~ ~override~
+	WRITE_ASCII castingsound ~CAS_M07~ #8
+	WRITE_SHORT castinganimation 9
+	WRITE_BYTE school necromancy
+	WRITE_LONG spellunusability thespellunusability
+	READ_SHORT 0x98 theprojectile ELSE 0
+	PATCH_IF theprojectile = 48 BEGIN
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=50 END
+	END ELSE PATCH_IF (GAME_IS ~iwdee~) AND (theprojectile = 353) BEGIN
+		LPF ALTER_SPELL_HEADER INT_VAR projectile=351 END
+	END
+	SAY NAME1 @4093
+	SAY UNIDENTIFIED_DESC @22211
+
+COPY_EXISTING ~scrl1p.itm~ ~override~
+	READ_BYTE kitunusability3 thekitunusability3
+	READ_BYTE kitunusability4 thekitunusability4
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~scrlai.itm~ ~override~
+	WRITE_BYTE kitunusability3 thekitunusability3
+	WRITE_BYTE kitunusability4 thekitunusability4
+	SAY IDENTIFIED_DESC @22211
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+	IF_EXISTS
+
+COPY_EXISTING ~spwi223.spl~ ~override~
+	SAY NAME1 @4094
+	SAY UNIDENTIFIED_DESC @22231
+
+COPY_EXISTING ~scrla2.itm~ ~override~
+	SAY IDENTIFIED_DESC @22231
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+	IF_EXISTS
+
+COPY_EXISTING ~spwi409.spl~ ~override~
+	SAY NAME1 @4095
+	SAY UNIDENTIFIED_DESC @24091
+
+COPY_EXISTING ~scrla8.itm~ ~override~
+	SAY IDENTIFIED_DESC @24091
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+	IF_EXISTS
+
+BEGIN @49 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 23131
+
+COPY_EXISTING ~spwi313.spl~ ~override~
+	FOR (i = 11; i <= 50; ++i) BEGIN
+		LPF DELETE_SPELL_HEADER INT_VAR header_type=(0 - 1) min_level=i END
+	END
+	SAY UNIDENTIFIED_DESC @23131
+
+COPY_EXISTING ~scrl1p.itm~ ~override~
+	SAY IDENTIFIED_DESC @23131
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowspellhalf%~ END
+	IF_EXISTS
+
+BEGIN @52 DESIGNATED 24041
+SUBCOMPONENT @51
+
+COPY_EXISTING ~icestorm.pro~ ~override~
+	WRITE_BYTE 0x216 4
+
+COPY_EXISTING ~spwi404.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=98 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode=damage parameter1=0 dicenumber=2 dicesize=10 END
+	SAY UNIDENTIFIED_DESC @24041
+
+BEGIN @53 DESIGNATED 24042
+SUBCOMPONENT @51
+
+COPY ~MESpells/New_Ice_Storm~ ~override~
+
+ADD_PROJECTILE ~override/idpro98.pro~
+
+COPY_EXISTING ~spwi404.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=idpro98 END
+	LPF ALTER_SPELL_EFFECT INT_VAR match_opcode=damage parameter1=0 dicenumber=6 dicesize=10 END
+	SAY UNIDENTIFIED_DESC @24042
+
 BEGIN @38 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 DESIGNATED 24081
+
+ACTION_IF !(FILE_EXISTS_IN_GAME ~M__MEFUN.LUA~) BEGIN
+	COPY ~MESpells/lua~ ~override~
+END
 
 COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
 	READ_LONG 0x64 headeroffset
@@ -2887,9 +3030,9 @@ BEGIN @31 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 FORBID_COMPONENT ~HighPower.tp2
 
 COPY ~MESpells/New_Oracle~ ~override~
 
-ACTION_IF !(FILE_EXISTS_IN_GAME ~M_MESTR1.lua~) BEGIN
-	COPY ~MESpells/lua/M_MESTR1.lua~ ~override~
-END
+	ACTION_IF !(FILE_EXISTS_IN_GAME ~M__MEFUN.LUA~) BEGIN
+		COPY ~MESpells/lua~ ~override~
+	END
 
 COPY_EXISTING ~M_MESTR1.lua~ ~override~
 	ex_oracle_feedback_strref = RESOLVE_STR_REF(~<ME_ORACL>~)
@@ -2990,6 +3133,10 @@ END
 
 ACTION_IF MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
 
+	ACTION_IF !(FILE_EXISTS_IN_GAME ~M__MEFUN.LUA~) BEGIN
+		COPY ~MESpells/lua~ ~override~
+	END
+
 	ADD_PROJECTILE ~override/mechali3.pro~
 
 	COPY_EXISTING ~mechali1.pro~ ~override/mechali4.pro~
@@ -3035,11 +3182,22 @@ COPY_EXISTING ~spwi615.spl~ ~override/spdr601.spl~
 COPY_EXISTING ~spwi615.spl~ ~override~
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_savingthrow= EVAL ~%stringsavingthrowspellhalf%~ END
 
-BEGIN @24 DESIGNATED 29111
+BEGIN @57 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~768~ @1005 DESIGNATED 27121
 
-ACTION_IF !(FILE_EXISTS_IN_GAME ~M__MEFUN.LUA~) BEGIN
-	COPY ~MESpells/lua~ ~override~
-END
+COPY_EXISTING ~spwi712.spl~ ~override~
+	LPF ADD_SPELL_CFEFFECT INT_VAR insert_point=0 opcode=eeexinvokelua target=1 timing=3 special=15 STR_VAR resource=~MEINHOST~ END
+	READ_SHORT 0x68 numheaders
+	FOR (i = numheaders; i < 20; ++i) BEGIN
+		LPF ADD_SPELL_HEADER INT_VAR copy_header=1 insert_point=1 END
+		numheaders = numheaders + 1
+	END
+	FOR (i = 1; i <= numheaders; ++i) BEGIN
+		LPF ALTER_SPELL_HEADER INT_VAR header=i min_level=i END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=i match_opcode=damage dicenumber=i END
+	END
+	SAY UNIDENTIFIED_DESC @27121
+
+BEGIN @24 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 DESIGNATED 29111
 
 COPY ~MESpells/New_Meteor_Swarm~ ~override~
 
@@ -3047,15 +3205,57 @@ ADD_PROJECTILE ~override/mecomsml.pro~
 
 ACTION_IF MOD_IS_INSTALLED ~EEex.tp2~ ~0~ BEGIN
 
-	ADD_PROJECTILE ~override/memswarx.pro~
+	ACTION_IF !(FILE_EXISTS_IN_GAME ~M__MEFUN.LUA~) BEGIN
+		COPY ~MESpells/lua~ ~override~
+	END
 
+	COPY_EXISTING ~missile.ids~ ~override~
+		COUNT_2DA_ROWS 2 numrows
+		READ_2DA_ENTRY (numrows - 1) 0 2 newrow
+		newrow = newrow + 1
+		startrow = newrow
+		FOR (i = 1; i <= 50; ++i) BEGIN
+	 		INSERT_2DA_ROW numrows 2 ~%newrow% New Meteor Swarm %i%~
+			numrows = numrows + 1
+			newrow = newrow + 1
+		END
+	
+	COPY_EXISTING ~projectl.ids~ ~override~
+		COUNT_2DA_ROWS 2 numrows
+		READ_2DA_ENTRY (numrows - 1) 0 2 newrow
+		newrow = newrow + 1
+		FOR (i = 1; i <= 50; ++i) BEGIN
+			INSERT_2DA_ROW numrows 2 ~%newrow% memswa%i%~
+			numrows = numrows + 1
+			newrow = newrow + 1
+		END
+	
+	COPY_EXISTING ~memswarx.pro~ ~override~
+		READ_SHORT 0x200 theareaflags
+		theareaflags&=0xFEFF
+		WRITE_SHORT 0x200 theareaflags
+	
+	OUTER_FOR (i = 1; i <= 50; ++i) BEGIN
+		COPY_EXISTING ~memswarx.pro~ ~override/memswa%i%.pro~
+			WRITE_BYTE 0x216 i
+	END
+	
 	COPY_EXISTING ~spwi911.spl~ ~override~
-		LPF ALTER_SPELL_HEADER INT_VAR target=4 projectile=memswarx END
 		LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete=(0 - 1) END
 		LPF ADD_SPELL_EFFECT INT_VAR opcode=useefffile target=1 timing=1 parameter1=eaanyone parameter2=idsea STR_VAR resource=~MEMSWARS~ END
 		LPF ADD_SPELL_EFFECT INT_VAR opcode=402 target=2 timing=0 parameter1=0x534D454D parameter2=0x44524157 special=240 STR_VAR resource=~MERANDSP~ END
+		READ_SHORT 0x68 numheaders
+		FOR (i = numheaders; i < 50; ++i) BEGIN
+			LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
+			LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
+			numheaders = numheaders + 1
+		END
+		FOR (i = 1; i <= numheaders; ++i) BEGIN
+			LPF ALTER_SPELL_HEADER INT_VAR header=i projectile=startrow END
+			startrow = startrow + 1
+		END
 		SAY UNIDENTIFIED_DESC @29111
-	
+
 	COPY_EXISTING ~memsward.spl~ ~override~
 		LPF ALTER_SPELL_HEADER INT_VAR projectile=mecomsml END
 
@@ -3238,9 +3438,82 @@ COPY_EXISTING ~spwi301.spl~ ~override~
 	WRITE_LONG spellflags ulgiash
 	BUT_ONLY_IF_IT_CHANGES
 
-BEGIN @30 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~768~ @1005 DESIGNATED 980
+BEGIN @30 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~METweaks.tp2~ ~900~ ~~ DESIGNATED 980
 
 COPY ~MESpells/Ranger_Paladin_Spells~ ~override~
+
+BEGIN @65 REQUIRE_PREDICATE (GAME_IS ~bgee bg2ee eet~) ~~  DESIGNATED 990
+
+COPY ~METweaks/RangerPaladinCasterLevel~ ~override~
+
+COPY_EXISTING ~clabpr01.2da~ ~override~
+	COUNT_2DA_COLS numcolumns_2
+	COUNT_2DA_ROWS numcolumns_2 numrows_2
+	INSERT_2DA_ROW numrows_2 numcolumns_2 ~MERCLNOL    AP_MERCLNOL  ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****       ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+	UNLESS ~MERCLNOL~
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classcleric BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+					COUNT_2DA_COLS numcolumns_2
+					COUNT_2DA_ROWS numcolumns_2 numrows_2
+					INSERT_2DA_ROW numrows_2 numcolumns_2 ~MERCLNOL    AP_MERCLNOL  ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****       ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					UNLESS ~MERCLNOL~
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~clabrn01.2da~ ~override~
+	COUNT_2DA_COLS numcolumns_2
+	COUNT_2DA_ROWS numcolumns_2 numrows_2
+	INSERT_2DA_ROW numrows_2 numcolumns_2 ~MERANLEV    AP_MERANLEV  ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****       ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+	UNLESS ~MERANLEV~
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classranger BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+					COUNT_2DA_COLS numcolumns_2
+					COUNT_2DA_ROWS numcolumns_2 numrows_2
+					INSERT_2DA_ROW numrows_2 numcolumns_2 ~MERANLEV    AP_MERANLEV  ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****       ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					UNLESS ~MERANLEV~
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~clabpa01.2da~ ~override~
+	COUNT_2DA_COLS numcolumns_2
+	COUNT_2DA_ROWS numcolumns_2 numrows_2
+	INSERT_2DA_ROW numrows_2 numcolumns_2 ~MEPALLEV    AP_MEPALLEV  ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****       ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+	UNLESS ~MEPALLEV~
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classpaladin BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+					COUNT_2DA_COLS numcolumns_2
+					COUNT_2DA_ROWS numcolumns_2 numrows_2
+					INSERT_2DA_ROW numrows_2 numcolumns_2 ~MEPALLEV    AP_MEPALLEV  ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****       ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					UNLESS ~MEPALLEV~
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
 
 BEGIN @20 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1001 DESIGNATED 1000
 SUBCOMPONENT @19
@@ -3255,6 +3528,934 @@ SUBCOMPONENT @19
 OUTER_SET me_power_spells = 0
 
 INCLUDE ~MESpells/components/NewSpells.tpa~
+
+BEGIN @43 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 DESIGNATED 1100
+
+ACTION_IF !(FILE_EXISTS_IN_GAME ~CLABMA01.2DA~) BEGIN
+	COPY ~MESpells/no_overwrite/CLABMA01.2DA~ ~override~
+END
+ACTION_IF !(FILE_EXISTS_IN_GAME ~CLABMA02.2DA~) BEGIN
+	COPY ~MESpells/no_overwrite/CLABMA02.2DA~ ~override~
+END
+ACTION_IF !(FILE_EXISTS_IN_GAME ~CLABMA03.2DA~) BEGIN
+	COPY ~MESpells/no_overwrite/CLABMA03.2DA~ ~override~
+END
+ACTION_IF !(FILE_EXISTS_IN_GAME ~CLABMA04.2DA~) BEGIN
+	COPY ~MESpells/no_overwrite/CLABMA04.2DA~ ~override~
+END
+ACTION_IF !(FILE_EXISTS_IN_GAME ~CLABMA05.2DA~) BEGIN
+	COPY ~MESpells/no_overwrite/CLABMA05.2DA~ ~override~
+END
+ACTION_IF !(FILE_EXISTS_IN_GAME ~CLABMA06.2DA~) BEGIN
+	COPY ~MESpells/no_overwrite/CLABMA06.2DA~ ~override~
+END
+ACTION_IF !(FILE_EXISTS_IN_GAME ~CLABMA07.2DA~) BEGIN
+	COPY ~MESpells/no_overwrite/CLABMA07.2DA~ ~override~
+END
+ACTION_IF !(FILE_EXISTS_IN_GAME ~CLABMA08.2DA~) BEGIN
+	COPY ~MESpells/no_overwrite/CLABMA08.2DA~ ~override~
+END
+ACTION_IF !(FILE_EXISTS_IN_GAME ~CLABMA09.2DA~) BEGIN
+	COPY ~MESpells/no_overwrite/CLABMA09.2DA~ ~override~
+END
+
+COPY ~MESpells/Metamagic~ ~override~
+
+COPY_EXISTING ~memm001.spl~ ~override~
+	SAY NAME1 @36001
+	SAY UNIDENTIFIED_DESC @36002
+
+COPY_EXISTING ~memm002.spl~ ~override~
+	SAY NAME1 @36003
+	SAY UNIDENTIFIED_DESC @36004
+
+COPY_EXISTING ~memm003.spl~ ~override~
+	SAY NAME1 @36005
+	SAY UNIDENTIFIED_DESC @36006
+
+COPY_EXISTING ~memm004.spl~ ~override~
+	SAY NAME1 @36007
+	SAY UNIDENTIFIED_DESC @36008
+
+COPY_EXISTING ~memm005.spl~ ~override~
+	SAY NAME1 @36009
+	SAY UNIDENTIFIED_DESC @36010
+
+COPY_EXISTING ~meintsp2.spl~ ~override~
+	SAY NAME1 @36152
+	SAY NAME2 @36252
+
+COPY_EXISTING ~meintsp3.spl~ ~override~
+	SAY NAME1 @36153
+	SAY NAME2 @36253
+
+COPY_EXISTING ~meintsp4.spl~ ~override~
+	SAY NAME1 @36154
+	SAY NAME2 @36254
+
+COPY_EXISTING ~meintsp5.spl~ ~override~
+	SAY NAME1 @36155
+	SAY NAME2 @36255
+
+COPY_EXISTING ~meintsp6.spl~ ~override~
+	SAY NAME1 @36156
+	SAY NAME2 @36256
+
+COPY_EXISTING ~meintsp7.spl~ ~override~
+	SAY NAME1 @36157
+	SAY NAME2 @36257
+
+COPY_EXISTING ~meintsp8.spl~ ~override~
+	SAY NAME1 @36158
+	SAY NAME2 @36258
+
+COPY_EXISTING ~meintsp9.spl~ ~override~
+	SAY NAME1 @36159
+	SAY NAME2 @36259
+
+COPY_EXISTING ~memm006.spl~ ~override~
+	SAY NAME1 @36011
+	SAY UNIDENTIFIED_DESC @36012
+
+COPY_EXISTING ~memm007.spl~ ~override~
+	SAY NAME1 @36013
+	SAY UNIDENTIFIED_DESC @36014
+
+COPY_EXISTING ~memm008.spl~ ~override~
+	SAY NAME1 @36015
+	SAY UNIDENTIFIED_DESC @36016
+
+COPY_EXISTING ~memm009.spl~ ~override~
+	SAY NAME1 @36017
+	SAY UNIDENTIFIED_DESC @36018
+
+COPY_EXISTING ~memm010.spl~ ~override~
+	SAY NAME1 @36019
+	SAY UNIDENTIFIED_DESC @36020
+
+COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
+	READ_BYTE 0x7E thetarget ELSE 0
+	READ_SHORT 0x98 theprojectile ELSE 0
+	PATCH_IF thetarget = 5 AND (theprojectile = 1 OR theprojectile = 66 OR theprojectile = 195 OR theprojectile = 255) BEGIN
+		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_target=1 target=2 END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
+	READ_SHORT 0x1C thespelltype
+	PATCH_IF thespelltype = 1 OR thespelltype = 2 BEGIN
+		LPF ADD_SPELL_CFEFFECT INT_VAR opcode=eeexinvokelua target=1 timing=0 STR_VAR resource=~EXMETALV~ END
+	END
+	UNLESS ~EXMETALV~
+	BUT_ONLY_IF_IT_CHANGES
+
+OUTER_SPRINT stringmoldtouchname @4073
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr3~ match_name= EVAL ~%stringmoldtouchname%~ RET spell_found_moldtouch=spell_res END
+OUTER_SPRINT stringcircleofbonesname @4074
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr3~ match_name= EVAL ~%stringcircleofbonesname%~ RET spell_found_circleofbones=spell_res END
+OUTER_SPRINT stringwallofmoonlightname @4075
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr4~ match_name= EVAL ~%stringwallofmoonlightname%~ RET spell_found_wallofmoonlight=spell_res END
+OUTER_SPRINT stringcloudofpestilencename @4076
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr4~ match_name= EVAL ~%stringcloudofpestilencename%~ RET spell_found_cloudofpestilence=spell_res END
+OUTER_SPRINT stringsmashingwavename @4077
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr4~ match_name= EVAL ~%stringsmashingwavename%~ RET spell_found_smashingwave=spell_res END
+OUTER_SPRINT stringthornsprayname @4078
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr4~ match_name= EVAL ~%stringthornsprayname%~ RET spell_found_thornspray=spell_res END
+OUTER_SPRINT stringspikestonesname @4079
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr5~ match_name= EVAL ~%stringspikestonesname%~ RET spell_found_spikestones=spell_res END
+OUTER_SPRINT stringwhirlwindname @4080
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr6~ match_name= EVAL ~%stringwhirlwindname%~ RET spell_found_whirlwind=spell_res END
+OUTER_SPRINT stringspiritualwrathname @4081
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr6~ match_name= EVAL ~%stringspiritualwrathname%~ RET spell_found_spiritualwrath=spell_res END
+OUTER_SPRINT stringspikegrowthname @4082
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr3~ match_name= EVAL ~%stringspikegrowthname%~ RET spell_found_spikegrowth=spell_res END
+OUTER_SPRINT stringundeadwardname @4083
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr5~ match_name= EVAL ~%stringundeadwardname%~ RET spell_found_undeadward=spell_res END
+OUTER_SPRINT stringsnillocssnowballswarmname @4084
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi2~ match_name= EVAL ~%stringsnillocssnowballswarmname%~ RET spell_found_snillocssnowballswarm=spell_res END
+OUTER_SPRINT stringlanceofdisruptionname @4085
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi3~ match_name= EVAL ~%stringlanceofdisruptionname%~ RET spell_found_lanceofdisruption=spell_res END
+OUTER_SPRINT stringshoutname @4086
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi4~ match_name= EVAL ~%stringshoutname%~ RET spell_found_shout=spell_res END
+OUTER_SPRINT stringvitriolicspherename @4087
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi4~ match_name= EVAL ~%stringvitriolicspherename%~ RET spell_found_vitriolicsphere=spell_res END
+OUTER_SPRINT stringshroudofflamename @4088
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi5~ match_name= EVAL ~%stringshroudofflamename%~ RET spell_found_shroudofflame=spell_res END
+OUTER_SPRINT stringmalavonsragename @4089
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi7~ match_name= EVAL ~%stringmalavonsragename%~ RET spell_found_malavonsrage=spell_res END
+OUTER_SPRINT stringacidstormname @4090
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi7~ match_name= EVAL ~%stringacidstormname%~ RET spell_found_acidstorm=spell_res END
+OUTER_SPRINT stringsuffocatename @4091
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi7~ match_name= EVAL ~%stringsuffocatename%~ RET spell_found_suffocate=spell_res END
+OUTER_SPRINT stringgreatshoutname @4092
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi8~ match_name= EVAL ~%stringgreatshoutname%~ RET spell_found_greatshout=spell_res END
+OUTER_SPRINT stringwalloffirename @31454
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr4~ match_name= EVAL ~%stringwalloffirename%~ RET mepr454=spell_res END
+OUTER_SPRINT stringtrialbyfirename @33657
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~sppr6~ match_name= EVAL ~%stringtrialbyfirename%~ RET mepr657=spell_res END
+OUTER_SPRINT stringterrorname @33354
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi3~ match_name= EVAL ~%stringterrorname%~ RET mewi354=spell_res END
+OUTER_SPRINT stringmestilsacidbreathname @33361
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi3~ match_name= EVAL ~%stringmestilsacidbreathname%~ RET mewi361=spell_res END
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi4~ match_name= EVAL ~%stringwalloffirename%~ RET mewi451=spell_res END
+OUTER_SPRINT stringmindfogname @33657
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi6~ match_name= EVAL ~%stringmindfogname%~ RET mewi657=spell_res END
+OUTER_SPRINT stringstygianicestormname @33754
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi7~ match_name= EVAL ~%stringstygianicestormname%~ RET mewi754=spell_res END
+OUTER_SPRINT stringsphereofreversedgravityname @33858
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi8~ match_name= EVAL ~%stringsphereofreversedgravityname%~ RET mewi858=spell_res END
+OUTER_SPRINT stringmetafireballname @33863
+LAF SPELL_EXISTS_AND_HAS_NAME STR_VAR resource=~spwi8~ match_name= EVAL ~%stringmetafireballname%~ RET mewi863=spell_res END
+
+
+COPY_EXISTING ~sppr105.spl~ ~override~ ~sppr211.spl~ ~override~ ~sppr250.spl~ ~override~ ~sppr304.spl~ ~override~ ~sppr313.spl~ ~override~ ~sppr314.spl~ ~override~ ~%spell_found_spikegrowth%.spl~ ~override~ ~%spell_found_moldtouch%.spl~ ~override~ ~%spell_found_cloudofpestilence%.spl~ ~override~ ~%spell_found_smashingwave%.spl~ ~override~ ~%spell_found_thornspray%.spl~ ~override~ ~sppr450.spl~ ~override~ ~sppr503.spl~ ~override~ ~%spell_found_spikestones%.spl~ ~override~ ~sppr612.spl~ ~override~ ~%spell_found_spiritualwrath%.spl~ ~override~ ~sppr705.spl~ ~override~ ~sppr706.spl~ ~override~ ~sppr707.spl~ ~override~ ~sppr718.spl~ ~override~ ~sppr719.spl~ ~override~ ~sppr720.spl~ ~override~ ~mepr754.spl~ ~override~ ~meeruptf.spl~ ~override~ ~spwi101.spl~ ~override~ ~spwi103.spl~ ~override~ ~spwi105.spl~ ~override~ ~%spell_found_snillocssnowballswarm%.spl~ ~override~ ~spwi213.spl~ ~override~ ~spwi215.spl~ ~override~ ~spwi217.spl~ ~override~ ~spwi304.spl~ ~override~ ~spwi308.spl~ ~override~ ~spwi313.spl~ ~override~ ~%spell_found_lanceofdisruption%.spl~ ~override~ ~%mewi354%.spl~ ~override~ ~%mewi361%.spl~ ~override~ ~spwi404.spl~ ~override~ ~%spell_found_shout%.spl~ ~override~ ~spwi502.spl~ ~override~ ~spwi503.spl~ ~override~ ~spwi523d.spl~ ~override~ ~spwi614.spl~ ~override~ ~%mewi657%.spl~ ~override~ ~%spell_found_malavonsrage%.spl~ ~override~ ~spwi712.spl~ ~override~ ~%spell_found_acidstorm%.spl~ ~override~ ~%spell_found_suffocate%.spl~ ~override~ ~%mewi754%.spl~ ~override~ ~%spell_found_greatshout%.spl~ ~override~ ~spwi810.spl~ ~override~ ~spwi811.spl~ ~override~ ~spwi812.spl~ ~override~ ~spwi816.spl~ ~override~ ~spwi817.spl~ ~override~ ~%mewi863%.spl~ ~override~
+	READ_LONG 0x34 thespelllevel
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=eeexinvokelua target=2 timing=0 duration=0 savingthrow=0 STR_VAR resource=~MESAFESP~ END
+	IF_EXISTS
+	UNLESS ~MESAFESP~
+
+COPY_EXISTING ~mepr252d.spl~ ~override~ ~%spell_found_circleofbones%d.spl~ ~override~ ~mepr325d.spl~ ~override~ ~%spellfoundwallofmoonlight%.spl~ ~override~ ~%mepr454%.spl~ ~override~ ~%spell_found_undeadward%.spl~ ~override~ ~sppr603d.spl~ ~override~ ~%spell_found_whirlwind%.spl~ ~override~ ~mepr654e.spl~ ~override~ ~%mepr657%.spl~ ~override~ ~sppr725d.spl~ ~override~ ~mewi299d.spl~ ~override~ ~spwi430b.spl~ ~override~ ~%spell_found_vitriolicsphere%y.spl~ ~override~ ~%mewi451%.spl~ ~override~ ~%spell_found_shroudofflame%b.spl~ ~override~ ~mewi560d.spl~ ~override~ ~mewi565d.spl~ ~override~ ~mewi760e.spl~ ~override~ ~%mewi858%.spl~ ~override~ ~mewi861d.spl~ ~override~ ~memsward.spl~ ~override~ ~mewi964.spl~ ~override~ ~mewi965.spl~ ~override~
+	READ_LONG 0x34 thespelllevel
+	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=eeexinvokelua target=2 timing=0 duration=0 savingthrow=0x10000 STR_VAR resource=~MESAFESP~ END
+	IF_EXISTS
+	UNLESS ~MESAFESP~
+
+OUTER_SET level_two = 100
+OUTER_SET level_three = 100
+OUTER_SET level_four = 100
+OUTER_SET level_five = 100
+OUTER_SET level_six = 100
+COPY_EXISTING ~mxsplbrd.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		PATCH_IF level_two = 100 AND numcolumns >= 3 BEGIN
+			READ_2DA_ENTRY i 2 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_two
+			END
+		END
+		PATCH_IF level_three = 100 AND numcolumns >= 4 BEGIN
+			READ_2DA_ENTRY i 3 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_three
+			END
+		END
+		PATCH_IF level_four = 100 AND numcolumns >= 5 BEGIN
+			READ_2DA_ENTRY i 4 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_four
+			END
+		END
+		PATCH_IF level_five = 100 AND numcolumns >= 6 BEGIN
+			READ_2DA_ENTRY i 5 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_five
+			END
+		END
+		PATCH_IF level_six = 100 AND numcolumns >= 7 BEGIN
+			READ_2DA_ENTRY i 6 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+	END
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classbard BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~ ~clabba01.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM001   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM001~
+					numrows_2 += 1
+					PATCH_IF level_four < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM002   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_four 1 ~GA_MEMM002~
+						numrows_2 += 1
+					END
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM003   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM003~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM004   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM004~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM005   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM005~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM006   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM006~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
+					numrows_2 += 1
+					PATCH_IF level_five < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						numrows_2 += 1
+					END
+					PATCH_IF level_six < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM009   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_six 1 ~GA_MEMM009~
+						numrows_2 += 1
+					END
+					IF_EXISTS
+					UNLESS ~ME_MM001~
+			END
+		END
+	END
+
+OUTER_SET level_two = 100
+OUTER_SET level_three = 100
+OUTER_SET level_four = 100
+OUTER_SET level_five = 100
+OUTER_SET level_six = 100
+COPY_EXISTING ~mxsplprs.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		PATCH_IF level_two = 100 AND numcolumns >= 3 BEGIN
+			READ_2DA_ENTRY i 2 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_two
+			END
+		END
+		PATCH_IF level_three = 100 AND numcolumns >= 4 BEGIN
+			READ_2DA_ENTRY i 3 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_three
+			END
+		END
+		PATCH_IF level_four = 100 AND numcolumns >= 5 BEGIN
+			READ_2DA_ENTRY i 4 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_four
+			END
+		END
+		PATCH_IF level_five = 100 AND numcolumns >= 6 BEGIN
+			READ_2DA_ENTRY i 5 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_five
+			END
+		END
+		PATCH_IF level_six = 100 AND numcolumns >= 7 BEGIN
+			READ_2DA_ENTRY i 6 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+	END
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classcleric BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~ ~clabpr01.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM001   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM001~
+					numrows_2 += 1
+					PATCH_IF level_four < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM002   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_four 1 ~GA_MEMM002~
+						numrows_2 += 1
+					END
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM003   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM003~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM004   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM004~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM005   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM005~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM006   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM006~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
+					numrows_2 += 1
+					PATCH_IF level_five < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						numrows_2 += 1
+					END
+					PATCH_IF level_six < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM009   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_six 1 ~GA_MEMM009~
+						numrows_2 += 1
+					END
+					IF_EXISTS
+					UNLESS ~ME_MM001~
+			END
+		END
+	END
+
+OUTER_SET level_two = 100
+OUTER_SET level_three = 100
+OUTER_SET level_four = 100
+OUTER_SET level_five = 100
+OUTER_SET level_six = 100
+COPY_EXISTING ~mxspldru.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		PATCH_IF level_two = 100 AND numcolumns >= 3 BEGIN
+			READ_2DA_ENTRY i 2 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_two
+			END
+		END
+		PATCH_IF level_three = 100 AND numcolumns >= 4 BEGIN
+			READ_2DA_ENTRY i 3 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_three
+			END
+		END
+		PATCH_IF level_four = 100 AND numcolumns >= 5 BEGIN
+			READ_2DA_ENTRY i 4 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_four
+			END
+		END
+		PATCH_IF level_five = 100 AND numcolumns >= 6 BEGIN
+			READ_2DA_ENTRY i 5 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_five
+			END
+		END
+		PATCH_IF level_six = 100 AND numcolumns >= 7 BEGIN
+			READ_2DA_ENTRY i 6 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+	END
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classdruid BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~ ~clabdr01.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM001   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM001~
+					numrows_2 += 1
+					PATCH_IF level_four < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM002   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_four 1 ~GA_MEMM002~
+						numrows_2 += 1
+					END
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM003   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM003~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM004   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM004~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM005   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM005~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM006   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM006~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
+					numrows_2 += 1
+					PATCH_IF level_five < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						numrows_2 += 1
+					END
+					PATCH_IF level_six < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM009   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_six 1 ~GA_MEMM009~
+						numrows_2 += 1
+					END
+					IF_EXISTS
+					UNLESS ~ME_MM001~
+			END
+		END
+	END
+
+OUTER_SET level_two = 100
+OUTER_SET level_three = 100
+OUTER_SET level_four = 100
+OUTER_SET level_five = 100
+OUTER_SET level_six = 100
+COPY_EXISTING ~mxsplran.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		PATCH_IF level_two = 100 AND numcolumns >= 3 BEGIN
+			READ_2DA_ENTRY i 2 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_two
+			END
+		END
+		PATCH_IF level_three = 100 AND numcolumns >= 4 BEGIN
+			READ_2DA_ENTRY i 3 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_three
+			END
+		END
+		PATCH_IF level_four = 100 AND numcolumns >= 5 BEGIN
+			READ_2DA_ENTRY i 4 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_four
+			END
+		END
+		PATCH_IF level_five = 100 AND numcolumns >= 6 BEGIN
+			READ_2DA_ENTRY i 5 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_five
+			END
+		END
+		PATCH_IF level_six = 100 AND numcolumns >= 7 BEGIN
+			READ_2DA_ENTRY i 6 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+	END
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classranger BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~ ~clabrn01.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM001   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM001~
+					numrows_2 += 1
+					PATCH_IF level_four < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM002   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_four 1 ~GA_MEMM002~
+						numrows_2 += 1
+					END
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM003   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM003~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM004   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM004~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM005   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM005~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM006   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM006~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
+					numrows_2 += 1
+					PATCH_IF level_five < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						numrows_2 += 1
+					END
+					PATCH_IF level_six < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM009   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_six 1 ~GA_MEMM009~
+						numrows_2 += 1
+					END
+					IF_EXISTS
+					UNLESS ~ME_MM001~
+			END
+		END
+	END
+
+OUTER_SET level_two = 100
+OUTER_SET level_three = 100
+OUTER_SET level_four = 100
+OUTER_SET level_five = 100
+OUTER_SET level_six = 100
+COPY_EXISTING ~mxsplpal.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		PATCH_IF level_two = 100 AND numcolumns >= 3 BEGIN
+			READ_2DA_ENTRY i 2 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_two
+			END
+		END
+		PATCH_IF level_three = 100 AND numcolumns >= 4 BEGIN
+			READ_2DA_ENTRY i 3 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_three
+			END
+		END
+		PATCH_IF level_four = 100 AND numcolumns >= 5 BEGIN
+			READ_2DA_ENTRY i 4 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_four
+			END
+		END
+		PATCH_IF level_five = 100 AND numcolumns >= 6 BEGIN
+			READ_2DA_ENTRY i 5 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_five
+			END
+		END
+		PATCH_IF level_six = 100 AND numcolumns >= 7 BEGIN
+			READ_2DA_ENTRY i 6 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+	END
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 1 10 kit_name
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classpaladin AND NOT (~%class_of_kit%~ STRING_EQUAL_CASE ~INQUISITOR~) BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~ ~clabpa01.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM001   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM001~
+					numrows_2 += 1
+					PATCH_IF level_four < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM002   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_four 1 ~GA_MEMM002~
+						numrows_2 += 1
+					END
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM003   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM003~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM004   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM004~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM005   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM005~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM006   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM006~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
+					numrows_2 += 1
+					PATCH_IF level_five < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						numrows_2 += 1
+					END
+					PATCH_IF level_six < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM009   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_six 1 ~GA_MEMM009~
+						numrows_2 += 1
+					END
+					IF_EXISTS
+					UNLESS ~ME_MM001~
+			END
+		END
+	END
+
+OUTER_SET level_two = 100
+OUTER_SET level_three = 100
+OUTER_SET level_four = 100
+OUTER_SET level_five = 100
+OUTER_SET level_six = 100
+COPY_EXISTING ~mxsplsrc.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		PATCH_IF level_two = 100 AND numcolumns >= 3 BEGIN
+			READ_2DA_ENTRY i 2 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_two
+			END
+		END
+		PATCH_IF level_three = 100 AND numcolumns >= 4 BEGIN
+			READ_2DA_ENTRY i 3 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_three
+			END
+		END
+		PATCH_IF level_four = 100 AND numcolumns >= 5 BEGIN
+			READ_2DA_ENTRY i 4 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_four
+			END
+		END
+		PATCH_IF level_five = 100 AND numcolumns >= 6 BEGIN
+			READ_2DA_ENTRY i 5 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_five
+			END
+		END
+		PATCH_IF level_six = 100 AND numcolumns >= 7 BEGIN
+			READ_2DA_ENTRY i 6 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+	END
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classsorcerer BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~ ~clabma01.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM001   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM001~
+					numrows_2 += 1
+					PATCH_IF level_four < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM002   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_four 1 ~GA_MEMM002~
+						numrows_2 += 1
+					END
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM003   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM003~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM004   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM004~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM005   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM005~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM006   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM006~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
+					numrows_2 += 1
+					PATCH_IF level_five < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						numrows_2 += 1
+					END
+					PATCH_IF level_six < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM009   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_six 1 ~GA_MEMM009~
+						numrows_2 += 1
+					END
+					IF_EXISTS
+					UNLESS ~ME_MM001~
+			END
+		END
+	END
+
+OUTER_SET level_two = 100
+OUTER_SET level_three = 100
+OUTER_SET level_four = 100
+OUTER_SET level_five = 100
+OUTER_SET level_six = 100
+COPY_EXISTING ~mxsplshm.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		PATCH_IF level_two = 100 AND numcolumns >= 3 BEGIN
+			READ_2DA_ENTRY i 2 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_two
+			END
+		END
+		PATCH_IF level_three = 100 AND numcolumns >= 4 BEGIN
+			READ_2DA_ENTRY i 3 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_three
+			END
+		END
+		PATCH_IF level_four = 100 AND numcolumns >= 5 BEGIN
+			READ_2DA_ENTRY i 4 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_four
+			END
+		END
+		PATCH_IF level_five = 100 AND numcolumns >= 6 BEGIN
+			READ_2DA_ENTRY i 5 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_five
+			END
+		END
+		PATCH_IF level_six = 100 AND numcolumns >= 7 BEGIN
+			READ_2DA_ENTRY i 6 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+	END
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classshaman BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~ ~clabsh01.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM001   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM001~
+					numrows_2 += 1
+					PATCH_IF level_four < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM002   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_four 1 ~GA_MEMM002~
+						numrows_2 += 1
+					END
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM003   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM003~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM004   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM004~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM005   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM005~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM006   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM006~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
+					numrows_2 += 1
+					PATCH_IF level_five < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						numrows_2 += 1
+					END
+					PATCH_IF level_six < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM009   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_six 1 ~GA_MEMM009~
+						numrows_2 += 1
+					END
+					IF_EXISTS
+					UNLESS ~ME_MM001~
+			END
+		END
+	END
+
+OUTER_SET level_two = 100
+OUTER_SET level_three = 100
+OUTER_SET level_four = 100
+OUTER_SET level_five = 100
+OUTER_SET level_six = 100
+COPY_EXISTING ~mxsplwiz.2da~ ~override~
+	COUNT_2DA_COLS numcolumns
+	COUNT_2DA_ROWS numcolumns numrows
+	FOR (i = 0; i < numrows; ++i) BEGIN
+		PATCH_IF level_two = 100 AND numcolumns >= 3 BEGIN
+			READ_2DA_ENTRY i 2 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_two
+			END
+		END
+		PATCH_IF level_three = 100 AND numcolumns >= 4 BEGIN
+			READ_2DA_ENTRY i 3 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_three
+			END
+		END
+		PATCH_IF level_four = 100 AND numcolumns >= 5 BEGIN
+			READ_2DA_ENTRY i 4 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_four
+			END
+		END
+		PATCH_IF level_five = 100 AND numcolumns >= 6 BEGIN
+			READ_2DA_ENTRY i 5 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_five
+			END
+		END
+		PATCH_IF level_six = 100 AND numcolumns >= 7 BEGIN
+			READ_2DA_ENTRY i 6 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+	END
+	IF_EXISTS
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~kitlist.2da~ ~override~
+	COUNT_2DA_ROWS 10 numrows
+	FOR (i = 1; i < numrows; ++i) BEGIN
+		READ_2DA_ENTRY i 8 10 class_of_kit
+		PATCH_IF class_of_kit=classmage BEGIN
+			READ_2DA_ENTRY i 5 10 abilities_of_kit
+			INNER_ACTION BEGIN
+				COPY_EXISTING ~%abilities_of_kit%.2da~ ~override~
+					COUNT_2DA_ROWS 1 numrows_2
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM001   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM001~
+					numrows_2 += 1
+					PATCH_IF level_four < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM002   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_four 1 ~GA_MEMM002~
+						numrows_2 += 1
+					END
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM003   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM003~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM004   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM004~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM005   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_two 1 ~GA_MEMM005~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM006   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM006~
+					numrows_2 += 1
+					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
+					numrows_2 += 1
+					PATCH_IF level_five < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						numrows_2 += 1
+					END
+					PATCH_IF level_six < 100 BEGIN
+						INSERT_2DA_ROW numrows_2 1 ~ME_MM009   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
+						SET_2DA_ENTRY numrows_2 level_six 1 ~GA_MEMM009~
+						numrows_2 += 1
+					END
+					IF_EXISTS
+					UNLESS ~ME_MM001~
+			END
+		END
+	END
 
 /*
 BEGIN @22 DESIGNATED 1200 DEPRECATED ~~

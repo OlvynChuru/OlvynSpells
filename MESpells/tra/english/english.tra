@@ -3260,13 +3260,15 @@ The sphere can be moved by the caster, but doing so requires enormous mental pow
 @35432=~Temporarily reduce the Intelligence of all party members to 3.~
 @35433=~Slow the entire party.~
 
+@35701=~You can now gain a metamagic ability. These abilities empower the next spell you cast, but cause it to use up a higher-level spell slot. Choose one to see its description:~
+
 @36001=~Widen Spell~
 @36002=~Widen Spell
 (Metamagic)
 
 Spell Level Increase: +1
 
-Widen Spell increases the area of effect of the character's next spell by 100%. For example, a fireball will have a 30-foot radius rather than a 15-foot radius. Widen Spell does nothing to spells that do not have an area of effect.~
+Widen Spell increases the area of effect of the character's next spell by 50%. For example, a fireball will have a 22-foot radius rather than a 15-foot radius. Widen Spell does nothing to spells that do not have an area of effect.~
 @36003=~Maximize Spell~
 @36004=~Maximize Spell
 (Metamagic)

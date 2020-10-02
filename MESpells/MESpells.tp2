@@ -3444,7 +3444,7 @@ COPY ~MESpells/Ranger_Paladin_Spells~ ~override~
 
 BEGIN @65 REQUIRE_PREDICATE (GAME_IS ~bgee bg2ee eet~) ~~  DESIGNATED 990
 
-COPY ~METweaks/RangerPaladinCasterLevel~ ~override~
+COPY ~MESpells/RangerPaladinCasterLevel~ ~override~
 
 COPY_EXISTING ~clabpr01.2da~ ~override~
 	COUNT_2DA_COLS numcolumns_2

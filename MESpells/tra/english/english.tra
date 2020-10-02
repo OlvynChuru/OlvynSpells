@@ -3147,7 +3147,7 @@ Casting Time: 9
 Area of Effect: 5-ft. radius
 Saving Throw: Neg.
 
-This spell creates a sphere of annihilation, which appears as a black ball with a 5 foot radius. The sphere of annihilation is a hole in the fabric of the multiverse. Any matter that touches it is utterly destroyed. If a creature crosses the sphere's path, the creature must make a Save vs. Breath to dodge the sphere; otherwise, the creature is disintegrated.
+This spell creates a sphere of annihilation, which appears as a black ball with a 5 foot radius. The sphere of annihilation is a hole in the fabric of the multiverse. Any matter that touches it is utterly destroyed. If a creature crosses the sphere's path, the creature must make a Save vs. Breath at -3 to dodge the sphere; otherwise, the creature is disintegrated. Even on a successful save, the creature takes 5d6 damage.
 
 The sphere can be moved by the caster, but doing so requires enormous mental power. The higher the caster's Intelligence, the faster the sphere can be moved. The intense concentration used in controlling the sphere prevents the caster from casting any more spells while this spell is active.~
 

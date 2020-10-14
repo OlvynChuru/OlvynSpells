@@ -1813,7 +1813,6 @@ COPY_EXISTING ~mepr456.spl~ ~override/%mepr456%.spl~
 
 END
 
-OUTER_SPRINT stringlevel @634
 OUTER_SPRINT stringspherenecromantic @30115
 OUTER_SPRINT stringwizard @30052
 OUTER_SPRINT stringpriest @30053
@@ -1823,7 +1822,7 @@ COPY_EXISTING ~spwi414.spl~ ~override/mepr457.spl~
 	WRITE_LONG spellunusability 0x40000000
 	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 STR_VAR match_resource=~spwi414~ resource= EVAL ~mepr457~ END
 	LPF REPLACE_IN_SPELL_DESCRIPTION INT_VAR new_string=1 STR_VAR match= EVAL ~\(%stringlevel%\)~ replace_with= EVAL ~\1
-%stringspheredivination%~ END
+%stringspherenecromantic%~ END
 	LPF REPLACE_IN_SPELL_DESCRIPTION INT_VAR new_string=1 STR_VAR match= EVAL ~%stringwizard%~ replace_with= EVAL ~%stringpriest%~ END
 
 LAF ADD_CLASS_SPELL STR_VAR resref=~MEPR457~ class_include=~{21}~ END

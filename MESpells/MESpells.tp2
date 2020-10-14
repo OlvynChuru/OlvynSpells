@@ -2019,6 +2019,31 @@ BEGIN
 		IF_EXISTS
 END
 
+DEFINE_ACTION_FUNCTION ~ME_GET_SPELL_LEVEL_CLASS_LEVEL~
+	INT_VAR
+		spell_level=1
+	STR_VAR
+		table=~~
+	RET
+		class_level
+BEGIN
+	OUTER_SET class_level = 0
+	COPY_EXISTING ~%table%.2da~ ~override~
+		COUNT_2DA_COLS numcolumns
+		COUNT_2DA_ROWS numcolumns numrows
+		PATCH_IF numcolumns > spell_level BEGIN
+			FOR (i = 0; i < numrows; ++i) BEGIN
+				READ_2DA_ENTRY i spell_level numcolumns num_spells
+				PATCH_IF num_spells > 0 BEGIN
+					READ_2DA_ENTRY i 0 numcolumns class_level
+					i = numrows
+				END
+			END
+		END
+		BUT_ONLY_IF_IT_CHANGES
+
+END
+
 DEFINE_PATCH_FUNCTION ADD_HLA
 	STR_VAR
 		ability=~*~

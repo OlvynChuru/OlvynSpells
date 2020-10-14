@@ -91,17 +91,17 @@ IF WEIGHT #10
   SAY @30131
   IF ~True()~ THEN REPLY @30132 EXIT
   IF ~!Name("METELCI1",Myself)
-Global("ME_Circle_Active_1","GLOBAL",1)~ THEN REPLY @30121 DO ~ReallyForceSpellRES("METELCT1",LastTalkedToBy)~ EXIT
+Global("ME_Circle_Active_1","GLOBAL",1)~ THEN REPLY @30161 DO ~ReallyForceSpellRES("METELCT1",LastTalkedToBy)~ EXIT
   IF ~!Name("METELCI2",Myself)
-Global("ME_Circle_Active_2","GLOBAL",1)~ THEN REPLY @30122 DO ~ReallyForceSpellRES("METELCT2",LastTalkedToBy)~ EXIT
+Global("ME_Circle_Active_2","GLOBAL",1)~ THEN REPLY @30162 DO ~ReallyForceSpellRES("METELCT2",LastTalkedToBy)~ EXIT
   IF ~!Name("METELCI3",Myself)
-Global("ME_Circle_Active_3","GLOBAL",1)~ THEN REPLY @30123 DO ~ReallyForceSpellRES("METELCT3",LastTalkedToBy)~ EXIT
+Global("ME_Circle_Active_3","GLOBAL",1)~ THEN REPLY @30163 DO ~ReallyForceSpellRES("METELCT3",LastTalkedToBy)~ EXIT
   IF ~!Name("METELCI4",Myself)
-Global("ME_Circle_Active_4","GLOBAL",1)~ THEN REPLY @30124 DO ~ReallyForceSpellRES("METELCT4",LastTalkedToBy)~ EXIT
+Global("ME_Circle_Active_4","GLOBAL",1)~ THEN REPLY @30164 DO ~ReallyForceSpellRES("METELCT4",LastTalkedToBy)~ EXIT
   IF ~!Name("METELCI5",Myself)
-Global("ME_Circle_Active_5","GLOBAL",1)~ THEN REPLY @30125 DO ~ReallyForceSpellRES("METELCT5",LastTalkedToBy)~ EXIT
+Global("ME_Circle_Active_5","GLOBAL",1)~ THEN REPLY @30165 DO ~ReallyForceSpellRES("METELCT5",LastTalkedToBy)~ EXIT
   IF ~!Name("METELCI6",Myself)
-Global("ME_Circle_Active_6","GLOBAL",1)~ THEN REPLY @30126 DO ~ReallyForceSpellRES("METELCT6",LastTalkedToBy)~ EXIT
+Global("ME_Circle_Active_6","GLOBAL",1)~ THEN REPLY @30166 DO ~ReallyForceSpellRES("METELCT6",LastTalkedToBy)~ EXIT
   IF ~!Name("METELCI7",Myself)
-Global("ME_Circle_Active_7","GLOBAL",1)~ THEN REPLY @30127 DO ~ReallyForceSpellRES("METELCT7",LastTalkedToBy)~ EXIT
+Global("ME_Circle_Active_7","GLOBAL",1)~ THEN REPLY @30167 DO ~ReallyForceSpellRES("METELCT7",LastTalkedToBy)~ EXIT
 END

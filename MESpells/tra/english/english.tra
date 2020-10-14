@@ -1267,6 +1267,7 @@ This ability ends the Spirit of Power effect on the party early.~
 @30134=~That teleportation circle is in an area that cannot be accessed right now.~
 @30135=~The teleportation circle network needs a couple of rounds to recharge its magic before it can be used again.~
 @30136=~All party members must be within 15 feet of the teleportation circle in order to teleport.~
+@30137=~ - Currently exists in ~
 @30141=~Sphere of Protection from Fire~
 @30142=~Sphere of Protection from Cold~
 @30143=~Sphere of Protection from Electricity~
@@ -1275,6 +1276,20 @@ This ability ends the Spirit of Power effect on the party early.~
 @30146=~Sphere of Protection from Petrification~
 @30147=~Sphere of Protection from Undead~
 @30151=~Resistance to fire, cold and electricity lowered by 75%~
+@30161=~Teleportation Circle A (Location: <METELCI1>)~
+@30162=~Teleportation Circle B (Location: <METELCI2>)~
+@30163=~Teleportation Circle C (Location: <METELCI3>)~
+@30164=~Teleportation Circle D (Location: <METELCI4>)~
+@30165=~Teleportation Circle E (Location: <METELCI5>)~
+@30166=~Teleportation Circle F (Location: <METELCI6>)~
+@30167=~Teleportation Circle G (Location: <METELCI7>)~
+@30171=~Teleportation Circle A<METELC1>~
+@30172=~Teleportation Circle B<METELC2>~
+@30173=~Teleportation Circle C<METELC3>~
+@30174=~Teleportation Circle D<METELC4>~
+@30175=~Teleportation Circle E<METELC5>~
+@30176=~Teleportation Circle F<METELC6>~
+@30177=~Teleportation Circle G<METELC7>~
 
 @31151=~Snake's Swiftness~
 @31152=~Hex~

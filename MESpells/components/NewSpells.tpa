@@ -19,13 +19,13 @@ COPY ~MESpells/lua/M_MEALTC.lua~ ~override~
 
 ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND !(FILE_EXISTS_IN_GAME ~M_MECEIL.lua~) BEGIN
 	ACTION_IF GAME_IS ~bgee~ BEGIN
-		COPY ~MESpells/lua/M_MECBG1.lua~ ~override/M_MECEIL.lua~
+		COPY ~MESpells/no_overwrite/M_MECBG1.lua~ ~override/M_MECEIL.lua~
 	END ELSE ACTION_IF GAME_IS ~bg2ee~ BEGIN
-		COPY ~MESpells/lua/M_MECBG2.lua~ ~override/M_MECEIL.lua~
+		COPY ~MESpells/no_overwrite/M_MECBG2.lua~ ~override/M_MECEIL.lua~
 	END ELSE ACTION_IF GAME_IS ~iwdee~ BEGIN
-		COPY ~MESpells/lua/M_MECIWD.lua~ ~override/M_MECEIL.lua~
+		COPY ~MESpells/no_overwrite/M_MECIWD.lua~ ~override/M_MECEIL.lua~
 	END ELSE ACTION_IF GAME_IS ~eet~ BEGIN
-		COPY ~MESpells/lua/M_MECEET.lua~ ~override/M_MECEIL.lua~
+		COPY ~MESpells/no_overwrite/M_MECEET.lua~ ~override/M_MECEIL.lua~
 	END
 
 	ACTION_IF GAME_IS ~bgee eet~ BEGIN
@@ -648,6 +648,8 @@ COPY_EXISTING ~m_mestr1.lua~ ~override~
 	REPLACE_TEXTUALLY CASE_INSENSITIVE ~ex_familiar_spell_strref_1[ %TAB%=].*~ ~ex_familiar_spell_strref_1 = %ex_familiar_spell_strref_1%~
 	me_teleport_circle_cut_off_strref = RESOLVE_STR_REF(@30134)
 	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_teleport_circle_cut_off_strref[ %TAB%=].*~ ~me_teleport_circle_cut_off_strref = %me_teleport_circle_cut_off_strref%~
+	SPRINT me_teleport_circle_feedback_string_1 @30137
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_teleport_circle_feedback_string_1[ %TAB%=].*~ ~me_teleport_circle_feedback_string_1 = "%me_teleport_circle_feedback_string_1%"~
 	IF_EXISTS
 
 COPY_EXISTING ~m_mestr1.lua~ ~override~
@@ -946,18 +948,7 @@ COPY_EXISTING ~mepr153.spl~ ~override~
 	SAY UNIDENTIFIED_DESC @32153
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 
-OUTER_SET ranger_level_one = 1
-COPY_EXISTING ~mxsplran.2da~ ~override~
-	COUNT_2DA_COLS numcolumns
-	COUNT_2DA_ROWS numcolumns numrows
-	FOR (i = 0; i < numrows; ++i) BEGIN
-		READ_2DA_ENTRY i 1 numcolumns num_spells_level_one
-		PATCH_IF num_spells_level_one > 0 BEGIN
-			READ_2DA_ENTRY i 0 numcolumns ranger_level_one
-			i = numrows
-		END
-	END
-	BUT_ONLY_IF_IT_CHANGES
+LAF ME_GET_SPELL_LEVEL_CLASS_LEVEL INT_VAR spell_level=1 STR_VAR table=~mxsplran~ RET ranger_level_one=class_level END
 
 COPY_EXISTING ~kitlist.2da~ ~override~
 	COUNT_2DA_ROWS 10 numrows
@@ -990,18 +981,7 @@ COPY_EXISTING ~mepr154.spl~ ~override~
 	SAY UNIDENTIFIED_DESC @32154
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 
-OUTER_SET paladin_level_one = 1
-COPY_EXISTING ~mxsplpal.2da~ ~override~
-	COUNT_2DA_COLS numcolumns
-	COUNT_2DA_ROWS numcolumns numrows
-	FOR (i = 0; i < numrows; ++i) BEGIN
-		READ_2DA_ENTRY i 1 numcolumns num_spells_level_one
-		PATCH_IF num_spells_level_one > 0 BEGIN
-			READ_2DA_ENTRY i 0 numcolumns paladin_level_one
-			i = numrows
-		END
-	END
-	BUT_ONLY_IF_IT_CHANGES
+LAF ME_GET_SPELL_LEVEL_CLASS_LEVEL INT_VAR spell_level=1 STR_VAR table=~mxsplpal~ RET paladin_level_one=class_level END
 
 COPY_EXISTING ~kitlist.2da~ ~override~
 	COUNT_2DA_ROWS 10 numrows
@@ -1217,18 +1197,8 @@ COPY_EXISTING ~mepr254.spl~ ~override~
 
 LAF EXCLUDE_SPELL_FROM_CONTINGENCY STR_VAR resource= EVAL ~MEPR254~ END
 
-OUTER_SET ranger_level_two = 1
-COPY_EXISTING ~mxsplran.2da~ ~override~
-	COUNT_2DA_COLS numcolumns
-	COUNT_2DA_ROWS numcolumns numrows
-	FOR (i = 0; i < numrows; ++i) BEGIN
-		READ_2DA_ENTRY i 2 numcolumns num_spells_level_two
-		PATCH_IF num_spells_level_two > 0 BEGIN
-			READ_2DA_ENTRY i 0 numcolumns ranger_level_two
-			i = numrows
-		END
-	END
-	BUT_ONLY_IF_IT_CHANGES
+LAF ME_GET_SPELL_LEVEL_CLASS_LEVEL INT_VAR spell_level=2 STR_VAR table=~mxsplpal~ RET paladin_level_two=class_level END
+LAF ME_GET_SPELL_LEVEL_CLASS_LEVEL INT_VAR spell_level=2 STR_VAR table=~mxsplran~ RET ranger_level_two=class_level END
 
 COPY_EXISTING ~kitlist.2da~ ~override~
 	COUNT_2DA_ROWS 10 numrows
@@ -1254,19 +1224,6 @@ COPY_EXISTING ~clabrn01.2da~ ~override~
 	SET_2DA_ENTRY numrows ranger_level_two 1 ~GA_MEPR254~
 	IF_EXISTS
 	UNLESS ~GA_MEPR254~
-
-OUTER_SET paladin_level_two = 1
-COPY_EXISTING ~mxsplpal.2da~ ~override~
-	COUNT_2DA_COLS numcolumns
-	COUNT_2DA_ROWS numcolumns numrows
-	FOR (i = 0; i < numrows; ++i) BEGIN
-		READ_2DA_ENTRY i 2 numcolumns num_spells_level_two
-		PATCH_IF num_spells_level_two > 0 BEGIN
-			READ_2DA_ENTRY i 0 numcolumns paladin_level_two
-			i = numrows
-		END
-	END
-	BUT_ONLY_IF_IT_CHANGES
 
 COPY_EXISTING ~kitlist.2da~ ~override~
 	COUNT_2DA_ROWS 10 numrows
@@ -1457,18 +1414,7 @@ COPY_EXISTING ~mepr355.spl~ ~override~
 	SAY UNIDENTIFIED_DESC @32355
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_range= EVAL ~%stringrangeshort%~ END
 
-OUTER_SET paladin_level_three = 1
-COPY_EXISTING ~mxsplpal.2da~ ~override~
-	COUNT_2DA_COLS numcolumns
-	COUNT_2DA_ROWS numcolumns numrows
-	FOR (i = 0; i < numrows; ++i) BEGIN
-		READ_2DA_ENTRY i 3 numcolumns num_spells_level_three
-		PATCH_IF num_spells_level_three > 0 BEGIN
-			READ_2DA_ENTRY i 0 numcolumns paladin_level_three
-			i = numrows
-		END
-	END
-	BUT_ONLY_IF_IT_CHANGES
+LAF ME_GET_SPELL_LEVEL_CLASS_LEVEL INT_VAR spell_level=3 STR_VAR table=~mxsplpal~ RET paladin_level_three=class_level END
 
 COPY_EXISTING ~kitlist.2da~ ~override~
 	COUNT_2DA_ROWS 10 numrows
@@ -1505,18 +1451,7 @@ COPY_EXISTING ~mepr356.spl~ ~override~
 	SAY UNIDENTIFIED_DESC @32356
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 
-OUTER_SET ranger_level_three = 1
-COPY_EXISTING ~mxsplran.2da~ ~override~
-	COUNT_2DA_COLS numcolumns
-	COUNT_2DA_ROWS numcolumns numrows
-	FOR (i = 0; i < numrows; ++i) BEGIN
-		READ_2DA_ENTRY i 3 numcolumns num_spells_level_three
-		PATCH_IF num_spells_level_three > 0 BEGIN
-			READ_2DA_ENTRY i 0 numcolumns ranger_level_three
-			i = numrows
-		END
-	END
-	BUT_ONLY_IF_IT_CHANGES
+LAF ME_GET_SPELL_LEVEL_CLASS_LEVEL INT_VAR spell_level=3 STR_VAR table=~mxsplran~ RET ranger_level_three=class_level END
 
 COPY_EXISTING ~kitlist.2da~ ~override~
 	COUNT_2DA_ROWS 10 numrows
@@ -1746,20 +1681,7 @@ COPY_EXISTING ~mepr455.spl~ ~override~
 	SAY UNIDENTIFIED_DESC @32455
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 
-OUTER_SET ranger_level_four = 1
-COPY_EXISTING ~mxsplran.2da~ ~override~
-	COUNT_2DA_COLS numcolumns
-	COUNT_2DA_ROWS numcolumns numrows
-	PATCH_IF numcolumns > 4 BEGIN
-		FOR (i = 0; i < numrows; ++i) BEGIN
-			READ_2DA_ENTRY i 4 numcolumns num_spells_level_four
-			PATCH_IF num_spells_level_four > 0 BEGIN
-				READ_2DA_ENTRY i 0 numcolumns ranger_level_four
-				i = numrows
-			END
-		END
-	END
-	BUT_ONLY_IF_IT_CHANGES
+LAF ME_GET_SPELL_LEVEL_CLASS_LEVEL INT_VAR spell_level=4 STR_VAR table=~mxsplran~ RET ranger_level_four=class_level END
 
 ACTION_IF ranger_level_four > 1 BEGIN
 
@@ -1965,20 +1887,8 @@ COPY_EXISTING ~m_mealtc.lua~ ~override~
 	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_alt_contingency = {~ ~me_alt_contingency = {
 ['MEPR555'] = {['conditions'] = {{['strref'] = %ref_30068%, ['desc'] = %ref_30069%}}, ['targets'] = {{['strref'] = %ref_30070%, ['desc'] = %ref_30071%}, {['strref'] = %ref_30072%, ['desc'] = %ref_30073%}},},~
 
-OUTER_SET ranger_level_five = 1
-COPY_EXISTING ~mxsplran.2da~ ~override~
-	COUNT_2DA_COLS numcolumns
-	COUNT_2DA_ROWS numcolumns numrows
-	PATCH_IF numcolumns > 5 BEGIN
-		FOR (i = 0; i < numrows; ++i) BEGIN
-			READ_2DA_ENTRY i 5 numcolumns num_spells_level_five
-			PATCH_IF num_spells_level_five > 0 BEGIN
-				READ_2DA_ENTRY i 0 numcolumns ranger_level_five
-				i = numrows
-			END
-		END
-	END
-	BUT_ONLY_IF_IT_CHANGES
+LAF ME_GET_SPELL_LEVEL_CLASS_LEVEL INT_VAR spell_level=5 STR_VAR table=~mxsplran~ RET ranger_level_five=class_level END
+LAF ME_GET_SPELL_LEVEL_CLASS_LEVEL INT_VAR spell_level=5 STR_VAR table=~mxsplpal~ RET paladin_level_five=class_level END
 
 ACTION_IF ranger_level_five > 1 BEGIN
 
@@ -2007,21 +1917,6 @@ ACTION_IF ranger_level_five > 1 BEGIN
 		UNLESS ~GA_MEPR555~
 
 END
-
-OUTER_SET paladin_level_five = 1
-COPY_EXISTING ~mxsplpal.2da~ ~override~
-	COUNT_2DA_COLS numcolumns
-	COUNT_2DA_ROWS numcolumns numrows
-	PATCH_IF numcolumns > 5 BEGIN
-		FOR (i = 0; i < numrows; ++i) BEGIN
-			READ_2DA_ENTRY i 5 numcolumns num_spells_level_five
-			PATCH_IF num_spells_level_five > 0 BEGIN
-				READ_2DA_ENTRY i 0 numcolumns paladin_level_five
-				i = numrows
-			END
-		END
-	END
-	BUT_ONLY_IF_IT_CHANGES
 
 ACTION_IF paladin_level_five > 1 BEGIN
 
@@ -2069,21 +1964,6 @@ COPY_EXISTING ~mepr556.spl~ ~override~
 	SAY NAME1 @31556
 	SAY UNIDENTIFIED_DESC @32556
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
-
-OUTER_SET ranger_level_five = 1
-COPY_EXISTING ~mxsplran.2da~ ~override~
-	COUNT_2DA_COLS numcolumns
-	COUNT_2DA_ROWS numcolumns numrows
-	PATCH_IF numcolumns > 5 BEGIN
-		FOR (i = 0; i < numrows; ++i) BEGIN
-			READ_2DA_ENTRY i 5 numcolumns num_spells_level_five
-			PATCH_IF num_spells_level_five > 0 BEGIN
-				READ_2DA_ENTRY i 0 numcolumns ranger_level_five
-				i = numrows
-			END
-		END
-	END
-	BUT_ONLY_IF_IT_CHANGES
 
 ACTION_IF ranger_level_five > 1 BEGIN
 
@@ -2472,18 +2352,7 @@ COPY_EXISTING ~mepr661.spl~ ~override~
 	SAY UNIDENTIFIED_DESC @32661
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT STR_VAR new_range= EVAL ~%stringrangemedium%~ END
 
-OUTER_SET paladin_level_six = 1
-COPY_EXISTING ~mxsplpal.2da~ ~override~
-	COUNT_2DA_COLS numcolumns
-	COUNT_2DA_ROWS numcolumns numrows
-	FOR (i = 0; i < numrows; ++i) BEGIN
-		READ_2DA_ENTRY i 6 numcolumns num_spells_level_six
-		PATCH_IF num_spells_level_six > 0 BEGIN
-			READ_2DA_ENTRY i 0 numcolumns paladin_level_six
-			i = numrows
-		END
-	END
-	BUT_ONLY_IF_IT_CHANGES
+LAF ME_GET_SPELL_LEVEL_CLASS_LEVEL INT_VAR spell_level=6 STR_VAR table=~mxsplpal~ RET paladin_level_six=class_level END
 
 ACTION_IF paladin_level_six > 1 BEGIN
 
@@ -6549,31 +6418,59 @@ COPY_EXISTING ~mewi568.spl~ ~override/%mewi568%.spl~
 COPY_EXISTING ~mewi568.2da~ ~override/%mewi568%.2da~
 
 COPY_EXISTING ~metelc1.spl~ ~override~
-	SAY NAME1 @30121
+	READ_LONG 0x18 ulgiash
+	ulgiash|=0x80000000
+	WRITE_LONG 0x18 ulgiash
+	SAY NAME1 @30171
+	SAY NAME2 @30121
 	SAY UNIDENTIFIED_DESC @34568
 
 COPY_EXISTING ~metelc2.spl~ ~override~
-	SAY NAME1 @30122
+	READ_LONG 0x18 ulgiash
+	ulgiash|=0x80000000
+	WRITE_LONG 0x18 ulgiash
+	SAY NAME1 @30172
+	SAY NAME2 @30122
 	SAY UNIDENTIFIED_DESC @34568
 
 COPY_EXISTING ~metelc3.spl~ ~override~
-	SAY NAME1 @30123
+	READ_LONG 0x18 ulgiash
+	ulgiash|=0x80000000
+	WRITE_LONG 0x18 ulgiash
+	SAY NAME1 @30173
+	SAY NAME2 @30123
 	SAY UNIDENTIFIED_DESC @34568
 
 COPY_EXISTING ~metelc4.spl~ ~override~
-	SAY NAME1 @30124
+	READ_LONG 0x18 ulgiash
+	ulgiash|=0x80000000
+	WRITE_LONG 0x18 ulgiash
+	SAY NAME1 @30174
+	SAY NAME2 @30124
 	SAY UNIDENTIFIED_DESC @34568
 
 COPY_EXISTING ~metelc5.spl~ ~override~
-	SAY NAME1 @30125
+	READ_LONG 0x18 ulgiash
+	ulgiash|=0x80000000
+	WRITE_LONG 0x18 ulgiash
+	SAY NAME1 @30175
+	SAY NAME2 @30125
 	SAY UNIDENTIFIED_DESC @34568
 
 COPY_EXISTING ~metelc6.spl~ ~override~
-	SAY NAME1 @30126
+	READ_LONG 0x18 ulgiash
+	ulgiash|=0x80000000
+	WRITE_LONG 0x18 ulgiash
+	SAY NAME1 @30176
+	SAY NAME2 @30126
 	SAY UNIDENTIFIED_DESC @34568
 
 COPY_EXISTING ~metelc7.spl~ ~override~
-	SAY NAME1 @30127
+	READ_LONG 0x18 ulgiash
+	ulgiash|=0x80000000
+	WRITE_LONG 0x18 ulgiash
+	SAY NAME1 @30177
+	SAY NAME2 @30127
 	SAY UNIDENTIFIED_DESC @34568
 
 COPY_EXISTING ~metelci1.cre~ ~override~

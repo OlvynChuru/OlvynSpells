@@ -13767,6 +13767,19 @@ function MESPIPOW(effectData, creatureData)
 	end
 end
 
+function EEex_GetAreaName(areaRES, removeExtraInfo)
+	for k, area in ipairs(cheatAreas) do
+		if area[1] == areaRES then
+			if removeExtraInfo then
+				return string.gsub(area[2], " %(.*", "")
+			else
+				return area[2]
+			end
+		end
+	end
+	return "Unknown area"
+end
+
 function METELCIR(effectData, creatureData)
 	EEex_WriteDword(effectData + 0x110, 1)
 	local targetID = EEex_ReadDword(creatureData + 0x34)
@@ -13777,6 +13790,15 @@ function METELCIR(effectData, creatureData)
 	local circleX, circleY = EEex_GetActorLocation(targetID)
 	local targetX = circleX
 	local targetY = circleY
+	Infinity_SetToken("METELCI" .. circleIndex, EEex_GetAreaName(areaRES, true))
+	EEex_IterateActorEffects(playerID, function(eData)
+		local theopcode = EEex_ReadDword(eData + 0x10)
+		local theparameter1 = EEex_ReadDword(eData + 0x1C)
+		local thespecial = EEex_ReadDword(eData + 0x48)
+		if theopcode == 401 and theparameter1 ~= circleIndex and thespecial == 693 then
+			Infinity_SetToken("METELCI" .. theparameter1, EEex_GetAreaName(EEex_ReadLString(eData + 0x70, 8), true))
+		end
+	end)
 	if EEex_GetActorStat(targetID, 693) == 0 then
 		EEex_ApplyEffectToActor(targetID, {
 ["opcode"] = 401,
@@ -13808,8 +13830,6 @@ function METELCIR(effectData, creatureData)
 ["opcode"] = 321,
 ["target"] = 2,
 ["timing"] = 9,
-["parameter1"] = circleIndex,
-["parameter2"] = 1,
 ["parameter3"] = targetX,
 ["parameter4"] = targetY,
 ["vvcresource"] = areaRES,
@@ -13878,6 +13898,22 @@ function METELCIR(effectData, creatureData)
 })
 		end
 	end
+end
+
+function METELCIS(effectData, creatureData)
+	EEex_WriteDword(effectData + 0x110, 1)
+	local playerID = EEex_GetActorIDCharacter(0)
+	for i = 1, 7, 1 do
+		Infinity_SetToken("METELC" .. i, "")
+	end
+	EEex_IterateActorEffects(playerID, function(eData)
+		local theopcode = EEex_ReadDword(eData + 0x10)
+		local theparameter1 = EEex_ReadDword(eData + 0x1C)
+		local thespecial = EEex_ReadDword(eData + 0x48)
+		if theopcode == 401 and thespecial == 693 then
+			Infinity_SetToken("METELC" .. theparameter1, me_teleport_circle_feedback_string_1 .. EEex_GetAreaName(EEex_ReadLString(eData + 0x70, 8), true))
+		end
+	end)
 end
 
 function METELCIP(effectData, creatureData)
@@ -14003,3 +14039,26 @@ function METELCIT(effectData, creatureData)
 		end
 	end
 end
+--[[
+EEex_AddActionHookGlobal("METELCIA", function(actionData, creatureData)
+	local actionID = EEex_GetActionID(actionData)
+	if actionID == 139 then
+		local sourceID = EEex_ReadDword(creatureData + 0x34)
+		local targetID = EEex_ReadDword(actionData + 0x20)
+		if EEex_GetActorStat(targetID, 692) > 0 then
+			for i = 0, 5, 1 do
+				local characterID = EEex_GetActorIDCharacter(i)
+				local characterActionID = EEex_GetActorCurrentAction(characterID)
+				EEex_DS(EEex_GetActorName(characterID) .. ": " .. characterActionID)
+				if characterID > 0 and characterID ~= sourceID then
+					if characterActionID == 0 or characterActionID == 23 then
+--						C:Eval("ClearActions(Myself)", characterID)
+						EEex_LuaObject = targetID
+						C:Eval("MoveToObject(EEex_LuaObject)", characterID)
+					end
+				end
+			end
+		end
+	end
+end)
+--]]

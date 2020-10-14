@@ -2183,6 +2183,42 @@ END
 
 END
 
+DEFINE_ACTION_FUNCTION RESTRICT_HLA
+	STR_VAR
+		resref=~~ //Resref of the HLA.
+		class_level=~{}~ //A character with one of these classes (from CLASS.IDS) cannot get the HLA if their level in the class is less than the specified value.
+		kit_level=~{}~ //A character with one of these kits cannot get the HLA if their level in the kit is less than the specified value.
+		attributes=~{['str'] = 0, ['dex'] = 0, ['con'] = 0, ['int'] = 0, ['wis'] = 0, ['cha'] = 0}~ //A character cannot get the HLA if their attributes are lower than the specified values.
+BEGIN
+
+	OUTER_PATCH_SAVE class_level ~%class_level%~ BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~[%WNL%%MNL%%LNL%]~ ~ ~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\([0-9a-fA-F]\)[ %TAB%]*}~ ~\1, }~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~[{}]~ ~~
+	END
+	OUTER_PATCH_SAVE kit_level ~%kit_level%~ BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~[%WNL%%MNL%%LNL%]~ ~ ~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\([0-9a-fA-F]\)[ %TAB%]*}~ ~\1, }~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~[{}]~ ~~
+	END
+	OUTER_PATCH_SAVE attributes ~%attributes%~ BEGIN
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~[%WNL%%MNL%%LNL%]~ ~ ~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\([0-9a-fA-F]\)[ %TAB%]*}~ ~\1, }~
+		REPLACE_TEXTUALLY CASE_INSENSITIVE ~[{}]~ ~~
+	END
+
+	COPY_EXISTING ~m_meexhl.lua~ ~override~
+		REPLACE_TEXTUALLY CASE_SENSITIVE ~me_restrictHLA = {~ ~me_restrictHLA = {
+	{
+		["resref"] = "%resref%",
+		["class_level"] = {%class_level%},
+		["kit_level"] = {%kit_level%},
+		["attributes"] = {%attributes%},
+	},~
+		IF_EXISTS
+
+END
+
 END
 
 LANGUAGE
@@ -3634,19 +3670,34 @@ COPY_EXISTING ~memm010.spl~ ~override~
 	SAY UNIDENTIFIED_DESC @36020
 
 COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
-	READ_BYTE 0x7E thetarget ELSE 0
-	READ_SHORT 0x98 theprojectile ELSE 0
-	PATCH_IF thetarget = 5 AND (theprojectile = 1 OR theprojectile = 66 OR theprojectile = 195 OR theprojectile = 255) BEGIN
-		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_target=1 target=2 END
-	END
-	BUT_ONLY_IF_IT_CHANGES
-
-COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
 	READ_SHORT 0x1C thespelltype
 	PATCH_IF thespelltype = 1 OR thespelltype = 2 BEGIN
 		LPF ADD_SPELL_CFEFFECT INT_VAR opcode=eeexinvokelua target=1 timing=0 STR_VAR resource=~EXMETALV~ END
 	END
 	UNLESS ~EXMETALV~
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
+	READ_BYTE 0x7E thetarget ELSE 0
+	READ_SHORT 0x98 theprojectile ELSE 0
+	PATCH_IF thetarget = 5 AND (theprojectile = 1 OR theprojectile = 66 OR theprojectile = 195 OR theprojectile = 255) BEGIN
+//		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_target=1 target=2 END
+		READ_LONG 0x64 headeroffset
+		READ_SHORT 0x68 numheaders
+		READ_LONG 0x6A effectoffset
+		READ_SHORT 0x70 numglobaleffects
+		READ_SHORT (headeroffset + 0x28 * (numheaders - 1) + 0x1E) lastheadernumeffects ELSE 0
+		READ_SHORT (headeroffset + 0x28 * (numheaders - 1) + 0x20) lastheaderfirsteffectindex ELSE 0
+		numeffects = lastheadernumeffects + lastheaderfirsteffectindex
+		offset = effectoffset + numglobaleffects * 0x30
+		FOR (i = lastheaderfirsteffectindex; i < numeffects; ++i) BEGIN
+			READ_BYTE (offset + 0x2) thetarget ELSE 0
+			PATCH_IF thetarget = 1 BEGIN
+				WRITE_BYTE (offset + 0x2) 2
+			END
+			offset = offset + 0x30
+		END
+	END
 	BUT_ONLY_IF_IT_CHANGES
 
 OUTER_SPRINT stringmoldtouchname @4073

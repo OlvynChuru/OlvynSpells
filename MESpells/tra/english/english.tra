@@ -197,6 +197,51 @@ What would you like to do?
  2] Keep Farseer and don't install Extend Vision
  3] Install Extend Vision in addition to Farseer~
 @1522=~Please enter 1, 2, or 3.~
+@1530=~This mod adds a new 6th-level druid spell called Animal Growth. However, Spell Revisions already adds a 5th-level spell called Animal Growth.
+
+What would you like to do?
+ 1] Read the descriptions of both spells, then choose again
+ 2] Keep the Spell Revisions version of Animal Growth
+ 3] Replace it with the OlvynSpells version of Animal Growth
+ 4] Install both versions of Animal Growth~
+@1531=~Spell Revisions version:
+
+-----------------------
+Animal Growth
+Level: 5
+School: Alteration
+Sphere: Animal
+Range: Long
+Duration: 3 turns
+Casting Time: 5
+Area of Effect: 30' radius
+Saving Throw: None
+
+When this spell is cast, the caster causes all friendly animals within range to become tougher, stronger and more tenacious. The alteration grants +2 bonus to attack rolls, damage rolls, armor class and saving throws. It also increases the recipient's hit points by 50%, and these bonus hit points are lost first when the recipient takes damage. Multiple castings of this spell are not cumulative.
+-----------------------
+
+OlvynSpells version:
+
+-----------------------
+Animal Growth
+(Alteration)
+
+Level: 6
+Sphere: Animal
+Range: Visual range of the caster
+Duration: 5 rounds + 1 round/2 levels
+Casting Time: 8
+Area of Effect: 15-ft. radius
+Saving Throw: None
+
+Animal Growth greatly increases the size of allied animals in the area of effect, making them twice as large in each dimension. Animals enlarged this way have their hit points doubled, and they gain +4 THAC0 and deal double damage. They also move faster (since they cover twice as much distance with each step). Both living and undead animals (including spirit animals) can be affected by this spell, but shapeshifted druids cannot.
+-----------------------
+
+What would you like to do?
+ 1] Read the descriptions of both spells, then choose again
+ 2] Keep the Spell Revisions version of Animal Growth
+ 3] Replace it with the OlvynSpells version of Camouflage
+ 4] Install both versions of Camouflage~
 
 @2400=~Fighter~
 @2401=~Mage~
@@ -1200,6 +1245,36 @@ Area of Effect: 15-ft. radius
 Saving Throw: None
 
 The signiture spell of gelugons, Stygian Ice Storm calls a storm of hellish ice from Stygia. Each creature in the area of effect takes 9d10 magical cold damage with no Saving Throw. In addition, arcane spellcasters in the area of effect forget five memorized spells each round due to the amnesia caused by Stygian ice. This spell has no effect on undead, constructs, or fiends. The caster is immune to <PRO_HISHER> own spell, but <PRO_HISHER> allies are not.~
+@30114=~This chest contains an enormous extradimensional space where you can store your items.~
+@30115=~Sphere: Necromantic~
+@30116=~Spirit of Power cannot be cast again for 7 days after it successfully invoked an avatar~
+@30117=~Spirit of Power can now be cast again~
+@30118=~End Spirit of Power~
+@30119=~End Spirit of Power
+
+This ability ends the Spirit of Power effect on the party early.~
+@30121=~Teleportation Circle A~
+@30122=~Teleportation Circle B~
+@30123=~Teleportation Circle C~
+@30124=~Teleportation Circle D~
+@30125=~Teleportation Circle E~
+@30126=~Teleportation Circle F~
+@30127=~Teleportation Circle G~
+@30130=~There are no other circles to teleport to. You must cast Teleportation Circle again to create another circle.~
+@30131=~Which circle will you teleport to?~
+@30132=~Do nothing~
+@30133=~Teleportation circles cannot be placed in this area.~
+@30134=~That teleportation circle is in an area that cannot be accessed right now.~
+@30135=~The teleportation circle network needs a couple of rounds to recharge its magic before it can be used again.~
+@30136=~All party members must be within 15 feet of the teleportation circle in order to teleport.~
+@30141=~Sphere of Protection from Fire~
+@30142=~Sphere of Protection from Cold~
+@30143=~Sphere of Protection from Electricity~
+@30144=~Sphere of Protection from Acid~
+@30145=~Sphere of Protection from Poison~
+@30146=~Sphere of Protection from Petrification~
+@30147=~Sphere of Protection from Undead~
+@30151=~Resistance to fire, cold and electricity lowered by 75%~
 
 @31151=~Snake's Swiftness~
 @31152=~Hex~
@@ -1236,12 +1311,18 @@ The signiture spell of gelugons, Stygian Ice Storm calls a storm of hellish ice 
 @31554=~Ethereal Jaunt~
 @31555=~Critical Spell~
 @31556=~Barrage~
+@31557=~Expose to the Elements~
+@31558=~Sphere of Security~
 @31652=~Drown~
 @31653=~Antiharm Shell~
 @31654=~Living Lightning~
 @31655=~Linked Spirit~
 @31656=~Protection from Non-Silver Weapons~
 @31657=~Trial By Fire~
+@31658=~Conjure Earth Elemental~
+@31659=~Greater Steel Wind Strike~
+@31660=~Animal Growth~
+@31661=~Absolute Guard~
 @31751=~Power Word, Heal~
 @31753=~Nonrandom Zone~
 @31754=~Colossal Growth~
@@ -1253,6 +1334,10 @@ The signiture spell of gelugons, Stygian Ice Storm calls a storm of hellish ice 
 @31760=~True Dispel~
 @31761=~Volcanic Eruption~
 @31762=~Elysium's Tears~
+@31763=~Greater Living Lightning~
+@31764=~Tornado~
+@31765=~Spirit of Power~
+@31766=~Contagious Fear~
 
 @32151=~Snake's Swiftness
 (Alteration)
@@ -1465,13 +1550,13 @@ Healing Curse causes a creature's attacks to heal rather than harm. If the recip
 
 Level: 3
 Sphere: Guardian
-Range: 5 ft.
+Range: 15 ft.
 Duration: 1 hour
 Casting Time: 7
 Area of Effect: Special
 Saving Throw: None
 
-This spell grants magical protection to any creature the paladin guards with the Guard action. For the duration, as long as the paladin is guarding another creature within 5 feet, that creature gains a +6 Armor Class bonus and +30% Magic Resistance.~
+This spell grants magical protection to any creature the paladin guards with the Guard action. For the duration, as long as the paladin is guarding another creature within 15 feet, that creature gains a +6 Armor Class bonus and +30% Magic Resistance.~
 @32356=~Wind Shots
 (Alteration)
 
@@ -1524,7 +1609,7 @@ Recall Party teleports all party members to the caster's side. The range is unli
 (Alteration)
 
 Level: 3
-Sphere: Elemental Air
+Sphere: Combat
 Range: Visual range of the caster
 Duration: Instant
 Casting Time: 0
@@ -1664,6 +1749,39 @@ Area of Effect: Special
 Saving Throw: None
 
 This spell turns the ranger's missile attacks into cone area of effect attacks. For the duration, whenever the ranger attacks with an arrow, bolt, bullet, dart, throwing dagger, or throwing axe, a barrage of copies of the projectile will be launched, dealing the attack's damage (as well as any on-hit effects) to all creatures in a 30-foot cone. Barrage does not work well with missiles that already have an area of effect (like Arrows of Detonation): the missile's normal area of effect will simply be replaced with the cone.~
+@32557=~Expose to the Elements
+(Alteration)
+
+Level: 5
+Sphere: Protection
+Range: Visual range of the caster
+Duration: 1 round/level
+Casting Time: 7
+Area of Effect: 1 creature
+Saving Throw: None
+
+The reverse of Protection from the Elements, this spell increases the harm that extreme conditions do to the target's body. It lowers the creature's resistance to fire, magic fire, cold, magic cold and electricity damage by 75%. There is no Saving Throw, but Magic Resistance can still prevent the effects.~
+@32558=~Sphere of Security
+(Abjuration)
+
+Level: 5
+Sphere: Protection
+Range: 0
+Duration: 1 round/level
+Casting Time: 9
+Area of Effect: 10-ft. radius
+Saving Throw: None
+
+This spell surrounds the caster in a large protective sphere. The sphere grants a +2 bonus to AC and saving throws to all allies within its area of effect. In addition, those allies gain the benefits of a single protection scroll, chosen from the following list while the spell is cast:
+
+- Protection from Fire: +50% Fire Resistance
+- Protection from Cold: +50% Cold Resistance
+- Protection from Electricity: +50% Electricity Resistance
+- Protection from Acid: +50% Acid Resistance
+- Protection from Poison: Immunity to poison
+- Protection from Petrification: Immunity to petrification
+
+A single caster can't emit more than one Sphere of Security at once. However, if multiple casters cast different Spheres of Security, creatures in the spheres will benefit from the protection scroll effects of each sphere (though the AC and saving throw bonuses will not stack).~
 @32652=~Drown
 (Alteration)
 
@@ -1683,7 +1801,7 @@ Level: 6
 Sphere: Protection
 Range: Touch
 Duration: 6 rounds
-Casting Time: 9
+Casting Time: 1
 Area of Effect: 1 creature
 Saving Throw: None
 
@@ -1736,6 +1854,44 @@ Area of Effect: 8 ft. long, 2 ft. wide wall
 Saving Throw: None
 
 This spell creates a wall of holy fire, which does not burn the innocent. Any non-good creature that passes through the wall takes 15d4 magic fire damage with no Saving Throw. Good creatures can pass through the wall unharmed.~
+@32659=~Greater Steel Wind Strike
+(Alteration)
+
+Level: 6
+Sphere: Combat
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 0
+Area of Effect: 15-ft. radius
+Saving Throw: None
+
+Like Steel Wind Strike, this spell lets the caster zoom between each enemy in the area of effect, making attacks against each enemy with each equipped weapon. Greater Steel Wind Strike lets the caster make a number of attacks against each creature equal to their attacks per round. The caster must have one or more melee weapons equipped for this spell to function; ranged weapons won't work. Attacks made this way can critically hit and will apply any on-hit effects of the weapons.
+
+A ranger must be at least level 30 to learn this spell.~
+@32660=~Animal Growth
+(Alteration)
+
+Level: 6
+Sphere: Animal
+Range: Visual range of the caster
+Duration: 5 rounds + 1 round/2 levels
+Casting Time: 8
+Area of Effect: 15-ft. radius
+Saving Throw: None
+
+Animal Growth greatly increases the size of allied animals in the area of effect, making them twice as large in each dimension. Animals enlarged this way have their hit points doubled, and they gain +4 THAC0 and deal double damage. They also move faster (since they cover twice as much distance with each step). Both living and undead animals (including spirit animals) can be affected by this spell, but shapeshifted druids cannot.~
+@32661=~Absolute Guard
+(Abjuration)
+
+Level: 6
+Sphere: Guardian
+Range: 15 ft.
+Duration: 5 rounds
+Casting Time: 1
+Area of Effect: Special
+Saving Throw: None
+
+Like the 3rd-level spell Guardian Magic, this spell shields creatures the paladin guards with the Guard action. For the duration, as long as the paladin is guarding another creature within 15 feet, that creature is immune to weapons of +5 enchantment or weaker.~
 @32751=~Power Word, Heal
 (Necromancy)
 	
@@ -1867,6 +2023,68 @@ Area of Effect: 15-ft. radius
 Saving Throw: 1/2
 
 This spell calls a storm of heavenly meteors (one per caster level), which fall down upon the area of effect. Each meteor deals 1d10 magic fire damage (Save vs. Spell at -5 for half) to all creatures within 5 feet of its impact point. The meteors will seek out evil creatures to strike, landing directly on them. If there are no evil creatures to hit, the meteors will strike random spots in the area of effect. The caster is unaffected by the spell. Elysium's Tears may only be cast by good characters.~
+@32763=~Greater Living Lightning
+(Evocation)
+
+Level: Quest
+Sphere: Elemental Air
+Range: 0
+Duration: 4 rounds
+Casting Time: 9
+Area of Effect: 30-ft. radius
+Saving Throw: 1/2
+
+Greater Living Lightning creates two lightning bolts that have minds of their own. These bolts will seek out enemies within 30 feet of the caster and repeatedly electrify them until they are dead, returning to the caster when there are no more enemies in range. Each time a bolt hits an enemy (which it does about once per second), it deals 1d6 electricity damage (Save vs. Breath at -4 for half). The spell creates another lightning bolt for every 10 levels after level 15.~
+@32764=~Tornado
+(Evocation)
+
+Level: Quest
+Sphere: Elemental Air, Weather
+Range: Visual range of the caster
+Duration: Special
+Casting Time: 9
+Area of Effect: 10-ft. radius
+Saving Throw: None
+
+A much more powerful version of the spell Whirlwind, the spell creates a tornado that moves in the direction the caster aims at. Enemies that come within 10 feet of the tornado get sucked up into it, taking 3d8 per second that they stay inside it. Creatures are usually ejected from the tornado after about a round.~
+@32765=~Spirit of Power
+(Invocation)
+
+Level: Quest
+Sphere: All
+Range: Touch
+Duration: 1 hour
+Casting Time: 30
+Area of Effect: 1 party member
+Saving Throw: None
+
+For this spell to function, the party must consist of six clerics who worship the same deity (this means there cannot be more than one kit among clerics in the party, though having one or more unkitted clerics in the party will not prevent the spell from working). All six party members must cast Spirit of Power on a single party member. At the completion of the spell, each party member falls into a trance as their spirits meld together to form an avatar of their deity. This avatar inhabits the chosen party member for 1 hour, who can act while the other characters are incapacitated. Becoming an avatar of a god grants these benefits:
+
+- +500 temporary Hit Points
+- All attributes are set to 25
+- +50% resistance to non-physical damage
+- Magic Resistance set to 75%
+- Can only be hit by +3 weapons or greater
+- +1 attack per round
+- +10 bonus to THAC0 and saving throws
+- Deals an additional 8d6 magic damage with each hit
+- Immune to disease, poison, and time stop
+- Aura Cleansing
+- Turns undead and casts priest spells as if 30 levels higher
+
+The spell ends early if any party member dies or if any party member uses the End Spirit of Power special ability (which is given after the spell is cast). When the spell ends, all party members are left extremely drained, being reduced to 1 HP and greatly fatigued.~
+@32766=~Contagious Fear
+(Enchantment/Charm)
+
+Level: Quest
+Sphere: War
+Range: Visual range of the caster
+Duration: 6 rounds
+Casting Time: 8
+Area of Effect: 15-ft. radius
+Saving Throw: Neg.
+
+Contagious Fear causes panic among creatures in a 15-foot radius, and the panic then spreads to other creatures. Each creature in the initial area of effect must Save vs. Spell with a -4 penalty or run in fear for 6 rounds. Any creature that comes within 15 feet of one of the panicking creatures must make the save as well, or else the Contagious Fear will spread to that creature. A creature that makes a save against this spell is immune to the spell for 1 round. After the spell expires on a creature, that creature is immune to the contagion for another 6 rounds.~
 
 @33151=~Disruptive Surge~
 @33152=~Inertia~
@@ -1877,6 +2095,7 @@ This spell calls a storm of heavenly meteors (one per caster level), which fall 
 @33157=~Hex~
 @33158=~Reflect Attack~
 @33159=~Taunt~
+@33160=~Dimensional Chest~
 @33251=~Power Word, Pull~
 @33252=~Ghostwalk~
 @33253=~Power Word, Push~
@@ -1886,6 +2105,7 @@ This spell calls a storm of heavenly meteors (one per caster level), which fall 
 @33257=~Levitate~
 @33258=~Bounce Spell~
 @33259=~Detect Magic~
+@33260=~Far Cast~
 @33351=~Absorb Spell~
 @33352=~Fly~
 @33353=~Displacement~
@@ -1921,6 +2141,8 @@ This spell calls a storm of heavenly meteors (one per caster level), which fall 
 @33564=~Wall of Force~
 @33565=~Sacrificial Explosion~
 @33566=~Gedlee's Electric Barrier~
+@33567=~Rewind Time~
+@33568=~Teleportation Circle~
 @33651=~Isaac's Greater Missile Storm~
 @33652=~Freeze Inanimates~
 @33653=~Greater Nightmare~
@@ -1938,9 +2160,11 @@ This spell calls a storm of heavenly meteors (one per caster level), which fall 
 @33755=~Death Trigger~
 @33756=~Critical Sequencer~
 @33757=~Reanimate~
-@33758=~Rewind Time~
+@33758=~Skip Time~
 @33759=~Extraordinary Luck~
 @33760=~Lightning Stream~
+@33761=~X-Ray Vision~
+@33762=~Insanity~
 @33851=~Enhance Attribute~
 @33852=~Globe of Invisibility~
 @33853=~Otto's Irresistible Spin~
@@ -1994,7 +2218,9 @@ Casting Time: 1
 Area of Effect: 1 creature
 Saving Throw: Neg.
 
-This spell drastically increases the inertia of the target, locking its movement in the direction it is currently moving. The effect of this spell depends on whether or not the target was moving when it was hit by the spell. If it was moving, it will continue hurtling nonstop in that direction against its will for 4 rounds. If it was standing in place, it will be immobilized for 4 rounds. A successful Saving Throw vs. Polymorph at -4 negates the effects of this spell.~
+This spell drastically increases the inertia of the target, locking its movement in the direction it is currently moving. The effect of this spell depends on whether or not the target was moving when it was hit by the spell. If it was moving, it will continue hurtling nonstop in that direction against its will for 4 rounds. If it was standing in place, it will be immobilized for 4 rounds. A successful Saving Throw vs. Polymorph at -6 negates the effects of this spell.
+
+Creatures lower level than the caster have no save against this spell.~
 @34153=~Detect Shapeshifters
 (Divination)
 
@@ -2072,6 +2298,19 @@ Area of Effect: 1 creature
 Saving Throw: Neg.
 
 The Taunt spell provokes an enemy into attacking the caster. If the target fails a Save vs. Breath, it is driven berserk and will attack the caster if possible rather than do any other action. If the target is a warrior (a fighter, ranger, paladin, or monk, including multiclassed warriors), it makes the save at a -6 penalty. Creatures immune to charm effects are immune to Taunt. The effects of Taunt end early if the caster dies.~
+@34160=~Dimensional Chest
+(Conjuration/Summoning)
+
+Level: 1
+Range: Visual range of the caster
+Duration: 8 hours
+Casting Time: 1
+Area of Effect: Special
+Saving Throw: None
+
+This spell summons a chest containing an extradimensional storage space similar to a Bag of Holding. The chest can store up to 60000 of the party's items. It stays in the spot where it was summoned for 8 hours. Any party member can store or retrieve items from the chest by interacting with it. Non-allied creatures cannot see or interact with the chest.
+
+All chests summoned with this spell link to the same extradimensional space, even if multiple chests were to be summoned at the same time.~
 @34251=~Power Word, Pull
 (Conjuration/Summoning)
 
@@ -2117,6 +2356,8 @@ Saving Throw: Neg.
 
 The target of this spell will instantly become dangerously drunk, far more than is pleasurable. The target gains four intoxication points for every Constitution point they have less than 25. For example, if the target has 10 Constitution, they will gain 60 intoxication points. Like normal drunkenness, this magical intoxication will wear off over time. A successful Save vs. Spell at -5 negates the effect. Intoxicate has no effect on undead or constructs. Multiple uses of this spell are cumulative.
 
+Creatures lower level than the caster have no save against this spell.
+
 Note: High levels of intoxication give luck penalties. The size of the penalty depends on the number of intoxication points:
 
 0-49:   No penalty
@@ -2136,7 +2377,9 @@ Casting Time: 2
 Area of Effect: 1 creature
 Saving Throw: Neg.
 
-This necromantic curse prevents the target from healing. Once cast, the target must save vs. Spell at -8 or be cursed for 1 day. While cursed, the target cannot regain Hit Points via spells, abilities, items, regeneration, or resting. The curse can be removed early using a Remove Curse spell.~
+This necromantic curse prevents the target from healing. Once cast, the target must save vs. Spell at -8 or be cursed for 1 day. While cursed, the target cannot regain Hit Points via spells, abilities, items, regeneration, or resting. The curse can be removed early using a Remove Curse spell.
+
+Creatures lower level than the caster have no save against this spell.~
 @34256=~Specific Spell Immunity
 (Abjuration)
 
@@ -2181,6 +2424,19 @@ Area of Effect: The caster
 Saving Throw: None
 
 Detect Magic lets the party see the magical effects on other creatures. While the spell is active, if you hover the cursor over a creature and press Left Shift, a list of all the spell effects on the creature (such as Stoneskin or Protection from Magical Weapons) will be displayed. If the creature has Non-Detection, nothing will be displayed.~
+@34260=~Far Cast
+(Divination)
+
+Level: 2
+Range: Special
+Duration: 2 rounds
+Casting Time: 0
+Area of Effect: Special
+Saving Throw: None
+
+Far Cast modifies the next spell or ability used by the caster in the next 2 rounds. That spell or ability gains unlimited range and can target any creature the party sees, even if the caster does not see it.
+
+Although Far Cast is not a free action, the next spell can be cast immediately after it, as if the caster had Aura Cleansing.~
 @34351=~Absorb Spell
 (Abjuration)
 
@@ -2257,7 +2513,7 @@ Casting Time: 5
 Area of Effect: 12-ft. radius
 Saving Throw: None
 
-A Glyph of Spell Storing is a ward which stores a spell and releases it upon each hostile creature that enters the warded area. When this spell is cast, the caster stores a single 1st-level spell in the glyph, which is placed on a circular, 9-ft. radius area of the caster's choice. When a hostile creature passes within 9 feet of the glyph, it explodes, releasing a copy of the stored spell on each hostile creature within 12 feet. A caster who is level 10 or higher may also store 2nd-level spells in the glyph.~
+A Glyph of Spell Storing is a ward which stores a spell and releases it upon each hostile creature that enters the warded area. When this spell is cast, the caster stores a single 1st-level spell in the glyph, which is placed on a circular, 9-ft. radius area of the caster's choice. When a hostile creature passes within 9 feet of the glyph, it explodes, releasing a copy of the stored spell on each hostile creature within 12 feet.~
 @34358=~Familiar Spell
 (Conjuration)
 
@@ -2568,6 +2824,30 @@ Area of Effect: The caster
 Saving Throw: None
 
 Similar to Fireshield spells, this spell protects the caster with a shield of electricity. The caster gains +50% Electricity Resistance, and creatures that hit the caster with an attack or spell in melee take 1d10+3 electricity damage and must Save vs. Polymorph or be stunned for 1 round.~
+@34567=~Rewind Time
+(Alteration)
+
+Level: 5
+Range: 0
+Duration: -2 rounds
+Casting Time: 0
+Area of Effect: The caster
+Saving Throw: None
+
+This spell briefly reverses time for the caster, reverting them to the state they were in two rounds ago. The caster's HP is restored to what it was two rounds ago, as is their location in the area. The caster also regains the magical effects they had two rounds ago, while losing effects gained in the past two rounds (including harmful status effects). Rewind Time does not restore memorized spells expended in the last two rounds.~
+@34568=~Teleportation Circle
+(Conjuration)
+
+Level: 5
+Range: Visual range of the caster
+Duration: Permanent
+Casting Time: 9
+Area of Effect: Special
+Saving Throw: None
+
+This spell creates a magic circle that the party can use to teleport to another such circle. In casting this spell, the caster chooses one of seven sigil sequences for the teleportation circle. The circle is then created, and any other circle with the same sigil sequence is destroyed. The circle can be interacted with; by doing so the party can teleport to another circle with a different sigil sequence. Non-allied creatures cannot use these teleportation circles unless they are familiar with the sigil sequences.
+
+There are certain areas that bar teleportation. Attempting to teleport into or out of these areas will fail.~
 @34651=~Isaac's Greater Missile Storm
 (Evocation)
 
@@ -2759,17 +3039,17 @@ Area of Effect: Nearest corpse in 3-ft. radius
 Saving Throw: None
 
 This spell "resurrects" the target as an undead creature under the caster's control. Reanimate cannot target a dead creature directly; it should be cast targeting the location of a corpse. The nearest dead creature to the target point, excluding undead, constructs, most extraplanar creatures, and creatures higher level than the caster, will be reanimated. The reanimated creature becomes undead, but can still use its abilities and spells. It is controlled by the caster until destroyed.~
-@34758=~Rewind Time
+@34758=~Skip Time
 (Alteration)
 
 Level: 7
 Range: 0
-Duration: -2 rounds
+Duration: Special
 Casting Time: 1
-Area of Effect: The caster
+Area of Effect: The party
 Saving Throw: None
 
-This spell allows the caster to go back two rounds in time. The caster's HP is restored to what it was two rounds ago, as is their location in the area. The caster also regains the magical effects <PRO_HESHE> had two rounds ago, while losing effects gained in the past two rounds (including harmful status effects). Rewind Time does not restore memorized spells expended in the last two rounds.~
+This spell transports the party 10 rounds into the future. No time will have passed for the party, but 10 rounds will have passed for everyone and everything else. This means that all magical effects on creatures outside the party will have their remaining duration reduced by 10 rounds; short duration effects like Protection from Magical Weapons will expire. Lingering area of effect spells like Web and Stinking Cloud will also have their remaining duration reduced by 10 rounds.~
 @34759=~Extraordinary Luck
 (Enchantment)
 
@@ -2794,6 +3074,17 @@ Area of Effect: Special
 Saving Throw: None
 
 This spell releases a flurry of lightning bolts (one per level) at the target point. Each bolt deals 1d8 electricity damage, with a Save vs. Spell for half. The bolts travel in a line, bouncing off walls and potentially hitting the same creature more than once per bolt.~
+@34762=~Insanity
+(Enchantment/Charm)
+
+Level: 7
+Range: Visual range of the caster
+Duration: Permanent
+Casting Time: 5
+Area of Effect: 1 creature
+Saving Throw: Neg.
+
+This spell makes a creature completely and dangerously insane. The target acts as they would under a Confusion effect: walking randomly, doing nothing, or attacking the nearest creature. A successful Save vs. Spell with a -4 penalty negates the effect. The insanity lasts until cured with a Heal spell or until dispelled.~
 @34851=~Enhance Attribute
 (Alteration)
 

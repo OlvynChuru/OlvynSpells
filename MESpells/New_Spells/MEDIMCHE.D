@@ -1,0 +1,10 @@
+BEGIN ~MEDIMCHE~
+
+
+IF WEIGHT #1
+~  True()
+~ THEN BEGIN 0
+  SAY @30114
+  IF ~~ THEN DO ~StartStore("MEDIMCHE",LastTalkedToBy)
+~ EXIT
+END

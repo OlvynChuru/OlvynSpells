@@ -13602,7 +13602,7 @@ function METORNAD(effectData, creatureData)
 			end
 		end
 		me_tornado_teleport_index[targetID] = closestOffset
-	elseif me_tornado_teleport_index[targetID] > 16 then
+	elseif me_tornado_teleport_index[targetID] >= 16 then
 		me_tornado_teleport_index[targetID] = 1
 	else
 		me_tornado_teleport_index[targetID] = me_tornado_teleport_index[targetID] + 1

@@ -315,8 +315,8 @@ COPY_EXISTING ~ui.menu~ ~override~
 					ability.canAdd = false
 				end
 			end
-
-			currentHLASelection = nil~~~~~
+		end
+		currentHLASelection = nil~~~~~
 	REPLACE_TEXTUALLY CASE_INSENSITIVE ~createCharScreen:OnHLAButtonClick(currentHLASelection, 1)~ ~~~~~createCharScreen:OnHLAButtonClick(currentHLASelection, 1)
 			for k, ability in ipairs(chargen.HLAs) do
 				if me_HLA_restricted_list[ability.resref] ~= nil then
@@ -2327,7 +2327,7 @@ COPY_EXISTING ~mxsplran.2da~ ~override~
 
 ACTION_IF ranger_level_six > 1 BEGIN
 
-COPY_EXISTING ~lura0.2da~ ~override~
+COPY_EXISTING ~lura0.2da~ ~override~ ~lucr0.2da~ ~override~
 	LPF ADD_HLA STR_VAR ability=~GA_MEPR659~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
 	IF_EXISTS
 	UNLESS ~GA_MEPR659~
@@ -3044,6 +3044,10 @@ COPY_EXISTING ~mepr765e.spl~ ~override~
 	SAY UNIDENTIFIED_DESC @30119
 
 EXTEND_BOTTOM ~baldur.bcs~ ~override/mespipol.bcs~
+
+ACTION_IF FILE_EXISTS_IN_GAME ~baldur25.bcs~ BEGIN
+	EXTEND_BOTTOM ~baldur25.bcs~ ~override/mespipol.bcs~
+END
 
 END
 

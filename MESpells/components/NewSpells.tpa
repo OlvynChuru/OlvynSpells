@@ -8749,3 +8749,17 @@ ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND !(FILE_EXISTS_IN_GAME ~M_MEFLYA.
 
 
 END
+
+ACTION_IF MOD_IS_INSTALLED ~BetterHOF.TP2~ ~1024~ BEGIN
+
+	COPY_EXISTING_REGEXP ~.......\.spl~ ~override~
+		READ_SHORT spelltype thespelltype
+		READ_LONG spelllevel thelevel
+		LPF ADD_SPELL_CFEFFECT INT_VAR opcode=removeeffectsbyresource target=1 timing=1 insert_point=0 STR_VAR resource=~MEQUICSP~ END
+		PATCH_IF (thespelltype = 1 OR thespelltype = 2) AND (thelevel >= 1 AND thelevel <= 5) BEGIN
+			LPF ADD_SPELL_CFEFFECT INT_VAR opcode=applyeffectslist target=1 timing=1 parameter1=238 parameter2=110 insert_point=1 dicenumber=62 dicesize=(thelevel * 10) STR_VAR resource=~MEQUICSP~ END
+		END
+		IF_EXISTS
+		UNLESS ~MEQUICSP~
+		BUT_ONLY_IF_IT_CHANGES
+END

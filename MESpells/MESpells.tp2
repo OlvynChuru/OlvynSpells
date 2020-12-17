@@ -1,4 +1,5 @@
 BACKUP ~MESpells/backup~
+VERSION ~2.2.0~
 AUTHOR ~OlvynChuru~
 
 ALWAYS
@@ -2107,107 +2108,6 @@ BEGIN
 
 END
 
-DEFINE_ACTION_FUNCTION ADD_CLASS_SPELL
-	INT_VAR
-		level=~-1~ //Level of the spell.
-		type=~-1~ //1 = wizard spell, 2 = priest spell.
-		name=~-1~ //Strref of the spell's name.
-		description=~-1~ //Strref of the spell's description.
-	STR_VAR
-		resref=~~ //Resref of the spell.
-		scroll=~~ //Resref of the scroll for the spell (optional, if you want to restrict who can learn the spell from the scroll).
-		icon=~~
-		groundicon=~~
-		class_include=~{}~ //A character with one of these classes (from CLASS.IDS) can learn the spell.
-		kit_include=~{}~ //A character with one of these kits can learn the spell, even if their class is not in the "class_include" list.
-		kit_exclude=~{}~ //A character with one of these kits cannot learn the spell, even if their class is in the "class_include" list.
-BEGIN
-
-	OUTER_PATCH_SAVE class_include ~%class_include%~ BEGIN
-		REPLACE_TEXTUALLY CASE_INSENSITIVE ~[%WNL%%MNL%%LNL%]~ ~ ~
-		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\([0-9a-fA-F]\)[ %TAB%]*}~ ~\1, }~
-		REPLACE_TEXTUALLY CASE_INSENSITIVE ~[{}]~ ~~
-	END
-	OUTER_PATCH_SAVE kit_include ~%kit_include%~ BEGIN
-		REPLACE_TEXTUALLY CASE_INSENSITIVE ~[%WNL%%MNL%%LNL%]~ ~ ~
-		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\([0-9a-fA-F]\)[ %TAB%]*}~ ~\1, }~
-		REPLACE_TEXTUALLY CASE_INSENSITIVE ~[{}]~ ~~
-	END
-	OUTER_PATCH_SAVE kit_exclude ~%kit_exclude%~ BEGIN
-		REPLACE_TEXTUALLY CASE_INSENSITIVE ~[%WNL%%MNL%%LNL%]~ ~ ~
-		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\([0-9a-fA-F]\)[ %TAB%]*}~ ~\1, }~
-		REPLACE_TEXTUALLY CASE_INSENSITIVE ~[{}]~ ~~
-	END
-
-	COPY_EXISTING ~%resref%.spl~ ~override~
-		PATCH_IF level = ~-1~ BEGIN
-			READ_LONG spelllevel level
-		END
-		PATCH_IF type = ~-1~ BEGIN
-			READ_SHORT spelltype type
-		END
-		PATCH_IF name = ~-1~ BEGIN
-			READ_LONG NAME1 name
-		END
-		PATCH_IF description = ~-1~ BEGIN
-			READ_LONG UNIDENTIFIED_DESC description
-		END
-		PATCH_IF (~%icon%~ STRING_EQUAL_CASE ~~) BEGIN
-			READ_ASCII 0x3A icon
-		END
-		PATCH_IF (~%groundicon%~ STRING_EQUAL_CASE ~~) BEGIN
-			READ_ASCII 0x76 groundicon
-		END
-
-		IF_EXISTS
-		BUT_ONLY_IF_IT_CHANGES
-
-	COPY_EXISTING ~m_meexsp.lua~ ~override~
-		PATCH_IF FILE_CONTAINS_EVALUATED (~m_meexsp.lua~ ~\[\"resref\"\][ %TAB%]+=[ %TAB%]+\"%resref%\"~) BEGIN
-
-			PATCH_IF !(~%scroll%~ STRING_EQUAL_CASE ~~) AND FILE_CONTAINS_EVALUATED (~m_meexsp.lua~ ~\[\"resref\"\] = \"%resref%\",[^\[]*\[\"scroll\"\] = \"\"~) BEGIN
-				REPLACE_TEXTUALLY CASE_SENSITIVE ~\[\"resref\"\] = \"%resref%\"[^\[]*\[\"scroll\"\] = \"\"~ ~["resref"] = "%resref%",
-		["scroll"] = "%scroll%"~
-			END
-			REPLACE_EVALUATE
-~\[\"resref\"\] = \"%resref%\",[^\[]*\[\"scroll\"\] = \"\([^\"]*\)\",[^{]*{\([^}]*\)}[^{]*{\([^}]*\)}[^{]*{\([^}]*\)}~
-BEGIN
-	SPRINT class_include ~%class_include%~ ^ ~%MATCH2%~
-	SPRINT kit_include ~%kit_include%~ ^ ~%MATCH3%~
-	SPRINT kit_exclude ~%kit_exclude%~ ^ ~%MATCH4%~
-END
-~["resref"] = "%resref%",
-		["scroll"] = "%MATCH1%",
-		["icon"] = "%icon%",
-		["groundicon"] = "%groundicon%",
-		["level"] = %level%,
-		["type"] = %type%,
-		["name"] = %name%,
-		["description"] = %description%,
-		["class_include"] = {%class_include%},
-		["kit_include"] = {%kit_include%},
-		["kit_exclude"] = {%kit_exclude%}~
-
-		END ELSE BEGIN
-			REPLACE_TEXTUALLY CASE_SENSITIVE ~me_addSpellChoice = {~ ~me_addSpellChoice = {
-	{
-		["resref"] = "%resref%",
-		["scroll"] = "%scroll%",
-		["icon"] = "%icon%",
-		["groundicon"] = "%groundicon%",
-		["level"] = %level%,
-		["type"] = %type%,
-		["name"] = %name%,
-		["description"] = %description%,
-		["class_include"] = {%class_include%},
-		["kit_include"] = {%kit_include%},
-		["kit_exclude"] = {%kit_exclude%},
-	},~
-		END
-		IF_EXISTS
-
-END
-
 DEFINE_ACTION_FUNCTION RESTRICT_HLA
 	STR_VAR
 		resref=~~ //Resref of the HLA.
@@ -2242,6 +2142,19 @@ BEGIN
 	},~
 		IF_EXISTS
 
+END
+
+DEFINE_ACTION_MACRO ~MASS_ADD_STRINGS~
+BEGIN
+	COPY ~%MOD_FOLDER%/dynamic/MEDynamic.tph~ ~%MOD_FOLDER%/MEDynamic.tph~
+		FOR (i = me_start; i < me_start + me_length; ++i) BEGIN
+			INSERT_2DA_ROW 0 1 ~OUTER_SPRINT me_string_%i% @%i%~
+			INSERT_2DA_ROW 1 1 ~OUTER_SET me_strref_%i% = RESOLVE_STR_REF(@%i%)~
+//			INSERT_2DA_ROW 2 1 ~~~~~APPEND ~%me_lua_file%.lua~ ~me_string_%i% = '\%me_string_%i%\%' ~~~~~
+//			INSERT_2DA_ROW 3 1 ~~~~~me_strref_%i% = \%me_strref_%i%\%~ ~~~~~
+		END
+
+	ACTION_REINCLUDE ~%MOD_FOLDER%/MEDynamic.tph~
 END
 
 END
@@ -2388,13 +2301,123 @@ COPY_EXISTING ~sppr106.spl~ ~override~
 	LPF ADD_SPELL_EFFECT INT_VAR power=1 opcode=damage target=2 timing=9 parameter1=0 parameter2=0x400000 dicenumber=3 dicesize=4 resist_dispel=1 END
 	SAY UNIDENTIFIED_DESC @11061
 
-BEGIN @23 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 DESIGNATED 12091
+BEGIN @23 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 /*FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~0~ @1005 */DESIGNATED 12091
 
 ACTION_IF !(FILE_EXISTS_IN_GAME ~M__MEFUN.LUA~) BEGIN
 	COPY ~MESpells/lua~ ~override~
 END
 
 COPY ~MESpells/Identify_Creature~ ~override~
+
+OUTER_SET me_start = 55001
+OUTER_SET me_length = 21
+LAUNCH_ACTION_MACRO MASS_ADD_STRINGS
+OUTER_SET me_start = 55101
+OUTER_SET me_length = 113
+LAUNCH_ACTION_MACRO MASS_ADD_STRINGS
+OUTER_SET me_start = 55219
+OUTER_SET me_length = 5
+LAUNCH_ACTION_MACRO MASS_ADD_STRINGS
+OUTER_SET me_start = 55261
+OUTER_SET me_length = 11
+LAUNCH_ACTION_MACRO MASS_ADD_STRINGS
+OUTER_SET me_start = 55300
+OUTER_SET me_length = 61
+LAUNCH_ACTION_MACRO MASS_ADD_STRINGS
+COPY_EXISTING ~m_mestr1.lua~ ~override~
+	SPRINT me_string_55000 @55000
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55000 = .*~ ~me_string_55000 = "%me_string_55000%"~
+	SPRINT me_string_55255 @55255
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55255 = .*~ ~me_string_55255 = "%me_string_55255%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55300 = .*~ ~me_string_55300 = "%me_string_55300%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55301 = .*~ ~me_string_55301 = "%me_string_55301%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55302 = .*~ ~me_string_55302 = "%me_string_55302%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55303 = .*~ ~me_string_55303 = "%me_string_55303%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55304 = .*~ ~me_string_55304 = "%me_string_55304%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55305 = .*~ ~me_string_55305 = "%me_string_55305%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55306 = .*~ ~me_string_55306 = "%me_string_55306%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55307 = .*~ ~me_string_55307 = "%me_string_55307%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55308 = .*~ ~me_string_55308 = "%me_string_55308%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55309 = .*~ ~me_string_55309 = "%me_string_55309%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55310 = .*~ ~me_string_55310 = "%me_string_55310%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55311 = .*~ ~me_string_55311 = "%me_string_55311%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55312 = .*~ ~me_string_55312 = "%me_string_55312%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55313 = .*~ ~me_string_55313 = "%me_string_55313%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55314 = .*~ ~me_string_55314 = "%me_string_55314%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55315 = .*~ ~me_string_55315 = "%me_string_55315%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55316 = .*~ ~me_string_55316 = "%me_string_55316%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55317 = .*~ ~me_string_55317 = "%me_string_55317%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55318 = .*~ ~me_string_55318 = "%me_string_55318%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55319 = .*~ ~me_string_55319 = "%me_string_55319%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55320 = .*~ ~me_string_55320 = "%me_string_55320%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55321 = .*~ ~me_string_55321 = "%me_string_55321%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55322 = .*~ ~me_string_55322 = "%me_string_55322%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55323 = .*~ ~me_string_55323 = "%me_string_55323%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55324 = .*~ ~me_string_55324 = "%me_string_55324%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55325 = .*~ ~me_string_55325 = "%me_string_55325%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55326 = .*~ ~me_string_55326 = "%me_string_55326%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55327 = .*~ ~me_string_55327 = "%me_string_55327%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55328 = .*~ ~me_string_55328 = "%me_string_55328%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55329 = .*~ ~me_string_55329 = "%me_string_55329%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55330 = .*~ ~me_string_55330 = "%me_string_55330%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55331 = .*~ ~me_string_55331 = "%me_string_55331%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55332 = .*~ ~me_string_55332 = "%me_string_55332%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55333 = .*~ ~me_string_55333 = "%me_string_55333%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55334 = .*~ ~me_string_55334 = "%me_string_55334%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55335 = .*~ ~me_string_55335 = "%me_string_55335%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55336 = .*~ ~me_string_55336 = "%me_string_55336%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55337 = .*~ ~me_string_55337 = "%me_string_55337%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55338 = .*~ ~me_string_55338 = "%me_string_55338%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55339 = .*~ ~me_string_55339 = "%me_string_55339%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55340 = .*~ ~me_string_55340 = "%me_string_55340%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55341 = .*~ ~me_string_55341 = "%me_string_55341%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55342 = .*~ ~me_string_55342 = "%me_string_55342%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55343 = .*~ ~me_string_55343 = "%me_string_55343%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55344 = .*~ ~me_string_55344 = "%me_string_55344%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55345 = .*~ ~me_string_55345 = "%me_string_55345%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55346 = .*~ ~me_string_55346 = "%me_string_55346%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55347 = .*~ ~me_string_55347 = "%me_string_55347%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55348 = .*~ ~me_string_55348 = "%me_string_55348%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55349 = .*~ ~me_string_55349 = "%me_string_55349%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55350 = .*~ ~me_string_55350 = "%me_string_55350%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55351 = .*~ ~me_string_55351 = "%me_string_55351%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55352 = .*~ ~me_string_55352 = "%me_string_55352%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55353 = .*~ ~me_string_55353 = "%me_string_55353%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55354 = .*~ ~me_string_55354 = "%me_string_55354%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55355 = .*~ ~me_string_55355 = "%me_string_55355%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55356 = .*~ ~me_string_55356 = "%me_string_55356%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55357 = .*~ ~me_string_55357 = "%me_string_55357%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55358 = .*~ ~me_string_55358 = "%me_string_55358%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55359 = .*~ ~me_string_55359 = "%me_string_55359%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_string_55360 = .*~ ~me_string_55360 = "%me_string_55360%"~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_classids = .*~ ~me_classids = {"%me_string_55001%", "%me_string_55002%", "%me_string_55003%", "%me_string_55004%", "%me_string_55005%", "%me_string_55006%", "%me_string_55007%", "%me_string_55008%", "%me_string_55009%", "%me_string_55010%", "%me_string_55011%", "%me_string_55012%", "%me_string_55013%", "%me_string_55014%", "%me_string_55015%", "%me_string_55016%", "%me_string_55017%", "%me_string_55018%", "%me_string_55019%", "%me_string_55020%", "%me_string_55021%", }~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_monsterclassids = .*~ ~me_monsterclassids = {"%me_string_55101%", "%me_string_55102%", "%me_string_55103%", "%me_string_55104%", "%me_string_55105%", "%me_string_55106%", "%me_string_55107%", "%me_string_55108%", "%me_string_55109%", "%me_string_55110%", "%me_string_55111%", "%me_string_55112%", "%me_string_55113%", "%me_string_55114%", "%me_string_55115%", "%me_string_55116%", "%me_string_55117%", "%me_string_55118%", "%me_string_55119%", "%me_string_55120%", "%me_string_55121%", "%me_string_55122%", "%me_string_55123%", "%me_string_55124%", "%me_string_55125%", "%me_string_55126%", "%me_string_55127%", "%me_string_55128%", "%me_string_55129%", "%me_string_55130%", "%me_string_55131%", "%me_string_55132%", "%me_string_55133%", "%me_string_55134%", "%me_string_55135%", "%me_string_55136%", "%me_string_55137%", "%me_string_55138%", "%me_string_55139%", "%me_string_55140%", "%me_string_55141%", "%me_string_55142%", "%me_string_55143%", "%me_string_55144%", "%me_string_55145%", "%me_string_55146%", "%me_string_55147%", "%me_string_55148%", "%me_string_55149%", "%me_string_55150%", "%me_string_55151%", "%me_string_55152%", "%me_string_55153%", "%me_string_55154%", "%me_string_55155%", "%me_string_55156%", "%me_string_55157%", "%me_string_55158%", "%me_string_55159%", "%me_string_55160%", "%me_string_55161%", "%me_string_55162%", "%me_string_55163%", "%me_string_55164%", "%me_string_55165%", "%me_string_55166%", "%me_string_55167%", "%me_string_55168%", "%me_string_55169%", "%me_string_55170%", "%me_string_55171%", "%me_string_55172%", "%me_string_55173%", "%me_string_55174%", "%me_string_55175%", "%me_string_55176%", "%me_string_55177%", "%me_string_55178%", "%me_string_55179%", "%me_string_55180%", "%me_string_55181%", "%me_string_55182%", "%me_string_55183%", "%me_string_55184%", "%me_string_55185%", "%me_string_55186%", "%me_string_55187%", "%me_string_55188%", "%me_string_55189%", "%me_string_55190%", "%me_string_55191%", "%me_string_55192%", "%me_string_55193%", "%me_string_55194%", "%me_string_55195%", "%me_string_55196%", "%me_string_55197%", "%me_string_55198%", "%me_string_55199%", "%me_string_55200%", "%me_string_55201%", "%me_string_55202%", "%me_string_55203%", "%me_string_55204%", "%me_string_55205%", "%me_string_55206%", "%me_string_55207%", "%me_string_55208%", "%me_string_55209%", "%me_string_55210%", "%me_string_55211%", "%me_string_55212%", "%me_string_55213%", "%me_string_55255%", "%me_string_55255%", "%me_string_55255%", "%me_string_55255%", "%me_string_55255%", "%me_string_55219%", "%me_string_55220%", "%me_string_55221%", "%me_string_55222%", "%me_string_55223%",
+}~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_weapon_effective_strings = .*~ ~me_weapon_effective_strings = {"%me_string_55261%", "%me_string_55262%", "%me_string_55263%", "%me_string_55264%", "%me_string_55265%", "%me_string_55266%", "%me_string_55267%", "%me_string_55268%", "%me_string_55269%", "%me_string_55270%", "%me_string_55271%", }~
+
+	COPY_EXISTING ~kitlist.2da~ ~override~
+		COUNT_2DA_COLS numcolumns
+		COUNT_2DA_ROWS numcolumns numrows
+		FOR (i = 0; i < numrows; ++i) BEGIN
+			READ_2DA_ENTRY i 1 numcolumns class_special_name
+			READ_2DA_ENTRY i 9 numcolumns class_id
+			class_id = class_id + 0
+			READ_2DA_ENTRY i 3 numcolumns kit_name_ref
+			GET_STRREF kit_name_ref kit_name
+			PATCH_IF (~%class_special_name%~ STRING_EQUAL_CASE ~WILD_MAGE~) BEGIN
+				INNER_ACTION BEGIN
+					COPY_EXISTING ~m_mestr1.lua~ ~override~
+						REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_kitids = {~ ~me_kitids = {[0x7FFFFFFF] = {"%kit_name%", 1}, ~
+				END
+			END ELSE BEGIN
+				READ_2DA_ENTRY i 8 numcolumns kit_id
+				INNER_ACTION BEGIN
+					COPY_EXISTING ~m_mestr1.lua~ ~override~
+						REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_kitids = {~ ~me_kitids = {[%kit_id%] = {"%kit_name%", %class_id%}, ~
+				END
+			END
+		END
+		BUT_ONLY_IF_IT_CHANGES
 
 COPY_EXISTING ~sppr209.spl~ ~override~
 	LPF ALTER_SPELL_HEADER INT_VAR speed=1 END
@@ -2501,7 +2524,7 @@ BEGIN @11 REQUIRE_PREDICATE !(GAME_IS ~iwdee~) ~~ FORBID_COMPONENT ~setup-spell_
 
 COPY ~MESpells/Restore_Summon_Monsters~ ~override~
 
-COPY_EXISTING ~bearbl.cre~ ~override/mesubrbl.cre~ ~bearbr.cre~ ~override/mesubrbr.cre~ ~bearca.cre~ ~override/mesubrca.cre~ ~bearpo.cre~ ~override/mesubrpo.cre~ ~dogwa.cre~ ~override/mesudgwa.cre~ ~dogwi.cre~ ~override/mesudgwi.cre~ ~wolf.cre~ ~override/mesuwolf.cre~ ~wolfdi.cre~ ~override/mesuwodi.cre~ ~wolfdr.cre~ ~override/mesuwodr.cre~ ~wolfwi.cre~ ~override/mesuwowi.cre~ ~worg.cre~ ~override/mesuworg.cre~ ~spidsm01.cre~ ~override/mesuspsm.cre~ ~spidhu.cre~ ~override/mesusphu.cre~ ~spidgi.cre~ ~override/mesuspgi.cre~ ~spidph.cre~ ~override/mesuspph.cre~ ~spidwr.cre~ ~override/mesuspwr.cre~ ~spidsw.cre~ ~override/mesuspsw.cre~ ~spidphas.cre~ ~override/mesuspas.cre~ ~kobold.cre~ ~override/mesukobo.cre~ ~kobolda.cre~ ~override/mesukoar.cre~ ~kobcomm.cre~ ~override/mesukoco.cre~ ~xvart.cre~ ~override/mesuxvar.cre~ ~gibber.cre~ ~override/mesugibb.cre~ ~hobgob.cre~ ~override/mesuhobg.cre~ ~hobgoba.cre~ ~override/mesuhoar.cre~ ~hobelite.cre~ ~override/mesuhoel.cre~ ~gnoll.cre~ ~override/mesugnol.cre~ ~ogregr.cre~ ~override/mesuogri.cre~ ~ogre.cre~ ~override/mesuogre.cre~ ~ogreberz.cre~ ~override/mesuogbe.cre~ ~ogrema.cre~ ~override/mesuogma.cre~ ~carrio.cre~ ~override/mesucarr.cre~ ~ankheg.cre~ ~override/mesuankh.cre~ ~sirine_a.cre~ ~override/mesusire.cre~ ~wyvern.cre~ ~override/mesuwyve.cre~ ~wyverba.cre~ ~override/mesuwyba.cre~
+COPY_EXISTING ~bearbl.cre~ ~override/mesubrbl.cre~ ~bearbr.cre~ ~override/mesubrbr.cre~ ~bearca.cre~ ~override/mesubrca.cre~ ~bearpo.cre~ ~override/mesubrpo.cre~ ~bearpo01.cre~ ~override/mesubrpo.cre~ ~dogwa.cre~ ~override/mesudgwa.cre~ ~dogwar01.cre~ ~override/mesudgwa.cre~ ~dogwi.cre~ ~override/mesudgwi.cre~ ~dogwil01.cre~ ~override/mesudgwi.cre~ ~wolf.cre~ ~override/mesuwolf.cre~ ~wolf01.cre~ ~override/mesuwolf.cre~ ~wolfdi.cre~ ~override/mesuwodi.cre~ ~wolfdr.cre~ ~override/mesuwodr.cre~ ~wolfdr01.cre~ ~override/mesuwodr.cre~ ~wolfwi.cre~ ~override/mesuwowi.cre~ ~wolfwi01.cre~ ~override/mesuwowi.cre~ ~worg.cre~ ~override/mesuworg.cre~ ~wolfwo01.cre~ ~override/mesuworg.cre~ ~spidsm01.cre~ ~override/mesuspsm.cre~ ~spidhu.cre~ ~override/mesusphu.cre~ ~spidhu01.cre~ ~override/mesusphu.cre~ ~spidgi.cre~ ~override/mesuspgi.cre~ ~spidgi01.cre~ ~override/mesuspgi.cre~ ~spidph.cre~ ~override/mesuspph.cre~ ~spidph01.cre~ ~override/mesuspph.cre~ ~spidwr.cre~ ~override/mesuspwr.cre~ ~spidwr01.cre~ ~override/mesuspwr.cre~ ~spidsw.cre~ ~override/mesuspsw.cre~ ~spidsw01.cre~ ~override/mesuspsw.cre~ ~spidphas.cre~ ~override/mesuspas.cre~ ~kobold.cre~ ~override/mesukobo.cre~ ~kobald01.cre~ ~override/mesukobo.cre~ ~kobolda.cre~ ~override/mesukoar.cre~ ~kobarc01.cre~ ~override/mesukoar.cre~ ~kobcomm.cre~ ~override/mesukoco.cre~ ~kobcom01.cre~ ~override/mesukoco.cre~ ~xvart.cre~ ~override/mesuxvar.cre~ ~xvart01.cre~ ~override/mesuxvar.cre~ ~gibber.cre~ ~override/mesugibb.cre~ ~gibber01.cre~ ~override/mesugibb.cre~ ~hobgob.cre~ ~override/mesuhobg.cre~ ~hobgob01.cre~ ~override/mesuhobg.cre~ ~hobgoba.cre~ ~override/mesuhoar.cre~ ~hobarc01.cre~ ~override/mesuhoar.cre~ ~hobelite.cre~ ~override/mesuhoel.cre~ ~hobeli01.cre~ ~override/mesuhoel.cre~ ~gnoll.cre~ ~override/mesugnol.cre~ ~gnoll01.cre~ ~override/mesugnol.cre~ ~ogregr.cre~ ~override/mesuogri.cre~ ~ogrill01.cre~ ~override/mesuogri.cre~ ~ogre.cre~ ~override/mesuogre.cre~ ~ogre01.cre~ ~override/mesuogre.cre~ ~ogreberz.cre~ ~override/mesuogbe.cre~ ~ogrema.cre~ ~override/mesuogma.cre~ ~ogrema01.cre~ ~override/mesuogma.cre~ ~carrio.cre~ ~override/mesucarr.cre~ ~ankheg.cre~ ~override/mesuankh.cre~ ~ankheg01.cre~ ~override/mesuankh.cre~ ~sirine_a.cre~ ~override/mesusire.cre~ ~sirine01.cre~ ~override/mesusire.cre~ ~wyvern.cre~ ~override/mesuwyve.cre~ ~wyvern01.cre~ ~override/mesuwyve.cre~ ~wyverba.cre~ ~override/mesuwyba.cre~ ~wyvbab01.cre~ ~override/mesuwyba.cre~
 	READ_LONG xp thepowerlevel
 	READ_LONG killxp thekillxp
 	PATCH_IF thepowerlevel < 1000 BEGIN
@@ -3581,12 +3604,16 @@ SUBCOMPONENT @19
 
 OUTER_SET me_power_spells = 1
 
+INCLUDE ~%MOD_FOLDER%/ClassSpellTool.TPA~
+
 INCLUDE ~MESpells/components/NewSpells.tpa~
 
 BEGIN @21 DESIGNATED 1001
 SUBCOMPONENT @19
 
 OUTER_SET me_power_spells = 0
+
+INCLUDE ~%MOD_FOLDER%/ClassSpellTool.TPA~
 
 INCLUDE ~MESpells/components/NewSpells.tpa~
 

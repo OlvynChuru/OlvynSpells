@@ -1,8 +1,9 @@
 me_attacksperround = {"0", "1", "2", "3", "4", "5", "1/2", "3/2", "5/2", "7/2", "9/2"}
 me_attacksperround_haste = {"0", "2", "4", "6", "8", "10", "1", "3", "5", "7", "9"}
-me_classids = {"Mage", "Fighter", "Cleric", "Thief", "Bard", "Paladin", "Fighter/Mage", "Fighter/Cleric", "Fighter/Thief", "Fighter/Mage/Thief", "Druid", "Ranger", "Mage/Thief", "Cleric/Mage", "Cleric/Thief", "Fighter/Druid", "Fighter/Mage/Cleric", "Cleric/Ranger", "Sorcerer", "Monk", "Shaman"}
-me_monsterclassids = {"Ankheg", "Basilisk", "Greater Basilisk", "Black Bear", "Brown Bear", "Cave Bear", "Polar Bear", "Carrion Crawler", "Wild Dog", "War Dog", "Doppelganger", "Greater Doppelganger", "Drizzt", "Elminster", "Ettercap", "Ghoul", "Revenant", "Ghast", "Gibberling", "Gnoll", "Hobgoblin", "Kobold", "Tasloi", "Xvart", "Ogre", "Ogre Mage", "Half-ogre", "Ogrillion", "Sarevok", "Sirine", "Dryad", "Nereid", "Nymph", "Skeleton", "Skeleton Warrior", "Skeleton Boneguard", "Giant Spider", "Huge Spider", "Phase Spider", "Sword Spider", "Wraith Spider", "Volo", "Wolf", "Worg", "Dire Wolf", "Winter Wolf", "Vampiric Wolf", "Dread Wolf", "Wyvern", "Olive Slime", "Mustard Jelly", "Ochre Jelly", "Gray Ooze", "Green Slime", "Innocent", "Flaming Fist", "Werewolf", "Wolfwere", "Death Knight", "Demon", "Beholder", "Mind Flayer", "Vampire", "Vampyre", "Otyugh", "Rakshasa", "Troll", "Umber Hulk", "Sahuagin", "Shadow", "Spectre", "Wraith", "Kuo-toa", "Mist Creature", "Cat", "Duergar", "Mephit", "Mimic", "Devil", "Giant", "Orc", "Iron Golem", "Flesh Golem", "Stone Golem", "Clay Golem", "Air Elemental", "Fire Elemental", "Earth Elemental", "Fat Spider Woman", "Red Dragon", "Shadow Dragon", "Silver Dragon", "Djinni", "Dao", "Efreeti", "Noble Djinni", "Noble Efreeti", "Zombie", "Prey", "Predator", "Long Sword", "Mage", "Fighter", "Cleric", "Thief", "Bard", "Paladin", "Druid", "Ranger", "Wizard Eye", "Watcher", "Amnian Soldier", "Town Guard", "creature of unknown class", "creature of unknown class", "creature of unknown", "creature of unknown class", "creature of unknown class", "Water Elemental", "Green Dragon", "Neothelid", "Spectral Troll", "Wight", "creature of unknown class", "creature of unknown class"}
-me_kitids = {[64] = "Abjurer", [128] = "Conjurer", [256] = "Diviner", [512] = "Enchanter", [1024] = "Illusionist", [2048] = "Invoker", [4096] = "Necromancer", [8192] = "Transmuter", [16385] = "Berserker", [16386] = "Wizard Slayer", [16387] = "Kensai", [16388] = "Cavalier", [16389] = "Inquisitor", [16390] = "Undead Hunter", [16391] = "Archer", [16392] = "Stalker", [16393] = "Beastmaster", [16394] = "Assassin", [16395] = "Bounty Hunter", [16396] = "Swashbuckler", [16397] = "Blade", [16398] = "Jester", [16399] = "Skald", [16400] = "Totemic Druid", [16401] = "Shapeshifter", [16402] = "Avenger", [16403] = "Priest of Talos", [16404] = "Priest of Helm", [16405] = "Priest of Lathander", [16416] = "Blackguard", [16417] = "Shadowdancer", [16418] = "Dwarven Defender", [16419] = "Dragon Disciple", [16420] = "Dark Moon Monk", [16421] = "Sun Soul Monk", [16424] = "Priest of Tyr", [16425] = "Priest of Tempus", [1073741824] = "Barbarian"}
+--me_classids = {"Mage", "Fighter", "Cleric", "Thief", "Bard", "Paladin", "Fighter/Mage", "Fighter/Cleric", "Fighter/Thief", "Fighter/Mage/Thief", "Druid", "Ranger", "Mage/Thief", "Cleric/Mage", "Cleric/Thief", "Fighter/Druid", "Fighter/Mage/Cleric", "Cleric/Ranger", "Sorcerer", "Monk", "Shaman"}
+--me_monsterclassids = {"Ankheg", "Basilisk", "Greater Basilisk", "Black Bear", "Brown Bear", "Cave Bear", "Polar Bear", "Carrion Crawler", "Wild Dog", "War Dog", "Doppelganger", "Greater Doppelganger", "Drizzt", "Elminster", "Ettercap", "Ghoul", "Revenant", "Ghast", "Gibberling", "Gnoll", "Hobgoblin", "Kobold", "Tasloi", "Xvart", "Ogre", "Ogre Mage", "Half-ogre", "Ogrillion", "Sarevok", "Sirine", "Dryad", "Nereid", "Nymph", "Skeleton", "Skeleton Warrior", "Skeleton Boneguard", "Giant Spider", "Huge Spider", "Phase Spider", "Sword Spider", "Wraith Spider", "Volo", "Wolf", "Worg", "Dire Wolf", "Winter Wolf", "Vampiric Wolf", "Dread Wolf", "Wyvern", "Olive Slime", "Mustard Jelly", "Ochre Jelly", "Gray Ooze", "Green Slime", "Innocent", "Flaming Fist", "Werewolf", "Wolfwere", "Death Knight", "Demon", "Beholder", "Mind Flayer", "Vampire", "Vampyre", "Otyugh", "Rakshasa", "Troll", "Umber Hulk", "Sahuagin", "Shadow", "Spectre", "Wraith", "Kuo-toa", "Mist Creature", "Cat", "Duergar", "Mephit", "Mimic", "Devil", "Giant", "Orc", "Iron Golem", "Flesh Golem", "Stone Golem", "Clay Golem", "Air Elemental", "Fire Elemental", "Earth Elemental", "Fat Spider Woman", "Red Dragon", "Shadow Dragon", "Silver Dragon", "Djinni", "Dao", "Efreeti", "Noble Djinni", "Noble Efreeti", "Zombie", "Prey", "Predator", "Long Sword", "Mage", "Fighter", "Cleric", "Thief", "Bard", "Paladin", "Druid", "Ranger", "Wizard Eye", "Watcher", "Amnian Soldier", "Town Guard", "creature of unknown class", "creature of unknown class", "creature of unknown", "creature of unknown class", "creature of unknown class", "Water Elemental", "Green Dragon", "Neothelid", "Spectral Troll", "Wight", "creature of unknown class", "creature of unknown class"}
+--me_kitids = {[64] = "Abjurer", [128] = "Conjurer", [256] = "Diviner", [512] = "Enchanter", [1024] = "Illusionist", [2048] = "Invoker", [4096] = "Necromancer", [8192] = "Transmuter", [16385] = "Berserker", [16386] = "Wizard Slayer", [16387] = "Kensai", [16388] = "Cavalier", [16389] = "Inquisitor", [16390] = "Undead Hunter", [16391] = "Archer", [16392] = "Stalker", [16393] = "Beastmaster", [16394] = "Assassin", [16395] = "Bounty Hunter", [16396] = "Swashbuckler", [16397] = "Blade", [16398] = "Jester", [16399] = "Skald", [16400] = "Totemic Druid", [16401] = "Shapeshifter", [16402] = "Avenger", [16403] = "Priest of Talos", [16404] = "Priest of Helm", [16405] = "Priest of Lathander", [16416] = "Blackguard", [16417] = "Shadowdancer", [16418] = "Dwarven Defender", [16419] = "Dragon Disciple", [16420] = "Dark Moon Monk", [16421] = "Sun Soul Monk", [16424] = "Priest of Tyr", [16425] = "Priest of Tempus", [1073741824] = "Barbarian"}
+--me_weapon_effective_strings = {" non-magical", " magical", " non-silver", " silver", " silver or magical", " one-handed", " two-handed", " non-cursed", " cursed", " non-cold iron", " cold iron"}
 me_spellidstype = {[1] = "SPPR", [2] = "SPWI", [3] = "SPIN", [4] = "SPCL"}
 me_proficiency = {[0x1] = 89, [0x2] = 90, [0x4] = 91, [0x8] = 92, [0x10] = 93, [0x20] = 94, [0x40] = 95, [0x80] = 96, [0x100] = 97, [0x200] = 98, [0x400] = 99, [0x800] = 100, [0x1000] = 101, [0x2000] = 102, [0x4000] = 103, [0x8000] = 104, [0x10000] = 105, [0x20000] = 106, [0x40000] = 107, [0x80000] = 108, [0x100000] = 111, [0x200000] = 112, [0x400000] = 113, [0x800000] = 114, [0x1000000] = 115}
 me_multiclass_classes = {
@@ -74,139 +75,220 @@ me_damage_resistance_base = {
 }
 
 function MESTATPR(effectData, creatureData)
+	local string = ""
 	local targetID = EEex_ReadDword(creatureData + 0x34)
 	local sourceID = EEex_ReadDword(effectData + 0x10C)
-	me_class = EEex_GetActorClass(targetID)
-	me_level1 = EEex_GetActorStat(targetID, 34)
+	local me_class = EEex_GetActorClass(targetID)
+	local me_level = EEex_GetActorStat(targetID, 34)
 	if (me_class >= 7 and me_class <= 10) or (me_class >= 13 and me_class <= 18) then
-		me_level2 = "/" .. EEex_GetActorStat(targetID, 68)
-	else
-		me_level2 = ""
+		me_level = me_level .. "/" .. EEex_GetActorStat(targetID, 68)
 	end
 	if me_class == 10 or me_class == 17 then
-		me_level3 = "/" .. EEex_GetActorStat(targetID, 69)
-	else
-		me_level3 = ""
+		me_level = me_level .. "/" .. EEex_GetActorStat(targetID, 69)
 	end
-	me_kit_string = ""
-	me_kit_string_found = false
+	local me_kit_string = ""
+	local me_kit_string_found = false
 	for key,value in pairs(me_kitids) do
 		if key == EEex_GetActorKit(targetID) then
-			me_kit_string = value
+			me_kit_string = value[1]
 			me_kit_string_found = true
 		end
 	end
 	if EEex_GetActorKit(targetID) == -2147483648 then
-		me_kit_string = "Wild Mage"
+		me_kit_string = me_kitids[0x7FFFFFFF][1]
 		me_kit_string_found = true
 	end
 	if me_kit_string_found == true then
-		Infinity_DisplayString("Level " .. me_level1 .. me_level2 .. me_level3 .. " " .. me_kit_string)
+		string = string.gsub(string.gsub(me_string_55000, "<EXICVAL1>", me_level), "<EXICCLAS>", me_kit_string)
+		Infinity_DisplayString(string)
 	else
 		if me_class >= 1 and me_class <= 21 then
-			Infinity_DisplayString("Level " .. me_level1 .. me_level2 .. me_level3 .. " " .. me_classids[me_class])
+			string = string.gsub(string.gsub(me_string_55000, "<EXICVAL1>", me_level), "<EXICCLAS>", me_classids[me_class])
+			Infinity_DisplayString(string)
 		elseif me_class >= 101 and me_class <= 223 then
-			Infinity_DisplayString("Level " .. me_level1 .. " " .. me_monsterclassids[me_class - 100])
+			string = string.gsub(string.gsub(me_string_55000, "<EXICVAL1>", me_level), "<EXICCLAS>", me_monsterclassids[me_class - 100])
+			Infinity_DisplayString(string)
 		else
-			Infinity_DisplayString("Level " .. me_level1 .. " creature of unknown class")
+			string = string.gsub(string.gsub(me_string_55000, "<EXICVAL1>", me_level), "<EXICCLAS>", me_string_55255)
+			Infinity_DisplayString(string)
 		end
 	end
-	
-	Infinity_DisplayString("Hit Points: " .. EEex_ReadWord(creatureData + 0x438, 0x0) .. "/" .. EEex_GetActorStat(targetID, 1))
-	Infinity_DisplayString("AC vs. slashing: " .. EEex_GetActorStat(targetID, 2) + EEex_GetActorStat(targetID, 6) .. "  AC vs. piercing: " .. EEex_GetActorStat(targetID, 2) + EEex_GetActorStat(targetID, 5) .. "  AC vs. crushing: " .. EEex_GetActorStat(targetID, 2) + EEex_GetActorStat(targetID, 3) .. "  AC vs. missiles: " .. EEex_GetActorStat(targetID, 2) + EEex_GetActorStat(targetID, 4))
-	Infinity_DisplayString("Base THAC0: " .. EEex_GetActorStat(targetID, 7))
---	Infinity_DisplayString("Gold: " .. characters[id].gold)
---	Infinity_DisplayString("Base THAC0: " .. EEex_ReadByte(creatureData + 0x466, 0x0))
-	if bit32.band(EEex_ReadDword(creatureData + 0x434), 0x8000) == 0x8000 or bit32.band(EEex_ReadDword(creatureData + 0xB30), 0x8000) == 0x8000 or EEex_GetActorStat(targetID, 155) > 0 then
-		Infinity_DisplayString("Attacks per round: " .. me_attacksperround_haste[EEex_GetActorStat(targetID, 8) + 1])
-	else
-		Infinity_DisplayString("Attacks per round: " .. me_attacksperround[EEex_GetActorStat(targetID, 8) + 1])
+	local maxEnchantment = -1
+	local weaponEnchantment = 0
+	local equippedWeaponInfo = EEex_ReadDword(creatureData + 0xA80 + EEex_ReadByte(creatureData + 0xB1C, 0x0) * 0x4)
+	if equippedWeaponInfo > 0 then
+		local weaponRES = EEex_ReadLString(equippedWeaponInfo + 0x8, 8)
+		local weaponData = EEex_DemandResData(weaponRES, "ITM")
+		if weaponData > 0 then
+			weaponEnchantment = EEex_ReadDword(weaponData + 0x60)
+			if weaponEnchantment == 0 and bit32.band(EEex_ReadDword(weaponData + 0x18), 0x40) > 0 then
+				weaponEnchantment = 1
+			end
+		end
 	end
-	Infinity_DisplayString("Attributes: ")
-	if EEex_GetActorStat(targetID, 37) == 0 then
-		me_strextra = ""
-	elseif EEex_GetActorStat(targetID, 37) >= 100 then
-		me_strextra = "/00"
+	local ineffectiveType = 0
+	local ineffectiveString = ""
+	local maxEnchantmentString = ""
+	EEex_IterateActorEffects(targetID, function(eData)
+		local theopcode = EEex_ReadDword(eData + 0x10)
+		local theparameter1 = EEex_ReadDword(eData + 0x1C)
+		local theparameter2 = EEex_ReadDword(eData + 0x20)
+		local thespecial = EEex_ReadDword(eData + 0x48)
+		if theopcode == 120 then
+			if theparameter2 == 0 and maxEnchantment < theparameter1 then
+				ineffectiveType = bit32.bor(ineffectiveType, 1)
+				maxEnchantment = theparameter1
+				maxEnchantmentString = string.gsub(me_string_55359, "<EXICVAL3>", maxEnchantment + 1)
+			elseif theparameter2 == 2 and maxEnchantment < 0 then
+				ineffectiveType = bit32.bor(ineffectiveType, 1)
+				maxEnchantment = 0
+				maxEnchantmentString = string.gsub(me_string_55359, "<EXICVAL3>", maxEnchantment + 1)
+			elseif theparameter2 ~= 0 and theparameter2 ~= 2 and bit32.band(ineffectiveType, 2 ^ theparameter2) == 0 then
+				ineffectiveType = bit32.bor(ineffectiveType, 2 ^ theparameter2)
+				if me_weapon_effective_strings[theparameter2] ~= nil then
+					if ineffectiveString == "" then
+						ineffectiveString = me_weapon_effective_strings[theparameter2]
+					else
+						ineffectiveString = ineffectiveString .. "," .. me_weapon_effective_strings[theparameter2]
+					end
+				end
+			end
+		elseif theopcode == 345 and theparameter1 > weaponEnchantment then
+			weaponEnchantment = theparameter1
+		end
+	end)
+	Infinity_DisplayString(me_string_55300 .. EEex_ReadWord(creatureData + 0x438, 0x0) .. "/" .. EEex_GetActorStat(targetID, 1))
+	local ac = EEex_GetActorStat(targetID, 2)
+	local acslashing = EEex_GetActorStat(targetID, 6)
+	local acpiercing = EEex_GetActorStat(targetID, 5)
+	local accrushing = EEex_GetActorStat(targetID, 3)
+	local acmissile = EEex_GetActorStat(targetID, 4)
+	if acslashing == acpiercing and acslashing == accrushing and acslashing == acmissile then
+		Infinity_DisplayString(me_string_55301 .. EEex_GetActorStat(targetID, 2))
 	else
+		Infinity_DisplayString(me_string_55302 .. EEex_GetActorStat(targetID, 2) + EEex_GetActorStat(targetID, 6) .. me_string_55303 .. EEex_GetActorStat(targetID, 2) + EEex_GetActorStat(targetID, 5) .. me_string_55304 .. EEex_GetActorStat(targetID, 2) + EEex_GetActorStat(targetID, 3) .. me_string_55305 .. EEex_GetActorStat(targetID, 2) + EEex_GetActorStat(targetID, 4))
+	end
+	Infinity_DisplayString(me_string_55306 .. EEex_GetActorStat(targetID, 7) - EEex_GetActorStat(targetID, 151) - EEex_GetActorStat(targetID, 84))
+
+	if bit32.band(EEex_ReadDword(creatureData + 0x434), 0x8000) == 0x8000 or bit32.band(EEex_ReadDword(creatureData + 0xB30), 0x8000) == 0x8000 or EEex_GetActorStat(targetID, 155) > 0 then
+		Infinity_DisplayString(me_string_55307 .. me_attacksperround_haste[EEex_GetActorStat(targetID, 8) + 1])
+	else
+		Infinity_DisplayString(me_string_55307 .. me_attacksperround[EEex_GetActorStat(targetID, 8) + 1])
+	end
+	Infinity_DisplayString(me_string_55308)
+	local me_strextra = ""
+	if EEex_GetActorStat(targetID, 37) >= 100 then
+		me_strextra = "/00"
+	elseif EEex_GetActorStat(targetID, 37) > 0 then
 		me_strextra = "/" .. EEex_GetActorStat(targetID, 37)
 	end
-	Infinity_DisplayString("Strength: " .. EEex_GetActorStat(targetID, 36) .. me_strextra .. "  Dexterity: " .. EEex_GetActorStat(targetID, 40) .. "  Constitution: " .. EEex_GetActorStat(targetID, 41) .. "  Intelligence: " .. EEex_GetActorStat(targetID, 38) .. "  Wisdom: " .. EEex_GetActorStat(targetID, 39) .. "  Charisma: " .. EEex_GetActorStat(targetID, 42))
-	Infinity_DisplayString(MEGetStat(targetID, "Slashing Resistance: ", 21, "%\n") .. MEGetStat(targetID, "Piercing Resistance: ", 23, "%\n") .. MEGetStat(targetID, "Crushing Resistance: ", 22, "%\n") .. MEGetStat(targetID, "Missile Resistance: ", 24, "%\n") .. MEGetStat(targetID, "Fire Resistance: ", 14, "%\n") .. MEGetStat(targetID, "Magical Fire Resistance: ", 19, "%\n") .. MEGetStat(targetID, "Cold Resistance: ", 15, "%\n") .. MEGetStat(targetID, "Magical Cold Resistance: ", 20, "%\n") .. MEGetStat(targetID, "Electricity Resistance: ", 16, "%\n") .. MEGetStat(targetID, "Acid Resistance: ", 17, "%\n") .. MEGetStat(targetID, "Poison Resistance: ", 74, "%\n") .. MEGetStat(targetID, "Magic Damage Resistance: ", 73, "%\n") .. MEGetStat(targetID, "Magic Resistance: ", 18, "%\n"))
-	Infinity_DisplayString("Saving Throws: ")
-	Infinity_DisplayString("Spell: " .. EEex_GetActorStat(targetID, 13) .. "  Death: " .. EEex_GetActorStat(targetID, 9) .. "  Breath: " .. EEex_GetActorStat(targetID, 12) .. "  Wands: " .. EEex_GetActorStat(targetID, 10) .. "  Polymorph: " .. EEex_GetActorStat(targetID, 11))
-	Infinity_DisplayString(MEGetStat(targetID, "Backstab multiplier: ", 56, "x\n") .. MEGetStat(targetID, "Stoneskins remaining: ", 88, "\n") .. MEGetStat(targetID, "Casting time reduced by ", 77, "\n"))
+	Infinity_DisplayString(me_string_55309 .. EEex_GetActorStat(targetID, 36) .. me_strextra .. me_string_55310 .. EEex_GetActorStat(targetID, 40) .. me_string_55311 .. EEex_GetActorStat(targetID, 41) .. me_string_55312 .. EEex_GetActorStat(targetID, 38) .. me_string_55313 .. EEex_GetActorStat(targetID, 39) .. me_string_55314 .. EEex_GetActorStat(targetID, 42))
+	
+	Infinity_DisplayString(MEGetStat(targetID, me_string_55315, 21, "%\n") .. MEGetStat(targetID, me_string_55316, 23, "%\n") .. MEGetStat(targetID, me_string_55317, 22, "%\n") .. MEGetStat(targetID, me_string_55318, 24, "%\n") .. MEGetStat(targetID, me_string_55319, 14, "%\n") .. MEGetStat(targetID, me_string_55320, 19, "%\n") .. MEGetStat(targetID, me_string_55321, 15, "%\n") .. MEGetStat(targetID, me_string_55322, 20, "%\n") .. MEGetStat(targetID, me_string_55323, 16, "%\n") .. MEGetStat(targetID, me_string_55324, 17, "%\n") .. MEGetStat(targetID, me_string_55325, 74, "%\n") .. MEGetStat(targetID, me_string_55326, 73, "%\n") .. MEGetStat(targetID, me_string_55327, 18, "%\n"))
+	Infinity_DisplayString(me_string_55328)
+	Infinity_DisplayString(me_string_55329 .. EEex_GetActorStat(targetID, 13) .. me_string_55330 .. EEex_GetActorStat(targetID, 9) .. me_string_55331 .. EEex_GetActorStat(targetID, 12) .. me_string_55332 .. EEex_GetActorStat(targetID, 10) .. me_string_55333 .. EEex_GetActorStat(targetID, 11))
+	Infinity_DisplayString(MEGetStat(targetID, me_string_55334, 32, "\n") .. MEGetStat(targetID, me_string_55335, 56, "x\n") .. MEGetStat(targetID, me_string_55336, 88, "\n") .. MEGetStat(targetID, me_string_55337, 77, "\n"))
+	if EEex_GetActorMovementRate(targetID, true) ~= 9 then
+		Infinity_DisplayString(me_string_55338 .. EEex_GetActorMovementRate(targetID, true))
+	end
 	if EEex_GetActorStat(targetID, 79) > 0 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " casts wizard spells as if " .. EEex_GetActorStat(targetID, 79) .. " levels higher")
+		string = string.gsub(string.gsub(me_string_55339, "<EXICNAME>", EEex_GetActorName(targetID)), "<EXICVAL1>", EEex_GetActorStat(targetID, 79))
+		Infinity_DisplayString(string)
 	end	
 	if EEex_GetActorStat(targetID, 53) ~= 100 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " casts wizard spells with " .. EEex_GetActorStat(targetID, 53) .. "% the normal duration")
+		string = string.gsub(string.gsub(me_string_55340, "<EXICNAME>", EEex_GetActorName(targetID)), "<EXICVAL1>", EEex_GetActorStat(targetID, 53))
+		Infinity_DisplayString(string)
 	end	
 	if EEex_GetActorStat(targetID, 80) > 0 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " casts priest spells as if " .. EEex_GetActorStat(targetID, 80) .. " levels higher")
+		string = string.gsub(string.gsub(me_string_55341, "<EXICNAME>", EEex_GetActorName(targetID)), "<EXICVAL1>", EEex_GetActorStat(targetID, 80))
+		Infinity_DisplayString(string)
 	end	
 	if EEex_GetActorStat(targetID, 54) ~= 100 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " casts priest spells with " .. EEex_GetActorStat(targetID, 54) .. "% the normal duration")
+		string = string.gsub(string.gsub(me_string_55342, "<EXICNAME>", EEex_GetActorName(targetID)), "<EXICVAL1>", EEex_GetActorStat(targetID, 54))
+		Infinity_DisplayString(string)
 	end	
 	if EEex_GetActorStat(targetID, 76) ~= 0 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " can cast more than one spell per round")
+		string = string.gsub(me_string_55343, "<EXICNAME>", EEex_GetActorName(targetID))
+		Infinity_DisplayString(string)
 	end
 	if EEex_GetActorStat(targetID, 81) ~= 0 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " can see invisible creatures")
+		string = string.gsub(me_string_55344, "<EXICNAME>", EEex_GetActorName(targetID))
+		Infinity_DisplayString(string)
 	end
 	if EEex_GetActorStat(targetID, 191) ~= 0 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " can use any item")
+		string = string.gsub(me_string_55345, "<EXICNAME>", EEex_GetActorName(targetID))
+		Infinity_DisplayString(string)
 	end
 	if EEex_GetActorStat(targetID, 197) ~= 0 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " is immune to time stop")
-	end
-	if EEex_GetActorStat(targetID, 175) ~= 0 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " cannot be backstabbed")
+		string = string.gsub(me_string_55346, "<EXICNAME>", EEex_GetActorName(targetID))
+		Infinity_DisplayString(string)
 	end
 	if EEex_GetActorStat(targetID, 187) ~= 0 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " cannot be turned")
+		string = string.gsub(me_string_55347, "<EXICNAME>", EEex_GetActorName(targetID))
+		Infinity_DisplayString(string)
 	end
-	if EEex_GetActorStat(targetID, 83) ~= 0 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " cannot be reduced below " .. EEex_GetActorStat(targetID, 83) .. " HP")
+	if EEex_GetActorStat(targetID, 175) ~= 0 and not ex_extended_backstab_active then
+		string = string.gsub(me_string_55348, "<EXICNAME>", EEex_GetActorName(targetID))
+		Infinity_DisplayString(string)
 	end
 	if EEex_GetActorStat(targetID, 192) ~= 0 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " will backstab on each hit")
+		string = string.gsub(me_string_55349, "<EXICNAME>", EEex_GetActorName(targetID))
+		Infinity_DisplayString(string)
 	end
-	if EEex_GetActorStat(targetID, 181) == 1 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " is under the effect of Protection from Normal Weapons")
-	end
-	if EEex_GetActorStat(targetID, 128) == 1 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " is under the effect of Mantle")
-	elseif EEex_GetActorStat(targetID, 128) == 2 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " is under the effect of Improved Mantle")
-	elseif EEex_GetActorStat(targetID, 128) == 3 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " is under the effect of Absolute Immunity")
-	elseif EEex_GetActorStat(targetID, 128) == 4 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " is under the effect of Protection from Magical Weapons")
-	end
-	if EEex_GetActorStat(targetID, 122) ~= 0 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " will reflect missile attacks")
-	end
-	if EEex_GetActorStat(targetID, 145) > 19 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " will deal maximum damage with each hit")
+	if EEex_GetActorStat(targetID, 145) >= 20 then
+		string = string.gsub(me_string_55350, "<EXICNAME>", EEex_GetActorName(targetID))
+		Infinity_DisplayString(string)
 	end
 	if EEex_GetActorStat(targetID, 146) > 0 then
-		if EEex_GetActorStat(targetID, 146) > 19 then
-			Infinity_DisplayString(EEex_GetActorName(targetID) .. " will critically hit on every attack")
+		if EEex_GetActorStat(targetID, 146) >= 19 then
+			string = string.gsub(me_string_55351, "<EXICNAME>", EEex_GetActorName(targetID))
+			Infinity_DisplayString(string)
 		else
-			Infinity_DisplayString(EEex_GetActorName(targetID) .. " will critically hit on a roll between " .. 20 - EEex_GetActorStat(targetID, 146) .. " and 20")
+			string = string.gsub(string.gsub(me_string_55352, "<EXICNAME>", EEex_GetActorName(targetID)), "<EXICVAL1>", 20 - EEex_GetActorStat(targetID, 146))
+			Infinity_DisplayString(string)
 		end
 	end
 	if EEex_GetActorStat(targetID, 200) > 0 then
-		Infinity_DisplayString(EEex_GetActorName(targetID) .. " has been drained " .. EEex_GetActorStat(targetID, 200) .. " levels")
+		string = string.gsub(string.gsub(me_string_55353, "<EXICNAME>", EEex_GetActorName(targetID)), "<EXICVAL1>", EEex_GetActorStat(targetID, 200))
+		Infinity_DisplayString(string)
 	end	
+	if EEex_GetActorStat(targetID, 83) ~= 0 then
+		string = string.gsub(string.gsub(me_string_55354, "<EXICNAME>", EEex_GetActorName(targetID)), "<EXICVAL1>", EEex_GetActorStat(targetID, 83))
+		Infinity_DisplayString(string)
+	end
+
+	if weaponEnchantment == 0 then
+		string = string.gsub(me_string_55355, "<EXICNAME>", EEex_GetActorName(targetID))
+		Infinity_DisplayString(string)
+	else
+		string = string.gsub(string.gsub(me_string_55356, "<EXICNAME>", EEex_GetActorName(targetID)), "<EXICVAL1>", weaponEnchantment)
+		Infinity_DisplayString(string)
+	end
+	if ineffectiveType > 0 then
+		if bit32.band(ineffectiveType, 0x3) == 0x3 or bit32.band(ineffectiveType, 0x18) == 0x18 or bit32.band(ineffectiveType, 0xC0) == 0xC0 or bit32.band(ineffectiveType, 0x300) == 0x300 or bit32.band(ineffectiveType, 0xC00) == 0xC00 then
+			vstring.gsub(me_string_55357, "<EXICNAME>", EEex_GetActorName(targetID))
+			Infinity_DisplayString(string)
+		else
+			string = string.gsub(string.gsub(string.gsub(me_string_55358, "<EXICNAME>", EEex_GetActorName(targetID)), "<EXICVAL1>", ineffectiveString), "<EXICVAL2>", maxEnchantmentString)
+			Infinity_DisplayString(string)
+		end
+	end
+	if EEex_GetActorStat(targetID, 122) ~= 0 then
+		string = string.gsub(me_string_55360, "<EXICNAME>", EEex_GetActorName(targetID))
+		Infinity_DisplayString(string)
+	end
 
 end
 
 function MEGetStat(targetID, pre, stat, post)
-	if EEex_GetActorStat(targetID, stat) == 0 then
+	local statValue = EEex_GetActorStat(targetID, stat)
+	if EEex_Modules["ME_DAMAB"] then
+		statValue = EEex_GetActorFullResistance(targetID, stat)
+	end
+	if statValue == 0 then
 		return ""
 	else
-		return pre .. EEex_GetActorStat(targetID, stat) .. post
+		return pre .. statValue .. post
 	end
 end
 
@@ -6488,7 +6570,6 @@ function MEREANIM(effectData, creatureData)
 ["source_target"] = chosenID,
 ["source_id"] = sourceID
 })
---[[
 				EEex_ApplyEffectToActor(chosenID, {
 ["opcode"] = 82,
 ["target"] = 2,
@@ -6499,7 +6580,6 @@ function MEREANIM(effectData, creatureData)
 ["source_target"] = chosenID,
 ["source_id"] = sourceID
 })
---]]
 			else
 				EEex_ApplyEffectToActor(chosenID, {
 ["opcode"] = 82,
@@ -7896,7 +7976,7 @@ EEex_AddActionHookOpcode("EXTAUNT", function(originatingEffectData, actionData, 
 ["opcode"] = 321,
 ["target"] = 2,
 ["timing"] = 1,
-["resource"] = EEex_ReadDword(originatingEffectData + 0x90),
+["resource"] = EEex_ReadLString(originatingEffectData + 0x90, 8),
 ["source_target"] = sourceID,
 ["source_id"] = sourceID
 })
@@ -8744,7 +8824,8 @@ ex_damage_resistance_base = {
 }
 
 function EEex_GetActorFullResistance(actorID, resistanceStat)
-	if not EEex_IsSprite(actorID) or ex_resistance_opcode[resistanceStat] == nil then return 0 end
+	if not EEex_IsSprite(actorID) then return 0 end
+	if ex_resistance_opcode[resistanceStat] == nil then return EEex_GetActorStat(actorID, resistanceStat) end
 	local base_resistance = 0
 	local timing_level = 0
 	if ex_resistance_opcode[resistanceStat][2] ~= 0 then
@@ -9344,9 +9425,9 @@ function MENECROP(effectData, creatureData)
 ["target"] = 2,
 ["timing"] = 0,
 ["parameter1"] = 1,
-["parameter2"] = 9,
-["special"] = 1,
-["savingthrow"] = 0x200000,
+["parameter2"] = spellLevel,
+["special"] = spellLevel,
+["savingthrow"] = 0x20000,
 ["resource"] = "EXMODMEM",
 ["vvcresource"] = parent_resource,
 ["source_id"] = targetID
@@ -9371,6 +9452,75 @@ function MENECROP(effectData, creatureData)
 })
 end
 
+function MEUNLIMS(effectData, creatureData)
+	EEex_WriteDword(effectData + 0x110, 1)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	if not EEex_IsSprite(targetID, false) then return end
+	local maxUnlimitedWizardSpellLevel = EEex_GetActorStat(targetID, 694)
+	local maxUnlimitedPriestSpellLevel = EEex_GetActorStat(targetID, 695)
+	if maxUnlimitedWizardSpellLevel <= 0 and maxUnlimitedPriestSpellLevel <= 0 and EEex_GetActorStat(targetID, 696) <= 0 then return end
+	if ex_can_use_metamagic[targetID] ~= nil then return end
+--	local parent_resource = EEex_ReadLString(effectData + 0x90, 8)
+--	local spellRES = EEex_ReadLString(effectData + 0x18, 8)
+	local parent_resource = EEex_ReadLString(effectData + 0x18, 8)
+	local spellData = EEex_DemandResData(parent_resource, "SPL")
+	local spellLevel = 1
+	local spellType = 0
+	local newFlags = 0
+	if spellData > 0 then
+		spellType = EEex_ReadWord(spellData + 0x1C, 0x0)
+		spellLevel = EEex_ReadDword(spellData + 0x34)
+		if spellType == 1 then
+			newFlags = 0x20000
+		elseif spellType == 2 then
+			newFlags = 0x10000
+		end
+	end
+	if spellType == 1 and EEex_GetActorSpellState(targetID, 212) then return end
+	local doRefresh = false
+	if (spellType == 1 and maxUnlimitedWizardSpellLevel >= spellLevel) or (spellType == 2 and maxUnlimitedPriestSpellLevel >= spellLevel) then
+		doRefresh = true
+	end
+	if EEex_GetActorStat(targetID, 697) > 0 then
+		EEex_IterateActorEffects(targetID, function(eData)
+			local theopcode = EEex_ReadDword(eData + 0x10)
+			local thespecial = EEex_ReadDword(eData + 0x48)
+			if theopcode == 401 and thespecial == 697 then
+				local theresource = EEex_ReadLString(eData + 0x30, 8)
+				if theresource == parent_resource then
+					doRefresh = false
+				end
+			end
+		end)
+	end
+	if EEex_GetActorStat(targetID, 696) > 0 then
+		EEex_IterateActorEffects(targetID, function(eData)
+			local theopcode = EEex_ReadDword(eData + 0x10)
+			local thespecial = EEex_ReadDword(eData + 0x48)
+			if theopcode == 401 and thespecial == 696 then
+				local theresource = EEex_ReadLString(eData + 0x30, 8)
+				if theresource == parent_resource then
+					doRefresh = true
+				end
+			end
+		end)
+	end
+	if doRefresh then
+		EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 402,
+["target"] = 2,
+["timing"] = 0,
+["parameter1"] = 1,
+["parameter2"] = spellLevel,
+["special"] = spellLevel,
+["savingthrow"] = newFlags,
+["resource"] = "EXMODMEM",
+["vvcresource"] = parent_resource,
+["source_id"] = targetID
+})
+	end
+end
+
 function METRAPST(effectData, creatureData)
 	if EEex_ReadByte(creatureData + 0x4, 0x0) ~= 0x41 then return end
 	local flags = EEex_ReadDword(creatureData + 0x43C)
@@ -9384,7 +9534,7 @@ function MERECRUI(effectData, creatureData)
 	local targetID = EEex_ReadDword(creatureData + 0x34)
 	local savingthrow = EEex_ReadDword(effectData + 0x3C)
 	local doRecruit = true
-	if (bit32.band(savingthrow, 0x10000) > 0 and EEex_GetGlobal("MERECRUI") >= me_max_recruit_count) or EEex_GetActorAllegiance(sourceID) > 3 or EEex_GetActorAllegiance(targetID) <= 3 or EEex_GetActorGender(targetID) >= 5 or EEex_ReadDword(creatureData + 0x130) ~= -1 or EEex_ReadDword(creatureData + 0x39F4) ~= -1 or EEex_ReadByte(creatureData + 0x295C, 0x0) > 0 then
+	if (bit32.band(savingthrow, 0x10000) > 0 and EEex_GetGlobal("MERECRUI") >= me_max_recruit_count) or EEex_GetActorAllegiance(sourceID) > 3 or EEex_GetActorAllegiance(targetID) <= 3 or EEex_GetActorGender(targetID) >= 5 or EEex_ReadDword(creatureData + 0x130) ~= -1 or EEex_ReadDword(creatureData + 0x39F4) ~= -1 or EEex_ReadByte(creatureData + 0x295C, 0x0) > 0 or EEex_GetActorRace(targetID) == 170 then
 		doRecruit = false
 	end
 	for i = 0, 5, 1 do
@@ -14062,3 +14212,111 @@ EEex_AddActionHookGlobal("METELCIA", function(actionData, creatureData)
 	end
 end)
 --]]
+
+function EXWEAPIN(originatingEffectData, effectData, creatureData)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local opcode = EEex_ReadDword(effectData + 0xC)
+	if opcode ~= 12 then return false end
+	local reduction = EEex_ReadSignedWord(originatingEffectData + 0x18, 0x0)
+	local reductionType = EEex_ReadWord(originatingEffectData + 0x1C, 0x0)
+	local maxEnchantment = EEex_ReadWord(originatingEffectData + 0x1E, 0x0)
+	local savingthrow = EEex_ReadDword(originatingEffectData + 0x3C)
+	local special = EEex_ReadDword(originatingEffectData + 0x44)
+	local parent_resource = EEex_ReadLString(originatingEffectData + 0x90, 8)
+	if EEex_ReadLString(effectData + 0x90, 8) ~= "EEEX_DAM" and bit32.band(savingthrow, 0x20000) == 0 then return false end
+	local doReduce = false
+	local weaponEnchantment = 0
+	local weaponRES = EEex_ReadLString(effectData + 0x6C, 8)
+	local weaponData = EEex_DemandResData(weaponRES, "ITM")
+	if weaponData > 0 then
+		local weaponFlags = EEex_ReadDword(weaponData + 0x18)
+		if (reductionType == 1 and bit32.band(weaponFlags, 0x40) > 0) or (reductionType == 2 and bit32.band(weaponFlags, 0x40) == 0) or (reductionType == 3 and bit32.band(weaponFlags, 0x100) > 0) or (reductionType == 4 and bit32.band(weaponFlags, 0x100) == 0) or (reductionType == 5 and bit32.band(weaponFlags, 0x140) == 0) or (reductionType == 6 and bit32.band(weaponFlags, 0x2) > 0) or (reductionType == 7 and bit32.band(weaponFlags, 0x2) == 0) or (reductionType == 8 and bit32.band(weaponFlags, 0x10) > 0) or (reductionType == 9 and bit32.band(weaponFlags, 0x10) == 0) or (reductionType == 10 and bit32.band(weaponFlags, 0x200) > 0) or (reductionType == 11 and bit32.band(weaponFlags, 0x200) == 0) then
+			doReduce = true
+		end
+		weaponEnchantment = EEex_ReadDword(weaponData + 0x60)
+	end
+	if reductionType == 0 then
+		EEex_IterateActorEffects(EEex_ReadDword(effectData + 0x10C), function(eData)
+			local theopcode = EEex_ReadDword(eData + 0x10)
+			local theparameter1 = EEex_ReadDword(eData + 0x1C)
+			local thespecial = EEex_ReadDword(eData + 0x48)
+			if theopcode == 345 and theparameter1 > weaponEnchantment then
+				weaponEnchantment = theparameter1
+			end
+		end)
+		if weaponEnchantment <= maxEnchantment then
+			doReduce = true
+		end
+	end
+	if doReduce or EEex_ReadLString(effectData + 0x90, 8) ~= "EEEX_DAM" then
+		local damage = EEex_ReadDword(effectData + 0x18)
+		if bit32.band(savingthrow, 0x10000) > 0 then
+			damage = damage - reduction
+		else
+			damage = math.floor(damage * reduction / 100)
+		end
+		if special > 0 then
+			EEex_ApplyEffectToActor(targetID, {
+	["opcode"] = 139,
+	["target"] = 2,
+	["parameter1"] = special,
+	["timing"] = 1,
+	["source_target"] = targetID,
+	["source_id"] = targetID
+	})
+		end
+		if damage < 0 then
+			damage = 0
+		end
+		EEex_WriteDword(effectData + 0x18, damage)
+	end
+	return false
+end
+me_menu_effect = {}
+function MEINPUTM(effectData, creatureData)
+	EEex_WriteDword(effectData + 0x110, 1)
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local menuName = EEex_ReadLString(effectData + 0xA4, 32)
+	me_menu_effect = {
+['parameter1'] = EEex_ReadDword(effectData + 0x18),
+['parameter2'] = EEex_ReadDword(effectData + 0x1C),
+['parameter3'] = EEex_ReadDword(effectData + 0x5C),
+['parameter4'] = EEex_ReadDword(effectData + 0x60),
+['savingthrow'] = EEex_ReadDword(effectData + 0x3C),
+['special'] = EEex_ReadDword(effectData + 0x44),
+['resource0'] = EEex_ReadLString(effectData + 0x18, 8),
+['resource'] = EEex_ReadLString(effectData + 0x2C, 8),
+['vvcresource'] = EEex_ReadLString(effectData + 0x6C, 8),
+['resource2'] = EEex_ReadLString(effectData + 0x74, 8),
+['parent_resource'] = EEex_ReadLString(effectData + 0x90, 8),
+['effvar'] = menuName,
+['casterlvl'] = EEex_ReadDword(effectData + 0xC4),
+['source_target'] = targetID,
+['source_id'] = EEex_ReadDword(effectData + 0x10C)
+}
+	if menuName ~= "" then
+		Infinity_PushMenu(menuName)
+	else
+		Infinity_PushMenu('ME_INPUT')
+	end
+end
+
+-- Returns the actor's movement rate. For example, if the actor has
+--  an effect (opcode 126 or 176) that sets their movement rate to 180,
+--   it will return 180.
+-- If the actor does not have a movement-modifying effect, it will
+--  return the "move_scale" number in the creature's animation INI file.
+-- If adjustForHaste is true, the movement rate number will be doubled if
+--  the actor is hasted, and it will be halved if the actor is slowed.
+function EEex_GetActorMovementRate(actorID, adjustForHaste)
+	local speed = EEex_ReadSignedWord(EEex_GetActorShare(actorID) + 0x3884, 0x0)
+	if adjustForHaste then
+		if EEex_HasState(actorID, 0x8000) then -- If the actor is hasted
+			speed = speed * 2
+		end
+		if EEex_HasState(actorID, 0x10000) then -- If the actor is slowed
+			speed = math.floor(speed / 2)
+		end
+	end
+	return speed
+end

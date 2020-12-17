@@ -250,7 +250,11 @@ ADD_PROJECTILE ~override/metornad.pro~ //Tornado
 ADD_PROJECTILE ~override/meinar15.pro~ //Instant area 15-foot radius
 ADD_PROJECTILE ~override/meinap10.pro~ //Instant area 10-foot radius party only
 
-COPY_EXISTING ~lightb.pro~ ~override/meslight.pro~
+ACTION_IF NOT GAME_IS ~iwdee~ BEGIN
+	COPY_EXISTING ~lightb.pro~ ~override/meslight.pro~
+END ELSE BEGIN
+	COPY_EXISTING ~idpro40.pro~ ~override/meslight.pro~
+END
 
 ADD_PROJECTILE ~override/meslight.pro~ //Special lightning bolt used with Greater Living Lightning
 

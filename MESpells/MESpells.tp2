@@ -2398,7 +2398,7 @@ COPY_EXISTING ~m_mestr1.lua~ ~override~
 	COPY_EXISTING ~kitlist.2da~ ~override~
 		COUNT_2DA_COLS numcolumns
 		COUNT_2DA_ROWS numcolumns numrows
-		FOR (i = 0; i < numrows; ++i) BEGIN
+		FOR (i = 1; i < numrows; ++i) BEGIN
 			READ_2DA_ENTRY i 1 numcolumns class_special_name
 			READ_2DA_ENTRY i 9 numcolumns class_id
 			class_id = class_id + 0

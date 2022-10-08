@@ -12466,7 +12466,7 @@ MEBOULSH = {
 		local sourceID = EEex_ReadDword(creatureData + 0x34)
 		local opcode = EEex_ReadDword(effectData + 0xC)
 		local parameter2 = EEex_ReadDword(effectData + 0x1C)
-		if me_is_boulder_shot[sourceID] ~= nil and opcode == 12 and parameter2 == 0 or parameter2 == 0x400000 or parameter2 == 0x800000 then
+		if me_is_boulder_shot[sourceID] ~= nil and opcode == 12 and (parameter2 == 0 or parameter2 == 0x400000 or parameter2 == 0x8000000) then
 			me_is_boulder_shot[sourceID] = nil
 			if parameter2 == 0x800000 then
 				EEex_WriteDword(effectData + 0x1C, 0)

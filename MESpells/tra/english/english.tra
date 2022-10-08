@@ -70,6 +70,7 @@
 @1003=~This game has no spells that summon devas~
 @1004=~High Power Baldur's Gate already does this~
 @1005=~Improved Heart of Fury Mode already does this~
+@1006=~Improved Anvil removes this spell from the game~
 
 @1500=~This mod adds a new 1st-level druid spell called Camouflage. However, B_Spells already adds a spell called Camouflage.
 
@@ -2460,7 +2461,7 @@ Specific Spell Immunity lets the caster channel the power of their spells to shi
 @34257=~Levitate
 (Alteration)
 
-Level: 1
+Level: 2
 Range: Visual range of the caster
 Duration: 3 rounds + 1 round/2 levels
 Casting Time: 2

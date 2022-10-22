@@ -21,6 +21,40 @@ COPY_EXISTING ~spwi920.spl~ ~override~
 
 COPY ~MESpells/lua/M_MEALTC.lua~ ~override~
 
+ACTION_IF GAME_IS ~bgee eet~ BEGIN
+	COPY_EXISTING ~%arbg%0900.are~ ~override~ ~%arbg%2600.are~ ~override~ ~%arbg%2626.are~ ~override~ ~bd2000.are~ ~override~ ~bd4000.are~ ~override~ ~bd4300.are~ ~override~
+		READ_SHORT 0x48 theareatype
+		theareatype|=0x800
+		WRITE_SHORT 0x48 theareatype
+		IF_EXISTS
+		BUT_ONLY_IF_IT_CHANGES
+END
+
+ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
+	COPY_EXISTING ~ar1515.are~ ~override~
+		LPF DELETE_AREA_ITEM STR_VAR item_to_delete=~misc9j~ END
+		LPF ALTER_AREA_CONTAINER STR_VAR container_name=~Desk 1~ container_script=~ME1515IJ~ END
+		IF_EXISTS
+		BUT_ONLY_IF_IT_CHANGES
+
+	COPY_EXISTING ~ar5500.are~ ~override~
+		LPF DELETE_AREA_ITEM STR_VAR item_to_delete=~misc9j~ END
+		LPF ALTER_AREA_DOOR INT_VAR flag_open=0 flag_locked=1 lock_difficulty=100 STR_VAR door_name=~Door02~ door_script=~MEBALTHD~ END
+		IF_EXISTS
+		BUT_ONLY_IF_IT_CHANGES
+END
+
+ACTION_IF GAME_IS ~iwdee~ BEGIN
+
+	COPY_EXISTING ~ar9200.are~ ~override~ ~ar9711.are~ ~override~
+		READ_SHORT 0x48 theareatype
+		theareatype|=0x800
+		WRITE_SHORT 0x48 theareatype
+		IF_EXISTS
+		BUT_ONLY_IF_IT_CHANGES
+
+END
+
 ACTION_IF (MOD_IS_INSTALLED ~notEEex.tp2~ ~0~) AND !(FILE_EXISTS_IN_GAME ~M_MECEIL.lua~) BEGIN
 	ACTION_IF GAME_IS ~bgee~ BEGIN
 		COPY ~MESpells/no_overwrite/M_MECBG1.lua~ ~override/M_MECEIL.lua~
@@ -32,39 +66,6 @@ ACTION_IF (MOD_IS_INSTALLED ~notEEex.tp2~ ~0~) AND !(FILE_EXISTS_IN_GAME ~M_MECE
 		COPY ~MESpells/no_overwrite/M_MECEET.lua~ ~override/M_MECEIL.lua~
 	END
 
-	ACTION_IF GAME_IS ~bgee eet~ BEGIN
-		COPY_EXISTING ~%arbg%0900.are~ ~override~ ~%arbg%2600.are~ ~override~ ~%arbg%2626.are~ ~override~ ~bd2000.are~ ~override~ ~bd4000.are~ ~override~ ~bd4300.are~ ~override~
-			READ_SHORT 0x48 theareatype
-			theareatype|=0x800
-			WRITE_SHORT 0x48 theareatype
-			IF_EXISTS
-			BUT_ONLY_IF_IT_CHANGES
-	END
-
-	ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
-		COPY_EXISTING ~ar1515.are~ ~override~
-			LPF DELETE_AREA_ITEM STR_VAR item_to_delete=~misc9j~ END
-			LPF ALTER_AREA_CONTAINER STR_VAR container_name=~Desk 1~ container_script=~ME1515IJ~ END
-			IF_EXISTS
-			BUT_ONLY_IF_IT_CHANGES
-
-		COPY_EXISTING ~ar5500.are~ ~override~
-			LPF DELETE_AREA_ITEM STR_VAR item_to_delete=~misc9j~ END
-			LPF ALTER_AREA_DOOR INT_VAR flag_open=0 flag_locked=1 lock_difficulty=100 STR_VAR door_name=~Door02~ door_script=~MEBALTHD~ END
-			IF_EXISTS
-			BUT_ONLY_IF_IT_CHANGES
-	END
-
-	ACTION_IF GAME_IS ~iwdee~ BEGIN
-
-		COPY_EXISTING ~ar9200.are~ ~override~ ~ar9711.are~ ~override~
-			READ_SHORT 0x48 theareatype
-			theareatype|=0x800
-			WRITE_SHORT 0x48 theareatype
-			IF_EXISTS
-			BUT_ONLY_IF_IT_CHANGES
-
-	END
 END
 
 ACTION_IF (MOD_IS_INSTALLED ~notEEex.tp2~ ~0~) AND !(FILE_EXISTS_IN_GAME ~M_MESTR1.lua~) BEGIN

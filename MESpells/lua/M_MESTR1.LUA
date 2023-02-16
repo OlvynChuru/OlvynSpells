@@ -1,10 +1,14 @@
+B3EffectMenu_Stat_Required = false
 ex_modify_memory_string_1 = ""
 ex_modify_memory_string_2 = ""
 ex_no_familiar_strref_1 = 0
 ex_familiar_spell_strref_1 = 0
+ex_damage_reduction_feedback_strref = 0
+ex_damage_reduction_feedback_string_1 = "Damage reduction blocks "
 ex_damage_reduction_feedback_string_2 = " damage"
 ex_damage_reduction_feedback_string_3 = " points remaining"
 ex_damage_reduction_feedback_string_4 = " point remaining"
+ex_rewind_time_failure_strref = 0
 ex_oracle_feedback_string_1 = ""
 ex_oracle_feedback_string_2 = ""
 ex_oracle_feedback_strref = 0
@@ -22,6 +26,7 @@ me_boulder_shot = {}
 me_lightning_projectiles = {}
 me_special_lightning_projectile = 40
 me_tornado_projectile = 0
+ex_special_aoe_types = {["MEHOLE"] = 1, ["MEINVGLU"] = 2, ["METORNAD"] = 3, }
 me_animal_growth_animations = {[0x7F2F] = 0x7A01, }
 ex_hit_strings = {}
 ex_exattack = {}
@@ -30,7 +35,7 @@ ex_extended_backstab_active = false
 ex_backstab_condition = 0
 ex_sanctuary_backstab = false
 ex_helpless_backstab = false
-MECLEARA = EEex_FetchBCS("MECLEARA")
+--MECLEARA = EEex_FetchBCS("MECLEARA")
 me_classids = {}
 me_monsterclassids = {}
 me_kitids = {}

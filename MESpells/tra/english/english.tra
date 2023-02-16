@@ -63,6 +63,7 @@
 @63=~Increase the duration of Negative Plane Protection to 8 hours~
 @64=~Allow Greater Restoration to cure basically any status effect~
 @65=~Let Rangers and Paladins cast spells at their full caster level~
+@66=~Add the Detect Magic spell, which lets you view the magical effects on any creature by hovering the cursor over them and pressing Left Shift (this component removes the ability to do this unless a party member has Detect Magic active)~
 
 @1000=~Unnecessary as Spell Revisions is already installed~
 @1001=~The new spells are already added by High Power Baldur's Gate~
@@ -71,6 +72,7 @@
 @1004=~High Power Baldur's Gate already does this~
 @1005=~Improved Heart of Fury Mode already does this~
 @1006=~Improved Anvil removes this spell from the game~
+@1007=~This component requires the EEex Effect Menu module to be installed~
 
 @1500=~This mod adds a new 1st-level druid spell called Camouflage. However, B_Spells already adds a spell called Camouflage.
 
@@ -1201,7 +1203,7 @@ You have mastered the art of wearing armor while casting spells. This ability le
 @30053=~priest~
 @30054=~Levitating~
 @30055=~Flying~
-@30056=~Ethereal~
+@30056=~Incorporeal~
 @30057=~Increased Visual Range~
 @30058=~Strength~
 @30059=~Dexterity~
@@ -1342,6 +1344,7 @@ This ability ends the Spirit of Power effect on the party early.~
 @30175=~Teleportation Circle E<METELC5>~
 @30176=~Teleportation Circle F<METELC6>~
 @30177=~Teleportation Circle G<METELC7>~
+@30178=~Spell Failed: Rewind Time had not been initialized to start tracking effects on this character. Now it has, so it should work the next time the character casts the spell.~
 
 @31151=~Snake's Swiftness~
 @31152=~Hex~
@@ -1375,7 +1378,7 @@ This ability ends the Spirit of Power effect on the party early.~
 @31551=~Prolongment~
 @31552=~Wall of Force~
 @31553=~Protection from the Elements~
-@31554=~Ethereal Jaunt~
+@31554=~Ghostform~
 @31555=~Critical Spell~
 @31556=~Barrage~
 @31557=~Expose to the Elements~
@@ -1551,7 +1554,7 @@ Casting Time: 1
 Area of Effect: 15-ft. radius
 Saving Throw: None
 
-This spell makes multiple allies partially ethereal for 1 round. While partially ethereal, creatures are immune to normal weapons and can move through walls. Ghostwalk could be used to move the party through a wall, eluding enemies. When the spell ends, if a character is inside a wall, they will be pushed to the nearest inhabitable space.~
+This spell makes multiple allies incorporeal for 1 round. While incorporeal, creatures are immune to normal weapons and can move through walls. Ghostwalk could be used to move the party through a wall, eluding enemies. When the spell ends, if a character is inside a wall, they will be pushed to the nearest inhabitable space.~
 @32256=~Detect Magic
 (Divination)
 
@@ -1779,8 +1782,8 @@ Casting Time: 7
 Area of Effect: 8 ft. long, 2 ft. wide wall
 Saving Throw: None
 
-This spell creates a wall of magical force, which stays for 5 rounds. Creatures cannot pass through the wall, though they can still fly over it, teleport past it, or float past it while ethereal. The wall cannot be dispelled.~
-@32554=~Ethereal Jaunt
+This spell creates a wall of magical force, which stays for 5 rounds. Creatures cannot pass through the wall, though they can still fly over it, teleport past it, or float past it while incorporeal. The wall cannot be dispelled.~
+@32554=~Ghostform
 (Alteration)
 
 Level: 5
@@ -1791,7 +1794,7 @@ Casting Time: 1
 Area of Effect: The caster
 Saving Throw: None
 
-This spell turns the caster partially ethereal for a short period of time. While partially ethereal, the caster is immune to non-magical weapons, but is still tangible enough to be able to attack and cast spells. The caster can also move through walls while partially ethereal (unlike the Fly spell, this also works indoors). Simply click on a point to move to, and the caster will float to that point, bypassing normally impassable obstacles in the way.~
+This spell turns the caster incorporeal for a short period of time. While incorporeal, the caster is immune to non-magical weapons, but is still tangible enough to be able to attack and cast spells. The caster can also move through walls while incorporeal (unlike the Fly spell, this also works indoors). Simply click on a point to move to, and the caster will float to that point, bypassing normally impassable obstacles in the way.~
 @32555=~Critical Spell
 (Enchantment)
 
@@ -2200,7 +2203,7 @@ Contagious Fear causes panic among creatures in a 15-foot radius, and the panic 
 @33556=~Skeleton Horde~
 @33557=~Commando Conjuration~
 @33558=~Missile of Patience~
-@33559=~Ethereal Jaunt~
+@33559=~Ghostform~
 @33560=~Slime Drop~
 @33561=~Baleful Teleport~
 @33562=~Critical Spell~
@@ -2399,7 +2402,7 @@ Casting Time: 1
 Area of Effect: 15-ft. radius
 Saving Throw: None
 
-This spell makes multiple allies partially ethereal for 1 round. While partially ethereal, creatures are immune to normal weapons and can move through walls. Ghostwalk could be used to move the party through a wall, eluding enemies. When the spell ends, if a character is inside a wall, they will be pushed to the nearest inhabitable space.~
+This spell makes multiple allies incorporeal for 1 round. While incorporeal, creatures are immune to normal weapons and can move through walls. Ghostwalk could be used to move the party through a wall, eluding enemies. When the spell ends, if a character is inside a wall, they will be pushed to the nearest inhabitable space.~
 @34253=~Power Word, Push
 (Abjuration)
 
@@ -2679,7 +2682,7 @@ Casting Time: 0
 Area of Effect: 2 creatures
 Saving Throw: None
 
-Redirect Spell changes the target of a spell another creature is casting to a target of one's choice. In using this spell, the caster selects two creatures, the first of whom must be casting a spell. That creature's spell is then altered to target the second creature. The redirected spell is cast instantly, preventing the creature from stopping the casting. There is no Saving Throw.~
+Redirect Spell changes the target of a spell another creature is casting to a target of one's choice. In using this spell, the caster selects two creatures, the first of whom must be casting a spell. That creature's spell is then altered to target the second creature. The redirected spell is cast instantly, preventing the creature from stopping the casting.~
 @34456=~Copy Spell
 (Conjuration)
 
@@ -2690,7 +2693,7 @@ Casting Time: 0
 Area of Effect: 2 creatures
 Saving Throw: None
 
-This spell allows the wizard to cast a copy of a spell another creature is casting. In using this spell, the caster selects two creatures, the first of whom must be casting a spell. That spell is then replicated by the wizard, who casts the spell instantly on the second creature. There is no Saving Throw. Copy Spell can be used either to double an ally's spell or to turn an enemy's spells against them.~
+This spell allows the wizard to cast a copy of a spell another creature is casting. In using this spell, the caster selects two creatures, the first of whom must be casting a spell. That spell is then replicated by the wizard, who casts the spell instantly on the second creature. Copy Spell can be used either to double an ally's spell or to turn an enemy's spells against them.~
 @34457=~Linked Portals
 (Conjuration)
 
@@ -2803,7 +2806,7 @@ Area of Effect: 1 creature
 Saving Throw: 1/2
 
 Missile of Patience fires a slow magical projectile at the target, which will deal enormous damage once it hits. Although the missile travels slowly, it pursues the target unstoppably, even going through walls in its path. When it hits the target, it strikes with far more force than its speed would imply, dealing 20d6 crushing damage. The target is allowed a Save vs. Spell at -4 for half damage.~
-@34559=~Ethereal Jaunt
+@34559=~Ghostform
 (Alteration)
 
 Level: 5
@@ -2813,7 +2816,7 @@ Casting Time: 1
 Area of Effect: The caster
 Saving Throw: None
 
-This spell turns the caster partially ethereal for a short period of time. While partially ethereal, the caster is immune to non-magical weapons, but is still tangible enough to be able to attack and cast spells. The caster can also move through walls while partially ethereal (unlike the Fly spell, this also works indoors). Simply click on a point to move to, and the caster will float to that point, bypassing normally impassable obstacles in the way.~
+This spell turns the caster incorporeal for a short period of time. While incorporeal, the caster is immune to non-magical weapons, but is still tangible enough to be able to attack and cast spells. The caster can also move through walls while incorporeal (unlike the Fly spell, this also works indoors). Simply click on a point to move to, and the caster will float to that point, bypassing normally impassable obstacles in the way.~
 @34560=~Slime Drop
 (Conjuration)
 
@@ -2868,7 +2871,7 @@ Casting Time: 7
 Area of Effect: 8 ft. long, 2 ft. wide wall
 Saving Throw: None
 
-This spell creates a wall of magical force, which stays for 5 rounds. Creatures cannot pass through the wall, though they can still fly over it, teleport past it, or float past it while ethereal. The wall cannot be dispelled.~
+This spell creates a wall of magical force, which stays for 5 rounds. Creatures cannot pass through the wall, though they can still fly over it, teleport past it, or float past it while incorporeal. The wall cannot be dispelled.~
 @34565=~Sacrificial Explosion
 (Necromancy)
 
@@ -2997,12 +3000,12 @@ This spell creates a special, pinkish fog in the area of effect. All creatures w
 
 Level: 6
 Range: Familiar must be in the same area
-Duration: 2 hours
+Duration: 8 hours
 Casting Time: 6
 Area of Effect: The caster's familiar
 Saving Throw: None
 
-This spell greatly strengthens the caster's familiar. For the duration, the familiar gains +1 to hit and damage per 2 caster levels, and an additional attack per round. In addition, the familiar's physical damage resistances are set to 75% (replacing their normal values). The familiar must be owned by the caster, and it must be in the same area as the caster (and not in the caster's inventory).~
+This spell greatly strengthens the caster's familiar. For the duration, the familiar gains +3 temporary hit points per caster level, +1 to hit and damage per 2 caster levels, and an additional attack per round. The familiar must be owned by the caster, and it must be in the same area as the caster (and not in the caster's inventory).~
 @34659=~Bardic Sequencer
 (Enchantment)
 

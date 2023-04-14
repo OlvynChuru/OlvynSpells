@@ -1,6 +1,6 @@
 BACKUP ~MESpells/backup~
 AUTHOR ~OlvynChuru~
-VERSION ~2.3.0~
+VERSION ~2.4.0~
 
 ALWAYS
 
@@ -12,7 +12,7 @@ END
 
 ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND NOT FILE_EXISTS_IN_GAME ~M_MESTR1.lua~ BEGIN
 	COPY ~MESpells/lua~ ~override~
-
+/*
 	COPY_EXISTING ~EEex_Action.lua~ ~override~
 		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\(function EEex_Action_Hook_OnEvaluatingUnknown\)~ ~~~~~EEex_Action_Hook_OpcodeFunctions = {}
 EEex_Action_Hook_GlobalFunctions = {}
@@ -26,7 +26,7 @@ function EEex_AddActionHookGlobal(func_name, func)
 end
 
 \1~~~~~
-/*
+
 		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\(local actionID = curAction.m_actionID\)~ ~~~~~\1
 	if aiBase.m_objectType == CGameObjectType.SPRITE then
 		local sprite = EEex_GameObject_Get(aiBase.m_id)
@@ -42,13 +42,14 @@ end
 	for _, hook in pairs(EEex_Action_Hook_GlobalFunctions) do
 		hook(curAction, aiBase)
 	end~~~~~
-*/
-		UNLESS ~EEex_Action_Hook_OpcodeFunctions~
 
+		UNLESS ~EEex_Action_Hook_OpcodeFunctions~
+*/
+/*
 	COPY_EXISTING ~EEex_Opcode.lua~ ~override~
 		REPLACE_TEXTUALLY CASE_INSENSITIVE ~\(function EEex_Opcode_Hook_ApplyScreenEffects\)~ ~~~~~EEex_ScreenEffectsGlobalFunctions = {}
 
-function EEex_AddScreenEffectsGlobal(func_name, func)
+function EEex_Opcode_AddScreenEffectsGlobal(func_name, func)
 	EEex_ScreenEffectsGlobalFunctions[func_name] = func
 end
 
@@ -61,7 +62,7 @@ end
 	end
 	\1~~~~~
 		UNLESS ~EEex_ScreenEffectsGlobalFunctions~
-
+*/
 	APPEND ~STATS.ids~ ~553 ME_STACKING_WIZARD_DURATION_MODIFIER
 554 ME_STACKING_PRIEST_DURATION_MODIFIER
 579 ME_STACKING_WIZARD_CASTER_LEVEL_MODIFIER
@@ -121,6 +122,8 @@ end
 666 ME_SEQUENCER_STORED
 668 ME_BARDIC_SEQUENCER_READY
 669 ME_SAFE_SPELL_LEVEL
+678 ME_DAMAGE_TURNING
+679 ME_REFLECT_ATTACK
 680 ME_CONTINGENCY_CURSE
 682 ME_RECORD_OF_SEARCH_MAP_MODIFICATION
 683 ME_METAMAGIC_LEVEL_MODIFIER
@@ -2942,10 +2945,10 @@ COPY_EXISTING ~scrl1q.itm~ ~override~
 	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 	IF_EXISTS
 
-BEGIN @45 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 DESIGNATED 21231 DEPRECATED ~As of this update, EEex does not have the EEex_HookAction function, which is necessary for this component to work.~
+BEGIN @45 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 DESIGNATED 21231
 
 COPY_EXISTING ~spwi123.spl~ ~override~
-	LPF ADD_SPELL_EFFECT INT_VAR opcode=401 target=1 timing=9 parameter1=1 parameter2=1 special=999 STR_VAR resource=~MEFAMILT~ END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=409 target=1 timing=9  STR_VAR resource=~MEFAMILT~ END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=removeeffectsbyresource target=1 timing=9 STR_VAR resource=~SPWI123~ END
 
 COPY_EXISTING_REGEXP ~fam.*\.cre~ ~override~
@@ -3239,7 +3242,7 @@ COPY_EXISTING ~spwi503.spl~ ~override~
 		maxlength += 2
 	END
 
-BEGIN @31 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 DESIGNATED 25151 DEPRECATED ~As of this update, EEex does not have the EEex_HookAction function, which is necessary for this component to work.~
+BEGIN @31 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 DESIGNATED 25151
 
 COPY ~MESpells/New_Oracle~ ~override~
 
@@ -3834,7 +3837,7 @@ COPY_EXISTING ~kieran3.sto~ ~override~
 
 END
 
-BEGIN @43 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 DESIGNATED 1100 DEPRECATED ~As of this update, EEex does not have the EEex_HookAction function, which is necessary for this component to work.~
+BEGIN @43 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 DESIGNATED 1100
 
 ACTION_IF !(FILE_EXISTS_IN_GAME ~CLABMA01.2DA~) BEGIN
 	COPY ~MESpells/no_overwrite/CLABMA01.2DA~ ~override~
@@ -3950,7 +3953,8 @@ COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
 	READ_BYTE 0x7E thetarget ELSE 0
 	READ_SHORT 0x98 theprojectile ELSE 0
 	PATCH_IF thetarget = 5 AND (theprojectile = 1 OR theprojectile = 66 OR theprojectile = 195 OR theprojectile = 255) BEGIN
-//		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_target=1 target=2 END
+		LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_target=1 target=2 END
+/*
 		READ_LONG 0x64 headeroffset
 		READ_SHORT 0x68 numheaders
 		READ_LONG 0x6A effectoffset
@@ -3966,6 +3970,7 @@ COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
 			END
 			offset = offset + 0x30
 		END
+*/
 	END
 	BUT_ONLY_IF_IT_CHANGES
 
@@ -4045,6 +4050,7 @@ OUTER_SET level_three = 100
 OUTER_SET level_four = 100
 OUTER_SET level_five = 100
 OUTER_SET level_six = 100
+OUTER_SET level_seven = 100
 COPY_EXISTING ~mxsplbrd.2da~ ~override~
 	COUNT_2DA_COLS numcolumns
 	COUNT_2DA_ROWS numcolumns numrows
@@ -4077,6 +4083,12 @@ COPY_EXISTING ~mxsplbrd.2da~ ~override~
 			READ_2DA_ENTRY i 6 numcolumns num_spells
 			PATCH_IF num_spells > 0 BEGIN
 				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+		PATCH_IF level_seven = 100 AND numcolumns >= 8 BEGIN
+			READ_2DA_ENTRY i 7 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_seven
 			END
 		END
 	END
@@ -4116,9 +4128,9 @@ COPY_EXISTING ~kitlist.2da~ ~override~
 					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
 					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
 					numrows_2 += 1
-					PATCH_IF level_five < 100 BEGIN
+					PATCH_IF level_seven < 100 BEGIN
 						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
-						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						SET_2DA_ENTRY numrows_2 level_seven 1 ~GA_MEMM008~
 						numrows_2 += 1
 					END
 					PATCH_IF level_six < 100 BEGIN
@@ -4137,6 +4149,7 @@ OUTER_SET level_three = 100
 OUTER_SET level_four = 100
 OUTER_SET level_five = 100
 OUTER_SET level_six = 100
+OUTER_SET level_seven = 100
 COPY_EXISTING ~mxsplprs.2da~ ~override~
 	COUNT_2DA_COLS numcolumns
 	COUNT_2DA_ROWS numcolumns numrows
@@ -4169,6 +4182,12 @@ COPY_EXISTING ~mxsplprs.2da~ ~override~
 			READ_2DA_ENTRY i 6 numcolumns num_spells
 			PATCH_IF num_spells > 0 BEGIN
 				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+		PATCH_IF level_seven = 100 AND numcolumns >= 8 BEGIN
+			READ_2DA_ENTRY i 7 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_seven
 			END
 		END
 	END
@@ -4208,9 +4227,9 @@ COPY_EXISTING ~kitlist.2da~ ~override~
 					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
 					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
 					numrows_2 += 1
-					PATCH_IF level_five < 100 BEGIN
+					PATCH_IF level_seven < 100 BEGIN
 						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
-						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						SET_2DA_ENTRY numrows_2 level_seven 1 ~GA_MEMM008~
 						numrows_2 += 1
 					END
 					PATCH_IF level_six < 100 BEGIN
@@ -4229,6 +4248,7 @@ OUTER_SET level_three = 100
 OUTER_SET level_four = 100
 OUTER_SET level_five = 100
 OUTER_SET level_six = 100
+OUTER_SET level_seven = 100
 COPY_EXISTING ~mxspldru.2da~ ~override~
 	COUNT_2DA_COLS numcolumns
 	COUNT_2DA_ROWS numcolumns numrows
@@ -4261,6 +4281,12 @@ COPY_EXISTING ~mxspldru.2da~ ~override~
 			READ_2DA_ENTRY i 6 numcolumns num_spells
 			PATCH_IF num_spells > 0 BEGIN
 				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+		PATCH_IF level_seven = 100 AND numcolumns >= 8 BEGIN
+			READ_2DA_ENTRY i 7 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_seven
 			END
 		END
 	END
@@ -4300,9 +4326,9 @@ COPY_EXISTING ~kitlist.2da~ ~override~
 					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
 					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
 					numrows_2 += 1
-					PATCH_IF level_five < 100 BEGIN
+					PATCH_IF level_seven < 100 BEGIN
 						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
-						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						SET_2DA_ENTRY numrows_2 level_seven 1 ~GA_MEMM008~
 						numrows_2 += 1
 					END
 					PATCH_IF level_six < 100 BEGIN
@@ -4321,6 +4347,7 @@ OUTER_SET level_three = 100
 OUTER_SET level_four = 100
 OUTER_SET level_five = 100
 OUTER_SET level_six = 100
+OUTER_SET level_seven = 100
 COPY_EXISTING ~mxsplran.2da~ ~override~
 	COUNT_2DA_COLS numcolumns
 	COUNT_2DA_ROWS numcolumns numrows
@@ -4353,6 +4380,12 @@ COPY_EXISTING ~mxsplran.2da~ ~override~
 			READ_2DA_ENTRY i 6 numcolumns num_spells
 			PATCH_IF num_spells > 0 BEGIN
 				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+		PATCH_IF level_seven = 100 AND numcolumns >= 8 BEGIN
+			READ_2DA_ENTRY i 7 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_seven
 			END
 		END
 	END
@@ -4392,9 +4425,9 @@ COPY_EXISTING ~kitlist.2da~ ~override~
 					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
 					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
 					numrows_2 += 1
-					PATCH_IF level_five < 100 BEGIN
+					PATCH_IF level_seven < 100 BEGIN
 						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
-						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						SET_2DA_ENTRY numrows_2 level_seven 1 ~GA_MEMM008~
 						numrows_2 += 1
 					END
 					PATCH_IF level_six < 100 BEGIN
@@ -4413,6 +4446,7 @@ OUTER_SET level_three = 100
 OUTER_SET level_four = 100
 OUTER_SET level_five = 100
 OUTER_SET level_six = 100
+OUTER_SET level_seven = 100
 COPY_EXISTING ~mxsplpal.2da~ ~override~
 	COUNT_2DA_COLS numcolumns
 	COUNT_2DA_ROWS numcolumns numrows
@@ -4445,6 +4479,12 @@ COPY_EXISTING ~mxsplpal.2da~ ~override~
 			READ_2DA_ENTRY i 6 numcolumns num_spells
 			PATCH_IF num_spells > 0 BEGIN
 				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+		PATCH_IF level_seven = 100 AND numcolumns >= 8 BEGIN
+			READ_2DA_ENTRY i 7 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_seven
 			END
 		END
 	END
@@ -4485,9 +4525,9 @@ COPY_EXISTING ~kitlist.2da~ ~override~
 					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
 					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
 					numrows_2 += 1
-					PATCH_IF level_five < 100 BEGIN
+					PATCH_IF level_seven < 100 BEGIN
 						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
-						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						SET_2DA_ENTRY numrows_2 level_seven 1 ~GA_MEMM008~
 						numrows_2 += 1
 					END
 					PATCH_IF level_six < 100 BEGIN
@@ -4506,6 +4546,7 @@ OUTER_SET level_three = 100
 OUTER_SET level_four = 100
 OUTER_SET level_five = 100
 OUTER_SET level_six = 100
+OUTER_SET level_seven = 100
 COPY_EXISTING ~mxsplsrc.2da~ ~override~
 	COUNT_2DA_COLS numcolumns
 	COUNT_2DA_ROWS numcolumns numrows
@@ -4538,6 +4579,12 @@ COPY_EXISTING ~mxsplsrc.2da~ ~override~
 			READ_2DA_ENTRY i 6 numcolumns num_spells
 			PATCH_IF num_spells > 0 BEGIN
 				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+		PATCH_IF level_seven = 100 AND numcolumns >= 8 BEGIN
+			READ_2DA_ENTRY i 7 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_seven
 			END
 		END
 	END
@@ -4577,9 +4624,9 @@ COPY_EXISTING ~kitlist.2da~ ~override~
 					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
 					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
 					numrows_2 += 1
-					PATCH_IF level_five < 100 BEGIN
+					PATCH_IF level_seven < 100 BEGIN
 						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
-						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						SET_2DA_ENTRY numrows_2 level_seven 1 ~GA_MEMM008~
 						numrows_2 += 1
 					END
 					PATCH_IF level_six < 100 BEGIN
@@ -4598,6 +4645,7 @@ OUTER_SET level_three = 100
 OUTER_SET level_four = 100
 OUTER_SET level_five = 100
 OUTER_SET level_six = 100
+OUTER_SET level_seven = 100
 COPY_EXISTING ~mxsplshm.2da~ ~override~
 	COUNT_2DA_COLS numcolumns
 	COUNT_2DA_ROWS numcolumns numrows
@@ -4630,6 +4678,12 @@ COPY_EXISTING ~mxsplshm.2da~ ~override~
 			READ_2DA_ENTRY i 6 numcolumns num_spells
 			PATCH_IF num_spells > 0 BEGIN
 				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+		PATCH_IF level_seven = 100 AND numcolumns >= 8 BEGIN
+			READ_2DA_ENTRY i 7 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_seven
 			END
 		END
 	END
@@ -4669,9 +4723,9 @@ COPY_EXISTING ~kitlist.2da~ ~override~
 					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
 					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
 					numrows_2 += 1
-					PATCH_IF level_five < 100 BEGIN
+					PATCH_IF level_seven < 100 BEGIN
 						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
-						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						SET_2DA_ENTRY numrows_2 level_seven 1 ~GA_MEMM008~
 						numrows_2 += 1
 					END
 					PATCH_IF level_six < 100 BEGIN
@@ -4690,6 +4744,7 @@ OUTER_SET level_three = 100
 OUTER_SET level_four = 100
 OUTER_SET level_five = 100
 OUTER_SET level_six = 100
+OUTER_SET level_seven = 100
 COPY_EXISTING ~mxsplwiz.2da~ ~override~
 	COUNT_2DA_COLS numcolumns
 	COUNT_2DA_ROWS numcolumns numrows
@@ -4722,6 +4777,12 @@ COPY_EXISTING ~mxsplwiz.2da~ ~override~
 			READ_2DA_ENTRY i 6 numcolumns num_spells
 			PATCH_IF num_spells > 0 BEGIN
 				READ_2DA_ENTRY i 0 numcolumns level_six
+			END
+		END
+		PATCH_IF level_seven = 100 AND numcolumns >= 8 BEGIN
+			READ_2DA_ENTRY i 7 numcolumns num_spells
+			PATCH_IF num_spells > 0 BEGIN
+				READ_2DA_ENTRY i 0 numcolumns level_seven
 			END
 		END
 	END
@@ -4761,9 +4822,9 @@ COPY_EXISTING ~kitlist.2da~ ~override~
 					INSERT_2DA_ROW numrows_2 1 ~ME_MM007   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
 					SET_2DA_ENTRY numrows_2 level_three 1 ~GA_MEMM007~
 					numrows_2 += 1
-					PATCH_IF level_five < 100 BEGIN
+					PATCH_IF level_seven < 100 BEGIN
 						INSERT_2DA_ROW numrows_2 1 ~ME_MM008   ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****        ****~
-						SET_2DA_ENTRY numrows_2 level_five 1 ~GA_MEMM008~
+						SET_2DA_ENTRY numrows_2 level_seven 1 ~GA_MEMM008~
 						numrows_2 += 1
 					END
 					PATCH_IF level_six < 100 BEGIN

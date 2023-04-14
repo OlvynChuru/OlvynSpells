@@ -1345,6 +1345,7 @@ This ability ends the Spirit of Power effect on the party early.~
 @30176=~Teleportation Circle F<METELC6>~
 @30177=~Teleportation Circle G<METELC7>~
 @30178=~Spell Failed: Rewind Time had not been initialized to start tracking effects on this character. Now it has, so it should work the next time the character casts the spell.~
+@30179=~Mysterious Falling Stranger~
 
 @31151=~Snake's Swiftness~
 @31152=~Hex~
@@ -2533,7 +2534,7 @@ This wondrous spell gives a creature the power to fly. For the duration, the cre
 (Illusion/Phantasm)
 
 Level: 3
-Range: Visual range of the caster
+Range: 0
 Duration: 1 round/level
 Casting Time: 3
 Area of Effect: The caster
@@ -3356,13 +3357,13 @@ Mass Sequencer allows the caster to cast one of <PRO_HISHER> spells on many crea
 
 At higher levels, the maximum spell level that can be stored in a Mass Sequencer increases:
 
-Caster Level                   Maximum Spell Level
+Caster Level                    Maximum Spell Level
 18 and below                   3
-19-24                          4
-25-30                          5
-31-36                          6
-37-42                          7
-43-48                          8
+19-24                             4
+25-30                             5
+31-36                             6
+37-42                             7
+43-48                             8
 49 and above                   9~
 @34956=~Enoll Eva's Duplication
 (Alteration)
@@ -3664,7 +3665,7 @@ Intensify Spell makes the character's next spell harder to resist. The character
 
 Spell Level Increase: +2
 
-Empower Spell increases most numerical characteristics of the character's next spell by 50%. Characteristics that can be increased this way include damage, healing, and stat bonuses.~
+Empower Spell increases the damage and/or healing of the character's next spell by 50%.~
 @36013=~Quicken Spell~
 @36014=~Quicken Spell
 (Metamagic)
@@ -3676,9 +3677,9 @@ Quicken Spell lets the character cast their next spell instantly. Not only does 
 @36016=~Persistent Spell
 (Metamagic)
 
-Spell Level Increase: +4
+Spell Level Increase: +6
 
-Persistent Spell sets the duration of the character's next spell to one day. This stacks with Extend Spell, which will extend the duration to two days if both are used. Persistent Spell cannot extend spell effects with a base duration of less than 5 rounds.~
+Persistent Spell sets the duration of the character's next spell to eight hours. This stacks with Extend Spell, which will extend the duration to sixteen hours if both are used. Persistent Spell cannot extend spell effects with a base duration of less than 5 rounds.~
 @36017=~Mass Spell~
 @36018=~Mass Spell
 (Metamagic)

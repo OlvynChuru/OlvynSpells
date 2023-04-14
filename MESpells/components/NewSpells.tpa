@@ -31,6 +31,14 @@ ACTION_IF GAME_IS ~bgee eet~ BEGIN
 END
 
 ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
+
+	COPY_EXISTING ~ar2400.are~ ~override~ ~oh6100.are~ ~override~ ~oh8100.are~ ~override~
+		READ_SHORT 0x48 theareatype
+		theareatype|=0x800
+		WRITE_SHORT 0x48 theareatype
+		IF_EXISTS
+		BUT_ONLY_IF_IT_CHANGES
+
 	COPY_EXISTING ~ar1515.are~ ~override~
 		LPF DELETE_AREA_ITEM STR_VAR item_to_delete=~misc9j~ END
 		LPF ALTER_AREA_CONTAINER STR_VAR container_name=~Desk 1~ container_script=~ME1515IJ~ END
@@ -38,7 +46,6 @@ ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
 		BUT_ONLY_IF_IT_CHANGES
 
 	COPY_EXISTING ~ar5500.are~ ~override~
-		LPF DELETE_AREA_ITEM STR_VAR item_to_delete=~misc9j~ END
 		LPF ALTER_AREA_DOOR INT_VAR flag_open=0 flag_locked=1 lock_difficulty=100 STR_VAR door_name=~Door02~ door_script=~MEBALTHD~ END
 		IF_EXISTS
 		BUT_ONLY_IF_IT_CHANGES
@@ -2875,7 +2882,7 @@ ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
 COPY_EXISTING ~mewi159.spl~ ~override~
 	SAY NAME1 @33159
 	SAY UNIDENTIFIED_DESC @34159
-/*
+
 LAF ADD_CLASS_SPELL STR_VAR resref=~MEWI159~ scroll=~MEWI159X~ class_include=~{202, 5, 19}~ END
 
 COPY_EXISTING ~mewi159d.spl~ ~override~
@@ -2927,7 +2934,7 @@ COPY_EXISTING ~ar3503.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=6 STR_VAR item_to_add=~mewi159x~ END
 
 END
-*/
+
 END
 
 COPY_EXISTING ~mewi160.spl~ ~override~
@@ -3579,7 +3586,7 @@ ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
 COPY_EXISTING ~mewi260.spl~ ~override~
 	SAY NAME1 @33260
 	SAY UNIDENTIFIED_DESC @34260
-/*
+
 LAF ADD_CLASS_SPELL STR_VAR resref=~MEWI260~ scroll=~MEWI260X~ class_include=~{202, 5, 19}~ END
 
 COPY_EXISTING ~mewi260x.itm~ ~override~
@@ -3626,7 +3633,7 @@ COPY_EXISTING ~ar3601.are~ ~override~
 	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=4 STR_VAR item_to_add=~mewi260x~ END
 
 END
-*/
+
 
 END
 
@@ -8742,7 +8749,7 @@ COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
 	offset = effectoffset
 	protectionfound = 0
 	FOR (i = 0; i < numeffects; ++i) BEGIN
-		READ_SHORT offset theopcode
+		READ_SHORT offset theopcode ELSE 0
 		PATCH_IF theopcode = 102 BEGIN
 			protectionfound = 1
 			i = numeffects

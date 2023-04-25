@@ -1,6 +1,6 @@
 BACKUP ~MESpells/backup~
 AUTHOR ~OlvynChuru~
-VERSION ~2.4.0~
+VERSION ~2.4.1~
 
 ALWAYS
 
@@ -2948,11 +2948,12 @@ COPY_EXISTING ~scrl1q.itm~ ~override~
 BEGIN @45 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 REQUIRE_COMPONENT ~EEex.tp2~ ~0~ @1002 DESIGNATED 21231
 
 COPY_EXISTING ~spwi123.spl~ ~override~
-	LPF ADD_SPELL_EFFECT INT_VAR opcode=409 target=1 timing=9  STR_VAR resource=~MEFAMILT~ END
+	LPF ADD_SPELL_EFFECT INT_VAR opcode=409 parameter1=1 target=1 timing=9  STR_VAR resource=~MEFAMILT~ END
 	LPF ADD_SPELL_EFFECT INT_VAR insert_point=0 opcode=removeeffectsbyresource target=1 timing=9 STR_VAR resource=~SPWI123~ END
 
-COPY_EXISTING_REGEXP ~fam.*\.cre~ ~override~
+COPY_EXISTING_REGEXP ~fam.*\.cre~ ~override~ ~rgfn.*\.cre~ ~override~
 	LPF ADD_CRE_EFFECT INT_VAR opcode=401 target=1 timing=9 parameter1=65 parameter2=1 special=684 END
+	IF_EXISTS
 
 BEGIN @33 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 DESIGNATED 22031
 

@@ -18966,3 +18966,230 @@ function MELRNALL(effectData, creatureData)
 })
 	end
 end
+
+EEex_Opcode_AddScreenEffectsGlobal("MEPCCHRM", function(effectData, creatureData)
+	if true then return end
+	local targetID = EEex_ReadDword(creatureData + 0x34)
+	local sourceID = EEex_ReadDword(effectData + 0x10C)
+	if EEex_ReadDword(effectData + 0x5C) == 14432 and EEex_ReadDword(effectData + 0x20) == 1024 then
+		EEex_WriteDword(effectData + 0x20, 0)
+	end
+	if not EEex_IsSprite(targetID) then return false end
+	local internal_flags = EEex_ReadDword(effectData + 0xC8)
+	if bit32.band(internal_flags, 0x2000000) > 0 then return end
+	local opcode = EEex_ReadDword(effectData + 0xC)
+	local parent_resource = EEex_ReadLString(effectData + 0x90, 8)
+	local parameter1 = EEex_ReadDword(effectData + 0x18)
+	local parameter2 = EEex_ReadDword(effectData + 0x1C)
+	local dicenumber = EEex_ReadDword(effectData + 0x34)
+	local dicesize = EEex_ReadDword(effectData + 0x38)
+	local restype = EEex_ReadDword(effectData + 0x8C)
+	if opcode == 337 and parameter2 == 5 then
+		EEex_IterateActorEffects(targetID, function(eData)
+			local the_parameter3 = EEex_ReadDword(eData + 0x60)
+			if the_parameter3 == 14432 then
+				EEex_WriteDword(eData + 0x28, EEex_ReadDword(eData + 0x6C))
+			end
+		end)
+	elseif (opcode == 5 or opcode == 241) and (parameter1 == 0 or parameter1 == EEex_GetActorGeneral(targetID)) and EEex_GetActorAllegiance(targetID) == 2 and (not EEex_IsSprite(sourceID, true) or EEex_GetActorAllegiance(sourceID) >= 200) and not EEex_IsImmuneToOpcode(targetID, opcode) then
+		local portraitIcon = 0
+		local modParameter2 = parameter2 % 10
+		if modParameter2 == 2 or modParameter2 == 3 then
+			portraitIcon = 1
+		elseif modParameter2 == 4 then
+			portraitIcon = 43
+		end
+		local charmStrref = 0
+		if parameter2 == 0 or parameter2 == 1 then
+			charmStrref = 14672
+		elseif parameter2 == 2 or parameter2 == 3 then
+			charmStrref = 14780
+		elseif parameter2 == 4 then
+			charmStrref = 26206
+		end
+		EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 72,
+["target"] = EEex_ReadDword(effectData + 0x10),
+["power"] = EEex_ReadDword(effectData + 0x14),
+["parameter1"] = 255,
+["parameter2"] = 0,
+["timing"] = EEex_ReadDword(effectData + 0x20),
+["duration"] = EEex_ReadDword(effectData + 0x24),
+["resource"] = EEex_ReadLString(effectData + 0x2C, 8),
+["dicenumber"] = EEex_ReadDword(effectData + 0x34),
+["dicesize"] = EEex_ReadDword(effectData + 0x38),
+["savingthrow"] = EEex_ReadDword(effectData + 0x3C),
+["savebonus"] = EEex_ReadDword(effectData + 0x40),
+["school"] = EEex_ReadDword(effectData + 0x48),
+["resist_dispel"] = EEex_ReadDword(effectData + 0x58),
+["parameter3"] = 14432,
+["parameter4"] = EEex_ReadDword(effectData + 0x60),
+["parameter5"] = EEex_ReadDword(effectData + 0x64),
+["vvcresource"] = EEex_ReadLString(effectData + 0x6C, 8),
+["resource2"] = EEex_ReadLString(effectData + 0x74, 8),
+["source_x"] = EEex_ReadDword(effectData + 0x7C),
+["source_y"] = EEex_ReadDword(effectData + 0x80),
+["target_x"] = EEex_ReadDword(effectData + 0x84),
+["target_y"] = EEex_ReadDword(effectData + 0x88),
+["restype"] = EEex_ReadDword(effectData + 0x8C),
+["parent_resource"] = EEex_ReadLString(effectData + 0x90, 8),
+["resource_flags"] = EEex_ReadDword(effectData + 0x98),
+["impact_projectile"] = EEex_ReadDword(effectData + 0x9C),
+["sourceslot"] = EEex_ReadDword(effectData + 0xA0),
+["effvar"] = EEex_ReadLString(effectData + 0xA4, 32),
+["casterlvl"] = EEex_ReadDword(effectData + 0xC4),
+["internal_flags"] = bit32.bor(internal_flags, 0x2000000),
+["sectype"] = EEex_ReadDword(effectData + 0xCC),
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+		EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 142,
+["target"] = EEex_ReadDword(effectData + 0x10),
+["power"] = EEex_ReadDword(effectData + 0x14),
+["parameter1"] = 0,
+["parameter2"] = portraitIcon,
+["timing"] = EEex_ReadDword(effectData + 0x20),
+["duration"] = EEex_ReadDword(effectData + 0x24),
+["resource"] = EEex_ReadLString(effectData + 0x2C, 8),
+["dicenumber"] = EEex_ReadDword(effectData + 0x34),
+["dicesize"] = EEex_ReadDword(effectData + 0x38),
+["savingthrow"] = EEex_ReadDword(effectData + 0x3C),
+["savebonus"] = EEex_ReadDword(effectData + 0x40),
+["school"] = EEex_ReadDword(effectData + 0x48),
+["resist_dispel"] = EEex_ReadDword(effectData + 0x58),
+["parameter3"] = 14432,
+["parameter4"] = EEex_ReadDword(effectData + 0x60),
+["parameter5"] = EEex_ReadDword(effectData + 0x64),
+["vvcresource"] = EEex_ReadLString(effectData + 0x6C, 8),
+["resource2"] = EEex_ReadLString(effectData + 0x74, 8),
+["source_x"] = EEex_ReadDword(effectData + 0x7C),
+["source_y"] = EEex_ReadDword(effectData + 0x80),
+["target_x"] = EEex_ReadDword(effectData + 0x84),
+["target_y"] = EEex_ReadDword(effectData + 0x88),
+["restype"] = EEex_ReadDword(effectData + 0x8C),
+["parent_resource"] = EEex_ReadLString(effectData + 0x90, 8),
+["resource_flags"] = EEex_ReadDword(effectData + 0x98),
+["impact_projectile"] = EEex_ReadDword(effectData + 0x9C),
+["sourceslot"] = EEex_ReadDword(effectData + 0xA0),
+["effvar"] = EEex_ReadLString(effectData + 0xA4, 32),
+["casterlvl"] = EEex_ReadDword(effectData + 0xC4),
+["internal_flags"] = bit32.bor(internal_flags, 0x2000000),
+["sectype"] = EEex_ReadDword(effectData + 0xCC),
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+		if charmStrref > 0 then
+			EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 139,
+["target"] = EEex_ReadDword(effectData + 0x10),
+["power"] = EEex_ReadDword(effectData + 0x14),
+["parameter1"] = charmStrref,
+["parameter2"] = 0,
+["timing"] = EEex_ReadDword(effectData + 0x20),
+["duration"] = EEex_ReadDword(effectData + 0x24),
+["resource"] = EEex_ReadLString(effectData + 0x2C, 8),
+["dicenumber"] = EEex_ReadDword(effectData + 0x34),
+["dicesize"] = EEex_ReadDword(effectData + 0x38),
+["savingthrow"] = EEex_ReadDword(effectData + 0x3C),
+["savebonus"] = EEex_ReadDword(effectData + 0x40),
+["school"] = EEex_ReadDword(effectData + 0x48),
+["resist_dispel"] = EEex_ReadDword(effectData + 0x58),
+["parameter3"] = 14432,
+["parameter4"] = EEex_ReadDword(effectData + 0x60),
+["parameter5"] = EEex_ReadDword(effectData + 0x64),
+["vvcresource"] = EEex_ReadLString(effectData + 0x6C, 8),
+["resource2"] = EEex_ReadLString(effectData + 0x74, 8),
+["source_x"] = EEex_ReadDword(effectData + 0x7C),
+["source_y"] = EEex_ReadDword(effectData + 0x80),
+["target_x"] = EEex_ReadDword(effectData + 0x84),
+["target_y"] = EEex_ReadDword(effectData + 0x88),
+["restype"] = EEex_ReadDword(effectData + 0x8C),
+["parent_resource"] = EEex_ReadLString(effectData + 0x90, 8),
+["resource_flags"] = EEex_ReadDword(effectData + 0x98),
+["impact_projectile"] = EEex_ReadDword(effectData + 0x9C),
+["sourceslot"] = EEex_ReadDword(effectData + 0xA0),
+["effvar"] = EEex_ReadLString(effectData + 0xA4, 32),
+["casterlvl"] = EEex_ReadDword(effectData + 0xC4),
+["internal_flags"] = bit32.bor(internal_flags, 0x2000000),
+["sectype"] = EEex_ReadDword(effectData + 0xCC),
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+		end
+		EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 400,
+["target"] = EEex_ReadDword(effectData + 0x10),
+["power"] = EEex_ReadDword(effectData + 0x14),
+["parameter1"] = 0,
+["parameter2"] = 0,
+["timing"] = EEex_ReadDword(effectData + 0x20),
+["duration"] = EEex_ReadDword(effectData + 0x24),
+["resource"] = "MECLONEE",
+["dicenumber"] = EEex_ReadDword(effectData + 0x34),
+["dicesize"] = EEex_ReadDword(effectData + 0x38),
+["savingthrow"] = EEex_ReadDword(effectData + 0x3C),
+["savebonus"] = EEex_ReadDword(effectData + 0x40),
+["school"] = EEex_ReadDword(effectData + 0x48),
+["resist_dispel"] = EEex_ReadDword(effectData + 0x58),
+["parameter3"] = 14432,
+["parameter4"] = EEex_ReadDword(effectData + 0x60),
+["parameter5"] = EEex_ReadDword(effectData + 0x64),
+["vvcresource"] = EEex_ReadLString(effectData + 0x6C, 8),
+["resource2"] = EEex_ReadLString(effectData + 0x74, 8),
+["source_x"] = EEex_ReadDword(effectData + 0x7C),
+["source_y"] = EEex_ReadDword(effectData + 0x80),
+["target_x"] = EEex_ReadDword(effectData + 0x84),
+["target_y"] = EEex_ReadDword(effectData + 0x88),
+["restype"] = EEex_ReadDword(effectData + 0x8C),
+["parent_resource"] = EEex_ReadLString(effectData + 0x90, 8),
+["resource_flags"] = EEex_ReadDword(effectData + 0x98),
+["impact_projectile"] = EEex_ReadDword(effectData + 0x9C),
+["sourceslot"] = EEex_ReadDword(effectData + 0xA0),
+["effvar"] = EEex_ReadLString(effectData + 0xA4, 32),
+["casterlvl"] = EEex_ReadDword(effectData + 0xC4),
+["internal_flags"] = bit32.bor(internal_flags, 0x2000000),
+["sectype"] = EEex_ReadDword(effectData + 0xCC),
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+		EEex_ApplyEffectToActor(targetID, {
+["opcode"] = 101,
+["target"] = EEex_ReadDword(effectData + 0x10),
+["power"] = EEex_ReadDword(effectData + 0x14),
+["parameter1"] = 0,
+["parameter2"] = 400,
+["timing"] = EEex_ReadDword(effectData + 0x20),
+["duration"] = EEex_ReadDword(effectData + 0x24),
+["resource"] = EEex_ReadLString(effectData + 0x2C, 8),
+["dicenumber"] = EEex_ReadDword(effectData + 0x34),
+["dicesize"] = EEex_ReadDword(effectData + 0x38),
+["savingthrow"] = EEex_ReadDword(effectData + 0x3C),
+["savebonus"] = EEex_ReadDword(effectData + 0x40),
+["school"] = EEex_ReadDword(effectData + 0x48),
+["resist_dispel"] = EEex_ReadDword(effectData + 0x58),
+["parameter3"] = 14432,
+["parameter4"] = EEex_ReadDword(effectData + 0x60),
+["parameter5"] = EEex_ReadDword(effectData + 0x64),
+["vvcresource"] = EEex_ReadLString(effectData + 0x6C, 8),
+["resource2"] = EEex_ReadLString(effectData + 0x74, 8),
+["source_x"] = EEex_ReadDword(effectData + 0x7C),
+["source_y"] = EEex_ReadDword(effectData + 0x80),
+["target_x"] = EEex_ReadDword(effectData + 0x84),
+["target_y"] = EEex_ReadDword(effectData + 0x88),
+["restype"] = EEex_ReadDword(effectData + 0x8C),
+["parent_resource"] = EEex_ReadLString(effectData + 0x90, 8),
+["resource_flags"] = EEex_ReadDword(effectData + 0x98),
+["impact_projectile"] = EEex_ReadDword(effectData + 0x9C),
+["sourceslot"] = EEex_ReadDword(effectData + 0xA0),
+["effvar"] = EEex_ReadLString(effectData + 0xA4, 32),
+["casterlvl"] = EEex_ReadDword(effectData + 0xC4),
+["internal_flags"] = bit32.bor(internal_flags, 0x2000000),
+["sectype"] = EEex_ReadDword(effectData + 0xCC),
+["source_target"] = targetID,
+["source_id"] = sourceID
+})
+		return true
+	end
+	return false
+end)

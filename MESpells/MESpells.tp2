@@ -3402,7 +3402,6 @@ COPY_EXISTING ~spwi615.spl~ ~override~
 BEGIN @57 FORBID_COMPONENT ~HighPower.tp2~ ~0~ @1004 FORBID_COMPONENT ~BetterHOF.TP2~ ~768~ @1005 FORBID_COMPONENT ~Setup-ImprovedAnvil.tp2~ ~0~ @1006 DESIGNATED 27121
 
 COPY_EXISTING ~spwi712.spl~ ~override~
-	LPF ADD_SPELL_CFEFFECT INT_VAR insert_point=0 opcode=eeexinvokelua target=1 timing=3 special=15 STR_VAR resource=~MEINHOST~ END
 	READ_SHORT 0x68 numheaders
 	FOR (i = numheaders; i < 20; ++i) BEGIN
 		LPF ADD_SPELL_HEADER INT_VAR copy_header=1 insert_point=1 END

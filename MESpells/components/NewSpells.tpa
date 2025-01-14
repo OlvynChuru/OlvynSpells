@@ -8969,6 +8969,7 @@ COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
 */
 COPY_EXISTING_REGEXP ~.*\.spl~ ~override~
 	LPF DELETE_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 match_opcode=402 END
+	LPF DELETE_EFFECT INT_VAR silent=1 check_headers=1 check_globals=1 match_opcode=403 END
 	BUT_ONLY_IF_IT_CHANGES
 END
 

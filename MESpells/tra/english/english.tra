@@ -906,12 +906,12 @@ When the caster completes this spell, a green glow encompasses <PRO_HISHER> hand
 
 Level: 2
 Range: Visual range of the caster
-Duration: 3 rounds
+Duration: 2 rounds
 Casting Time: 1
 Area of Effect: 1 creature
 Saving Throw: None
 
-When a wizard calls upon a Power Word, Sleep spell, <PRO_HESHE> causes a comatose slumber to come upon 1 creature (other than undead and certain other creatures specifically excluded from the spell's effects). The creature gets no Saving Throw. Magically sleeping opponents can be attacked with substantial bonuses but will wake up when damaged. The Sleep effect will last for 3 rounds.~
+When a wizard calls upon a Power Word, Sleep spell, <PRO_HESHE> causes a comatose slumber to come upon 1 creature (other than undead and certain other creatures specifically excluded from the spell's effects). The creature gets no Saving Throw. Magically sleeping opponents can be attacked with substantial bonuses but will wake up when damaged. The Sleep effect will last for 2 rounds.~
 @22211=~Ray of Enfeeblement
 (Necromancy)
 
@@ -1346,6 +1346,7 @@ This ability ends the Spirit of Power effect on the party early.~
 @30177=~Teleportation Circle G<METELC7>~
 @30178=~Spell Failed: Rewind Time had not been initialized to start tracking effects on this character. Now it has, so it should work the next time the character casts the spell.~
 @30179=~Mysterious Falling Stranger~
+@30180=~Thank you for saving me. I regret creating this stupid spell; take it and do what you want with it. Never casting it would probably be the best move.~
 
 @31151=~Snake's Swiftness~
 @31152=~Hex~
@@ -1360,6 +1361,7 @@ This ability ends the Spirit of Power effect on the party early.~
 @31254=~Critical Boon~
 @31255=~Ghostwalk~
 @31256=~Detect Magic~
+@31257=~Hide Campsite~
 @31351=~Call Water Weirds~
 @31352=~Shortening~
 @31353=~Fire Curse~
@@ -1568,6 +1570,18 @@ Area of Effect: The caster
 Saving Throw: None
 
 Detect Magic lets the party see the magical effects on other creatures. While the spell is active, if you hover the cursor over a creature and press Left Shift, a list of all the spell effects on the creature (such as Stoneskin or Protection from Magical Weapons) will be displayed. If the creature has Non-Detection, nothing will be displayed.~
+@32257=~Hide Campsite
+(Illusion)
+
+Level: 2
+Sphere: Travelers
+Range: Special
+Duration: 8 hours
+Casting Time: 1
+Area of Effect: All party members
+Saving Throw: None
+
+This spell should be cast right before the party wishes to rest. While the party rests, the party and their campsite will be invisible for the duration of the rest. This eliminates the chance of being woken up by a rest encounter. Hide Campsite does not allow the party to rest in areas that don't allow resting at all.~
 @32351=~Call Water Weirds
 (Conjuration/Summoning)
 
@@ -2167,6 +2181,9 @@ Contagious Fear causes panic among creatures in a 15-foot radius, and the panic 
 @33158=~Reflect Attack~
 @33159=~Taunt~
 @33160=~Dimensional Chest~
+@33161=~Detect Creatures~
+@33162=~Icarian Flight~
+@33163=~Chaos Teleport~
 @33251=~Power Word, Pull~
 @33252=~Ghostwalk~
 @33253=~Power Word, Push~
@@ -2177,6 +2194,7 @@ Contagious Fear causes panic among creatures in a 15-foot radius, and the panic 
 @33258=~Bounce Spell~
 @33259=~Detect Magic~
 @33260=~Far Cast~
+@33261=~Flaming Sphere~
 @33351=~Absorb Spell~
 @33352=~Fly~
 @33353=~Displacement~
@@ -2197,6 +2215,7 @@ Contagious Fear causes panic among creatures in a 15-foot radius, and the panic 
 @33457=~Linked Portals~
 @33458=~Vampiric Link~
 @33459=~Recall Party~
+@33460=~Chaos Cast~
 @33551=~Life Transfer~
 @33552=~Steal Spells~
 @33554=~Ball Lightning~
@@ -2382,6 +2401,41 @@ Saving Throw: None
 This spell summons a chest containing an extradimensional storage space similar to a Bag of Holding. The chest can store up to 60000 of the party's items. It stays in the spot where it was summoned for 8 hours. Any party member can store or retrieve items from the chest by interacting with it. Non-allied creatures cannot see or interact with the chest.
 
 All chests summoned with this spell link to the same extradimensional space, even if multiple chests were to be summoned at the same time.~
+@34161=~Detect Creatures
+(Divination)
+
+Level: 1
+Range: 0
+Duration: Instant
+Casting Time: 1
+Area of Effect: Entire area
+Saving Throw: None
+
+The Detect Creatures spell allows the caster to learn the name of every creature in the current area. The caster will learn a creature's name even if that creature is invisible, though this spell alone will not dispel the invisibility. For a few moments, the creature's name will also be displayed over the creature's location, even it is in an unexplored part of the area.~
+@34162=~Icarian Flight
+(Alteration)
+
+Level: 1
+Range: Could potentially fly across an entire area
+Duration: Instant
+Casting Time: 1
+Area of Effect: The caster
+Saving Throw: None
+
+This spell allows the caster to fly high into the air, faster and farther than higher-level spells. And it is astonishingly easy to cast, too. What an amazing spell! Why isn't everyone using it? Surely it obsoletes normal methods of travel.~
+@34163=~Chaos Teleport
+(Alteration)
+
+Level: 1
+Range: 100 miles
+Duration: Instant
+Casting Time: 3
+Area of Effect: The party
+Saving Throw: None
+
+The crudest of all teleportation spells, Chaos Teleport (also known as Teleport With Error) transports the party to a random area, which could potentially be an area the party has not yet visited. The teleportation also has a 20% chance to leave party members stranded at different parts of the area; the only guarantee is that all party members will end up in the same area. Despite being easy for beginners to learn, this is not a spell for the faint of heart.
+
+Chaos Teleport cannot teleport the party to areas that cannot be accessed at the current point in the story.~
 @34251=~Power Word, Pull
 (Conjuration/Summoning)
 
@@ -2508,6 +2562,17 @@ Saving Throw: None
 Far Cast modifies the next spell or ability used by the caster in the next 2 rounds. That spell or ability gains unlimited range and can target any creature the party sees, even if the caster does not see it.
 
 Although Far Cast is not a free action, the next spell can be cast immediately after it, as if the caster had Aura Cleansing.~
+@34261=~Flaming Sphere
+(Evocation)
+
+Level: 2
+Range: Visual range of the caster
+Duration: 1 turn
+Casting Time: 2
+Area of Effect: 5-ft. radius
+Saving Throw: None
+
+This spell creates a lingering sphere of flame, which deals 2d4 damage each round to each creature in a 5 foot radius. The sphere can be controlled by the caster as if it were a summoned creature. It can move to any point within the caster's visual range, but it cannot attack; it damages creatures merely by being near them. The sphere can take damage from area of effect spells such as Cone of Cold, but it cannot be attacked or targeted by a spell.~
 @34351=~Absorb Spell
 (Abjuration)
 
@@ -2728,6 +2793,21 @@ Area of Effect: All party members
 Saving Throw: None
 
 Recall Party teleports all party members to the caster's side. The range is unlimited, and party members can be drawn from a different area, so long as they are on the same plane as the caster.~
+@34460=~Chaos Cast
+(Wild Magic)
+
+Level: 4
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 1
+Area of Effect: Special
+Saving Throw: None
+
+This spell casts a random mage spell on the target creature, which could be a spell of any level between 1 and 8. The nature of the spell depends on the target. If the target is an enemy, they will receive a harmful spell, but if the target is an ally, they will receive a beneficial spell. Targeting restrictions are obeyed (a spell that can only target the caster will not be rolled unless the target is the caster).
+
+The main advantage of Chaos Cast is that the random spell is more likely to be higher than level 4 than lower (since there are more levels above level 4 than below). The disadvantage is that the spell might not be useful in the current situation.
+
+Chaos Cast is not restricted to Wild Mages.~
 @34551=~Life Transfer
 (Necromancy)
 
@@ -2839,7 +2919,7 @@ Casting Time: 1
 Area of Effect: 1 creature
 Saving Throw: None
 
-This spell teleports a creature to another area against its will. When cast, the target is pulled through a portal and whisked to a random area. There is no Saving Throw against this spell, though it does not count as defeating the creature and will not give experience to the party. The creature is thereafter immune to Baleful Teleport for 1 year. Baleful Teleport has no effect on party members.~
+This spell teleports a creature to another area against its will. When cast, the target is pulled through a portal and whisked to a random area. There is no Saving Throw against this spell, though it does not count as defeating the creature and will not give experience to the party. The creature is thereafter immune to Baleful Teleport for 1 year. Baleful Teleport has no effect on party members or on creatures of HD 16 or higher.~
 @34562=~Critical Spell
 (Enchantment)
 
@@ -3199,7 +3279,7 @@ Casting Time: 9
 Area of Effect: The caster
 Saving Throw: None
 
-Recurring Contingency is like other Contingency spells, except that the stored spell is cast repeatedly. Upon casting Recurring Contingency, the caster is prompted to store a single spell of 2nd-level or lower, choose a target for the spell, and choose conditions under which the spell will be released. During the next hour, the spell will be cast on the target each round that the condition is met (or each time the caster is hit, if the caster chose it to trigger upon getting hit).~
+Recurring Contingency is like other Contingency spells, except that the stored spell is cast repeatedly. Upon casting Recurring Contingency, the caster is prompted to store a single 1st-level spell, choose a target for the spell, and choose conditions under which the spell will be released. During the next hour, the spell will be cast on the target each round that the condition is met (or each time the caster is hit, if the caster chose it to trigger upon getting hit).~
 @34855=~Omnipresence
 (Alteration)
 
@@ -3221,7 +3301,7 @@ Casting Time: 9
 Area of Effect: 1 creature
 Saving Throw: None
 
-Contingency Curse forces a hostile creature to release spells against its will on the caster's terms. Upon casting Contingency Curse, the caster is prompted to store a single spell of 2nd-level or lower, choose a target for the spell, and choose conditions under which the spell will be released. The target of the spell is then cursed to cast that spell repeatedly under those conditions. For example, the caster could store a Web spell and make the creature cast Web on itself whenever it gets hit. Contingency Curse can only curse enemies.~
+Contingency Curse forces a hostile creature to release spells against its will on the caster's terms. Upon casting Contingency Curse, the caster is prompted to store a single 1st-level spell, choose a target for the spell, and choose conditions under which the spell will be released. The target of the spell is then cursed to cast that spell repeatedly under those conditions. For example, the caster could store a Grease spell and make the creature cast Grease on itself whenever it gets hit. Contingency Curse can only curse enemies.~
 @34857=~Extend Vision
 (Divination)
 
@@ -3443,7 +3523,7 @@ Casting Time: 9
 Area of Effect: The caster
 Saving Throw: None
 
-Necropotence allows the wizard to draw the power for their spells through their own life force. For the duration, whenever the character would cast a spell, they immediately regain the cast spell but also take 3 damage per level of the spell. This damage cannot be prevented by any resistances, but it will not interrupt the spell.~
+Necropotence allows the wizard to draw the power for their spells through their own life force. For the duration, whenever the character would cast a spell, they immediately regain the cast spell but also take 3 damage per level of the spell. This damage cannot be prevented by any resistances, but it will not interrupt the spell. While Necropotence is in effect, the caster cannot regain any Hit Points through healing, resting or regeneration.~
 @34963=~Mental Agility
 (Enchantment)
 

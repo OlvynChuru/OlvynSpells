@@ -38,6 +38,7 @@ me_boulder_shot = {}
 me_lightning_projectiles = {}
 me_special_lightning_projectile = 40
 me_tornado_projectile = 0
+me_dynamic_ranged_projectile = 0
 ex_special_aoe_types = {["MEHOLE"] = 1, ["MEINVGLU"] = 2, ["METORNAD"] = 3, }
 me_animal_growth_animations = {[0x7F2F] = 0x7A01, }
 ex_hit_strings = {}
@@ -47,6 +48,7 @@ ex_extended_backstab_active = false
 ex_backstab_condition = 1
 ex_sanctuary_backstab = false
 ex_helpless_backstab = false
+me_charmed_pc_script = ""
 --MECLEARA = EEex_FetchBCS("MECLEARA")
 me_classids = {}
 me_monsterclassids = {}
@@ -115,3 +117,37 @@ me_string_55357 = ""
 me_string_55358 = ""
 me_string_55359 = ""
 me_string_55360 = ""
+me_irregular_wed_areas = {}
+me_random_spell_enemy = {
+[1] = {"SPWI101", "SPWI103", "SPWI104", "SPWI105", "SPWI106", "SPWI112", "SPWI116", "SPWI118", "SPWI119", "SPWI125", "MEWI152", "MEWI157", "MEWI159", },
+[2] = {"SPWI205", "SPWI208", "SPWI211", "SPWI213", "SPWI215", "SPWI217", "SPWI220", "SPWI221", "SPWI223", "SPWI224", "SPWI299", "MEWI251", "MEWI253", "MEWI254", "MEWI255", "MEWI257", },
+[3] = {"SPWI302", "SPWI303", "SPWI304", "SPWI306", "SPWI308", "SPWI312", "SPWI313", "SPWI314", "SPWI316", "SPWI321", "SPWI324", "SPWI326", "MEWI354", "MEWI359", "MEWI361", },
+[4] = {"SPWI401", "SPWI404", "SPWI409", "SPWI411", "SPWI412", "SPWI413", "SPWI415", "SPWI419", "SPWI421", "MEWI451", "MEWI452", "MEWI458", },
+[5] = {"SPWI502", "SPWI503", "SPWI506", "SPWI507", "SPWI508", "SPWI509", "SPWI513", "SPWI514", "MEWI552", "MEWI554", "MEWI560", },
+[6] = {"SPWI604", "SPWI605", "SPWI608", "SPWI612", "SPWI614", "SPWI615", "SPWI616", "MEWI651", "MEWI653", "MEWI656", "MEWI657", },
+[7] = {"SPWI704", "SPWI705", "SPWI711", "SPWI712", "SPWI713", "SPWI714", "SPWI715", "SPWI720", "MEWI754", "MEWI760", "MEWI762", },
+[8] = {"SPWI805", "SPWI810", "SPWI811", "SPWI812", "SPWI813", "SPWI815", "SPWI816", "SPWI817", "SPWI818", "MEWI853", "MEWI858", "MEWI861", "MEWI862", },
+[9] = {"SPWI903", "SPWI910", "SPWI911", "SPWI912", "SPWI914", "SPWI918", "MEWI952", "MEWI954", },
+}
+me_random_spell_ally = {
+[1] = {"SPWI108", "SPWI113", "MEWI156", },
+[2] = {"SPWI206", "SPWI209", "SPWI210", "SPWI214", "MEWI252", },
+[3] = {"SPWI305", "SPWI310", "SPWI319", "SPWI320", "SPWI326", "MEWI352", },
+[4] = {"SPWI405", "SPWI410", "SPWI414", "SPWI417", },
+[5] = {"SPWI512", "SPWI517", },
+[6] = {"SPWI606", "SPWI613", "SPWI625", },
+[7] = {"SPWI702", "SPWI721", "MEWI759", },
+[8] = {"SPWI803", "MEWI852", "MEWI859", },
+[9] = {"MEWI951", "MEWI953", "MEWI961", },
+}
+me_random_spell_self = {
+[1] = {"SPWI102", "SPWI107", "SPWI111", "SPWI114", "SPWI120", "MEWI158", },
+[2] = {"SPWI201", "SPWI202", "SPWI203", "SPWI212", "SPWI219", "MEWI258", },
+[3] = {"SPWI307", "SPWI311", "SPWI315", "SPWI317", "SPWI318", "SPWI322", "SPWI325", "MEWI351", "MEWI353", "MEWI356", "MEWI360", },
+[4] = {"SPWI403", "SPWI406", "SPWI408", "SPWI416", "SPWI418", "SPWI420", "SPWI424", "MEWI453", "MEWI459", },
+[5] = {"SPWI505", "SPWI511", "SPWI515", "SPWI518", "SPWI519", "SPWI522", "MEWI555", "MEWI559", "MEWI566", },
+[6] = {"SPWI602", "SPWI603", "SPWI607", "SPWI609", "SPWI611", "SPWI617", "SPWI618", "MEWI652", "MEWI654", },
+[7] = {"SPWI701", "SPWI703", "SPWI708", "SPWI710", "MEWI758", },
+[8] = {"SPWI804", "SPWI808", "SPWI809", },
+[9] = {"SPWI902", "SPWI907", "SPWI908", "SPWI909", "SPWI915", "SPWI917", "MEWI959", },
+}

@@ -32,7 +32,7 @@ END
 
 ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
 
-	COPY_EXISTING ~ar2400.are~ ~override~ ~oh6100.are~ ~override~ ~oh8100.are~ ~override~
+	COPY_EXISTING ~ar0411.are~ ~override~ ~ar2400.are~ ~override~ ~oh6100.are~ ~override~ ~oh8100.are~ ~override~
 		READ_SHORT 0x48 theareatype
 		theareatype|=0x800
 		WRITE_SHORT 0x48 theareatype
@@ -257,6 +257,7 @@ ADD_PROJECTILE ~override/mesannih.pro~ //Sphere of Annihilation
 ADD_PROJECTILE ~override/metornad.pro~ //Tornado
 ADD_PROJECTILE ~override/meinar15.pro~ //Instant area 15-foot radius
 ADD_PROJECTILE ~override/meinap10.pro~ //Instant area 10-foot radius party only
+ADD_PROJECTILE ~override/meattran.pro~ //Dynamic ranged attack
 
 ACTION_IF NOT GAME_IS ~iwdee~ BEGIN
 	COPY_EXISTING ~lightb.pro~ ~override/meslight.pro~
@@ -335,8 +336,6 @@ LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@33158) STR_VAR icon=~MEWI158D~ RET 
 LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@30067) STR_VAR icon=~MEWI255D~ RET icon_index_mewi255=icon_index END
 
 LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@30054) STR_VAR icon=~MEWI257D~ RET icon_index_mewi257=icon_index END
-
-LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@33259) STR_VAR icon=~MEWI259D~ RET icon_index_mewi259=icon_index END
 
 LAF ADD_ICON INT_VAR strref=RESOLVE_STR_REF(@30055) STR_VAR icon=~MEWI352D~ RET icon_index_mewi352=icon_index END
 
@@ -663,6 +662,7 @@ COPY_EXISTING ~m_mestr1.lua~ ~override~
 	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_boulder_shot = {~ ~me_boulder_shot = {[%meconr03%] = %meconr31%, ~
 	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_special_lightning_projectile = .*~ ~me_special_lightning_projectile = %meslight%~
 	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_tornado_projectile = .*~ ~me_tornado_projectile = %metornad%~
+	REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_dynamic_ranged_projectile = .*~ ~me_dynamic_ranged_projectile = %meattran%~
 	IF_EXISTS
 
 ACTION_IF GAME_IS ~iwdee~ BEGIN
@@ -926,16 +926,18 @@ END
 
 COPY_EXISTING ~mepr157.spl~ ~override~
 	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=displayportraiticon parameter2=icon_index_mepr157 END
+	SAY NAME1 @31157
+	SAY UNIDENTIFIED_DESC @32157
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+COPY_EXISTING ~mepr157d.spl~ ~override~
 	READ_SHORT 0x68 numheaders
 	FOR (i = numheaders; i < 50; ++i) BEGIN
 		LPF ADD_SPELL_HEADER INT_VAR copy_header=i insert_point=i END
 		LPF ALTER_SPELL_HEADER INT_VAR header=(i + 1) min_level=(i + 1) END
-		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) duration_high=((i + 1) * 60) END
+		LPF ALTER_SPELL_EFFECT INT_VAR header=(i + 1) match_opcode=damage dicenumber=((i + 1) / 3 + 2) END
 		numheaders = numheaders + 1
 	END
-	SAY NAME1 @31157
-	SAY UNIDENTIFIED_DESC @32157
-	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
 
 LAF ADD_CLASS_SPELL STR_VAR resref=~MEPR157~ class_include=~{207}~ END
 
@@ -1068,6 +1070,62 @@ COPY_EXISTING ~B3_EfMen.lua~ ~override~
 
 END
 */
+
+COPY_EXISTING ~mepr257.spl~ ~override~
+	SAY NAME1 @31257
+	SAY UNIDENTIFIED_DESC @32257
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+LAF ADD_CLASS_SPELL STR_VAR resref=~MEPR257~ class_include=~{209}~ END
+
+<<<<<<<< .../script.baf
+	
+IF
+	Global("MEINVCMP","GLOBAL",1)
+THEN
+	RESPONSE #100
+		SetGlobal("MEINVCMP","GLOBAL",0)
+		SetGlobalTimer("ME_Hide_Campsite_Timer","GLOBAL",2400)
+		SetGlobal("ME_Hide_Campsite","MYAREA",1)
+		SetRestEncounterProbabilityDay(0)
+		SetRestEncounterProbabilityNight(0)
+END
+
+IF
+	GlobalTimerNotExpired("ME_Hide_Campsite_Timer","GLOBAL")
+	Global("ME_Hide_Campsite","MYAREA",0)
+THEN
+	RESPONSE #100
+		SetGlobal("ME_Hide_Campsite","MYAREA",1)
+		SetRestEncounterProbabilityDay(0)
+		SetRestEncounterProbabilityNight(0)
+END
+
+IF
+	Global("ME_Hide_Campsite","MYAREA",1)
+	!GlobalTimerNotExpired("ME_Hide_Campsite_Timer","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobal("ME_Hide_Campsite","MYAREA",0)
+		SetRestEncounterProbabilityDay(%therestencounterchanceday%)
+		SetRestEncounterProbabilityNight(%therestencounterchancenight%)
+END
+
+>>>>>>>>
+
+COPY_EXISTING_REGEXP ~.*\.are~ ~override~
+	READ_LONG 0xC0 therestencounteroffset
+	READ_SHORT (therestencounteroffset + 0x98) therestencounternumcreatures
+	READ_SHORT (therestencounteroffset + 0xA8) therestencounterchanceday
+	READ_SHORT (therestencounteroffset + 0xAA) therestencounterchancenight
+	PATCH_IF therestencounternumcreatures > 0 BEGIN
+		TEXT_SPRINT theareares ~%SOURCE_RES%~
+		INNER_ACTION BEGIN
+			EXTEND_BOTTOM ~%theareares%.bcs~ ~.../script.baf~ EVAL
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
 ACTION_IF !(GAME_IS ~iwdee~) BEGIN
 
 COPY_EXISTING ~mepr351.spl~ ~override~
@@ -1189,7 +1247,7 @@ ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
 
 OUTER_SPRINT me_30043 @30043
 OUTER_SPRINT me_31358 @31358
-LAF ADD_CONTINGENCY INT_VAR new_action=1 description=RESOLVE_STR_REF(@32358) STR_VAR resource= EVAL ~mepr358~ title=~ME_FAMILIAR_SPELL_TITLE~ title_name= EVAL ~%me_31358%~ action=~ME_ADD_SPELLS_FAMILIAR_LABEL~ action_name= EVAL ~%me_30043%~ END
+LAF ADD_CONTINGENCY INT_VAR new_action=1 description=RESOLVE_STR_REF(@32358) STR_VAR resource= EVAL ~MEPR358~ title=~ME_FAMILIAR_SPELL_TITLE~ title_name= EVAL ~%me_31358%~ action=~ME_ADD_SPELLS_FAMILIAR_LABEL~ action_name= EVAL ~%me_30043%~ END
 
 COPY_EXISTING ~mepr358.spl~ ~override~
 	SAY NAME1 @31358
@@ -1942,13 +2000,13 @@ COPY_EXISTING ~mepr756d.spl~ ~override~
 	LPF ALTER_EFFECT INT_VAR match_opcode=protectionfromspell match_parameter1=30037 parameter1=RESOLVE_STR_REF(@30037) END
 	SAY NAME1 @31756
 	SAY UNIDENTIFIED_DESC @32756
-
+/*
 COPY_EXISTING_REGEXP ~.*\.are~ ~override~
 	READ_LONG 0x14 theareaflags
 	theareaflags|=0x10
 	WRITE_LONG 0x14 theareaflags
 	BUT_ONLY_IF_IT_CHANGES
-
+*/
 COPY_EXISTING ~baldur.bcs~ ~override~ ~baldur25.bcs~ ~override~ ~bdbaldur.bcs~ ~override~
 	DECOMPILE_AND_PATCH BEGIN
 		REPLACE_TEXTUALLY ~!InParty(Player1)~ ~!InParty(Player1)
@@ -2885,8 +2943,6 @@ COPY_EXISTING ~mewi159.spl~ ~override~
 
 LAF ADD_CLASS_SPELL STR_VAR resref=~MEWI159~ scroll=~MEWI159X~ class_include=~{202, 5, 19}~ END
 
-COPY_EXISTING ~mewi159d.spl~ ~override~
-
 COPY_EXISTING ~mewi159x.itm~ ~override~
 	SAY NAME2 @33159
 	SAY IDENTIFIED_DESC @34159
@@ -3001,6 +3057,82 @@ COPY_EXISTING ~ar1016.are~ ~override~
 
 COPY_EXISTING ~kuork0.sto~ ~override~
 	ADD_STORE_ITEM ~mewi160x~ AFTER ~scrl70~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+COPY_EXISTING ~mewi162.spl~ ~override~
+	SAY NAME1 @33162
+	SAY UNIDENTIFIED_DESC @34162
+
+COPY_EXISTING ~mewi162x.itm~ ~override~
+	SAY NAME2 @33162
+	SAY IDENTIFIED_DESC @34162
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~meicaria.cre~ ~override~
+	SAY NAME1 @30179
+	SAY NAME2 @30179
+
+COMPILE ~override/meicaria.d~
+
+COPY_EXISTING ~meicaria.cre~ ~override~
+	ADD_CRE_ITEM ~mewi162x~ #0 #0 #0 ~NONE~ ~QITEM3~
+
+COPY_EXISTING ~%arbg%4300.are~ ~override~ //Area just north of Nashkel
+	LPF fj_are_structure INT_VAR fj_loc_x=3718 fj_loc_y=1685 STR_VAR fj_structure_type=~actor~ fj_name=~Mysterious Falling Stranger~ fj_cre_resref=~MEICARIA~ END
+	LPF ADD_AREA_REGION_TRIGGER INT_VAR ab_RT_Type=0 ab_RT_BbLX=4076 ab_RT_BbLY=1844 ab_RT_BbHX=4076 ab_RT_BbHY=1844 ab_RT_Fbit=0 ab_RT_TSet=1 ab_RT_LPoX=4076 ab_RT_LPoY=1844 ab_RT_VxPr=1 ab_RT_Vx_X_0=4076 ab_RT_Vx_Y_0=1844 STR_VAR ab_RT_Name=~ME_Falling_Stranger_Trigger~ ab_RT_Rbcs=~ME4300IC~ END
+
+END
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) AND NOT (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~mewi163.spl~ ~override~
+	SAY NAME1 @33163
+	SAY UNIDENTIFIED_DESC @34163
+
+LAF ADD_CLASS_SPELL STR_VAR resref=~MEWI163~ scroll=~MEWI163X~ class_include=~{202, 5, 19}~ END
+
+COPY_EXISTING_REGEXP ~.*\.are~ ~override~
+	READ_ASCII 0x8 thewedres
+	TEXT_SPRINT theareares ~%SOURCE_RES%~
+	PATCH_IF NOT (~%thewedres%~ STRING_EQUAL_CASE ~%theareares%~) BEGIN
+		INNER_ACTION BEGIN
+			COPY_EXISTING ~M_MESTR1.lua~ ~override~
+				REPLACE_TEXTUALLY CASE_INSENSITIVE ~me_irregular_wed_areas = {~ ~me_irregular_wed_areas = {["%theareares%"] = "%thewedres%", ~
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~mewi163x.itm~ ~override~
+	SAY NAME2 @33163
+	SAY IDENTIFIED_DESC @34163
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~%arbg%2303.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=4 STR_VAR item_to_add=~mewi163x~ END
+
+COPY_EXISTING ~sto4906.sto~ ~override~ //Carnival Magic Trinkets Shop
+	ADD_STORE_ITEM ~mewi163x~ BEFORE ~amul01~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+END
+
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0705.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=6 STR_VAR item_to_add=~mewi163x~ END
+
+COPY_EXISTING ~arled.sto~ ~override~
+	ADD_STORE_ITEM ~mewi163x~ BEFORE ~restore~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+END
 
 END
 
@@ -3327,9 +3459,9 @@ COPY_EXISTING ~mewi256f.spl~ ~override~
 
 OUTER_SPRINT me_30012 @30012
 OUTER_SPRINT me_30013 @30013
-LAF ADD_CONTINGENCY INT_VAR new_title=0 new_action=1 description=RESOLVE_STR_REF(@34256) STR_VAR resource= EVAL ~mesplim1~ title=~ME_SPECIFIC_IMMUNITY_TITLE~ title_name= EVAL ~%me_30012%~ action=~ME_ADD_SPELLS_IMMUNITY_LABEL~ action_name= EVAL ~%me_30013%~ END
-LAF ADD_CONTINGENCY INT_VAR new_title=0 description=RESOLVE_STR_REF(@34256) STR_VAR resource= EVAL ~mesplim2~ title=~ME_SPECIFIC_IMMUNITY_TITLE~ title_name= EVAL ~%me_30012%~ action=~ME_ADD_SPELLS_IMMUNITY_LABEL~ END
-LAF ADD_CONTINGENCY INT_VAR new_title=0 description=RESOLVE_STR_REF(@34256) STR_VAR resource= EVAL ~mesplim3~ title=~ME_SPECIFIC_IMMUNITY_TITLE~ title_name= EVAL ~%me_30012%~ action=~ME_ADD_SPELLS_IMMUNITY_LABEL~ END
+LAF ADD_CONTINGENCY INT_VAR new_title=0 new_action=1 description=RESOLVE_STR_REF(@34256) STR_VAR resource= EVAL ~MESPLIM1~ title=~ME_SPECIFIC_IMMUNITY_TITLE~ title_name= EVAL ~%me_30012%~ action=~ME_ADD_SPELLS_IMMUNITY_LABEL~ action_name= EVAL ~%me_30013%~ END
+LAF ADD_CONTINGENCY INT_VAR new_title=0 description=RESOLVE_STR_REF(@34256) STR_VAR resource= EVAL ~MESPLIM2~ title=~ME_SPECIFIC_IMMUNITY_TITLE~ title_name= EVAL ~%me_30012%~ action=~ME_ADD_SPELLS_IMMUNITY_LABEL~ END
+LAF ADD_CONTINGENCY INT_VAR new_title=0 description=RESOLVE_STR_REF(@34256) STR_VAR resource= EVAL ~MESPLIM3~ title=~ME_SPECIFIC_IMMUNITY_TITLE~ title_name= EVAL ~%me_30012%~ action=~ME_ADD_SPELLS_IMMUNITY_LABEL~ END
 
 COPY_EXISTING ~mewi256x.itm~ ~override~
 	SAY NAME2 @33256
@@ -3445,25 +3577,25 @@ END
 ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
 
 COPY_EXISTING ~mewi258.spl~ ~override~
-	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 opcode=403 parameter1=1 parameter2=9 savingthrow=0x6C0000 special=1 STR_VAR match_resource=~mewi258b~ resource=~EXSPLDEF~ END
-	LPF CLONE_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=403 opcode=198 parameter1=0 parameter2=121 savingthrow=0 special=0 END
-	LPF DELETE_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=spellturning END
+//	LPF ALTER_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 opcode=403 parameter1=1 parameter2=9 savingthrow=0x6C0000 special=1 STR_VAR match_resource=~mewi258b~ resource=~EXSPLDEF~ END
+//	LPF CLONE_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=403 opcode=198 parameter1=0 parameter2=121 savingthrow=0 special=0 END
+//	LPF DELETE_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=spellturning END
 	SAY NAME1 @33258
 	SAY UNIDENTIFIED_DESC @34258
 
 LAF ADD_CLASS_SPELL STR_VAR resref=~MEWI258~ scroll=~MEWI258X~ class_include=~{202, 5, 19}~ END
 
-COPY_EXISTING ~mewi258b.spl~ ~override~
 
 END ELSE BEGIN
 
 COPY_EXISTING ~mewi258.spl~ ~override~
+	LPF ADD_SPELL_EFFECT INT_VAR power=2 opcode=spellturning target=1 timing=0 duration=12 parameter1=1 parameter2=9 STR_VAR resource=~mewi258b~ END
+	LPF DELETE_EFFECT INT_VAR silent=1 check_headers=1 check_globals=0 match_opcode=403 END
 	SAY NAME1 @33258
 	SAY UNIDENTIFIED_DESC @34258
 
 LAF ADD_CLASS_SPELL STR_VAR resref=~MEWI258~ scroll=~MEWI258X~ class_include=~{202, 5, 19}~ END
 
-COPY_EXISTING ~mewi258b.spl~ ~override~
 
 END
 
@@ -3507,7 +3639,7 @@ END
 ACTION_IF (GAME_IS ~iwdee~) BEGIN
 
 COPY_EXISTING ~kuork0.sto~ ~override~
-	ADD_STORE_ITEM ~mewi258x~ AFTER ~spwi223x~ #1 #0 #0 ~IDENTIFIED~ #1
+	ADD_STORE_ITEM ~mewi258x~ AFTER ~spwi223a~ #1 #0 #0 ~IDENTIFIED~ #1
 
 END
 /*
@@ -3634,6 +3766,80 @@ COPY_EXISTING ~ar3601.are~ ~override~
 
 END
 
+
+END
+
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+COPY_EXISTING ~mewi261.spl~ ~override~
+	SAY NAME1 @33261
+	SAY UNIDENTIFIED_DESC @34261
+
+LAF ADD_CLASS_SPELL STR_VAR resref=~MEWI261~ scroll=~MEWI261X~ class_include=~{202, 5, 19}~ END
+
+COPY_EXISTING ~meflasph.cre~ ~override~
+	WRITE_LONG animation slotsphereofannihilationdecimal
+	SAY NAME1 @33261
+	SAY NAME2 @33261
+
+//ACTION_IF !(MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+COPY_EXISTING ~meflasph.eff~ ~override~
+	WRITE_ASCII 0x30 ~MEFLASPH~ #8
+
+COPY_EXISTING ~meflasph.spl~ ~override~
+	LPF ALTER_SPELL_HEADER INT_VAR projectile=mesannih END
+
+//END
+
+COPY_EXISTING ~mewi261x.itm~ ~override~
+	SAY NAME2 @33261
+	SAY IDENTIFIED_DESC @34261
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~highhedg.sto~ ~override~
+	ADD_STORE_ITEM ~mewi261x~ BEFORE ~scrl89~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
+COPY_EXISTING ~sto0703.sto~ ~override~
+	ADD_STORE_ITEM ~mewi261x~ BEFORE ~scrl1c~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~bdsorcsc.sto~ ~override~
+	ADD_STORE_ITEM ~mewi261x~ BEFORE ~scrl89~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi261x~ BEFORE ~scrl89~ #1 #0 #0 ~IDENTIFIED~ #5
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~ar0603.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=3 STR_VAR item_to_add=~mewi261x~ END
+
+COPY_EXISTING ~scrolls.sto~ ~override~
+	ADD_STORE_ITEM ~mewi261x~ AFTER ~scrl89~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~25spell.sto~ ~override~ //Arcana Archives
+	ADD_STORE_ITEM ~mewi261x~ BEFORE ~scrl89~ #1 #0 #0 ~IDENTIFIED~ #2
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi261x~ BEFORE ~scrl89~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~kuork0.sto~ ~override~
+	ADD_STORE_ITEM ~mewi261x~ AFTER ~spwi223a~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
 
 END
 
@@ -4858,6 +5064,68 @@ END
 
 END
 
+ACTION_IF (MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+COPY_EXISTING ~mewi460.spl~ ~override~
+	SAY NAME1 @33460
+	SAY UNIDENTIFIED_DESC @34460
+
+LAF ADD_CLASS_SPELL STR_VAR resref=~MEWI460~ scroll=~MEWI460X~ class_include=~{202, 5, 19}~ END
+
+COPY_EXISTING ~mewi460x.itm~ ~override~
+	SAY NAME2 @33460
+	SAY IDENTIFIED_DESC @34460
+	LPF MATCH_SPELL_REVISIONS_DESCRIPTION_FORMAT END
+
+ACTION_IF (GAME_IS ~bgee eet~) BEGIN
+
+COPY_EXISTING ~neadoy.dlg~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		REPLACE_TEXTUALLY ~GiveItem(\"NEBELT01\",Player1)~ ~GiveItem("NEBELT01",Player1)
+GiveItemCreate("MEWI460X",Player1,1,0,0)~
+	END
+	IF_EXISTS
+
+COPY_EXISTING ~sto4906.sto~ ~override~ //Carnival Magic Trinkets Shop
+	ADD_STORE_ITEM ~mewi460x~ AFTER ~mewi457x~ #1 #0 #0 ~IDENTIFIED~ #1
+	IF_EXISTS
+
+COPY_EXISTING ~bdbeleg3.sto~ ~override~
+	ADD_STORE_ITEM ~mewi460x~ AFTER ~scrl2b~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+COPY_EXISTING ~bpding01.sto~ ~override~ //Black Pits scroll store
+	ADD_STORE_ITEM ~mewi460x~ AFTER ~scrl2b~ #1 #0 #0 ~IDENTIFIED~ #3
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~bg2ee eet~) BEGIN
+
+COPY_EXISTING ~oh6100.are~ ~override~
+	LPF ADD_AREA_ITEM INT_VAR container_to_add_to=1 STR_VAR item_to_add=~mewi460x~ END
+	IF_EXISTS
+
+COPY_EXISTING ~ribald.sto~ ~override~
+	ADD_STORE_ITEM ~mewi460x~ AFTER ~scrl6m~ #1 #0 #0 ~IDENTIFIED~ #3
+
+COPY_EXISTING ~kruin.cre~ ~override~
+	ADD_CRE_ITEM ~mewi460x~ #0 #0 #0 ~NONE~ ~INV7~
+	IF_EXISTS
+
+COPY_EXISTING ~ohbmhsm.sto~ ~override~ //Black Pits 2 scroll store
+	ADD_STORE_ITEM ~mewi460x~ AFTER ~scrl2b~ #1 #0 #0 ~IDENTIFIED~ #6
+	IF_EXISTS
+
+END
+ACTION_IF (GAME_IS ~iwdee~) BEGIN
+
+COPY_EXISTING ~bandoth.sto~ ~override~
+	ADD_STORE_ITEM ~mewi460x~ BEFORE ~sccfe~ #1 #0 #0 ~IDENTIFIED~ #1
+
+END
+
+END
+
 ACTION_IF (me_power_spells = 1) BEGIN
 
 COPY_EXISTING ~mewi551.spl~ ~override~
@@ -5332,8 +5600,6 @@ COPY_EXISTING ~mewi559.spl~ ~override~
 	SAY UNIDENTIFIED_DESC @34559
 
 LAF ADD_CLASS_SPELL STR_VAR resref=~MEWI559~ scroll=~MEWI559X~ class_include=~{202, 5, 19}~ END
-
-COPY_EXISTING ~mewi559d.spl~ ~override~
 
 COPY_EXISTING ~mewi559d.eff~ ~override~
 	WRITE_LONG effparameter1 0
@@ -7481,7 +7747,7 @@ COPY_EXISTING ~sppr307.spl~ ~override~ ~spwi410.spl~ ~override~
 	LPF ADD_SPELL_EFFECT INT_VAR opcode=321 target=2 timing=1 STR_VAR resource=~mecurscn~ END
 
 OUTER_SPRINT me_33856 @33856
-LAF ADD_CONTINGENCY INT_VAR description=RESOLVE_STR_REF(@34856) STR_VAR resource= EVAL ~mewi856d~ title=~ME_CURSE_CONTINGENCY_TITLE~ title_name= EVAL ~%me_33856%~ action=~ADD_SPELLS_CONTINGENCY_LABEL~ END
+LAF ADD_CONTINGENCY INT_VAR description=RESOLVE_STR_REF(@34856) STR_VAR resource= EVAL ~MEWI856D~ title=~ME_CURSE_CONTINGENCY_TITLE~ title_name= EVAL ~%me_33856%~ action=~ADD_SPELLS_CONTINGENCY_LABEL~ END
 
 COPY_EXISTING ~mewi856x.itm~ ~override~
 	SAY NAME2 @33856
@@ -8431,8 +8697,15 @@ COPY_EXISTING ~mesannih.cre~ ~override~
 	SAY NAME1 @33968
 	SAY NAME2 @33968
 
+//ACTION_IF !(MOD_IS_INSTALLED ~EEex.tp2~ ~0~) BEGIN
+
+COPY_EXISTING ~mesannih.eff~ ~override~
+	WRITE_ASCII 0x30 ~MESANNIH~ #8
+
 COPY_EXISTING ~mesannih.spl~ ~override~
 	LPF ALTER_SPELL_HEADER INT_VAR projectile=mesannih END
+
+//END
 
 COPY_EXISTING ~luma0.2da~ ~override~ ~luso0.2da~ ~override~
 	LPF ADD_HLA STR_VAR ability=~GA_MEWI968~ min_lev=~1~ max_lev=~99~ num_allowed=~1~ END
